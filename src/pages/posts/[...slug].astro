@@ -1,23 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
+// import { Content } from 'astro:content/components';
 
+// 必须导出 getStaticPaths
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map(post => ({
-    params: { slug: [post.slug] }, // slug as array for catch-all route
-    props: { post }
+    params: { slug: post.slug },
+    props: { post }, // 将文章数据传递给组件
   }));
 }
 
-const slug = Array.isArray(Astro.params.slug)
-  ? Astro.params.slug.join('/')
-  : Astro.params.slug;
-const [post] = await getCollection('posts', ({ slug: s }: { slug: string }) => s === slug);
+// 接收从 getStaticPaths 传递的 props
+const { post } = Astro.props;
 ---
+
 <article>
-
   <h1>{post.data.title}</h1>
-
-  {post.body}
-
+  {post.body ? post.body() : null}
 </article>
