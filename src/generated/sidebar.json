@@ -1,0 +1,16 @@
+{
+  "solutions_a": [
+    {
+      "title": "plan a en",
+      "slug": "solutions_a/plan_a_en",
+      "date": "2023-10-01",
+      "tags": "test"
+    },
+    {
+      "title": "A计划",
+      "slug": "solutions_a/plan_a_zh",
+      "date": "2023-10-01",
+      "tags": "test"
+    }
+  ]
+}

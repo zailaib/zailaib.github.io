@@ -1,21 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
 
-// 1. 定义所有可能的路径
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map(post => ({
     params: { slug: post.slug },
-    props: { post }, // 传递整个post对象
+    props: { post },
   }));
 }
 
-// 2. 接收传递的数据
 const { post } = Astro.props;
 ---
 
-<!-- 3. 正确渲染内容 -->
-<article>
-  <h1>{post.data.title}</h1>
-  <div>{post.body}</div>
-</article>
+<PostLayout frontmatter={post.data}>
+  <article>
+    <h1>{post.data.title}</h1>
+    <div>{post.body}</div>
+  </article>
+</PostLayout>

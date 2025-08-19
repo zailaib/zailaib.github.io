@@ -15,6 +15,15 @@ const postsByCategory = posts.reduce<Record<string, CollectionEntry<'posts'>[]>>
 <ClientRouter />
 <div class="app-container">
   <aside class="sidebar">
+    <script>
+      // 保存侧边栏内容到localStorage
+      document.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+          localStorage.setItem('sidebarContent', sidebar.innerHTML);
+        }
+      });
+    </script>
     {Object.entries(postsByCategory).map(([category, categoryPosts]) => (
       <section>
         <h2>{category}</h2>

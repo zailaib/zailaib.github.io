@@ -1,7 +1,23 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-// 前端代码（可接收 Markdown 的 frontmatter 数据）
-const { frontmatter } = Astro.props;
+
+interface Post {
+  title: string;
+  slug: string;
+  date: string;
+  tags?: string | string[];
+}
+
+export interface Props {
+  frontmatter: {
+    title: string;
+    date: Date;
+    category?: string;
+    tags?: string | string[];
+  }
+}
+
+const { frontmatter } = Astro.props as Props;
 ---
 <html lang="zh">
 <head>
@@ -11,8 +27,35 @@ const { frontmatter } = Astro.props;
 <body>
   <div class="app-container">
     <aside class="sidebar" data-astro-transition="persist">
-      <!-- 侧边栏内容将由index.astro注入 -->
+      <div id="sidebar-content">
+        <script>
+          // 直接从预生成的JSON加载侧边栏
+          fetch('/generated/sidebar.json')
+            .then(res => res.json())
+            .then((data: Record<string, Array<{title: string, slug: string}>>) => {
+              const container = document.getElementById('sidebar-content');
+              if (container) {
+                container.innerHTML = Object.entries(data)
+                  .map(([category, posts]) => `
+                    <section>
+                      <h2>${category}</h2>
+                      <ul>
+                        ${posts.map(post => `
+                          <li>
+                            <a href="/posts/${post.slug}" data-astro-transition="animate">
+                              ${post.title}
+                            </a>
+                          </li>
+                        `).join('')}
+                      </ul>
+                    </section>
+                  `).join('');
+              }
+            });
+        </script>
+      </div>
     </aside>
+
     <main class="content">
       <article id="post-content" data-astro-transition="animate">
         <h1>{frontmatter.title}</h1>
