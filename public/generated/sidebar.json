@@ -1,0 +1,40 @@
+{
+  "about": [
+    {
+      "title": "about",
+      "slug": "about",
+      "date": "2023-10-01",
+      "tags": "test"
+    }
+  ],
+  "post1_en": [
+    {
+      "title": "我的第一篇文章",
+      "slug": "post1_en",
+      "date": "2023-10-01",
+      "tags": "test"
+    }
+  ],
+  "post1_zh": [
+    {
+      "title": "我的第一篇文章",
+      "slug": "post1_zh",
+      "date": "2023-10-01",
+      "tags": "test"
+    }
+  ],
+  "solutions_a": [
+    {
+      "title": "plan a en",
+      "slug": "solutions_a/plan_a_en",
+      "date": "2023-10-01",
+      "tags": "test"
+    },
+    {
+      "title": "A计划",
+      "slug": "solutions_a/plan_a_zh",
+      "date": "2023-10-01",
+      "tags": "test"
+    }
+  ]
+}
