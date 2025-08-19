@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import { Content } from 'astro:content/components';
 
 // 1. 定义所有可能的路径
 export async function getStaticPaths() {
@@ -18,5 +17,5 @@ const { post } = Astro.props;
 <!-- 3. 正确渲染内容 -->
 <article>
   <h1>{post.data.title}</h1>
-  <Content collection="posts" entry={post} /> <!-- 使用Content组件 -->
+  <div>{post.body}</div>
 </article>
