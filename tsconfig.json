@@ -1,5 +1,19 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "compilerOptions": {
+    "types": [
+      "astro/client",
+      "vite/client"
+    ],
+    "strictNullChecks": true
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "src/**/*",
+    "astro.config.mjs"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }
