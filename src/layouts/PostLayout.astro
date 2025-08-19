@@ -22,17 +22,21 @@ const { frontmatter } = Astro.props as Props;
 <html lang="zh">
 <head>
   <title>{frontmatter.title}</title>
-  <ClientRouter />
+  <!-- <ClientRouter /> -->
 </head>
 <body>
   <div class="app-container">
     <aside class="sidebar" data-astro-transition="persist">
       <div id="sidebar-content">
         <script>
-          // 直接从预生成的JSON加载侧边栏
+          console.log('Loading sidebar data...');
           fetch('/generated/sidebar.json?t=' + Date.now())
-            .then(res => res.json())
+            .then(res => {
+              if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+              return res.json();
+            })
             .then((data: Record<string, Array<{title: string, slug: string}>>) => {
+              console.log('Sidebar data loaded:', data);
               const container = document.getElementById('sidebar-content');
               if (container) {
                 container.innerHTML = Object.entries(data)
@@ -50,6 +54,17 @@ const { frontmatter } = Astro.props as Props;
                       </ul>
                     </section>
                   `).join('');
+              }
+            })
+            .catch(err => {
+              console.error('Failed to load sidebar:', err);
+              const errorContainer = document.getElementById('sidebar-content');
+              if (errorContainer) {
+                errorContainer.innerHTML = `
+                <div style="color:red">
+                  Failed to load navigation. Please refresh the page.
+                </div>
+                `;
               }
             });
         </script>
