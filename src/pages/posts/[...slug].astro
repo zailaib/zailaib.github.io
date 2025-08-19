@@ -4,12 +4,15 @@ import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map(post => ({
-    params: { slug: post.slug.split('/') },
+    params: { slug: [post.slug] }, // slug as array for catch-all route
     props: { post }
   }));
 }
 
-const post = await getCollection('posts', ({ slug }: { slug: string }) => slug === Astro.params.slug);
+const slug = Array.isArray(Astro.params.slug)
+  ? Astro.params.slug.join('/')
+  : Astro.params.slug;
+const [post] = await getCollection('posts', ({ slug: s }: { slug: string }) => s === slug);
 ---
 <article>
 
