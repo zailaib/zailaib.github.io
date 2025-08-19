@@ -1,7 +1,7 @@
 ---
 title: 我的第一篇文章
 date: 2023-10-01
-layout: ../../layouts/PostLayout.astro
+layout: '@layouts/PostLayout.astro'
 
 ---
 
