@@ -21,6 +21,7 @@ const postsByCategory = posts.reduce<Record<string, CollectionEntry<'posts'>[]>>
             {post.data.title}
           </a>
           <time>{post.data.date.toLocaleDateString()}</time>
+		  <span> - {post.data.tags} </span>
         </li>
       ))}
     </ul>
