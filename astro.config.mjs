@@ -10,6 +10,9 @@ export default defineConfig({
       alias: {
         '@layouts': '/src/layouts'
       }
+    },
+    optimizeDeps: {
+      include: ['astro:content/components']
     }
   }
 });

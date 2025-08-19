@@ -1,21 +1,22 @@
 ---
 import { getCollection } from 'astro:content';
-// import { Content } from 'astro:content/components';
+import { Content } from 'astro:content/components';
 
-// 必须导出 getStaticPaths
+// 1. 定义所有可能的路径
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
   return posts.map(post => ({
     params: { slug: post.slug },
-    props: { post }, // 将文章数据传递给组件
+    props: { post }, // 传递整个post对象
   }));
 }
 
-// 接收从 getStaticPaths 传递的 props
+// 2. 接收传递的数据
 const { post } = Astro.props;
 ---
 
+<!-- 3. 正确渲染内容 -->
 <article>
   <h1>{post.data.title}</h1>
-  {post.body ? post.body() : null}
+  <Content collection="posts" entry={post} /> <!-- 使用Content组件 -->
 </article>
