@@ -27,11 +27,3 @@ const postsByCategory = posts.reduce<Record<string, CollectionEntry<'posts'>[]>>
     </ul>
   </section>
 ))}
-<ul>
-  {posts.map((post: CollectionEntry<'posts'>) => (
-    <li>
-      <a href={`/posts/${post.slug}`}>{post.data.title}</a>
-      <time>{post.data.date.toLocaleDateString()}</time>
-    </li>
-  ))}
-</ul>
