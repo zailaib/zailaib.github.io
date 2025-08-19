@@ -2,7 +2,30 @@
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 const posts = await getCollection('posts');
+
+const postsByCategory = posts.reduce<Record<string, CollectionEntry<'posts'>[]>>((acc, post) => {
+  const category = post.slug.split('/')[0]; // 获取一级目录作为分类
+  if (!acc[category]) acc[category] = [];
+  acc[category].push(post);
+  return acc;
+}, {});
+
 ---
+{Object.entries(postsByCategory).map(([category, categoryPosts]) => (
+  <section>
+    <h2>{category}</h2>
+    <ul>
+      {categoryPosts.map(post => (
+        <li>
+          <a href={`/posts/${post.slug}`}>
+            {post.data.title}
+          </a>
+          <time>{post.data.date.toLocaleDateString()}</time>
+        </li>
+      ))}
+    </ul>
+  </section>
+))}
 <ul>
   {posts.map((post: CollectionEntry<'posts'>) => (
     <li>
