@@ -30,7 +30,7 @@ const { frontmatter } = Astro.props as Props;
       <div id="sidebar-content">
         <script>
           // 直接从预生成的JSON加载侧边栏
-          fetch('/generated/sidebar.json')
+          fetch('/generated/sidebar.json?t=' + Date.now())
             .then(res => res.json())
             .then((data: Record<string, Array<{title: string, slug: string}>>) => {
               const container = document.getElementById('sidebar-content');

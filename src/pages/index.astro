@@ -2,14 +2,27 @@
 import { getCollection } from 'astro:content';
 import { ClientRouter } from 'astro:transitions';
 import type { CollectionEntry } from 'astro:content';
-const posts = await getCollection('posts');
 
-const postsByCategory = posts.reduce<Record<string, CollectionEntry<'posts'>[]>>((acc, post) => {
-  const category = post.slug.split('/')[0]; // 获取一级目录作为分类
-  if (!acc[category]) acc[category] = [];
-  acc[category].push(post);
-  return acc;
-}, {});
+interface SidebarPost {
+  title: string;
+  slug: string;
+  date: string;
+  tags: string[];
+}
+
+// 使用与PostLayout相同的数据源
+let postsByCategory: Record<string, SidebarPost[]> = {};
+try {
+  const response = await fetch('/generated/sidebar.json');
+  postsByCategory = await response.json() as Record<string, SidebarPost[]>;
+} catch (err) {
+  console.error('Failed to load sidebar data:', err);
+  // Fallback to empty data
+  postsByCategory = {};
+}
+
+// 获取所有文章用于首页展示
+const posts = await getCollection('posts');
 
 ---
 <ClientRouter />
@@ -31,10 +44,12 @@ const postsByCategory = posts.reduce<Record<string, CollectionEntry<'posts'>[]>>
           {categoryPosts.map(post => (
             <li>
               <a href={`/posts/${post.slug}`} data-astro-transition="animate">
-                {post.data.title}
+                {post.title}
               </a>
-              <time>{post.data.date.toLocaleDateString()}</time>
-              <span> - {post.data.tags} </span>
+              <time>{new Date(post.date).toLocaleDateString()}</time>
+              {post.tags && post.tags.length > 0 && (
+                <span> - {post.tags.join(', ')} </span>
+              )}
             </li>
           ))}
         </ul>

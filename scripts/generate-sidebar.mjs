@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const POSTS_DIR = path.join(__dirname, '../src/content/posts');
-const OUTPUT_FILE = path.join(__dirname, '../src/generated/sidebar.json');
+const OUTPUT_FILE = path.join(__dirname, '../public/generated/sidebar.json');
 
 async function getPosts() {
   const posts = [];
@@ -29,18 +29,44 @@ async function getPosts() {
               data[key.trim()] = values.join(':').trim().replace(/^['"]|['"]$/g, '');
             }
           });
+
+          // 确保所有必要字段存在
+          if (!data.title) {
+            console.warn(`Missing title in ${category}/${postFile}`);
+            data.title = postFile.replace('.md', '');
+          }
           
           posts.push({
             title: data.title,
             slug: `${category}/${postFile.replace('.md', '')}`,
-            date: data.date,
-            tags: data.tags
+            date: data.date || new Date().toISOString(),
+            tags: data.tags || []
           });
         }
       }
+    } else if (category.endsWith('.md')) {
+      // 处理直接放在posts目录下的文章
+      const content = await fs.readFile(path.join(POSTS_DIR, category), 'utf-8');
+      const frontmatter = content.match(/^---\n([\s\S]*?)\n---/)[1];
+      const data = {};
+      
+      frontmatter.split('\n').forEach(line => {
+        const [key, ...values] = line.split(':');
+        if (key && values.length) {
+          data[key.trim()] = values.join(':').trim().replace(/^['"]|['"]$/g, '');
+        }
+      });
+
+      posts.push({
+        title: data.title || category.replace('.md', ''),
+        slug: category.replace('.md', ''),
+        date: data.date || new Date().toISOString(),
+        tags: data.tags || []
+      });
     }
   }
   
+  console.log(`Found ${posts.length} posts in total`);
   return posts;
 }
 

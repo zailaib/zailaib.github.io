@@ -7,9 +7,10 @@
     "strictNullChecks": true
   },
   "include": [
-    ".astro/types.d.ts",
+    ".astro/types.d.ts", 
     "src/**/*",
-    "astro.config.mjs"
+    "astro.config.mjs",
+    "src/types.d.ts"
   ],
   "exclude": [
     "dist",
