@@ -1,13 +1,37 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 // 前端代码（可接收 Markdown 的 frontmatter 数据）
 const { frontmatter } = Astro.props;
 ---
 <html lang="zh">
 <head>
   <title>{frontmatter.title}</title>
+  <ClientRouter />
 </head>
 <body>
-  <h1>{frontmatter.title}</h1>
-  <slot /> <!-- Markdown 内容会插入到这里 -->
+  <div class="app-container">
+    <aside class="sidebar" data-astro-transition="persist">
+      <!-- 侧边栏内容将由index.astro注入 -->
+    </aside>
+    <main class="content">
+      <article id="post-content" data-astro-transition="animate">
+        <h1>{frontmatter.title}</h1>
+        <slot /> <!-- Markdown 内容会插入到这里 -->
+      </article>
+    </main>
+  </div>
 </body>
 </html>
+
+<style>
+  .app-container {
+    display: flex;
+    gap: 2rem;
+  }
+  .sidebar {
+    width: 300px;
+  }
+  .content {
+    flex: 1;
+  }
+</style>
