@@ -12,11 +12,14 @@ export default defineConfig({
       }
     },
     optimizeDeps: {
-      include: ['astro:content/components']
+      include: [
+      ]
     },
     build: {
       rollupOptions: {
-        external: ['astro:content/components']
+        external: [
+
+        ]
       }
     }
   }
