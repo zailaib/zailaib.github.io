@@ -1,14 +1,36 @@
 {
-  "solutions_a": [
+  "about": [
+    {
+      "title": "about",
+      "slug": "about",
+      "date": "2023-10-01",
+      "tags": "test"
+    }
+  ],
+  "solution_a": [
     {
       "title": "plan a en",
-      "slug": "solutions_a/plan_a_en",
+      "slug": "solution_a/plan_a_en",
       "date": "2023-10-01",
       "tags": "test"
     },
     {
       "title": "A计划",
-      "slug": "solutions_a/plan_a_zh",
+      "slug": "solution_a/plan_a_zh",
+      "date": "2023-10-01",
+      "tags": "test"
+    }
+  ],
+  "solution_b": [
+    {
+      "title": "plan a en",
+      "slug": "solution_b/plan_a_en",
+      "date": "2023-10-01",
+      "tags": "test"
+    },
+    {
+      "title": "A计划",
+      "slug": "solution_b/plan_a_zh",
       "date": "2023-10-01",
       "tags": "test"
     }
