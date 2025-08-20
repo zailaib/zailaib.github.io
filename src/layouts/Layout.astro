@@ -1,5 +1,21 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Sidebar from '../components/Sidebar.astro';
+
+interface SidebarPost {
+  title: string;
+  slug: string;
+  date: string;
+  tags: string | string[];
+}
+
+// 在构建时导入预生成的侧边栏数据
+const sidebarData = await import('../../generated/sidebar.json');
+const postsByCategory = (sidebarData as any).default as Record<string, SidebarPost[]>;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="zh">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -8,7 +24,13 @@
 		<title>Astro Basics</title>
 	</head>
 	<body>
-		<slot />
+    <div class="app-container">
+      <Sidebar postsByCategory={postsByCategory} />
+      <main class="content">
+        <slot />
+      </main>
+    </div>
+    <ClientRouter />
 	</body>
 </html>
 
@@ -19,4 +41,16 @@
 		width: 100%;
 		height: 100%;
 	}
+  
+  .app-container {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .content {
+    flex: 1;
+  }
 </style>

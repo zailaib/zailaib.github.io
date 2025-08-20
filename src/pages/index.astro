@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { ClientRouter } from 'astro:transitions';
 import type { CollectionEntry } from 'astro:content';
+import Home from '../components/Home.astro';
 
 interface SidebarPost {
   title: string;
@@ -19,52 +20,4 @@ const posts = await getCollection('posts');
 
 ---
 <!-- <ClientRouter /> -->
-<div class="app-container">
-  <aside class="sidebar">
-    <script>
-      // 保存侧边栏内容到localStorage
-      document.addEventListener('DOMContentLoaded', () => {
-        const sidebar = document.querySelector('.sidebar');
-        if (sidebar) {
-          localStorage.setItem('sidebarContent', sidebar.innerHTML);
-        }
-      });
-    </script>
-    {Object.entries(postsByCategory).map(([category, categoryPosts]) => (
-      <section>
-        <h2>{category}</h2>
-        <ul>
-          {categoryPosts.map(post => (
-            <li>
-              <a href={`/posts/${post.slug}`} data-astro-transition="animate">
-                {post.title}
-              </a>
-              <time>{new Date(post.date).toLocaleDateString()}</time>
-              {post.tags && (
-                <span> - {Array.isArray(post.tags) ? post.tags.join(', ') : post.tags} </span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))}
-  </aside>
-  <main class="content" data-astro-transition="persist">
-    <!-- Content will be dynamically replaced -->
-  </main>
-</div>
-
-<style>
-  .app-container {
-    display: flex;
-    gap: 2rem;
-  }
-  .sidebar {
-    width: 300px;
-    position: sticky;
-    top: 1rem;
-  }
-  .content {
-    flex: 1;
-  }
-</style>
+<Home postsByCategory={postsByCategory} posts={posts} />

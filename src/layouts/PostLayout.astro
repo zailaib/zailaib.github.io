@@ -26,53 +26,7 @@ const { frontmatter } = Astro.props as Props;
 </head>
 <body>
   <div class="app-container">
-    <aside class="sidebar" data-astro-transition="persist">
-      <div id="sidebar-content">
-        <script>
-          // 只在客户端执行
-          if (typeof window !== 'undefined') {
-            console.log('Loading sidebar data...');
-            fetch('/generated/sidebar.json?t=' + Date.now())
-            .then(res => {
-              if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-              return res.json();
-            })
-            .then((data: Record<string, Array<{title: string, slug: string}>>) => {
-              console.log('Sidebar data loaded:', data);
-              const container = document.getElementById('sidebar-content');
-              if (container) {
-                container.innerHTML = Object.entries(data)
-                  .map(([category, posts]) => `
-                    <section>
-                      <h2>${category}</h2>
-                      <ul>
-                        ${posts.map(post => `
-                          <li>
-                            <a href="/posts/${post.slug}" data-astro-transition="animate">
-                              ${post.title}
-                            </a>
-                          </li>
-                        `).join('')}
-                      </ul>
-                    </section>
-                  `).join('');
-              }
-            })
-            .catch(err => {
-              console.error('Failed to load sidebar:', err);
-              const errorContainer = document.getElementById('sidebar-content');
-              if (errorContainer) {
-                errorContainer.innerHTML = `
-                <div style="color:red">
-                  Failed to load navigation. Please refresh the page.
-                </div>
-                `;
-              }
-            });
-          }
-        </script>
-      </div>
-    </aside>
+    <!-- 侧边栏已移至index.astro中静态渲染 -->
 
     <main class="content">
       <article id="post-content" data-astro-transition="animate">
