@@ -7,21 +7,12 @@ interface SidebarPost {
   title: string;
   slug: string;
   date: string;
-  tags: string[];
+  tags: string | string[];
 }
 
-// 使用与PostLayout相同的数据源
-let postsByCategory: Record<string, SidebarPost[]> = {};
-// 只在客户端加载JSON数据
-if (typeof window !== 'undefined') {
-  try {
-    const response = await fetch('/generated/sidebar.json');
-    postsByCategory = await response.json() as Record<string, SidebarPost[]>;
-  } catch (err) {
-    console.error('Failed to load sidebar data:', err);
-    postsByCategory = {};
-  }
-}
+// 在构建时导入预生成的侧边栏数据
+const sidebarData = await import('../generated/sidebar.json');
+const postsByCategory = (sidebarData as any).default as Record<string, SidebarPost[]>;
 
 // 获取所有文章用于首页展示
 const posts = await getCollection('posts');
@@ -49,8 +40,8 @@ const posts = await getCollection('posts');
                 {post.title}
               </a>
               <time>{new Date(post.date).toLocaleDateString()}</time>
-              {post.tags && post.tags.length > 0 && (
-                <span> - {post.tags.join(', ')} </span>
+              {post.tags && (
+                <span> - {Array.isArray(post.tags) ? post.tags.join(', ') : post.tags} </span>
               )}
             </li>
           ))}
