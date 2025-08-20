@@ -22,7 +22,7 @@ const { postsByCategory } = Astro.props;
       <ul>
         {categoryPosts.map(post => (
           <li>
-            <a href={`/posts/${post.slug}`} data-astro-transition="animate">
+            <a href={`/posts/${post.slug}/`} data-astro-transition="animate">
               {post.title}
             </a>
             <time>{new Date(post.date).toLocaleDateString()}</time>
