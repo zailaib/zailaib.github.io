@@ -12,13 +12,15 @@ interface SidebarPost {
 
 // 使用与PostLayout相同的数据源
 let postsByCategory: Record<string, SidebarPost[]> = {};
-try {
-  const response = await fetch('/generated/sidebar.json');
-  postsByCategory = await response.json() as Record<string, SidebarPost[]>;
-} catch (err) {
-  console.error('Failed to load sidebar data:', err);
-  // Fallback to empty data
-  postsByCategory = {};
+// 只在客户端加载JSON数据
+if (typeof window !== 'undefined') {
+  try {
+    const response = await fetch('/generated/sidebar.json');
+    postsByCategory = await response.json() as Record<string, SidebarPost[]>;
+  } catch (err) {
+    console.error('Failed to load sidebar data:', err);
+    postsByCategory = {};
+  }
 }
 
 // 获取所有文章用于首页展示

@@ -22,15 +22,17 @@ const { frontmatter } = Astro.props as Props;
 <html lang="zh">
 <head>
   <title>{frontmatter.title}</title>
-  <!-- <ClientRouter /> -->
+  <ClientRouter />
 </head>
 <body>
   <div class="app-container">
     <aside class="sidebar" data-astro-transition="persist">
       <div id="sidebar-content">
         <script>
-          console.log('Loading sidebar data...');
-          fetch('/generated/sidebar.json?t=' + Date.now())
+          // 只在客户端执行
+          if (typeof window !== 'undefined') {
+            console.log('Loading sidebar data...');
+            fetch('/generated/sidebar.json?t=' + Date.now())
             .then(res => {
               if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
               return res.json();
@@ -67,6 +69,7 @@ const { frontmatter } = Astro.props as Props;
                 `;
               }
             });
+          }
         </script>
       </div>
     </aside>
