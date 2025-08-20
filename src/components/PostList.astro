@@ -1,0 +1,82 @@
+---
+interface Post {
+  title: string;
+  slug: string;
+  date: string;
+  tags?: string | string[];
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section class="post-list">
+  <h1>最新文章</h1>
+  {posts.map(post => (
+    <article class="post-card">
+      <h2>
+        <a href={`/posts/${post.slug}`} data-astro-transition="animate">
+          {post.title}
+        </a>
+      </h2>
+      <time>{post.date} - {new Date(post.date).toLocaleDateString()}</time>
+      {post.tags && (
+        <div class="tags">
+          {Array.isArray(post.tags) 
+            ? post.tags.map(tag => <span class="tag">{tag}</span>)
+            : <span class="tag">{post.tags}</span>
+          }
+        </div>
+      )}
+    </article>
+  ))}
+</section>
+
+<style>
+  .post-list {
+    max-width: 800px;
+  }
+  
+  .post-card {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+  
+  .post-card h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+  }
+  
+  .post-card a {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .post-card a:hover {
+    color: #007bff;
+  }
+  
+  .post-card time {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  .tags {
+    margin-top: 0.5rem;
+  }
+  
+  .tag {
+    display: inline-block;
+    background: #f0f0f0;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    color: #666;
+  }
+</style>

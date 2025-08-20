@@ -1,0 +1,40 @@
+---
+import Sidebar from './Sidebar.astro';
+import PostList from './PostList.astro';
+
+interface SidebarPost {
+  title: string;
+  slug: string;
+  date: string;
+  tags: string | string[];
+}
+
+interface Props {
+  postsByCategory: Record<string, SidebarPost[]>;
+  posts: any[];
+}
+
+const { postsByCategory, posts } = Astro.props;
+---
+
+<div class="app-container">
+  <Sidebar postsByCategory={postsByCategory} />
+  <main class="content" data-astro-transition="persist">
+    <PostList posts={posts} />
+  </main>
+</div>
+
+<style>
+  .app-container {
+    display: flex;
+    gap: 2rem;
+  }
+  .sidebar {
+    width: 300px;
+    position: sticky;
+    top: 1rem;
+  }
+  .content {
+    flex: 1;
+  }
+</style>
