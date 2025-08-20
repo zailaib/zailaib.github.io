@@ -1,12 +1,5 @@
 ---
-import { ClientRouter } from 'astro:transitions';
-
-interface Post {
-  title: string;
-  slug: string;
-  date: string;
-  tags?: string | string[];
-}
+import BaseLayout from './BaseLayout.astro';
 
 export interface Props {
   frontmatter: {
@@ -19,34 +12,10 @@ export interface Props {
 
 const { frontmatter } = Astro.props as Props;
 ---
-<html lang="zh">
-<head>
-  <title>{frontmatter.title}</title>
-  <ClientRouter />
-</head>
-<body>
-  <div class="app-container">
-    <!-- 侧边栏已移至index.astro中静态渲染 -->
 
-    <main class="content">
-      <article id="post-content" data-astro-transition="animate">
-        <h1>{frontmatter.title}</h1>
-        <slot /> <!-- Markdown 内容会插入到这里 -->
-      </article>
-    </main>
-  </div>
-</body>
-</html>
-
-<style>
-  .app-container {
-    display: flex;
-    gap: 2rem;
-  }
-  .sidebar {
-    width: 300px;
-  }
-  .content {
-    flex: 1;
-  }
-</style>
+<BaseLayout title={frontmatter.title}>
+  <article id="post-content" data-astro-transition="animate">
+    <h1>{frontmatter.title}</h1>
+    <slot /> <!-- Markdown 内容会插入到这里 -->
+  </article>
+</BaseLayout>

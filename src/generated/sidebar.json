@@ -2,7 +2,7 @@
   "about": [
     {
       "title": "about",
-      "slug": "about",
+      "slug": "about/about",
       "date": "2023-10-01",
       "tags": "test"
     }

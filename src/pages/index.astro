@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import { ClientRouter } from 'astro:transitions';
 import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
 
 interface SidebarPost {
@@ -19,5 +19,6 @@ const postsByCategory = (sidebarData as any).default as Record<string, SidebarPo
 const posts = await getCollection('posts');
 
 ---
-<!-- <ClientRouter /> -->
-<Home postsByCategory={postsByCategory} posts={posts} />
+<BaseLayout>
+  <Home posts={posts} />
+</BaseLayout>

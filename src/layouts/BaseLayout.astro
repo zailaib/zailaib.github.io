@@ -9,9 +9,21 @@ interface SidebarPost {
   tags: string | string[];
 }
 
+interface Props {
+  title?: string;
+  showSidebar?: boolean;
+  sidebarData?: Record<string, SidebarPost[]>;
+}
+
+const { 
+  title = 'Astro Basics', 
+  showSidebar = true,
+  sidebarData 
+} = Astro.props;
+
 // 在构建时导入预生成的侧边栏数据
-const sidebarData = await import('../generated/sidebar.json');
-const postsByCategory = (sidebarData as any).default as Record<string, SidebarPost[]>;
+const defaultSidebarData = await import('../generated/sidebar.json');
+const postsByCategory = sidebarData || (defaultSidebarData as any).default as Record<string, SidebarPost[]>;
 ---
 
 <!doctype html>
@@ -21,11 +33,11 @@ const postsByCategory = (sidebarData as any).default as Record<string, SidebarPo
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
 	</head>
 	<body>
     <div class="app-container">
-      <Sidebar postsByCategory={postsByCategory} />
+      {showSidebar && <Sidebar postsByCategory={postsByCategory} />}
       <main class="content">
         <slot />
       </main>
