@@ -36,18 +36,22 @@ export async function getStaticPaths() {
 const { post, lang } = Astro.props as any;
 console.log('EN post:', post, lang);
 
+// 渲染 Markdown 内容
+const { Content } = await post.render();
+
 // 在构建时导入预生成的侧边栏数据
 const sidebarData = await import('../../../generated/sidebar.json');
 const postsByCategory = (sidebarData as any).default;
 ---
 
-<BaseLayout 
-  title={(post as any).data.title} 
+<BaseLayout
+  title={(post as any).data.title}
   sidebarData={postsByCategory}
   currentSlug={(post as any).slug}
+  isPost={true}
 >
   <article id="post-content" data-astro-transition="animate">
     <h1>{(post as any).data.title}</h1>
-    <div>{(post as any).body}</div>
+    <Content />
   </article>
 </BaseLayout>

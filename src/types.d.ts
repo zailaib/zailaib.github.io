@@ -23,10 +23,12 @@ export interface PostsByCategory {
 // 布局组件 Props
 export interface BaseLayoutProps {
   title?: string;
+  description?: string;
   showSidebar?: boolean;
   showMinimap?: boolean;
   sidebarData?: PostsByCategory;
   currentSlug?: string;
+  isPost?: boolean;
 }
 
 export interface SidebarProps {
