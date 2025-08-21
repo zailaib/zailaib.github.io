@@ -1,8 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Home from '../components/Home.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Home from '../../components/Home.astro';
 
 interface SidebarPost {
   title: string;
@@ -12,7 +12,7 @@ interface SidebarPost {
 }
 
 // 在构建时导入预生成的侧边栏数据
-const sidebarData = await import('../generated/sidebar.json');
+const sidebarData = await import('../../generated/sidebar.json');
 const postsByCategory = (sidebarData as any).default as Record<string, SidebarPost[]>;
 
 // 获取所有文章用于首页展示

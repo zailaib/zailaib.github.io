@@ -1,0 +1,15 @@
+---
+// src/components/ArticleCard.astro
+import type { Post } from '../types';
+const { title, slug, date, tags } = Astro.props as Post;
+---
+<article class="article-card">
+  <h2><a href={`/posts/${slug}`}>{title}</a></h2>
+  {date && <p class="article-date">{date}</p>}
+</article>
+
+<style>
+.article-card { margin-bottom: 1rem; }
+.article-date { color: gray; font-size: 0.9rem; }
+.tags li { display: inline-block; margin-right: 0.5rem; }
+</style>

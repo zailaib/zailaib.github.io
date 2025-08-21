@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import PostLayout from '../../layouts/Layout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
@@ -11,11 +11,19 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+
+// 在构建时导入预生成的侧边栏数据
+const sidebarData = await import('../../generated/sidebar.json');
+const postsByCategory = (sidebarData as any).default;
 ---
 
-<PostLayout frontmatter={post.data}>
-  <article>
+<BaseLayout 
+  title={post.data.title} 
+  sidebarData={postsByCategory}
+  currentSlug={post.slug}
+>
+  <article id="post-content" data-astro-transition="animate">
     <h1>{post.data.title}</h1>
     <div>{post.body}</div>
   </article>
-</PostLayout>
+</BaseLayout>

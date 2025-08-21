@@ -1,0 +1,121 @@
+---
+import type { MinimapProps } from '../types';
+import { getCurrentLanguage, t } from '../i18n/utils';
+
+const { currentSlug } = Astro.props as MinimapProps;
+
+// 获取当前语言
+const currentLang = getCurrentLanguage(Astro.url.pathname);
+---
+
+<aside class="minimap">
+  <h3>{t(currentLang, 'minimap.title')}</h3>
+  <div class="minimap-content" id="minimap-links">
+    <!-- 动态生成的导航链接将在这里 -->
+    <p class="minimap-placeholder">{t(currentLang, 'minimap.loading')}</p>
+  </div>
+</aside>
+
+<script is:inline>
+  // 传递语言信息到JavaScript
+  window.minimapConfig = {
+    currentLang: `{currentLang}`,
+    translations: {
+      noHeadings: `{t(currentLang, 'minimap.noHeadings')}`
+    }
+  };
+</script>
+<script is:inline src="/scripts/minimap.js"></script>
+
+<style>
+  .minimap {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .minimap h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5rem;
+    position: sticky;
+    top: 0;
+    background: #f8f9fa;
+    z-index: 1;
+  }
+  
+  .minimap-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .minimap-placeholder {
+    color: #6c757d;
+    font-style: italic;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .minimap-link {
+    color: #495057;
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+  }
+  
+  .minimap-link:hover {
+    background-color: #e9ecef;
+    color: #007bff;
+  }
+  
+  .minimap-link.active {
+    background-color: #007bff;
+    color: white;
+    border-left-color: #0056b3;
+  }
+  
+  /* 不同级别的标题缩进 */
+  .minimap-link.level-1 {
+    font-weight: 600;
+    padding-left: 0.5rem;
+  }
+  
+  .minimap-link.level-2 {
+    font-weight: 500;
+    padding-left: 1rem;
+  }
+  
+  .minimap-link.level-3 {
+    font-weight: 400;
+    padding-left: 1.5rem;
+    font-size: 0.8rem;
+  }
+  
+  /* 滚动条样式 */
+  .minimap::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .minimap::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+  
+  .minimap::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 2px;
+  }
+  
+  .minimap::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+  }
+</style>

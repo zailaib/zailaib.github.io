@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Home from '../../components/Home.astro';
+
+const sidebarData = await import('../../generated/sidebar.json');
+const postsByCategory = (sidebarData as any).default;
+const posts = await getCollection('posts');
+---
+<BaseLayout sidebarData={postsByCategory} currentSlug="">
+  <Home posts={posts} />
+</BaseLayout>

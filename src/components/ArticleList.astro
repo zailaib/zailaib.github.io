@@ -1,203 +1,30 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+// src/components/ArticleList.astro
+import ArticleCard from './ArticleCard.astro';
+import { groupByCategory } from './utils';
+import type { ArticleListProps, Post } from '../types';
 
-interface Article {
-  title: string;
-  slug: string;
-  date: string;
-  tags?: string | string[];
-  category?: string;
-}
+const { articles, groupByCategory: group, showDate, showTags } = Astro.props as ArticleListProps;
 
-interface Props {
-  articles: Article[];
-  mode?: 'list' | 'sidebar' | 'card';
-  groupByCategory?: boolean;
-  showTags?: boolean;
-  showDate?: boolean;
-}
-
-const { 
-  articles, 
-  mode = 'list', 
-  groupByCategory = false,
-  showTags = true,
-  showDate = true
-} = Astro.props;
-
-// 按分类分组
-const groupedArticles = groupByCategory 
-  ? articles.reduce((acc, article) => {
-      const category = article.category || '未分类';
-      if (!acc[category]) acc[category] = [];
-      acc[category].push(article);
-      return acc;
-    }, {} as Record<string, Article[]>)
-  : null;
-
-// 渲染文章列表的函数
-function renderArticles(articles: Article[], mode: string) {
-  if (mode === 'sidebar') {
-    return (
-      <ul class="article-list sidebar">
-        {articles.map(article => (
-          <li class="article-item">
-            <a href={`/posts/${article.slug}/`} data-astro-transition="animate">
-              {article.title}
-            </a>
-            {showDate && (
-              <time>{new Date(article.date).toLocaleDateString()}</time>
-            )}
-            {showTags && article.tags && (
-              <span> - {Array.isArray(article.tags) ? article.tags.join(', ') : article.tags}</span>
-            )}
-          </li>
-        ))}
-      </ul>
-    );
-  }
-
-  if (mode === 'card') {
-    return (
-      <div class="article-grid">
-        {articles.map(article => (
-          <article class="article-card">
-            <h3>
-              <a href={`/posts/${article.slug}`} data-astro-transition="animate">
-                {article.title}
-              </a>
-            </h3>
-            {showDate && (
-              <time>{article.date} - {new Date(article.date).toLocaleDateString()}</time>
-            )}
-            {showTags && article.tags && (
-              <div class="tags">
-                {Array.isArray(article.tags) 
-                  ? article.tags.map(tag => <span class="tag">{tag}</span>)
-                  : <span class="tag">{article.tags}</span>
-                }
-              </div>
-            )}
-          </article>
-        ))}
-      </div>
-    );
-  }
-
-  // 默认列表模式
-  return (
-    <section class="article-list">
-      {articles.map(article => (
-        <article class="article-item">
-          <h3>
-            <a href={`/posts/${article.slug}`} data-astro-transition="animate">
-              {article.title}
-            </a>
-          </h3>
-          {showDate && (
-            <time>{article.date} - {new Date(article.date).toLocaleDateString()}</time>
-          )}
-          {showTags && article.tags && (
-            <div class="tags">
-              {Array.isArray(article.tags) 
-                ? article.tags.map(tag => <span class="tag">{tag}</span>)
-                : <span class="tag">{article.tags}</span>
-              }
-            </div>
-          )}
-        </article>
-      ))}
-    </section>
-  );
-}
+// 判断是否按分类分组
+const groupedArticles = group ? groupByCategory(articles) : null;
 ---
 
-{groupByCategory && groupedArticles ? (
-  Object.entries(groupedArticles).map(([category, categoryArticles]) => (
-    <section class={`article-group ${mode}`}>
-      <h2>{category}</h2>
-      {renderArticles(categoryArticles, mode)}
-    </section>
-  ))
-) : (
-  renderArticles(articles, mode)
-)}
+<div class="article-list">
+  {groupedArticles 
+    ? Object.entries(groupedArticles).map(([category, posts]) => (
+        <section>
+          <h3>{category}</h3>
+          {posts.map(post => (
+            <ArticleCard {...post} showDate={showDate} showTags={showTags} />
+          ))}
+        </section>
+      ))
+    : articles.map(post => (
+        <ArticleCard {...post} showDate={showDate} showTags={showTags} />
+      ))}
+</div>
 
 <style>
-  /* 通用样式 */
-  .article-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .article-item {
-    margin-bottom: 0.5rem;
-  }
-  
-  .article-item a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .article-item a:hover {
-    text-decoration: underline;
-  }
-  
-  .article-item time {
-    font-size: 0.8rem;
-    color: #666;
-    display: block;
-  }
-  
-  .article-item span {
-    font-size: 0.8rem;
-    color: #888;
-  }
-  
-  /* 侧边栏模式 */
-  .sidebar {
-    width: 300px;
-  }
-  
-  .sidebar .article-item {
-    margin-bottom: 0.8rem;
-  }
-  
-  /* 卡片模式 */
-  .article-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  }
-  
-  .article-card {
-    padding: 1rem;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background: white;
-  }
-  
-  .article-card h3 {
-    margin: 0 0 0.5rem 0;
-  }
-  
-  .article-card time {
-    color: #666;
-    font-size: 0.9rem;
-  }
-  
-  .tags {
-    margin-top: 0.5rem;
-  }
-  
-  .tag {
-    display: inline-block;
-    background: #f0f0f0;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    margin-right: 0.5rem;
-    color: #666;
-  }
+.article-list h3 { margin-top: 2rem; }
 </style>

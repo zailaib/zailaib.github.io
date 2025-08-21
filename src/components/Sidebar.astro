@@ -1,19 +1,8 @@
 ---
 import ArticleList from './ArticleList.astro';
+import type { SidebarProps, Post } from '../types';
 
-interface SidebarPost {
-  title: string;
-  slug: string;
-  date: string;
-  tags: string | string[];
-  category?: string;
-}
-
-interface Props {
-  postsByCategory: Record<string, SidebarPost[]>;
-}
-
-const { postsByCategory } = Astro.props;
+const { postsByCategory } = Astro.props as SidebarProps;
 
 // 将所有文章展平并添加分类信息
 const allArticles = Object.entries(postsByCategory).flatMap(([category, posts]) =>
