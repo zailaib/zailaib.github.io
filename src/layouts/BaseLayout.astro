@@ -34,10 +34,11 @@ const translation = getTranslation(currentLang);
 	</head>
 	<body>
     <!-- 移动端导航控制按钮 -->
+    <LanguageSwitcher currentPath={Astro.url.pathname} />
     <div class="mobile-controls">
+      base layout here
       <button class="mobile-toggle" id="sidebar-toggle" aria-label={translation.toggleNavigation}>☰</button>
       <button class="mobile-toggle" id="minimap-toggle" aria-label={translation.toggleMinimap}>🗺️</button>
-      <LanguageSwitcher currentPath={Astro.url.pathname} />
     </div>
 
     <div class="app-container">

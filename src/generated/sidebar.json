@@ -1,36 +1,38 @@
 {
-  "about": [
-    {
-      "title": "about",
-      "slug": "about/about",
-      "date": "2023-10-01",
-      "tags": "test"
-    }
-  ],
-  "solution_a": [
+  "posts": [
     {
       "title": "plan a en",
-      "slug": "solution_a/plan_a_en",
+      "slug": "posts/en/solution_a/plan_a",
+      "date": "2023-10-01",
+      "tags": "test"
+    },
+    {
+      "title": "plan a en",
+      "slug": "posts/en/solution_b/plan_b",
+      "date": "2023-10-01",
+      "tags": "test"
+    },
+    {
+      "title": "plan a zh",
+      "slug": "posts/zh/solution_a/plan_a",
       "date": "2023-10-01",
       "tags": "test"
     },
     {
       "title": "A计划",
-      "slug": "solution_a/plan_a_zh",
-      "date": "2023-10-01",
-      "tags": "test"
-    }
-  ],
-  "solution_b": [
-    {
-      "title": "plan a en",
-      "slug": "solution_b/plan_a_en",
+      "slug": "posts/zh/solution_a/plan_aa",
       "date": "2023-10-01",
       "tags": "test"
     },
     {
       "title": "A计划",
-      "slug": "solution_b/plan_a_zh",
+      "slug": "posts/zh/solution_b/plan_b",
+      "date": "2023-10-01",
+      "tags": "test"
+    },
+    {
+      "title": "plan a zh",
+      "slug": "posts/zh/solution_b/plan_bb",
       "date": "2023-10-01",
       "tags": "test"
     }
