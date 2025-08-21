@@ -40,9 +40,10 @@ async function getPosts(posts_dir, lang) {
           
           posts.push({
             title: data.title,
-            slug: `posts/${lang}/${category}/${postFile.replace('.md', '')}`,
+            slug: `${lang}/posts/${category}/${postFile.replace('.md', '')}`,
             date: data.date || new Date().toISOString(),
-            tags: data.tags || []
+            tags: data.tags || [],
+            lang: lang
           });
         }
       }

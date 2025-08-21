@@ -1,13 +1,22 @@
 ---
 import ArticleList from './ArticleList.astro';
-import type { SidebarProps, Post } from '../types';
+import type { SidebarProps } from '../types';
+import { getCurrentLanguage } from '../i18n/utils';
 
 const { postsByCategory } = Astro.props as SidebarProps;
 
-// 将所有文章展平并添加分类信息
-const allArticles = Object.entries(postsByCategory).flatMap(([category, posts]) =>
-  posts.map(post => ({ ...post, category }))
-);
+// 获取当前语言
+const currentLang = getCurrentLanguage(Astro.url.pathname);
+
+// 根据当前语言筛选文章
+const currentLangPosts = postsByCategory[currentLang] || [];
+
+// 将文章添加分类信息（从slug中提取）
+const allArticles = currentLangPosts.map(post => {
+  const slugParts = post.slug.split('/');
+  const category = slugParts[2] || '未分类'; // 从 lang/posts/category/article 中提取category
+  return { ...post, category };
+});
 ---
 
 <aside class="sidebar">

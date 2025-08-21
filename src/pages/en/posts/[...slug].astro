@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+
+  console.log('EN posts:', posts);
+  const paths: any[] = [];
+  
+  // 只为英文内容生成路径
+  for (const post of posts) {
+    // 从slug中提取语言信息
+    const slugParts = (post as any).slug.split('/');
+    const lang = slugParts[0]; // 第一个部分应该是语言代码
+    
+    if (lang === 'en') {
+      // 移除语言前缀后的slug
+      const slugWithoutLang = slugParts.slice(1).join('/');
+      
+      paths.push({
+        params: { 
+          slug: slugWithoutLang // 不包含语言前缀的slug
+        },
+        props: { 
+          post,
+          lang: 'en'
+        },
+      });
+    }
+  }
+  
+  return paths;
+}
+
+const { post, lang } = Astro.props as any;
+console.log('EN post:', post, lang);
+
+// 在构建时导入预生成的侧边栏数据
+const sidebarData = await import('../../../generated/sidebar.json');
+const postsByCategory = (sidebarData as any).default;
+---
+
+<BaseLayout 
+  title={(post as any).data.title} 
+  sidebarData={postsByCategory}
+  currentSlug={(post as any).slug}
+>
+  <article id="post-content" data-astro-transition="animate">
+    <h1>{(post as any).data.title}</h1>
+    <div>{(post as any).body}</div>
+  </article>
+</BaseLayout>

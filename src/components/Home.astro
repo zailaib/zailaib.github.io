@@ -1,17 +1,28 @@
 ---
 import ArticleList from './ArticleList.astro';
+import { getCurrentLanguage } from '../i18n/utils';
 
 interface Props {
   posts: any[];
 }
 
 const { posts } = Astro.props;
+
+// 获取当前语言
+const currentLang = getCurrentLanguage(Astro.url.pathname);
+
+// 根据当前语言筛选文章
+const filteredPosts = posts.filter(post => {
+  const slugParts = post.slug.split('/');
+  const lang = slugParts[0];
+  return lang === currentLang;
+});
 ---
 
 <main class="content" data-astro-transition="persist">
-  <ArticleList 
-    articles={posts} 
-    mode="list" 
+  <ArticleList
+    articles={filteredPosts}
+    mode="list"
     groupByCategory={false}
     showTags={true}
     showDate={true}

@@ -1,40 +1,48 @@
 {
-  "posts": [
+  "en": [
     {
       "title": "plan a en",
-      "slug": "posts/en/solution_a/plan_a",
+      "slug": "en/posts/solution_a/plan_a",
       "date": "2023-10-01",
-      "tags": "test"
+      "tags": "test",
+      "lang": "en"
     },
     {
       "title": "plan a en",
-      "slug": "posts/en/solution_b/plan_b",
+      "slug": "en/posts/solution_b/plan_b",
       "date": "2023-10-01",
-      "tags": "test"
-    },
+      "tags": "test",
+      "lang": "en"
+    }
+  ],
+  "zh": [
     {
       "title": "plan a zh",
-      "slug": "posts/zh/solution_a/plan_a",
+      "slug": "zh/posts/solution_a/plan_a",
       "date": "2023-10-01",
-      "tags": "test"
+      "tags": "test",
+      "lang": "zh"
     },
     {
       "title": "A计划",
-      "slug": "posts/zh/solution_a/plan_aa",
+      "slug": "zh/posts/solution_a/plan_aa",
       "date": "2023-10-01",
-      "tags": "test"
+      "tags": "test",
+      "lang": "zh"
     },
     {
       "title": "A计划",
-      "slug": "posts/zh/solution_b/plan_b",
+      "slug": "zh/posts/solution_b/plan_b",
       "date": "2023-10-01",
-      "tags": "test"
+      "tags": "test",
+      "lang": "zh"
     },
     {
       "title": "plan a zh",
-      "slug": "posts/zh/solution_b/plan_bb",
+      "slug": "zh/posts/solution_b/plan_bb",
       "date": "2023-10-01",
-      "tags": "test"
+      "tags": "test",
+      "lang": "zh"
     }
   ]
 }
