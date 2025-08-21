@@ -1,7 +1,7 @@
 ---
 // src/components/ArticleCard.astro
 import type { Post } from '../types';
-const { title, slug, date, tags } = Astro.props as Post;
+const { title, slug, date } = Astro.props as Post;
 ---
 <article class="article-card">
   <h2><a href={`/${slug}`}>{title}</a></h2>

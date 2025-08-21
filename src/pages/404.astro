@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCurrentLanguage } from '../i18n/utils';
+
+// 获取当前语言
+const currentLang = getCurrentLanguage(Astro.url.pathname);
+
+// 在构建时导入预生成的侧边栏数据
+const sidebarData = await import('../generated/sidebar.json');
+const postsByCategory = (sidebarData as any).default;
+---
+
+<BaseLayout
+  title="404 - Page Not Found"
+  sidebarData={postsByCategory}
+  currentSlug=""
+>
+  <div class="error-page">
+    <div class="error-content">
+      <h1 class="error-code">404</h1>
+      <h2 class="error-title">
+        {currentLang === 'en' ? 'Page Not Found' : '页面未找到'}
+      </h2>
+      <p class="error-description">
+        {currentLang === 'en'
+          ? 'Sorry, the page you are looking for does not exist.'
+          : '抱歉，您访问的页面不存在。'
+        }
+      </p>
+      <div class="error-actions">
+        <a href={currentLang === 'en' ? '/en/' : '/'} class="btn-home">
+          {currentLang === 'en' ? 'Back to Home' : '返回首页'}
+        </a>
+        <a href={currentLang === 'en' ? '/en/about' : '/about'} class="btn-about">
+          {currentLang === 'en' ? 'About Us' : '关于我们'}
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .error-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 2rem;
+  }
+
+  .error-content {
+    text-align: center;
+    max-width: 500px;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: bold;
+    color: #e74c3c;
+    margin: 0;
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .error-title {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin: 1rem 0;
+    font-weight: 600;
+  }
+
+  .error-description {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    margin: 1.5rem 0 2rem;
+    line-height: 1.6;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-home,
+  .btn-about {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .btn-home {
+    background-color: #3498db;
+    color: white;
+  }
+
+  .btn-home:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+  }
+
+  .btn-about {
+    background-color: transparent;
+    color: #3498db;
+    border-color: #3498db;
+  }
+
+  .btn-about:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .error-code {
+      font-size: 6rem;
+    }
+
+    .error-title {
+      font-size: 1.5rem;
+    }
+
+    .error-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-home,
+    .btn-about {
+      width: 200px;
+    }
+  }
+</style>

@@ -1,112 +1,53 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCurrentLanguage } from '../i18n/utils';
-
-// 获取当前语言
-const currentLang = getCurrentLanguage(Astro.url.pathname);
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 // 在构建时导入预生成的侧边栏数据
-const sidebarData = await import('../generated/sidebar.json');
+const sidebarData = await import('../../generated/sidebar.json');
 const postsByCategory = (sidebarData as any).default;
-
-// 多语言内容
-const content = {
-  en: {
-    title: 'About Us',
-    subtitle: 'Learn more about our project',
-    description: 'This is a modern static site built with Astro framework, featuring multi-language support and responsive design.',
-    features: [
-      'Multi-language support (English & Chinese)',
-      'Responsive design for all devices',
-      'Fast static site generation',
-      'Modern development stack',
-      'SEO optimized'
-    ],
-    tech: {
-      title: 'Technology Stack',
-      items: [
-        'Astro - Static Site Generator',
-        'TypeScript - Type Safety',
-        'CSS3 - Modern Styling',
-        'Markdown - Content Management'
-      ]
-    },
-    contact: {
-      title: 'Get in Touch',
-      description: 'Feel free to reach out if you have any questions or suggestions.'
-    }
-  },
-  zh: {
-    title: '关于我们',
-    subtitle: '了解更多关于我们的项目',
-    description: '这是一个使用 Astro 框架构建的现代化静态网站，具有多语言支持和响应式设计。',
-    features: [
-      '多语言支持（中文和英文）',
-      '适配所有设备的响应式设计',
-      '快速的静态网站生成',
-      '现代化开发技术栈',
-      'SEO 优化'
-    ],
-    tech: {
-      title: '技术栈',
-      items: [
-        'Astro - 静态网站生成器',
-        'TypeScript - 类型安全',
-        'CSS3 - 现代化样式',
-        'Markdown - 内容管理'
-      ]
-    },
-    contact: {
-      title: '联系我们',
-      description: '如果您有任何问题或建议，请随时联系我们。'
-    }
-  }
-};
-
-const currentContent = content[currentLang as keyof typeof content];
 ---
 
-<BaseLayout
-  title={currentContent.title}
+<BaseLayout 
+  title="About Us"
   sidebarData={postsByCategory}
   currentSlug=""
 >
   <article class="about-page">
     <header class="about-header">
-      <h1>{currentContent.title}</h1>
-      <p class="subtitle">{currentContent.subtitle}</p>
+      <h1>About Us</h1>
+      <p class="subtitle">Learn more about our project</p>
     </header>
 
     <section class="about-content">
       <div class="description">
-        <p>{currentContent.description}</p>
+        <p>This is a modern static site built with Astro framework, featuring multi-language support and responsive design.</p>
       </div>
 
       <div class="features">
-        <h2>{currentLang === 'en' ? 'Features' : '特性'}</h2>
+        <h2>Features</h2>
         <ul class="feature-list">
-          {currentContent.features.map(feature => (
-            <li>{feature}</li>
-          ))}
+          <li>Multi-language support (English & Chinese)</li>
+          <li>Responsive design for all devices</li>
+          <li>Fast static site generation</li>
+          <li>Modern development stack</li>
+          <li>SEO optimized</li>
         </ul>
       </div>
 
       <div class="tech-stack">
-        <h2>{currentContent.tech.title}</h2>
+        <h2>Technology Stack</h2>
         <ul class="tech-list">
-          {currentContent.tech.items.map(tech => (
-            <li>{tech}</li>
-          ))}
+          <li>Astro - Static Site Generator</li>
+          <li>TypeScript - Type Safety</li>
+          <li>CSS3 - Modern Styling</li>
+          <li>Markdown - Content Management</li>
         </ul>
       </div>
 
       <div class="contact">
-        <h2>{currentContent.contact.title}</h2>
-        <p>{currentContent.contact.description}</p>
+        <h2>Get in Touch</h2>
+        <p>Feel free to reach out if you have any questions or suggestions.</p>
         <div class="contact-actions">
-          <a href={currentLang === 'en' ? '/en/' : '/'} class="btn-home">
-            {currentLang === 'en' ? 'Back to Home' : '返回首页'}
-          </a>
+          <a href="/en/" class="btn-home">Back to Home</a>
         </div>
       </div>
     </section>
@@ -233,11 +174,11 @@ const currentContent = content[currentLang as keyof typeof content];
     .about-page {
       padding: 1rem;
     }
-
+    
     .about-header h1 {
       font-size: 2rem;
     }
-
+    
     .features,
     .tech-stack,
     .contact {
