@@ -99,6 +99,9 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       )}
     </div>
 
+    <!-- 移动端遮罩层 -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
     <!-- 页面过渡和脚本 -->
     <ClientRouter />
     <script is:inline src="/scripts/mobile-interaction.js"></script>
@@ -626,6 +629,25 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       font-size: var(--font-size-lg);
     }
 
+    /* 移动端遮罩层 */
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      transition: opacity var(--transition-normal);
+    }
+
+    .mobile-overlay.visible {
+      display: block;
+      opacity: 1;
+    }
+
     /* 移动端侧边栏和小地图显示 */
     .sidebar-container.mobile-visible,
     .minimap-container.mobile-visible {
@@ -639,6 +661,7 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       z-index: 1000;
       box-shadow: var(--shadow-xl);
       animation: slideIn var(--transition-normal);
+      overflow-y: auto;
     }
 
     .minimap-container.mobile-visible {
