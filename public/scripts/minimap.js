@@ -1,7 +1,18 @@
-// 动态生成Minimap导航
-document.addEventListener('DOMContentLoaded', () => {
+// 全局变量存储当前的 observer
+let currentObserver = null;
+
+// 动态生成Minimap导航的核心函数
+function initializeMinimap() {
   const minimapContainer = document.getElementById('minimap-links');
   if (!minimapContainer) return;
+
+  console.log('Initializing minimap...');
+
+  // 清理之前的 observer
+  if (currentObserver) {
+    currentObserver.disconnect();
+    currentObserver = null;
+  }
 
   // 等待内容加载完成
   setTimeout(() => {
@@ -106,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       threshold: 0.1
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    currentObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         const id = entry.target.id;
         const link = document.querySelector(`.minimap-link[data-heading-id="${id}"]`);
@@ -124,8 +135,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 观察所有标题
     headings.forEach(heading => {
-      observer.observe(heading);
+      currentObserver.observe(heading);
     });
 
   }, 100); // 延迟100ms确保内容已渲染
+}
+
+// 页面加载时初始化
+document.addEventListener('DOMContentLoaded', initializeMinimap);
+
+// 监听 Astro 的页面切换事件（View Transitions）
+document.addEventListener('astro:page-load', () => {
+  console.log('Astro page loaded, reinitializing minimap...');
+  initializeMinimap();
+});
+
+// 备用方案：监听 popstate 事件（浏览器前进后退）
+window.addEventListener('popstate', () => {
+  console.log('Popstate event, reinitializing minimap...');
+  setTimeout(initializeMinimap, 200);
+});
+
+// 备用方案：监听 hashchange 事件
+window.addEventListener('hashchange', () => {
+  console.log('Hash changed, checking minimap...');
+  setTimeout(initializeMinimap, 100);
 });

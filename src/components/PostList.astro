@@ -37,46 +37,99 @@ const { posts } = Astro.props;
 
 <style>
   .post-list {
-    max-width: 800px;
+    max-width: 100%;
+    width: 100%;
   }
-  
+
+  .post-list h1 {
+    margin: 0 0 var(--spacing-xl) 0;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    border-bottom: 2px solid var(--color-accent-primary);
+    padding-bottom: var(--spacing-sm);
+  }
+
   .post-card {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    border: 1px solid #eee;
-    border-radius: 8px;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-xl);
+    background: var(--color-bg-accent);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
   }
-  
+
+  .post-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-border-medium);
+  }
+
   .post-card h2 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.5rem;
+    margin: 0 0 var(--spacing-sm) 0;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
   }
-  
+
   .post-card a {
-    color: #333;
+    color: var(--color-text-primary);
     text-decoration: none;
+    transition: color var(--transition-fast);
   }
-  
+
   .post-card a:hover {
-    color: #007bff;
+    color: var(--color-accent-primary);
   }
-  
+
   .post-card time {
-    color: #666;
-    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    display: block;
+    margin-bottom: var(--spacing-sm);
   }
-  
+
   .tags {
-    margin-top: 0.5rem;
+    margin-top: var(--spacing-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
   }
-  
+
   .tag {
-    display: inline-block;
-    background: #f0f0f0;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    margin-right: 0.5rem;
-    color: #666;
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-tertiary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    border: 1px solid var(--color-border-light);
+    transition: all var(--transition-fast);
+  }
+
+  .tag:hover {
+    background: var(--color-accent-light);
+    color: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+  }
+
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .post-card {
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .post-card h2 {
+      font-size: var(--font-size-lg);
+    }
+
+    .post-list h1 {
+      font-size: var(--font-size-xl);
+    }
   }
 </style>
