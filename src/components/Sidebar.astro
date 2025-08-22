@@ -24,22 +24,43 @@ const categorizedPosts = currentLangPosts.reduce((acc, post) => {
   <h3 class="sidebar-title">{t(currentLang, 'sidebar.title')}</h3>
   <nav class="sidebar-content">
     {Object.entries(categorizedPosts).map(([category, posts]) => (
-      <div class="category-section">
-        <h4 class="category-title">{category}</h4>
-        <ul class="article-list">
-          {posts.map(post => (
-            <li class="article-item">
-              <a href={`/${post.slug}`} class="article-link">
-                <span class="article-title">{post.title}</span>
-                {post.date && (
-                  <span class="article-date">
-                    {new Date(post.date).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-CN')}
-                  </span>
-                )}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <div class="category-section" data-category={category}>
+        <button class="category-header" data-category={category}>
+          <h4 class="category-title">{category}</h4>
+          <svg class="category-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="category-content" data-category={category}>
+          <ul class="article-list">
+            {posts.map((post, index) => {
+              // 直接使用完整的 slug，因为它已经包含了正确的路径
+              const postUrl = `/${post.slug}`;
+
+              return (
+              <li class={`article-item ${index >= 5 ? 'article-item-hidden' : ''}`}>
+                <a href={postUrl} class="article-link">
+                  <span class="article-title">{post.title}</span>
+                  {post.date && (
+                    <span class="article-date">
+                      {new Date(post.date).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-CN')}
+                    </span>
+                  )}
+                </a>
+              </li>
+              );
+            })}
+          </ul>
+          {posts.length > 5 && (
+            <button class="show-more-btn" data-category={category}>
+              <span class="show-more-text">{t(currentLang, 'sidebar.showMore')}</span>
+              <span class="show-less-text" style="display: none;">{t(currentLang, 'sidebar.showLess')}</span>
+              <svg class="show-more-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m6 9 6 6 6-6"/>
+              </svg>
+            </button>
+          )}
+        </div>
       </div>
     ))}
   </nav>
@@ -79,7 +100,26 @@ const categorizedPosts = currentLangPosts.reduce((acc, post) => {
   .category-section {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: var(--spacing-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border-radius: var(--radius-sm);
+  }
+
+  .category-header:hover {
+    background-color: var(--color-bg-secondary);
   }
 
   .category-title {
@@ -89,13 +129,36 @@ const categorizedPosts = currentLangPosts.reduce((acc, post) => {
     color: var(--color-text-primary);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: var(--spacing-sm) 0;
+    text-align: left;
+  }
+
+  .category-icon {
+    color: var(--color-text-secondary);
+    transition: transform var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .category-section.collapsed .category-icon {
+    transform: rotate(-90deg);
+  }
+
+  .category-content {
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    max-height: 1000px;
+    opacity: 1;
+  }
+
+  .category-section.collapsed .category-content {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
   }
 
   .article-list {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 var(--spacing-md);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-xs);
@@ -103,6 +166,46 @@ const categorizedPosts = currentLangPosts.reduce((acc, post) => {
 
   .article-item {
     margin: 0;
+    transition: all var(--transition-fast);
+  }
+
+  .article-item-hidden {
+    display: none;
+  }
+
+  .show-more-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    width: 100%;
+    background: none;
+    border: 1px solid var(--color-border-light);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin: var(--spacing-sm) var(--spacing-md) 0;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .show-more-btn:hover {
+    background-color: var(--color-bg-secondary);
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+  }
+
+  .show-more-icon {
+    transition: transform var(--transition-fast);
+    flex-shrink: 0;
+  }
+
+  .show-more-btn.expanded .show-more-icon {
+    transform: rotate(180deg);
   }
 
   .article-link {
@@ -160,3 +263,88 @@ const categorizedPosts = currentLangPosts.reduce((acc, post) => {
     background: var(--color-border-strong);
   }
 </style>
+
+<script>
+  function initializeSidebar() {
+    // 分类折叠功能
+    const categoryHeaders = document.querySelectorAll('.category-header');
+    categoryHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const category = (header as HTMLElement).dataset.category;
+        const section = header.closest('.category-section');
+
+        if (section && category) {
+          section.classList.toggle('collapsed');
+
+          // 保存折叠状态到 localStorage
+          const collapsedCategories = JSON.parse(localStorage.getItem('collapsedCategories') || '[]');
+          if (section.classList.contains('collapsed')) {
+            if (!collapsedCategories.includes(category)) {
+              collapsedCategories.push(category);
+            }
+          } else {
+            const index = collapsedCategories.indexOf(category);
+            if (index > -1) {
+              collapsedCategories.splice(index, 1);
+            }
+          }
+          localStorage.setItem('collapsedCategories', JSON.stringify(collapsedCategories));
+        }
+      });
+    });
+
+    // 显示更多功能
+    const showMoreBtns = document.querySelectorAll('.show-more-btn');
+    showMoreBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const category = (btn as HTMLElement).dataset.category;
+        const section = btn.closest('.category-section');
+        const hiddenItems = section?.querySelectorAll('.article-item-hidden');
+        const showMoreText = btn.querySelector('.show-more-text');
+        const showLessText = btn.querySelector('.show-less-text');
+
+        if (hiddenItems && showMoreText && showLessText) {
+          const isExpanded = btn.classList.contains('expanded');
+
+          if (isExpanded) {
+            // 收起
+            hiddenItems.forEach(item => {
+              (item as HTMLElement).style.display = 'none';
+            });
+            (showMoreText as HTMLElement).style.display = 'inline';
+            (showLessText as HTMLElement).style.display = 'none';
+            btn.classList.remove('expanded');
+          } else {
+            // 展开
+            hiddenItems.forEach(item => {
+              (item as HTMLElement).style.display = 'block';
+            });
+            (showMoreText as HTMLElement).style.display = 'none';
+            (showLessText as HTMLElement).style.display = 'inline';
+            btn.classList.add('expanded');
+          }
+        }
+      });
+    });
+
+    // 恢复折叠状态
+    const collapsedCategories = JSON.parse(localStorage.getItem('collapsedCategories') || '[]');
+    collapsedCategories.forEach(category => {
+      const section = document.querySelector(`[data-category="${category}"]`);
+      if (section) {
+        section.classList.add('collapsed');
+      }
+    });
+  }
+
+  // 页面加载时初始化
+  document.addEventListener('DOMContentLoaded', initializeSidebar);
+
+  // 监听 Astro 的页面切换事件
+  document.addEventListener('astro:page-load', initializeSidebar);
+
+  // 备用方案：监听 popstate 事件
+  window.addEventListener('popstate', () => {
+    setTimeout(initializeSidebar, 100);
+  });
+</script>

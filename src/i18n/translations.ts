@@ -18,6 +18,8 @@ export interface Translations {
     title: string;
     categories: string;
     allPosts: string;
+    showMore: string;
+    showLess: string;
   };
   home: {
     welcome: string;
@@ -46,7 +48,9 @@ export const translations: Record<string, Translations> = {
     sidebar: {
       title: 'Content Navigation',
       categories: 'Categories',
-      allPosts: 'All Posts'
+      allPosts: 'All Posts',
+      showMore: 'Show More',
+      showLess: 'Show Less'
     },
     home: {
       welcome: 'Welcome to Astro Basics',
@@ -73,7 +77,9 @@ export const translations: Record<string, Translations> = {
     sidebar: {
       title: '内容导航',
       categories: '分类',
-      allPosts: '所有文章'
+      allPosts: '所有文章',
+      showMore: '显示更多',
+      showLess: '收起'
     },
     home: {
       welcome: '欢迎来到 Astro 基础教程',
