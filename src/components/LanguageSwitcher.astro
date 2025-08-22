@@ -27,68 +27,102 @@ const languageSwitcher = createLanguageSwitcher(currentPath);
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: #f8f9fa;
-    border-radius: 6px;
-    border: 1px solid #e9ecef;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-light);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
+    /* 固定最小宽度，防止中英文切换时的抖动 */
+    min-width: 80px;
+    justify-content: center;
   }
-  
+
   .language-switcher:hover {
-    background: #e9ecef;
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-border-medium);
   }
-  
+
   .current-language {
-    font-weight: 500;
-    color: #495057;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    /* 使用等宽字体确保宽度一致 */
+    font-family: var(--font-family-mono);
+    text-align: center;
+    /* 固定宽度，防止文字长度变化导致的抖动 */
+    width: 48px;
+    display: inline-block;
   }
   
   .language-dropdown {
     position: absolute;
-    top: 100%;
+    top: calc(100% + var(--spacing-xs));
     left: 0;
     right: 0;
-    background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: var(--color-bg-accent);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal);
     z-index: 1000;
+    /* 固定宽度，与父容器保持一致 */
+    min-width: 80px;
   }
-  
+
   .language-switcher:hover .language-dropdown {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
   }
-  
+
   .language-option {
     display: block;
-    padding: 0.75rem 1rem;
-    color: #495057;
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--color-text-secondary);
     text-decoration: none;
-    transition: background-color 0.2s ease;
+    transition: all var(--transition-fast);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family-mono);
+    text-align: center;
   }
-  
+
   .language-option:hover {
-    background-color: #f8f9fa;
-    color: #007bff;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-accent-primary);
+  }
+
+  .language-option:first-child {
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+
+  .language-option:last-child {
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
   }
   
   /* 移动端适配 */
   @media (max-width: 768px) {
     .language-switcher {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.9rem;
+      padding: var(--spacing-xs) var(--spacing-md);
+      min-width: 70px;
     }
-    
+
+    .current-language {
+      width: 42px;
+      font-size: var(--font-size-xs);
+    }
+
     .language-dropdown {
-      min-width: 120px;
+      min-width: 70px;
+    }
+
+    .language-option {
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: var(--font-size-xs);
     }
   }
 </style>

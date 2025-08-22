@@ -55,7 +55,7 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
   .minimap-content {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
   }
 
   .minimap-placeholder {
@@ -71,11 +71,15 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
     color: var(--color-text-secondary);
     text-decoration: none;
     font-size: var(--font-size-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-md);
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
     border-left: 3px solid transparent;
-    line-height: var(--line-height-tight);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--spacing-xs);
+    display: block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .minimap-link:hover {
@@ -90,21 +94,30 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
     border-left-color: var(--color-accent-primary);
   }
 
-  /* 不同级别的标题缩进 - 与 Sidebar 保持一致的层次感 */
+  /* 不同级别的标题缩进 - 增强层次感和可读性 */
   .minimap-link.level-1 {
     font-weight: var(--font-weight-semibold);
     padding-left: var(--spacing-md);
+    font-size: var(--font-size-base);
+    margin-top: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
   }
 
   .minimap-link.level-2 {
     font-weight: var(--font-weight-medium);
     padding-left: var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-xs);
   }
 
   .minimap-link.level-3 {
     font-weight: var(--font-weight-normal);
     padding-left: var(--spacing-xl);
     font-size: var(--font-size-xs);
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: var(--color-text-tertiary);
   }
 
   .minimap-link.level-4,
@@ -114,6 +127,16 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
     padding-left: calc(var(--spacing-xl) + var(--spacing-sm));
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
+    margin-top: 1px;
+    margin-bottom: 1px;
+    opacity: 0.8;
+  }
+
+  /* 为不同级别添加视觉分隔 */
+  .minimap-link.level-1:not(:first-child) {
+    border-top: 1px solid var(--color-border-light);
+    padding-top: calc(var(--spacing-md) + var(--spacing-xs));
+    margin-top: var(--spacing-md);
   }
 
   /* 滚动条样式 - 与 Sidebar 保持一致 */
