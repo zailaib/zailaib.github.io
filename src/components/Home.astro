@@ -1,6 +1,5 @@
 ---
-import ArticleList from './ArticleList.astro';
-import { getCurrentLanguage } from '../i18n/utils';
+import { getCurrentLanguage, t } from '../i18n/utils';
 
 interface Props {
   posts: any[];
@@ -19,19 +18,152 @@ const filteredPosts = posts.filter(post => {
 });
 ---
 
-<main class="content" data-astro-transition="persist">
-  <ArticleList
-    articles={filteredPosts}
-    mode="list"
-    groupByCategory={false}
-    showTags={true}
-    showDate={true}
-  />
+<main class="home-content" data-astro-transition="persist">
+  <div class="welcome-section">
+    <h1 class="welcome-title">{t(currentLang, 'home.welcome')}</h1>
+    <p class="welcome-description">{t(currentLang, 'home.description')}</p>
+  </div>
+
+  <section class="articles-section">
+    <h2 class="section-title">{t(currentLang, 'home.latestArticles')}</h2>
+    <div class="articles-grid">
+      {filteredPosts.map(post => (
+        <article class="article-card">
+          <a href={`/${post.slug}`} class="article-link">
+            <h3 class="article-title">{post.title}</h3>
+            {post.date && (
+              <time class="article-date" datetime={post.date}>
+                {new Date(post.date).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-CN')}
+              </time>
+            )}
+            {post.tags && (
+              <div class="article-tags">
+                {Array.isArray(post.tags) ? post.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                )) : <span class="tag">{post.tags}</span>}
+              </div>
+            )}
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
 </main>
 
-
 <style>
-  .content {
-    flex: 1;
+  .home-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .welcome-section {
+    text-align: center;
+    margin-bottom: var(--spacing-4xl);
+    padding: var(--spacing-3xl) 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .welcome-title {
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-xl) 0;
+    line-height: var(--line-height-tight);
+  }
+
+  .welcome-description {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--line-height-relaxed);
+  }
+
+  .articles-section {
+    margin-top: var(--spacing-3xl);
+  }
+
+  .section-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-2xl) 0;
+    line-height: var(--line-height-tight);
+  }
+
+  .articles-grid {
+    display: grid;
+    gap: var(--spacing-xl);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .article-card {
+    background: var(--color-bg-accent);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-accent-primary);
+  }
+
+  .article-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .article-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 var(--spacing-md) 0;
+    line-height: var(--line-height-tight);
+  }
+
+  .article-date {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    display: block;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .tag {
+    font-size: var(--font-size-xs);
+    color: var(--color-accent-primary);
+    background: var(--color-accent-light);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  @media (max-width: 768px) {
+    .home-content {
+      padding: var(--spacing-xl) 0;
+    }
+
+    .welcome-title {
+      font-size: var(--font-size-3xl);
+    }
+
+    .articles-grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+
+    .article-card {
+      padding: var(--spacing-lg);
+    }
   }
 </style>

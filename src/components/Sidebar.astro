@@ -1,7 +1,6 @@
 ---
-import ArticleList from './ArticleList.astro';
 import type { SidebarProps } from '../types';
-import { getCurrentLanguage } from '../i18n/utils';
+import { getCurrentLanguage, t } from '../i18n/utils';
 
 const { postsByCategory } = Astro.props as SidebarProps;
 
@@ -11,28 +10,153 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
 // 根据当前语言筛选文章
 const currentLangPosts = postsByCategory[currentLang] || [];
 
-// 将文章添加分类信息（从slug中提取）
-const allArticles = currentLangPosts.map(post => {
+// 按分类组织文章
+const categorizedPosts = currentLangPosts.reduce((acc, post) => {
   const slugParts = post.slug.split('/');
-  const category = slugParts[2] || '未分类'; // 从 lang/posts/category/article 中提取category
-  return { ...post, category };
-});
+  const category = slugParts[2] || '未分类';
+  if (!acc[category]) acc[category] = [];
+  acc[category].push(post);
+  return acc;
+}, {} as Record<string, any[]>);
 ---
 
 <aside class="sidebar">
-  <ArticleList 
-    articles={allArticles} 
-    mode="sidebar" 
-    groupByCategory={true}
-    showTags={true}
-    showDate={true}
-  />
+  <h3 class="sidebar-title">{t(currentLang, 'sidebar.title')}</h3>
+  <nav class="sidebar-content">
+    {Object.entries(categorizedPosts).map(([category, posts]) => (
+      <div class="category-section">
+        <h4 class="category-title">{category}</h4>
+        <ul class="article-list">
+          {posts.map(post => (
+            <li class="article-item">
+              <a href={`/${post.slug}`} class="article-link">
+                <span class="article-title">{post.title}</span>
+                {post.date && (
+                  <span class="article-date">
+                    {new Date(post.date).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-CN')}
+                  </span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </nav>
 </aside>
 
 <style>
   .sidebar {
-    width: 300px;
+    background: var(--color-bg-accent);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    max-height: calc(100vh - var(--header-height) - var(--spacing-4xl));
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-medium) transparent;
+  }
+
+  .sidebar-title {
+    margin: 0 0 var(--spacing-xl) 0;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid var(--color-border-light);
+    padding-bottom: var(--spacing-sm);
     position: sticky;
-    top: 1rem;
+    top: 0;
+    background: var(--color-bg-accent);
+    z-index: 1;
+  }
+
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+  }
+
+  .category-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .category-title {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--spacing-sm) 0;
+  }
+
+  .article-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .article-item {
+    margin: 0;
+  }
+
+  .article-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    border-left: 3px solid transparent;
+    position: relative;
+  }
+
+  .article-link:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-accent-primary);
+    border-left-color: var(--color-accent-primary);
+  }
+
+  .article-link.active {
+    background-color: var(--color-accent-light);
+    color: var(--color-accent-primary);
+    border-left-color: var(--color-accent-primary);
+  }
+
+  .article-title {
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-tight);
+  }
+
+  .article-date {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-normal);
+  }
+
+  /* 滚动条样式 - 与 Minimap 保持一致 */
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background: var(--color-border-medium);
+    border-radius: 3px;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-strong);
   }
 </style>

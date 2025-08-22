@@ -15,6 +15,7 @@ export interface Translations {
     loading: string;
   };
   sidebar: {
+    title: string;
     categories: string;
     allPosts: string;
   };
@@ -43,6 +44,7 @@ export const translations: Record<string, Translations> = {
       loading: 'Loading navigation...'
     },
     sidebar: {
+      title: 'Content Navigation',
       categories: 'Categories',
       allPosts: 'All Posts'
     },
@@ -69,6 +71,7 @@ export const translations: Record<string, Translations> = {
       loading: '正在加载导航...'
     },
     sidebar: {
+      title: '内容导航',
       categories: '分类',
       allPosts: '所有文章'
     },
