@@ -1,76 +1,11 @@
-// 移动端手势和切换功能
+// 移动端切换功能
 function initializeMobileInteraction() {
   const sidebar = document.getElementById('sidebar');
   const minimap = document.getElementById('minimap');
-  const mainContent = document.getElementById('main-content');
   const sidebarToggle = document.getElementById('sidebar-toggle');
   const minimapToggle = document.getElementById('minimap-toggle');
   const mobileOverlay = document.getElementById('mobile-overlay');
 
-  // 确保主要元素存在
-  if (!mainContent) {
-    return;
-  }
-
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchStartTime = 0;
-  let isScrolling = false;
-  let hasMoved = false;
-  
-  // 移动端手势检测 - 降低阈值，提高敏感度
-  mainContent.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    touchStartTime = Date.now();
-    isScrolling = false;
-    hasMoved = false;
-  }, { passive: true });
-
-  mainContent.addEventListener('touchmove', (e) => {
-    if (!hasMoved) hasMoved = true;
-
-    const touchMoveX = e.touches[0].clientX;
-    const touchMoveY = e.touches[0].clientY;
-    const deltaX = Math.abs(touchMoveX - touchStartX);
-    const deltaY = Math.abs(touchMoveY - touchStartY);
-
-    // 如果垂直移动超过水平移动，认为是滚动
-    if (deltaY > deltaX && deltaY > 15) {
-      isScrolling = true;
-    }
-  }, { passive: true });
-
-  mainContent.addEventListener('touchend', (e) => {
-    const touchEndTime = Date.now();
-    const touchDuration = touchEndTime - touchStartTime;
-
-    // 如果用户在滚动或者触摸时间过长，不触发手势
-    if (isScrolling || touchDuration > 500) {
-      return;
-    }
-
-    const touchEndX = e.changedTouches[0].clientX;
-    const touchEndY = e.changedTouches[0].clientY;
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = Math.abs(touchEndY - touchStartY);
-
-    // 降低阈值：水平滑动 50px，垂直容忍 80px，且有明显移动
-    if (hasMoved && Math.abs(deltaX) > 50 && deltaY < 80 && Math.abs(deltaX) > deltaY) {
-      e.preventDefault(); // 防止其他手势
-
-      if (deltaX > 0) {
-        // 向右滑动 - 显示侧边栏
-        toggleSidebar();
-        showGestureHint('👈 Swipe left for minimap');
-      } else {
-        // 向左滑动 - 显示Minimap
-        toggleMinimap();
-        showGestureHint('👉 Swipe right for navigation');
-      }
-    }
-  }, { passive: false });
-  
   // 显示/隐藏遮罩层
   function showOverlay() {
     if (mobileOverlay) {
@@ -89,26 +24,6 @@ function initializeMobileInteraction() {
     sidebar?.classList.remove('mobile-visible');
     minimap?.classList.remove('mobile-visible');
     hideOverlay();
-  }
-
-  // 显示手势提示
-  function showGestureHint(message) {
-    // 移除现有提示
-    const existingHint = document.querySelector('.mobile-gesture-hint');
-    if (existingHint) {
-      existingHint.remove();
-    }
-
-    // 创建新提示
-    const hint = document.createElement('div');
-    hint.className = 'mobile-gesture-hint';
-    hint.textContent = message;
-    document.body.appendChild(hint);
-
-    // 4秒后自动移除
-    setTimeout(() => {
-      hint.remove();
-    }, 4000);
   }
 
   // 切换功能
@@ -212,46 +127,7 @@ function initializeMobileInteraction() {
     }
   });
 
-  // 首次访问时显示手势提示（仅在移动端）
-  if (window.innerWidth <= 768 && !localStorage.getItem('mobile-gesture-hint-shown')) {
-    setTimeout(() => {
-      showGestureHint('👆 Swipe left/right to access navigation');
-      localStorage.setItem('mobile-gesture-hint-shown', 'true');
-    }, 2000);
-  }
 
-  // 开发调试：在桌面端添加测试按钮（仅在开发环境且需要时启用）
-  // 取消注释下面的代码来启用调试面板
-  /*
-  if (window.location.hostname === 'localhost' && window.innerWidth > 768) {
-    const debugPanel = document.createElement('div');
-    debugPanel.innerHTML = `
-      <div style="position: fixed; top: 10px; right: 10px; z-index: 9999; background: #333; color: white; padding: 10px; border-radius: 5px; font-size: 12px;">
-        <div>Mobile Debug Panel</div>
-        <button onclick="window.mobileDebug.testLeftSwipe()" style="margin: 2px; padding: 5px;">Test Left Swipe</button>
-        <button onclick="window.mobileDebug.testRightSwipe()" style="margin: 2px; padding: 5px;">Test Right Swipe</button>
-        <button onclick="window.mobileDebug.closeAll()" style="margin: 2px; padding: 5px;">Close All</button>
-      </div>
-    `;
-    document.body.appendChild(debugPanel);
-
-    // 全局调试函数
-    window.mobileDebug = {
-      testLeftSwipe: () => {
-        console.log('🧪 Debug: Simulating left swipe');
-        toggleMinimap();
-      },
-      testRightSwipe: () => {
-        console.log('🧪 Debug: Simulating right swipe');
-        toggleSidebar();
-      },
-      closeAll: () => {
-        console.log('🧪 Debug: Closing all panels');
-        closeAllPanels();
-      }
-    };
-  }
-  */
 }
 
 // 页面加载时初始化

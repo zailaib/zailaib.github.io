@@ -54,22 +54,6 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
         </div>
         <div class="header-controls">
           <LanguageSwitcher currentPath={Astro.url.pathname} />
-          <div class="mobile-controls">
-            <button class="mobile-toggle" id="sidebar-toggle" aria-label={translation.common.toggleNavigation}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-            <button class="mobile-toggle" id="minimap-toggle" aria-label={translation.common.toggleMinimap}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
     </header>
@@ -104,6 +88,13 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
 
     <!-- 固定底部按钮 -->
     <div class="fixed-bottom-buttons">
+      <button class="bottom-btn sidebar-btn" id="sidebar-toggle" title={translation.common.toggleNavigation}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
       <button class="bottom-btn home-btn" id="home-btn" title="返回首页">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -113,6 +104,13 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       <button class="bottom-btn top-btn" id="top-btn" title="回到顶部">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="m18 15-6-6-6 6"/>
+        </svg>
+      </button>
+      <button class="bottom-btn minimap-btn" id="minimap-toggle" title={translation.common.toggleMinimap}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          <polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
+          <line x1="12" y1="22.08" x2="12" y2="12"></line>
         </svg>
       </button>
     </div>
@@ -274,35 +272,7 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
     gap: var(--spacing-lg);
   }
 
-  /* 移动端控制按钮 */
-  .mobile-controls {
-    display: none;
-    gap: var(--spacing-sm);
-  }
 
-  .mobile-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    background: var(--color-bg-secondary);
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-border-light);
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-  }
-
-  .mobile-toggle:hover {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-primary);
-    border-color: var(--color-border-medium);
-  }
-
-  .mobile-toggle:active {
-    transform: translateY(1px);
-  }
 
   /* ===== 主要布局容器 ===== */
   .app-container {
@@ -622,15 +592,17 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       grid-template-columns: 1fr;
       gap: var(--spacing-lg);
       padding: var(--spacing-lg);
+      justify-items: center;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 100%;
     }
 
     .sidebar-container,
     .minimap-container {
       display: none;
-    }
-
-    .mobile-controls {
-      display: flex;
     }
 
     .header-content {
@@ -639,6 +611,7 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
 
     .content-wrapper {
       padding: var(--spacing-xl);
+      width: 100%;
     }
 
     .site-branding .site-title {
@@ -690,11 +663,11 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
     /* 固定底部按钮 */
     .fixed-bottom-buttons {
       position: fixed;
-      bottom: 2rem;
+      bottom: var(--spacing-2xl);
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 2rem;
+      gap: var(--spacing-lg);
       z-index: 1000;
       pointer-events: none;
     }
@@ -703,33 +676,34 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       width: 56px;
       height: 56px;
       border-radius: 50%;
-      border: none;
-      background: #ffffff;
-      color: #333333;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border: 1px solid var(--color-border-light);
+      background: var(--color-bg-accent);
+      color: var(--color-text-secondary);
+      box-shadow: var(--shadow-md);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
+      transition: all var(--transition-fast);
       pointer-events: auto;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .bottom-btn:hover {
-      background: #f8f9fa;
+      background: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      border-color: var(--color-accent-primary);
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      box-shadow: var(--shadow-lg);
     }
 
     .bottom-btn:active {
       transform: translateY(0);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-sm);
     }
 
     .bottom-btn svg {
-      transition: transform 0.2s ease;
+      transition: transform var(--transition-fast);
     }
 
     .bottom-btn:hover svg {
@@ -738,28 +712,63 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
 
     /* 按钮特定样式 */
     .home-btn {
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      background: linear-gradient(135deg, var(--color-accent-primary), var(--color-accent-hover));
       color: white;
+      border-color: var(--color-accent-primary);
     }
 
     .home-btn:hover {
-      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+      background: linear-gradient(135deg, var(--color-accent-hover), var(--color-accent-primary));
+      border-color: var(--color-accent-hover);
+      color: white;
+    }
+
+    .sidebar-btn {
+      background: var(--color-bg-accent);
+      color: var(--color-text-secondary);
+    }
+
+    .sidebar-btn:hover {
+      background: var(--color-accent-light);
+      color: var(--color-accent-primary);
+      border-color: var(--color-accent-primary);
     }
 
     .top-btn {
-      background: #ffffff;
-      color: #333333;
+      background: var(--color-bg-accent);
+      color: var(--color-text-secondary);
     }
 
     .top-btn:hover {
-      background: #f8f9fa;
+      background: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      border-color: var(--color-accent-primary);
+    }
+
+    .minimap-btn {
+      background: var(--color-bg-accent);
+      color: var(--color-text-secondary);
+    }
+
+    .minimap-btn:hover {
+      background: var(--color-accent-light);
+      color: var(--color-accent-primary);
+      border-color: var(--color-accent-primary);
+    }
+
+    /* 桌面端隐藏侧边栏和小地图切换按钮 */
+    @media (min-width: 769px) {
+      .sidebar-btn,
+      .minimap-btn {
+        display: none;
+      }
     }
 
     /* 响应式调整 */
     @media (max-width: 768px) {
       .fixed-bottom-buttons {
-        bottom: 1.5rem;
-        gap: 1.5rem;
+        bottom: var(--spacing-xl);
+        gap: var(--spacing-md);
       }
 
       .bottom-btn {
@@ -773,22 +782,25 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
     .minimap-container.mobile-visible {
       display: block;
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       width: 85%;
-      height: 100vh;
+      max-width: 400px;
+      height: 70vh;
+      max-height: calc(100vh - var(--header-height) - var(--spacing-4xl));
       background: var(--color-bg-accent);
+      border: 1px solid var(--color-border-light);
+      border-radius: var(--radius-xl);
       z-index: 1000;
       box-shadow: var(--shadow-xl);
-      animation: slideIn var(--transition-normal);
-      overflow-y: auto;
+      animation: scaleIn var(--transition-normal);
+      overflow: hidden;
     }
 
     .minimap-container.mobile-visible {
-      left: auto;
-      right: 0;
       width: 75%;
-      animation: slideInRight var(--transition-normal);
+      max-width: 350px;
     }
 
     .sidebar-container.mobile-visible .sidebar-content,
@@ -797,16 +809,18 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       border: none;
       border-radius: 0;
       padding: var(--spacing-2xl);
+      overflow-y: auto;
     }
 
-    @keyframes slideIn {
-      from { transform: translateX(-100%); }
-      to { transform: translateX(0); }
-    }
-
-    @keyframes slideInRight {
-      from { transform: translateX(100%); }
-      to { transform: translateX(0); }
+    @keyframes scaleIn {
+      from {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
     }
   }
 
