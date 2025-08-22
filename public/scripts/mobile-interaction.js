@@ -134,12 +134,49 @@ function initializeMobileInteraction() {
 }
 
 // 页面加载时初始化
-document.addEventListener('DOMContentLoaded', initializeMobileInteraction);
+document.addEventListener('DOMContentLoaded', () => {
+  // 延迟执行，确保所有组件都已渲染
+  setTimeout(initializeMobileInteraction, 100);
+});
 
 // 监听 Astro 的页面切换事件
-document.addEventListener('astro:page-load', initializeMobileInteraction);
+document.addEventListener('astro:page-load', () => {
+  // 延迟执行，确保所有组件都已渲染
+  setTimeout(initializeMobileInteraction, 100);
+});
 
 // 备用方案：监听 popstate 事件
 window.addEventListener('popstate', () => {
-  setTimeout(initializeMobileInteraction, 100);
+  setTimeout(initializeMobileInteraction, 200);
 });
+
+// 监听动态内容变化
+if (typeof MutationObserver !== 'undefined') {
+  const observer = new MutationObserver((mutations) => {
+    let shouldReinitialize = false;
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        // 检查是否有相关的节点被添加
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node;
+            if (element.id === 'sidebar' || element.id === 'minimap' ||
+                element.id === 'sidebar-toggle' || element.id === 'minimap-toggle') {
+              shouldReinitialize = true;
+            }
+          }
+        });
+      }
+    });
+
+    if (shouldReinitialize) {
+      setTimeout(initializeMobileInteraction, 50);
+    }
+  });
+
+  // 开始观察
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+}
