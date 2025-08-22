@@ -648,6 +648,29 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       opacity: 1;
     }
 
+    /* 移动端手势提示 */
+    .mobile-gesture-hint {
+      position: fixed;
+      bottom: var(--spacing-xl);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-bg-accent);
+      color: var(--color-text-secondary);
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      box-shadow: var(--shadow-md);
+      z-index: 1001;
+      opacity: 0.8;
+      pointer-events: none;
+      animation: fadeInOut 4s ease-in-out;
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      20%, 80% { opacity: 0.8; transform: translateX(-50%) translateY(0); }
+    }
+
     /* 移动端侧边栏和小地图显示 */
     .sidebar-container.mobile-visible,
     .minimap-container.mobile-visible {
