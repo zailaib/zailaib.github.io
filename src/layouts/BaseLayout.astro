@@ -690,11 +690,11 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
     /* 固定底部按钮 */
     .fixed-bottom-buttons {
       position: fixed;
-      bottom: var(--spacing-xl);
+      bottom: 2rem;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: var(--spacing-xl);
+      gap: 2rem;
       z-index: 1000;
       pointer-events: none;
     }
@@ -704,32 +704,32 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       height: 56px;
       border-radius: 50%;
       border: none;
-      background: var(--color-bg-accent);
-      color: var(--color-text-primary);
-      box-shadow: var(--shadow-lg);
+      background: #ffffff;
+      color: #333333;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all var(--transition-normal);
+      transition: all 0.3s ease;
       pointer-events: auto;
       backdrop-filter: blur(10px);
-      border: 1px solid var(--color-border);
+      border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .bottom-btn:hover {
-      background: var(--color-bg-primary);
+      background: #f8f9fa;
       transform: translateY(-2px);
-      box-shadow: var(--shadow-xl);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
 
     .bottom-btn:active {
       transform: translateY(0);
-      box-shadow: var(--shadow-md);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .bottom-btn svg {
-      transition: transform var(--transition-fast);
+      transition: transform 0.2s ease;
     }
 
     .bottom-btn:hover svg {
@@ -738,28 +738,28 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
 
     /* 按钮特定样式 */
     .home-btn {
-      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
       color: white;
     }
 
     .home-btn:hover {
-      background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
     }
 
     .top-btn {
-      background: var(--color-bg-accent);
-      color: var(--color-text-primary);
+      background: #ffffff;
+      color: #333333;
     }
 
     .top-btn:hover {
-      background: var(--color-bg-primary);
+      background: #f8f9fa;
     }
 
     /* 响应式调整 */
     @media (max-width: 768px) {
       .fixed-bottom-buttons {
-        bottom: var(--spacing-lg);
-        gap: var(--spacing-lg);
+        bottom: 1.5rem;
+        gap: 1.5rem;
       }
 
       .bottom-btn {

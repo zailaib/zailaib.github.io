@@ -30,9 +30,15 @@ const filteredPosts = posts
   <section class="articles-section">
     <h2 class="section-title">{t(currentLang, 'home.latestArticles')}</h2>
     <div class="articles-grid">
-      {filteredPosts.map(post => (
+      {filteredPosts.map(post => {
+        // 移除语言前缀生成正确的链接
+        const slugParts = post.slug.split('/');
+        const slugWithoutLang = slugParts.slice(1).join('/');
+        const postUrl = `/${currentLang}/posts/${slugWithoutLang}`;
+
+        return (
         <article class="article-card">
-          <a href={`/${post.slug}`} class="article-link">
+          <a href={postUrl} class="article-link">
             <h3 class="article-title">{post.data.title}</h3>
             {post.data.date && (
               <time class="article-date" datetime={post.data.date}>
@@ -48,7 +54,8 @@ const filteredPosts = posts
             )}
           </a>
         </article>
-      ))}
+        );
+      })}
     </div>
   </section>
 </main>
