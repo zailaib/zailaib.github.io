@@ -2,6 +2,7 @@
 function initializeMobileInteraction() {
   const sidebar = document.getElementById('sidebar');
   const minimap = document.getElementById('minimap');
+  const mainContent = document.getElementById('main-content');
   const sidebarToggle = document.getElementById('sidebar-toggle');
   const minimapToggle = document.getElementById('minimap-toggle');
   const mobileOverlay = document.getElementById('mobile-overlay');
@@ -80,14 +81,16 @@ function initializeMobileInteraction() {
   }
 
   // 点击内容区域关闭侧边栏和小地图（仅在面板打开时）
-  mainContent.addEventListener('click', (e) => {
-    const sidebarVisible = sidebar?.classList.contains('mobile-visible');
-    const minimapVisible = minimap?.classList.contains('mobile-visible');
+  if (mainContent) {
+    mainContent.addEventListener('click', (e) => {
+      const sidebarVisible = sidebar?.classList.contains('mobile-visible');
+      const minimapVisible = minimap?.classList.contains('mobile-visible');
 
-    if ((sidebarVisible || minimapVisible) && !e.target.closest('a, button')) {
-      closeAllPanels();
-    }
-  });
+      if ((sidebarVisible || minimapVisible) && !e.target.closest('a, button')) {
+        closeAllPanels();
+      }
+    });
+  }
 
   // 专门处理侧边栏和 minimap 内的链接点击
   if (sidebar) {
