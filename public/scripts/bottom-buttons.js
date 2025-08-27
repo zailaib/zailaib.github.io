@@ -2,6 +2,7 @@
 function initializeBottomButtons() {
   const homeBtn = document.getElementById('home-btn');
   const topBtn = document.getElementById('top-btn');
+  const printBtn = document.getElementById('print-btn');
 
   if (!homeBtn || !topBtn) {
     // 如果按钮不存在，稍后重试
@@ -14,6 +15,13 @@ function initializeBottomButtons() {
   const newTopBtn = topBtn.cloneNode(true);
   homeBtn.parentNode?.replaceChild(newHomeBtn, homeBtn);
   topBtn.parentNode?.replaceChild(newTopBtn, topBtn);
+
+  // 处理打印按钮（如果存在）
+  let newPrintBtn = null;
+  if (printBtn) {
+    newPrintBtn = printBtn.cloneNode(true);
+    printBtn.parentNode?.replaceChild(newPrintBtn, printBtn);
+  }
 
   // Home 按钮功能
   newHomeBtn.addEventListener('click', () => {
@@ -34,6 +42,14 @@ function initializeBottomButtons() {
       behavior: 'smooth'
     });
   });
+
+  // Print 按钮功能
+  if (newPrintBtn) {
+    newPrintBtn.addEventListener('click', () => {
+      // 触发打印对话框
+      window.print();
+    });
+  }
   
   // 根据滚动位置显示/隐藏 Top 按钮
   function updateTopButtonVisibility() {
@@ -92,7 +108,7 @@ if (typeof MutationObserver !== 'undefined') {
           if (node.nodeType === Node.ELEMENT_NODE) {
             const element = node;
             if (element.classList?.contains('fixed-bottom-buttons') ||
-                element.id === 'home-btn' || element.id === 'top-btn') {
+                element.id === 'home-btn' || element.id === 'top-btn' || element.id === 'print-btn') {
               shouldReinitialize = true;
             }
           }

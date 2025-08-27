@@ -101,6 +101,15 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
           <polyline points="9,22 9,12 15,12 15,22"/>
         </svg>
       </button>
+      {isPost && (
+        <button class="bottom-btn print-btn" id="print-btn" title="打印文章">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6,9 6,2 18,2 18,9"/>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+        </button>
+      )}
       <button class="bottom-btn top-btn" id="top-btn" title="回到顶部">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="m18 15-6-6-6 6"/>
@@ -664,43 +673,65 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
     /* 固定底部按钮 */
     .fixed-bottom-buttons {
       position: fixed;
-      bottom: var(--spacing-2xl);
-      left: 50%;
-      transform: translateX(-50%);
+      right: var(--spacing-2xl);
+      top: 50%;
+      transform: translateY(-50%);
       display: flex;
-      gap: var(--spacing-lg);
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-sm);
       z-index: 1000;
       pointer-events: none;
     }
 
     .bottom-btn {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      border: 1px solid var(--color-border-light);
-      background: var(--color-bg-accent);
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-xl);
+      border: none;
+      background: rgba(255, 255, 255, 0.9);
       color: var(--color-text-secondary);
-      box-shadow: var(--shadow-md);
-      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all var(--transition-fast);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: auto;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .bottom-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: inherit;
     }
 
     .bottom-btn:hover {
-      background: var(--color-bg-secondary);
-      color: var(--color-text-primary);
-      border-color: var(--color-accent-primary);
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--color-accent-primary);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.1);
       transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
+    }
+
+    .bottom-btn:hover::before {
+      opacity: 1;
     }
 
     .bottom-btn:active {
       transform: translateY(0);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
     }
 
     .bottom-btn svg {
@@ -757,28 +788,68 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       border-color: var(--color-accent-primary);
     }
 
-    /* 桌面端隐藏侧边栏和小地图切换按钮 */
+    .print-btn {
+      background: var(--color-bg-accent);
+      color: var(--color-text-secondary);
+    }
+
+    .print-btn:hover {
+      background: var(--color-bg-secondary);
+      color: var(--color-text-primary);
+      border-color: var(--color-accent-primary);
+    }
+
+    /* PC端按钮样式优化 */
     @media (min-width: 769px) {
       .sidebar-btn,
       .minimap-btn {
-        display: none;
+        background: var(--color-bg-accent);
+        border: 1px solid var(--color-border-light);
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .sidebar-btn:hover,
+      .minimap-btn:hover {
+        background: var(--color-accent-light);
+        color: var(--color-accent-primary);
+        border-color: var(--color-accent-primary);
+        box-shadow: var(--shadow-lg);
       }
     }
 
     /* 响应式调整 */
     @media (max-width: 768px) {
       .fixed-bottom-buttons {
+        right: auto;
+        top: auto;
         bottom: var(--spacing-xl);
-        gap: var(--spacing-md);
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        gap: var(--spacing-lg);
+        justify-content: center;
       }
 
       .bottom-btn {
-        width: 48px;
-        height: 48px;
+        width: 56px;
+        height: 56px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12), 0 3px 6px rgba(0, 0, 0, 0.08);
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+
+      .bottom-btn:active {
+        transform: scale(0.95);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+        background: rgba(255, 255, 255, 0.9);
       }
     }
 
-    /* 移动端侧边栏和小地图显示 */
+    /* 弹出式侧边栏和小地图显示 */
     .sidebar-container.mobile-visible,
     .minimap-container.mobile-visible {
       display: block;
@@ -811,6 +882,46 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       border-radius: 0;
       padding: var(--spacing-2xl);
       overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    }
+
+    /* 自定义滚动条样式 */
+    .sidebar-container.mobile-visible .sidebar-content::-webkit-scrollbar,
+    .minimap-container.mobile-visible .minimap-content::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .sidebar-container.mobile-visible .sidebar-content::-webkit-scrollbar-track,
+    .minimap-container.mobile-visible .minimap-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sidebar-container.mobile-visible .sidebar-content::-webkit-scrollbar-thumb,
+    .minimap-container.mobile-visible .minimap-content::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 2px;
+    }
+
+    .sidebar-container.mobile-visible .sidebar-content::-webkit-scrollbar-thumb:hover,
+    .minimap-container.mobile-visible .minimap-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* PC端弹出样式优化 */
+    @media (min-width: 769px) {
+      .sidebar-container.mobile-visible,
+      .minimap-container.mobile-visible {
+        width: 400px;
+        max-width: 400px;
+        height: 80vh;
+        max-height: 600px;
+      }
+
+      .minimap-container.mobile-visible {
+        width: 350px;
+        max-width: 350px;
+      }
     }
 
     @keyframes scaleIn {
@@ -901,29 +1012,210 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
 
   /* ===== 打印样式 ===== */
   @media print {
+    /* 隐藏不需要打印的元素 */
     .site-header,
     .sidebar-container,
     .minimap-container,
-    .mobile-controls {
+    .mobile-controls,
+    .fixed-bottom-buttons,
+    .mobile-overlay {
       display: none !important;
     }
 
+    /* 页面布局优化 */
+    html, body {
+      font-size: 12pt;
+      line-height: 1.4;
+      color: black !important;
+      background: white !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
     .app-container {
-      grid-template-columns: 1fr;
-      gap: 0;
-      padding: 0;
-      max-width: none;
+      display: block !important;
+      grid-template-columns: none !important;
+      gap: 0 !important;
+      padding: 0 !important;
+      max-width: none !important;
+      margin: 0 !important;
+      width: 100% !important;
+    }
+
+    .main-content {
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
 
     .content-wrapper {
-      border: none;
-      box-shadow: none;
-      padding: 0;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 1.5cm !important;
+      margin: 0 !important;
+      background: white !important;
+      max-width: none !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    /* 文章内容打印优化 */
+    .post-content {
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
     }
 
     .post-content :global(*) {
       color: black !important;
       background: white !important;
+    }
+
+    /* 标题打印优化 */
+    .post-content :global(h1) {
+      font-size: 18pt;
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 12pt;
+      page-break-after: avoid;
+      border-bottom: 2pt solid black;
+      padding-bottom: 6pt;
+    }
+
+    .post-content :global(h2) {
+      font-size: 16pt;
+      font-weight: bold;
+      margin-top: 18pt;
+      margin-bottom: 10pt;
+      page-break-after: avoid;
+    }
+
+    .post-content :global(h3) {
+      font-size: 14pt;
+      font-weight: bold;
+      margin-top: 14pt;
+      margin-bottom: 8pt;
+      page-break-after: avoid;
+    }
+
+    .post-content :global(h4),
+    .post-content :global(h5),
+    .post-content :global(h6) {
+      font-size: 12pt;
+      font-weight: bold;
+      margin-top: 12pt;
+      margin-bottom: 6pt;
+      page-break-after: avoid;
+    }
+
+    /* 段落打印优化 */
+    .post-content :global(p) {
+      font-size: 11pt;
+      line-height: 1.4;
+      margin-bottom: 8pt;
+      text-align: justify;
+      orphans: 3;
+      widows: 3;
+    }
+
+    /* 列表打印优化 */
+    .post-content :global(ul),
+    .post-content :global(ol) {
+      margin: 8pt 0;
+      padding-left: 20pt;
+      page-break-inside: avoid;
+    }
+
+    .post-content :global(li) {
+      font-size: 11pt;
+      line-height: 1.4;
+      margin-bottom: 4pt;
+    }
+
+    /* 代码块打印优化 */
+    .post-content :global(pre) {
+      font-family: 'Courier New', monospace;
+      font-size: 9pt;
+      background: #f5f5f5 !important;
+      border: 1pt solid #ccc !important;
+      padding: 8pt;
+      margin: 8pt 0;
+      page-break-inside: avoid;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .post-content :global(code) {
+      font-family: 'Courier New', monospace;
+      font-size: 10pt;
+      background: #f0f0f0 !important;
+      padding: 1pt 3pt;
+      border: 1pt solid #ddd !important;
+    }
+
+    /* 引用块打印优化 */
+    .post-content :global(blockquote) {
+      margin: 8pt 0;
+      padding: 8pt 12pt;
+      border-left: 3pt solid #666 !important;
+      background: #f9f9f9 !important;
+      font-style: italic;
+      page-break-inside: avoid;
+    }
+
+    /* 表格打印优化 */
+    .post-content :global(table) {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8pt 0;
+      font-size: 10pt;
+      page-break-inside: avoid;
+    }
+
+    .post-content :global(th),
+    .post-content :global(td) {
+      padding: 4pt 6pt;
+      border: 1pt solid #666 !important;
+      text-align: left;
+    }
+
+    .post-content :global(th) {
+      font-weight: bold;
+      background: #f0f0f0 !important;
+    }
+
+    /* 图片打印优化 */
+    .post-content :global(img) {
+      max-width: 100%;
+      height: auto;
+      page-break-inside: avoid;
+      margin: 8pt 0;
+    }
+
+    /* 分页控制 */
+    .post-content :global(h1),
+    .post-content :global(h2) {
+      page-break-before: auto;
+    }
+
+    /* 避免在不合适的地方分页 */
+    .post-content :global(h1),
+    .post-content :global(h2),
+    .post-content :global(h3),
+    .post-content :global(h4),
+    .post-content :global(h5),
+    .post-content :global(h6) {
+      page-break-after: avoid;
+    }
+
+    .post-content :global(pre),
+    .post-content :global(blockquote),
+    .post-content :global(table),
+    .post-content :global(ul),
+    .post-content :global(ol) {
+      page-break-inside: avoid;
     }
   }
 </style>
