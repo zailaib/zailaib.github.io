@@ -3,10 +3,11 @@ import type { CollectionEntry } from 'astro:content';
 
 export type PostEntry = CollectionEntry<'posts'>;
 
-// entry.id 形如 'zh/solution_b/plan_b'（无扩展名）
-// 第 0 段 = 语言，第 1 段 = 分类，其余 = 文件名
+// entry.id 形如 'zh/solution_b/plan_b.md'（本 Astro 版本的 glob loader 保留扩展名）
+// 第 0 段 = 语言，第 1 段 = 分类，其余 = 文件名（去扩展名后用作路由 slug）
 export function parsePostId(id: string) {
-  const parts = id.split('/');
+  const withoutExt = id.replace(/\.[^/.]+$/, ''); // 去掉末尾扩展名（.md/.mdx）
+  const parts = withoutExt.split('/');
   return {
     lang: parts[0],
     category: parts[1] ?? '未分类',

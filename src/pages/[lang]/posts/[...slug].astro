@@ -15,9 +15,10 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+const { lang, rest } = parsePostId(post.id);
 const { Content } = await render(post);
 ---
-<BaseLayout title={post.data.title} currentSlug={post.id} isPost={true}>
+<BaseLayout title={post.data.title} currentSlug={`${lang}/posts/${rest}`} isPost={true}>
   <article id="post-content" data-astro-transition="animate">
     <h1>{post.data.title}</h1>
     <Content />

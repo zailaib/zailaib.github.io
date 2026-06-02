@@ -4,15 +4,10 @@ import { getCurrentLanguage } from '../i18n/utils';
 
 // 获取当前语言
 const currentLang = getCurrentLanguage(Astro.url.pathname);
-
-// 在构建时导入预生成的侧边栏数据
-const sidebarData = await import('../generated/sidebar.json');
-const postsByCategory = (sidebarData as any).default;
 ---
 
 <BaseLayout
   title="404 - Page Not Found"
-  sidebarData={postsByCategory}
   currentSlug=""
 >
   <div class="error-page">
@@ -28,10 +23,10 @@ const postsByCategory = (sidebarData as any).default;
         }
       </p>
       <div class="error-actions">
-        <a href={currentLang === 'en' ? '/en/' : '/'} class="btn-home">
+        <a href={currentLang === 'en' ? '/en/' : '/zh/'} class="btn-home">
           {currentLang === 'en' ? 'Back to Home' : '返回首页'}
         </a>
-        <a href={currentLang === 'en' ? '/en/about' : '/about'} class="btn-about">
+        <a href={currentLang === 'en' ? '/en/about' : '/zh/about'} class="btn-about">
           {currentLang === 'en' ? 'About Us' : '关于我们'}
         </a>
       </div>

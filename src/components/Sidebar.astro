@@ -1,29 +1,18 @@
 ---
-import type { SidebarProps } from '../types';
 import { getCurrentLanguage, t } from '../i18n/utils';
 
-const { postsByCategory } = Astro.props as SidebarProps;
+interface Props {
+  sidebarData: Record<string, { title: string; url: string; date: Date }[]>;
+}
 
-// 获取当前语言
+const { sidebarData } = Astro.props;
 const currentLang = getCurrentLanguage(Astro.url.pathname);
-
-// 根据当前语言筛选文章
-const currentLangPosts = postsByCategory[currentLang] || [];
-
-// 按分类组织文章
-const categorizedPosts = currentLangPosts.reduce((acc, post) => {
-  const slugParts = post.slug.split('/');
-  const category = slugParts[2] || '未分类';
-  if (!acc[category]) acc[category] = [];
-  acc[category].push(post);
-  return acc;
-}, {} as Record<string, any[]>);
 ---
 
 <aside class="sidebar">
   <h3 class="sidebar-title">{t(currentLang, 'sidebar.title')}</h3>
   <nav class="sidebar-content">
-    {Object.entries(categorizedPosts).map(([category, posts]) => (
+    {Object.entries(sidebarData).map(([category, posts]) => (
       <div class="category-section" data-category={category}>
         <button class="category-header" data-category={category}>
           <h4 class="category-title">{category}</h4>
@@ -33,23 +22,16 @@ const categorizedPosts = currentLangPosts.reduce((acc, post) => {
         </button>
         <div class="category-content" data-category={category}>
           <ul class="article-list">
-            {posts.map((post, index) => {
-              // 直接使用完整的 slug，因为它已经包含了正确的路径
-              const postUrl = `/${post.slug}`;
-
-              return (
+            {posts.map((post, index) => (
               <li class={`article-item ${index >= 5 ? 'article-item-hidden' : ''}`}>
-                <a href={postUrl} class="article-link">
+                <a href={post.url} class="article-link">
                   <span class="article-title">{post.title}</span>
-                  {post.date && (
-                    <span class="article-date">
-                      {new Date(post.date).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-CN')}
-                    </span>
-                  )}
+                  <span class="article-date">
+                    {post.date.toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-CN')}
+                  </span>
                 </a>
               </li>
-              );
-            })}
+            ))}
           </ul>
           {posts.length > 5 && (
             <button class="show-more-btn" data-category={category}>

@@ -4,25 +4,24 @@ import Sidebar from '../components/Sidebar.astro';
 import Minimap from '../components/Minimap.astro';
 import LanguageSwitcher from '../components/LanguageSwitcher.astro';
 import { getCurrentLanguage, getTranslation } from '../i18n/utils';
-import type { BaseLayoutProps, PostsByCategory } from '../types';
+import { getSidebarData } from '../lib/content';
+import type { BaseLayoutProps } from '../types';
 
 const {
   title = 'Astro Basics',
   description,
   showSidebar = true,
   showMinimap = true,
-  sidebarData,
   currentSlug,
   isPost = false
 } = Astro.props as BaseLayoutProps;
 
-// 在构建时导入预生成的侧边栏数据
-const defaultSidebarData = await import('../generated/sidebar.json');
-const postsByCategory = sidebarData || (defaultSidebarData as any).default as PostsByCategory;
-
 // 获取当前语言
 const currentLang = getCurrentLanguage(Astro.url.pathname);
 const translation = getTranslation(currentLang);
+
+// 侧边栏数据由 Content Collections 派生
+const sidebarData = await getSidebarData(currentLang);
 
 // 动态页面标题
 const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${title} | ${translation.common.siteTitle}`;
@@ -49,7 +48,7 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       <div class="header-content">
         <div class="site-branding">
           <h1 class="site-title">
-            <a href={currentLang === 'en' ? '/en/' : '/'}>{translation.common.siteTitle}</a>
+            <a href={`/${currentLang}/`}>{translation.common.siteTitle}</a>
           </h1>
         </div>
         <div class="header-controls">
@@ -63,7 +62,7 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       {showSidebar && (
         <aside class="sidebar-container" id="sidebar">
           <div class="sidebar-content">
-            <Sidebar postsByCategory={postsByCategory} />
+            <Sidebar sidebarData={sidebarData} />
           </div>
         </aside>
       )}
