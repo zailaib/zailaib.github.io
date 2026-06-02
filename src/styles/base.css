@@ -46,13 +46,10 @@ body {
 }
 
 .sidebar-content {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  box-shadow: var(--glass-shadow);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-medium) transparent;
@@ -82,13 +79,10 @@ body {
 }
 
 .content-wrapper {
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-3xl);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  box-shadow: var(--glass-shadow);
 }
 
 /* 页面内容样式 */
@@ -112,13 +106,10 @@ body {
 }
 
 .minimap-content {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  box-shadow: var(--glass-shadow);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-medium) transparent;
@@ -139,18 +130,6 @@ body {
 
 .minimap-content::-webkit-scrollbar-thumb:hover {
   background: var(--color-border-strong);
-}
-
-/* ===== 玻璃拟态降级：不支持 backdrop-filter 时回退为实色 ===== */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .content-wrapper {
-    background: var(--color-bg-primary);
-  }
-
-  .sidebar-content,
-  .minimap-content {
-    background: var(--color-bg-accent);
-  }
 }
 
 /* ===== 键盘可达性：焦点环 ===== */
