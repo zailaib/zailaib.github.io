@@ -1,7 +1,6 @@
 /* ===== 打印样式 ===== */
 @media print {
   /* 隐藏不需要打印的元素 */
-  .site-header,
   .sidebar-container,
   .minimap-container,
   .mobile-controls,

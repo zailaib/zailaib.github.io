@@ -20,10 +20,6 @@
   .minimap-container {
     display: none;
   }
-
-  .header-content {
-    padding: 0 var(--spacing-lg);
-  }
 }
 
 @media (max-width: 768px) {
@@ -44,17 +40,9 @@
     display: none;
   }
 
-  .header-content {
-    padding: 0 var(--spacing-lg);
-  }
-
   .content-wrapper {
     padding: var(--spacing-xl);
     width: 100%;
-  }
-
-  .site-branding .site-title {
-    font-size: var(--font-size-lg);
   }
 
   /* 移动端遮罩层 */
@@ -303,10 +291,6 @@
     padding: var(--spacing-md);
   }
 
-  .header-content {
-    padding: 0 var(--spacing-md);
-  }
-
   .content-wrapper {
     padding: var(--spacing-lg);
   }
@@ -317,10 +301,6 @@
 
   .minimap-container.mobile-visible {
     width: 85%;
-  }
-
-  .site-branding .site-title {
-    font-size: var(--font-size-base);
   }
 
   /* 移动端 Markdown 内容优化 */
