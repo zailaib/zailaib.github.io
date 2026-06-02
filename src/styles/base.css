@@ -186,3 +186,30 @@ body {
 .minimap-content::-webkit-scrollbar-thumb:hover {
   background: var(--color-border-strong);
 }
+
+/* ===== 玻璃拟态降级：不支持 backdrop-filter 时回退为实色 ===== */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header,
+  .content-wrapper {
+    background: var(--color-bg-primary);
+  }
+
+  .sidebar-content,
+  .minimap-content {
+    background: var(--color-bg-accent);
+  }
+}
+
+/* ===== 键盘可达性：焦点环 ===== */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+/* ===== 尊重「减少动态效果」偏好 ===== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
