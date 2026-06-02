@@ -29,28 +29,17 @@ export function getCurrentLanguage(pathname: string): string {
 export function getLocalizedPath(pathname: string, targetLang: string): string {
   const currentLang = getCurrentLanguage(pathname);
 
-  // 处理文章路径的特殊情况
+  // 文章路径：/<lang>/posts/...
   if (pathname.includes('/posts/')) {
-    // 如果是语言特定的文章路径 (如 /en/posts/... 或 /zh/posts/...)
     if (pathname.startsWith(`/${currentLang}/posts/`)) {
-      const pathAfterPosts = pathname.replace(`/${currentLang}/posts/`, '');
-      return `/${targetLang}/posts/${pathAfterPosts}`;
-    }
-    // 如果是默认的文章路径 (如 /posts/...)
-    else if (pathname.startsWith('/posts/')) {
-      const pathAfterPosts = pathname.replace('/posts/', '');
-      return `/${targetLang}/posts/${pathAfterPosts}`;
+      const after = pathname.replace(`/${currentLang}/posts/`, '');
+      return `/${targetLang}/posts/${after}`;
     }
   }
 
-  // 处理普通页面路径
-  const pathWithoutLang = pathname.replace(new RegExp(`^/${currentLang}`), '');
-
-  if (targetLang === DEFAULT_LANGUAGE) {
-    return pathWithoutLang || '/';
-  }
-
-  return `/${targetLang}${pathWithoutLang}`;
+  // 普通页面：去掉当前语言前缀，统一加目标语言前缀
+  const withoutLang = pathname.replace(new RegExp(`^/${currentLang}`), '');
+  return `/${targetLang}${withoutLang || '/'}`;
 }
 
 /**
