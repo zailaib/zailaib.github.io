@@ -30,10 +30,10 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--color-bg-accent);
-  border-bottom: 1px solid var(--color-border-light);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--glass-bg-strong);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
 .header-content {
@@ -92,10 +92,13 @@ body {
 }
 
 .sidebar-content {
-  background: var(--color-bg-accent);
-  border: 1px solid var(--color-border-light);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-medium) transparent;
@@ -125,11 +128,13 @@ body {
 }
 
 .content-wrapper {
-  background: var(--color-bg-accent);
-  border: 1px solid var(--color-border-light);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-3xl);
-  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
 }
 
 /* 页面内容样式 */
@@ -153,10 +158,13 @@ body {
 }
 
 .minimap-content {
-  background: var(--color-bg-accent);
-  border: 1px solid var(--color-border-light);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-medium) transparent;
