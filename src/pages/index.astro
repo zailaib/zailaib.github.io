@@ -1,23 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
+import { getLatestPosts } from '../lib/content';
+import { DEFAULT_LANGUAGE } from '../i18n/languages';
 
-interface SidebarPost {
-  title: string;
-  slug: string;
-  date: string;
-  tags: string | string[];
-}
-
-// 在构建时导入预生成的侧边栏数据
-const sidebarData = await import('../generated/sidebar.json');
-const postsByCategory = (sidebarData as any).default as Record<string, SidebarPost[]>;
-
-// 获取所有文章用于首页展示
-const posts = await getCollection('posts');
-
+const lang = DEFAULT_LANGUAGE;
+const latest = await getLatestPosts(lang, 6);
 ---
-<BaseLayout sidebarData={postsByCategory} currentSlug="">
-  <Home posts={posts} />
+<BaseLayout currentSlug="">
+  <Home latest={latest} lang={lang} />
 </BaseLayout>

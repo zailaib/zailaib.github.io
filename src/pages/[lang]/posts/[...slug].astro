@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { parsePostId } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => {
+    const { lang, rest } = parsePostId(post.id);
+    return {
+      params: { lang, slug: rest },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<BaseLayout title={post.data.title} currentSlug={post.id} isPost={true}>
+  <article id="post-content" data-astro-transition="animate">
+    <h1>{post.data.title}</h1>
+    <Content />
+  </article>
+</BaseLayout>

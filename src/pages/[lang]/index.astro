@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Home from '../../components/Home.astro';
+import { getLatestPosts } from '../../lib/content';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const latest = await getLatestPosts(lang!, 6);
+---
+<BaseLayout currentSlug="">
+  <Home latest={latest} lang={lang!} />
+</BaseLayout>

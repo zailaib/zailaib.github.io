@@ -1,61 +1,38 @@
 ---
-import { getCurrentLanguage, t } from '../i18n/utils';
+import { t } from '../i18n/utils';
 
 interface Props {
-  posts: any[];
+  latest: { title: string; url: string; date: Date; tags?: string }[];
+  lang: string;
 }
 
-const { posts } = Astro.props;
-
-// 获取当前语言
-const currentLang = getCurrentLanguage(Astro.url.pathname);
-
-// 根据当前语言筛选文章，按日期排序，取最新6篇
-const filteredPosts = posts
-  .filter(post => {
-    const slugParts = post.slug.split('/');
-    const lang = slugParts[0];
-    return lang === currentLang;
-  })
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 6);
+const { latest, lang } = Astro.props;
 ---
 
 <main class="home-content" data-astro-transition="persist">
   <div class="welcome-section">
-    <h1 class="welcome-title">{t(currentLang, 'home.welcome')}</h1>
-    <p class="welcome-description">{t(currentLang, 'home.description')}</p>
+    <h1 class="welcome-title">{t(lang, 'home.welcome')}</h1>
+    <p class="welcome-description">{t(lang, 'home.description')}</p>
   </div>
 
   <section class="articles-section">
-    <h2 class="section-title">{t(currentLang, 'home.latestArticles')}</h2>
+    <h2 class="section-title">{t(lang, 'home.latestArticles')}</h2>
     <div class="articles-grid">
-      {filteredPosts.map(post => {
-        // 移除语言前缀生成正确的链接
-        const slugParts = post.slug.split('/');
-        const slugWithoutLang = slugParts.slice(1).join('/');
-        const postUrl = `/${currentLang}/posts/${slugWithoutLang}`;
-
-        return (
+      {latest.map(post => (
         <article class="article-card">
-          <a href={postUrl} class="article-link">
-            <h3 class="article-title">{post.data.title}</h3>
-            {post.data.date && (
-              <time class="article-date" datetime={post.data.date}>
-                {new Date(post.data.date).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'zh-CN')}
-              </time>
-            )}
-            {post.data.tags && (
+          <a href={post.url} class="article-link">
+            <h3 class="article-title">{post.title}</h3>
+            <time class="article-date" datetime={post.date.toISOString()}>
+              {post.date.toLocaleDateString(lang === 'en' ? 'en-US' : 'zh-CN')}
+            </time>
+            {post.tags && (
               <div class="article-tags">
-                {Array.isArray(post.data.tags) ? post.data.tags.map((tag: string) => (
-                  <span class="tag">{tag}</span>
-                )) : <span class="tag">{post.data.tags}</span>}
+                <span class="tag">{post.tags}</span>
               </div>
             )}
           </a>
         </article>
-        );
-      })}
+      ))}
     </div>
   </section>
 </main>
