@@ -56,6 +56,7 @@
 | 多语言路由 | **方案 A：动态语言段 `pages/[lang]/...`** | 一份源文件覆盖所有语言，路由重复归零；游戏路由复用同款模式；纯静态 `getStaticPaths`，GitHub Pages 原生支持 |
 | 游戏孤岛技术栈 | **Astro 原生 `<script>` + 原生 JS（可接 GSAP）** | 保持零框架、极致轻量；与现有 `public/scripts/*.js` 风格一致；养成游戏状态不复杂，原生足够 |
 | 改动幅度 | **可大幅重整** | 用户授权；目标是拿到干净地基 |
+| 包管理与构建工具 | **全面切 bun（含 CI）** | 本地 `bun install`/`bun run build` 显著快于 npm；`deploy.yml` 同步改为 `oven-sh/setup-bun` + `bun install` + `bun run build`，本地与 CI 一致 |
 | 阶段划分 | **分两阶段**：本轮地基，下一轮游戏 | 依赖顺序清晰（孤岛地基先于游戏）；交付可验证；游戏设计的不确定性不拖累重构 |
 
 ---
