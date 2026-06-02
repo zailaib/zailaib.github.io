@@ -10,13 +10,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 获取完整git历史
+          fetch-depth: 0  # 获取完整 git 历史
 
-      - run: npm install
-      - run: npm run build
-  
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
-          force_orphan: true  # ,强制清理旧内容
+          force_orphan: true  # 强制清理旧内容
