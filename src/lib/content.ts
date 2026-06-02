@@ -1,0 +1,60 @@
+import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+
+export type PostEntry = CollectionEntry<'posts'>;
+
+// entry.id 形如 'zh/solution_b/plan_b'（无扩展名）
+// 第 0 段 = 语言，第 1 段 = 分类，其余 = 文件名
+export function parsePostId(id: string) {
+  const parts = id.split('/');
+  return {
+    lang: parts[0],
+    category: parts[1] ?? '未分类',
+    rest: parts.slice(1).join('/'), // 去掉语言前缀后的路径，用作路由 slug
+  };
+}
+
+export async function getPostsByLang(lang: string): Promise<PostEntry[]> {
+  const all = await getCollection('posts');
+  return all.filter((p) => parsePostId(p.id).lang === lang);
+}
+
+// 侧边栏：按分类分组，按日期倒序
+export async function getSidebarData(
+  lang: string
+): Promise<Record<string, { title: string; url: string; date: Date }[]>> {
+  const posts = await getPostsByLang(lang);
+  const grouped: Record<string, { title: string; url: string; date: Date }[]> = {};
+  for (const p of posts) {
+    const { category, rest } = parsePostId(p.id);
+    if (!grouped[category]) grouped[category] = [];
+    grouped[category].push({
+      title: p.data.title,
+      url: `/${lang}/posts/${rest}`,
+      date: p.data.date,
+    });
+  }
+  for (const cat of Object.keys(grouped)) {
+    grouped[cat].sort((a, b) => b.date.getTime() - a.date.getTime());
+  }
+  return grouped;
+}
+
+// 首页最新 n 篇
+export async function getLatestPosts(lang: string, n: number): Promise<
+  { title: string; url: string; date: Date; tags?: string }[]
+> {
+  const posts = await getPostsByLang(lang);
+  return posts
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .slice(0, n)
+    .map((p) => {
+      const { rest } = parsePostId(p.id);
+      return {
+        title: p.data.title,
+        url: `/${lang}/posts/${rest}`,
+        date: p.data.date,
+        tags: p.data.tags,
+      };
+    });
+}
