@@ -1,0 +1,208 @@
+/* ===== 打印样式 ===== */
+@media print {
+  /* 隐藏不需要打印的元素 */
+  .site-header,
+  .sidebar-container,
+  .minimap-container,
+  .mobile-controls,
+  .fixed-bottom-buttons,
+  .mobile-overlay {
+    display: none !important;
+  }
+
+  /* 页面布局优化 */
+  html, body {
+    font-size: 12pt;
+    line-height: 1.4;
+    color: black !important;
+    background: white !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .app-container {
+    display: block !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .main-content {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .content-wrapper {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 1.5cm !important;
+    margin: 0 !important;
+    background: white !important;
+    max-width: none !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 文章内容打印优化 */
+  .post-content {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  .post-content * {
+    color: black !important;
+    background: white !important;
+  }
+
+  /* 标题打印优化 */
+  .post-content h1 {
+    font-size: 18pt;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 12pt;
+    page-break-after: avoid;
+    border-bottom: 2pt solid black;
+    padding-bottom: 6pt;
+  }
+
+  .post-content h2 {
+    font-size: 16pt;
+    font-weight: bold;
+    margin-top: 18pt;
+    margin-bottom: 10pt;
+    page-break-after: avoid;
+  }
+
+  .post-content h3 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 14pt;
+    margin-bottom: 8pt;
+    page-break-after: avoid;
+  }
+
+  .post-content h4,
+  .post-content h5,
+  .post-content h6 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+    page-break-after: avoid;
+  }
+
+  /* 段落打印优化 */
+  .post-content p {
+    font-size: 11pt;
+    line-height: 1.4;
+    margin-bottom: 8pt;
+    text-align: justify;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* 列表打印优化 */
+  .post-content ul,
+  .post-content ol {
+    margin: 8pt 0;
+    padding-left: 20pt;
+    page-break-inside: avoid;
+  }
+
+  .post-content li {
+    font-size: 11pt;
+    line-height: 1.4;
+    margin-bottom: 4pt;
+  }
+
+  /* 代码块打印优化 */
+  .post-content pre {
+    font-family: 'Courier New', monospace;
+    font-size: 9pt;
+    background: #f5f5f5 !important;
+    border: 1pt solid #ccc !important;
+    padding: 8pt;
+    margin: 8pt 0;
+    page-break-inside: avoid;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .post-content code {
+    font-family: 'Courier New', monospace;
+    font-size: 10pt;
+    background: #f0f0f0 !important;
+    padding: 1pt 3pt;
+    border: 1pt solid #ddd !important;
+  }
+
+  /* 引用块打印优化 */
+  .post-content blockquote {
+    margin: 8pt 0;
+    padding: 8pt 12pt;
+    border-left: 3pt solid #666 !important;
+    background: #f9f9f9 !important;
+    font-style: italic;
+    page-break-inside: avoid;
+  }
+
+  /* 表格打印优化 */
+  .post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8pt 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+
+  .post-content th,
+  .post-content td {
+    padding: 4pt 6pt;
+    border: 1pt solid #666 !important;
+    text-align: left;
+  }
+
+  .post-content th {
+    font-weight: bold;
+    background: #f0f0f0 !important;
+  }
+
+  /* 图片打印优化 */
+  .post-content img {
+    max-width: 100%;
+    height: auto;
+    page-break-inside: avoid;
+    margin: 8pt 0;
+  }
+
+  /* 分页控制 */
+  .post-content h1,
+  .post-content h2 {
+    page-break-before: auto;
+  }
+
+  /* 避免在不合适的地方分页 */
+  .post-content h1,
+  .post-content h2,
+  .post-content h3,
+  .post-content h4,
+  .post-content h5,
+  .post-content h6 {
+    page-break-after: avoid;
+  }
+
+  .post-content pre,
+  .post-content blockquote,
+  .post-content table,
+  .post-content ul,
+  .post-content ol {
+    page-break-inside: avoid;
+  }
+}
