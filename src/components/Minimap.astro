@@ -29,27 +29,18 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
 
 <style>
   .minimap {
-    background: var(--color-bg-accent);
-    border: 1px solid var(--color-border-light);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
-    max-height: calc(100vh - var(--header-height) - var(--spacing-4xl));
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border-medium) transparent;
+    background: none;
+    border: none;
+    padding: 0;
   }
 
   .minimap h3 {
-    margin: 0 0 var(--spacing-xl) 0;
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-secondary);
-    border-bottom: 1px solid var(--color-border-light);
-    padding-bottom: var(--spacing-sm);
-    position: sticky;
-    top: 0;
-    background: var(--color-bg-accent);
-    z-index: 1;
+    margin: 0 0 var(--spacing-lg) 0;
+    height: 1px;
+    background: var(--color-border-light);
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
   }
 
   .minimap-content {
@@ -74,7 +65,6 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
     padding: var(--spacing-md) var(--spacing-md);
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
-    border-left: 3px solid transparent;
     line-height: var(--line-height-relaxed);
     margin-bottom: var(--spacing-xs);
     display: block;
@@ -85,13 +75,11 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
   .minimap-link:hover {
     background-color: var(--color-bg-secondary);
     color: var(--color-accent-primary);
-    border-left-color: var(--color-accent-primary);
   }
 
   .minimap-link.active {
     background-color: var(--color-accent-light);
     color: var(--color-accent-primary);
-    border-left-color: var(--color-accent-primary);
   }
 
   /* 不同级别的标题缩进 - 增强层次感和可读性 */
@@ -134,8 +122,6 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
 
   /* 为不同级别添加视觉分隔 */
   .minimap-link.level-1:not(:first-child) {
-    border-top: 1px solid var(--color-border-light);
-    padding-top: calc(var(--spacing-md) + var(--spacing-xs));
     margin-top: var(--spacing-md);
   }
 

@@ -46,10 +46,6 @@ body {
 }
 
 .sidebar-content {
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-medium) transparent;
@@ -106,10 +102,6 @@ body {
 }
 
 .minimap-content {
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-medium) transparent;

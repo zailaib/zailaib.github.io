@@ -50,27 +50,18 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
 
 <style>
   .sidebar {
-    background: var(--color-bg-accent);
-    border: 1px solid var(--color-border-light);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
-    max-height: calc(100vh - var(--header-height) - var(--spacing-4xl));
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border-medium) transparent;
+    background: none;
+    border: none;
+    padding: 0;
   }
 
   .sidebar-title {
-    margin: 0 0 var(--spacing-xl) 0;
-    font-size: var(--font-size-base);
-    font-weight: var(--font-weight-semibold);
-    color: var(--color-text-secondary);
-    border-bottom: 1px solid var(--color-border-light);
-    padding-bottom: var(--spacing-sm);
-    position: sticky;
-    top: 0;
-    background: var(--color-bg-accent);
-    z-index: 1;
+    margin: 0 0 var(--spacing-lg) 0;
+    height: 1px;
+    background: var(--color-border-light);
+    overflow: hidden;
+    color: transparent;
+    font-size: 0;
   }
 
   .sidebar-content {
@@ -82,8 +73,6 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
   .category-section {
     display: flex;
     flex-direction: column;
-    border-radius: var(--radius-md);
-    overflow: hidden;
     transition: all var(--transition-normal);
   }
 
@@ -162,8 +151,8 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
     gap: var(--spacing-xs);
     width: calc(100% - var(--spacing-2xl));
     background: none;
-    border: 1px solid var(--color-border-light);
-    color: var(--color-text-secondary);
+    border: none;
+    color: var(--color-text-tertiary);
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
     padding: var(--spacing-sm) var(--spacing-md);
@@ -176,8 +165,6 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
   }
 
   .show-more-btn:hover {
-    background-color: var(--color-bg-secondary);
-    border-color: var(--color-accent-primary);
     color: var(--color-accent-primary);
   }
 
@@ -200,20 +187,17 @@ const currentLang = getCurrentLanguage(Astro.url.pathname);
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
-    border-left: 3px solid transparent;
     position: relative;
   }
 
   .article-link:hover {
     background-color: var(--color-bg-secondary);
     color: var(--color-accent-primary);
-    border-left-color: var(--color-accent-primary);
   }
 
   .article-link.active {
     background-color: var(--color-accent-light);
     color: var(--color-accent-primary);
-    border-left-color: var(--color-accent-primary);
   }
 
   .article-title {
