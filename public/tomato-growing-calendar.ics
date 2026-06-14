@@ -1,0 +1,162 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//Tomato Growing Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:番茄种植日历
+X-WR-CALDESC:从播种到采收的番茄种植全周期日历，包含浇水、施肥、移栽、授粉、采收等关键节点。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240315
+DTEND;VALUE=DATE:20240316
+SUMMARY:🌱 播种日 — 将番茄种子埋入盆土
+DESCRIPTION:深度约 0.5 cm，浇透水。\n盆土配方：园土:蛭石:腐熟鸡粪 = 5:2:1。\n播种后覆盖保鲜膜保湿，置于温暖处（20-25°C）。
+LOCATION:室内窗台 / 育苗盆
+CATEGORIES:种植
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240315
+DTEND;VALUE=DATE:20240416
+RRULE:FREQ=DAILY;INTERVAL=2
+SUMMARY:💧 浇水 · 检查土壤湿度（发芽期）
+DESCRIPTION:保持土壤湿润但不积水。\n用喷雾瓶轻轻喷湿表层即可。\n观察盆土表面是否有裂纹或发白迹象。\n若覆有保鲜膜，检查膜内是否有凝结水珠。
+LOCATION:室内窗台
+CATEGORIES:浇水
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240320
+DTEND;VALUE=DATE:20240321
+SUMMARY:👀 预计发芽日 — 观察盆土表面
+DESCRIPTION:播种后约 5-7 天，种子开始萌发。\n观察土面是否隆起裂纹，是否有嫩绿芽尖露出。\n发芽后立即移除保鲜膜，增加通风。\n开始接受散射光照，避免暴晒。
+LOCATION:室内窗台
+CATEGORIES:观察
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240322
+DTEND;VALUE=DATE:20240416
+SUMMARY:☀️ 转动花盆方向
+DESCRIPTION:每天转动花盆 90°，保证幼苗受光均匀，防止徒长和歪斜。\n保持白天 20-25°C，夜间不低于 15°C。
+LOCATION:室内窗台
+CATEGORIES:养护
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240415
+DTEND;VALUE=DATE:20240416
+SUMMARY:🪴 移栽日 — 幼苗移入大盆
+DESCRIPTION:番茄苗长出 4 片以上真叶时移栽。\n移入 20L 种植袋或直径 30cm 以上的花盆。\n配土比例：园土:蛭石:腐熟鸡粪 = 5:2:1。\n移栽后浇透定根水，置于半阴处缓苗 3 天。
+LOCATION:阳台 / 室外
+CATEGORIES:移栽
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240418
+DTEND;VALUE=DATE:20240715
+RRULE:FREQ=DAILY;INTERVAL=3
+SUMMARY:💧 浇水（生长期）
+DESCRIPTION:每次浇水约 500 mL，浇透至盆底流出水为止。\n浇水时间选在清晨或傍晚，避免正午高温时浇水。\n高温干燥天气可增加至每 2 天一次。
+LOCATION:阳台
+CATEGORIES:浇水
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240420
+DTEND;VALUE=DATE:20240715
+RRULE:FREQ=DAILY;INTERVAL=14
+SUMMARY:🌿 施有机液肥（生长期）
+DESCRIPTION:每两周施腐熟有机液肥一次。\n与浇水日错开，避免烧根。\n生长期以氮肥为主，促进枝叶生长。\n稀释比例按肥料说明，宁稀勿浓。
+LOCATION:阳台
+CATEGORIES:施肥
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240501
+DTEND;VALUE=DATE:20240715
+RRULE:FREQ=DAILY;INTERVAL=7
+SUMMARY:✂️ 整枝打杈 — 摘除侧芽
+DESCRIPTION:摘除主干与叶片之间长出的侧芽（腋芽）。\n保留主枝和 1-2 个健壮侧枝即可。\n打杈选晴天上午进行，伤口易愈合。\n同时摘除基部的老叶、黄叶、病叶。
+LOCATION:阳台
+CATEGORIES:整枝
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240601
+DTEND;VALUE=DATE:20240602
+SUMMARY:🌸 花期开始 — 第一朵黄花开放
+DESCRIPTION:番茄进入生殖生长阶段。\n即日起开始辅助授粉。\n追施磷钾肥，减少氮肥比例。\n注意保持通风，预防灰霉病。
+LOCATION:阳台
+CATEGORIES:观察
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240601
+DTEND;VALUE=DATE:20240701
+RRULE:FREQ=DAILY
+SUMMARY:🐝 轻摇花序 · 辅助授粉
+DESCRIPTION:时间选在上午 9-11 点（花粉活性最强时）。\n用食指轻轻拨动每一朵盛开的花序。\n或用电动牙刷震动花穗基部 2-3 秒。\n连续阴雨天可暂停，待天晴后补做。\n重复至花朵凋谢、子房膨大为止。
+LOCATION:阳台
+CATEGORIES:授粉
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240605
+DTEND;VALUE=DATE:20240701
+RRULE:FREQ=DAILY;INTERVAL=14
+SUMMARY:🌸 追施磷钾肥（花果期）
+DESCRIPTION:花期和坐果期改用高磷钾肥。\n可用磷酸二氢钾 0.2% 溶液叶面喷施。\n或施腐熟骨粉、草木灰等有机磷钾肥。\n每两周一次，与浇水日错开。
+LOCATION:阳台
+CATEGORIES:施肥
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240615
+DTEND;VALUE=DATE:20240730
+RRULE:FREQ=DAILY;INTERVAL=7
+SUMMARY:🔍 检查病虫害
+DESCRIPTION:检查叶片正反面是否有蚜虫、白粉虱、红蜘蛛。\n查看茎干是否有病斑或腐烂。\n发现虫害可喷洒肥皂水或印楝素。\n及时摘除并处理严重病叶（勿丢入堆肥）。
+LOCATION:阳台
+CATEGORIES:植保
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240720
+DTEND;VALUE=DATE:20240721
+SUMMARY:🍅 转色期开始 — 果实开始变色
+DESCRIPTION:果实从深绿→淡绿→鹅黄→橘红→正红。\n转色过程约 7-10 天。\n适当控水，提高果实糖度。\n减少氮肥，停止叶面喷施（避免裂果）。
+LOCATION:阳台
+CATEGORIES:观察
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240720
+DTEND;VALUE=DATE:20240801
+RRULE:FREQ=DAILY;INTERVAL=7
+SUMMARY:🍅 观察转色进度
+DESCRIPTION:每周记录果实颜色变化。\n检查果肩是否完全着色。\n注意防止鸟啄和日灼。\n如果果肩完全变为品种固有色泽，即可采收。
+LOCATION:阳台
+CATEGORIES:观察
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240728
+DTEND;VALUE=DATE:20240729
+SUMMARY:🧺 采收日 — 收获第一颗番茄！
+DESCRIPTION:用剪刀小心剪断果柄，保留果蒂。\n选择晴天上午采收，果实品质最佳。\n采收后置于阴凉通风处，避免阳光直射。\n如果一次性采收较多，可制作番茄酱或冷冻保存。\n\n恭喜！从一颗种子到一颗果实，你走完了全程 🎉
+LOCATION:阳台
+CATEGORIES:采收
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240801
+DTEND;VALUE=DATE:20240802
+SUMMARY:📝 拉秧清园 · 记录总结
+DESCRIPTION:采收季结束后清理植株残体。\n将健康植株残体粉碎堆肥；病株需集中处理。\n翻晒盆土，为下季种植做准备。\n记录本季种植心得：品种表现、病虫害情况、产量与口感评价。\n\n准备下一季的日历计划 🌱
+LOCATION:阳台
+CATEGORIES:清园
+END:VEVENT
+
+END:VCALENDAR
