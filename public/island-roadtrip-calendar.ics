@@ -1,0 +1,100 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//Hainan Island Road Trip Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:海南环岛30天自驾旅行日历
+X-WR-CALDESC:从海口出发顺时针环海南岛30天自驾行程，涵盖东线+西线的目的地、美食和活动建议。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240801
+DTEND;VALUE=DATE:20240803
+SUMMARY:🚗 第1-2天：海口出发 · 文昌
+DESCRIPTION:📍 目的地：文昌东郊椰林、石头公园、航天发射场\n🍜 必吃：文昌鸡（白切）、椰奶鸡、清补凉\n🏨 住宿：东郊椰林附近民宿\n📝 东郊椰林下午茶，傍晚海边看日落。第二天上午参观航天发射场，下午石头公园看火山岩海蚀地貌。
+LOCATION:海口 → 文昌
+CATEGORIES:东线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240803
+DTEND;VALUE=DATE:20240805
+SUMMARY:🌊 第3-4天：博鳌 · 潭门渔港
+DESCRIPTION:📍 博鳌亚洲论坛会址、玉带滩、潭门千年渔港\n🍜 潭门海鲜火锅、和乐蟹粥\n🏨 博鳌镇海边酒店\n📝 潭门渔港清晨看渔船归来买海鲜，下午玉带滩看三江入海。博鳌小镇安静适合骑行。
+LOCATION:文昌 → 博鳌
+CATEGORIES:东线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240805
+DTEND;VALUE=DATE:20240809
+SUMMARY:🏄 第5-8天：万宁 · 冲浪天堂
+DESCRIPTION:📍 日月湾冲浪、石梅湾、兴隆咖啡庄园、加井岛\n🍜 兴隆咖啡、南洋风味糕点、东山羊\n🏨 日月湾冲浪营地\n📝 早上冲浪课（日月湾是国内最佳冲浪点之一），下午兴隆喝咖啡，傍晚石梅湾沙滩。加井岛浮潜一日游，珊瑚和热带鱼绝美。
+LOCATION:博鳌 → 万宁
+CATEGORIES:东线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240809
+DTEND;VALUE=DATE:20240811
+SUMMARY:🏖️ 第9-10天：陵水 · 清水湾
+DESCRIPTION:📍 清水湾、分界洲岛、南湾猴岛、疍家渔排\n🍜 陵水酸粉、疍家海鲜粥\n🏨 清水湾度假酒店\n📝 分界洲岛潜水绝佳，水质清澈度海南第一。疍家渔排吃海鲜，坐渔船体验水上人家生活。清水湾沙滩人少沙细。
+LOCATION:万宁 → 陵水
+CATEGORIES:东线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240811
+DTEND;VALUE=DATE:20240817
+SUMMARY:🌴 第11-16天：三亚 · 热带天堂
+DESCRIPTION:📍 南山寺108米海上观音、天涯海角、蜈支洲岛、亚龙湾、鹿回头、三亚千古情\n🍜 第一市场海鲜加工、抱罗粉、水果炒冰、椰子鸡\n🏨 大东海或三亚湾\n📝 D1南山寺+天涯海角日落\nD2蜈支洲岛一日游+深潜\nD3亚龙湾沙滩+森林公园\nD4鹿回头公园+第一市场\nD5三亚千古情+泡酒店泳池\nD6自由放松日
+LOCATION:陵水 → 三亚
+CATEGORIES:东线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240817
+DTEND;VALUE=DATE:20240819
+SUMMARY:🧂 第17-18天：乐东 · 莺歌海盐场
+DESCRIPTION:📍 莺歌海盐场、龙沐湾、尖峰岭国家森林公园\n🍜 黄流老鸭、乐东芒果、莺歌海鱼汤\n🏨 龙沐湾度假酒店\n📝 莺歌海盐场是中国南方最大盐场，日出日落时盐田倒映天空像天空之镜。尖峰岭热带雨林徒步，中国最美十大森林之一。
+LOCATION:三亚 → 乐东
+CATEGORIES:西线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240819
+DTEND;VALUE=DATE:20240821
+SUMMARY:🌬️ 第19-20天：东方 · 鱼鳞洲风车海岸
+DESCRIPTION:📍 鱼鳞洲、风车海岸、白查村船形屋（黎族古村落）\n🍜 东方烤乳猪、四更烤鸭\n🏨 东方市区酒店\n📝 鱼鳞洲白色灯塔+巨型风车阵，日落时分绝美出片。白查村是中国最后一批船形屋古村落，黎族文化遗产。
+LOCATION:乐东 → 东方
+CATEGORIES:西线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240821
+DTEND;VALUE=DATE:20240824
+SUMMARY:🏺 第21-23天：儋州 · 千年古盐田
+DESCRIPTION:📍 千年古盐田、东坡书院、松涛水库、石花水洞\n🍜 儋州米烂、光村沙虫、松涛水库鳙鱼\n🏨 那大镇酒店\n📝 千年古盐田仍在用唐代工艺晒盐。东坡书院是苏东坡贬谪海南时的讲学之地。儋州米烂是灵魂食物，一定要找路边老店吃。
+LOCATION:东方 → 儋州
+CATEGORIES:西线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240824
+DTEND;VALUE=DATE:20240826
+SUMMARY:🐟 第24-25天：临高 · 临高角
+DESCRIPTION:📍 临高角解放公园、金牌湾、临高文庙\n🍜 临高烤乳猪（海南第一名猪）、土窑海鲜\n🏨 金牌湾度假村\n📝 临高角是海南岛最北端，解放军渡海登陆点。临高烤乳猪是海南烤乳猪天花板，皮脆肉嫩，一定要趁热吃。
+LOCATION:儋州 → 临高
+CATEGORIES:西线
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240826
+DTEND;VALUE=DATE:20240831
+SUMMARY:🏁 第26-30天：返回海口 · 休整告别
+DESCRIPTION:📍 海口骑楼老街、火山口地质公园、假日海滩、冯小刚电影公社\n🍜 辣汤饭、老爸茶（恒兴发茶店）、海南粉、清补凉\n🏨 海口市区\n📝 最后几天节奏放缓，深度逛海口。骑楼老街喝老爸茶，感受南洋风情。火山口徒步。第30天晚上全员聚餐，海鲜大排档告别宴。🎉
+LOCATION:临高 → 海口
+CATEGORIES:东线
+END:VEVENT
+
+END:VCALENDAR

@@ -1,0 +1,199 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//Four Seasons Farming Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:四季农事日历
+X-WR-CALDESC:以二十四节气为纲的传统农事日历，涵盖春耕、夏耘、秋收、冬藏四季农事活动。融合祖辈农耕智慧与现代数字提醒。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240204
+DTEND;VALUE=DATE:20240205
+SUMMARY:🌱 立春·备耕
+DESCRIPTION:奶奶说："立春一日，百草回芽。备耕宜早，农具先行。"\n\n📋 农事清单：\n- 检修犁、耙、锄、镰等农具，打磨上油\n- 清理仓库，盘点种子存量\n- 制定全年种植计划，按地块分配作物\n- 检查灌溉水渠，修补冬季冻裂处\n- 购买农资：种子、肥料、农膜
+LOCATION:仓库 / 工具间
+CATEGORIES:春耕
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240219
+DTEND;VALUE=DATE:20240220
+SUMMARY:💧 雨水·修渠
+DESCRIPTION:奶奶说："雨水修渠，晴备雨伞。沟沟相通，旱涝不慌。"\n\n📋 农事清单：\n- 疏通田间排水沟和灌溉渠\n- 检查田埂是否有漏洞或塌陷\n- 清理水塘淤泥，扩大蓄水量\n- 检修水泵和水管\n- 低洼地块开沟防渍
+LOCATION:田间 / 水渠
+CATEGORIES:春耕
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240305
+DTEND;VALUE=DATE:20240306
+SUMMARY:🌿 惊蛰·育苗
+DESCRIPTION:奶奶说："惊蛰育苗，春分下种。秧好半年粮，苗壮七分收。"\n\n📋 农事清单：\n- 水稻种子浸种催芽（温水浸泡24小时）\n- 搭建育苗棚或整理育苗床\n- 茄子、辣椒、番茄等蔬菜育苗\n- 配制育苗营养土（园土:腐熟粪肥 = 3:1）\n- 注意保温防寒，惊蛰仍有倒春寒
+LOCATION:育苗棚 / 温室
+CATEGORIES:春耕
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240320
+DTEND;VALUE=DATE:20240321
+SUMMARY:🌾 春分·播种
+DESCRIPTION:奶奶说："春分麦起身，一刻值千金。"\n\n📋 农事清单：\n- 早稻播种育秧，注意秧田水肥管理\n- 春玉米、春大豆等旱地作物播种\n- 蔬菜直播：菠菜、茼蒿、小青菜\n- 果园施春肥，促进萌芽\n- 茶树追施催芽肥
+LOCATION:秧田 / 旱地
+CATEGORIES:春耕
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240404
+DTEND;VALUE=DATE:20240405
+SUMMARY:🫘 清明·种瓜点豆
+DESCRIPTION:奶奶说："清明前后，种瓜点豆。南瓜粪堆旁，豇豆靠南墙。"\n\n📋 农事清单：\n- 南瓜、黄瓜、丝瓜等瓜类播种\n- 豇豆、四季豆、毛豆等豆类播种\n- 玉米、花生、芝麻等春播作物\n- 茶园采制明前茶\n- 果树授粉与疏花
+LOCATION:菜园 / 旱地
+CATEGORIES:春耕
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240419
+DTEND;VALUE=DATE:20240420
+SUMMARY:🌾 谷雨·插秧
+DESCRIPTION:奶奶说："谷雨插秧，一日三行。手快不如时节准。"\n\n📋 农事清单：\n- 早稻大田插秧，确保秧龄30-35天\n- 秧苗带土移栽，减少缓苗时间\n- 栽插密度：行距20cm，株距15cm\n- 插秧后3天内保持浅水层\n- 棉苗移栽，注意防治地老虎
+LOCATION:水田
+CATEGORIES:春耕
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240505
+DTEND;VALUE=DATE:20240506
+SUMMARY:☀️ 立夏·除草追肥
+DESCRIPTION:奶奶说："立夏三天忙除草，芒种之前追遍肥。草荒一亩，饿肚三天。"\n\n📋 农事清单：\n- 水稻返青后第一次中耕除草\n- 追施分蘖肥（尿素5-8kg/亩）\n- 旱地作物松土培土\n- 茶园春茶后修剪追肥\n- 果园套袋前喷药防病虫
+LOCATION:水田 / 旱地
+CATEGORIES:夏耘
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240605
+DTEND;VALUE=DATE:20240606
+SUMMARY:🌾 芒种·收麦种稻
+DESCRIPTION:奶奶说："芒种忙忙种，收麦又插秧。芒种无闲人，老小齐上阵。"\n\n📋 农事清单：\n- 冬小麦抢晴收割、脱粒、晾晒\n- 晚稻播种育秧或直播\n- 夏玉米、夏大豆抢时播种\n- 早稻田间管理：晒田控蘖\n- 注意天气预报，避开降雨抢收
+LOCATION:麦田 / 水田
+CATEGORIES:夏耘
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240621
+DTEND;VALUE=DATE:20240622
+SUMMARY:🌊 夏至·防旱排涝
+DESCRIPTION:奶奶说："夏至东南风，当心塘底空。蓄水如蓄粮，排涝如救命。"\n\n📋 农事清单：\n- 检查蓄水塘库水位，适时补水\n- 清理排水沟渠，防范暴雨内涝\n- 早稻抽穗扬花期保持水层\n- 旱地作物覆盖保墒\n- 检修排灌设备
+LOCATION:田间 / 水塘
+CATEGORIES:夏耘
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240706
+DTEND;VALUE=DATE:20240707
+SUMMARY:🐛 小暑·除虫
+DESCRIPTION:奶奶说："小暑不除虫，秋收一场空。草木灰拌石灰，赛过农药不伤地。"\n\n📋 农事清单：\n- 水稻查治稻飞虱、稻纵卷叶螟\n- 旱地查治玉米螟、蚜虫、红蜘蛛\n- 土法防虫：草木灰+石灰（1:1）撒施叶面\n- 检查诱虫灯和粘虫板\n- 果园防治食心虫和螨类
+LOCATION:田间
+CATEGORIES:夏耘
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240722
+DTEND;VALUE=DATE:20240723
+SUMMARY:🌞 大暑·双抢
+DESCRIPTION:奶奶说："大暑到，双抢忙。早稻抢收，晚稻抢插，一刻不能等。"\n\n📋 农事清单：\n- 早稻抢晴收割、脱粒、晾晒入库\n- 晚稻抢时整地、插秧\n- 双抢期间注意防暑降温\n- 收割后稻草还田或堆肥\n- 检查粮仓防虫防鼠防潮
+LOCATION:水田 / 晒场
+CATEGORIES:夏耘
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240807
+DTEND;VALUE=DATE:20240808
+SUMMARY:🍂 立秋·晒秋
+DESCRIPTION:奶奶说："立秋晒秋，晒的是粮，更是日头。秋阳贵如金，一日不可废。"\n\n📋 农事清单：\n- 收割的玉米、辣椒等挂晒脱水\n- 棉花开始采摘、晾晒\n- 晚稻追施穗肥\n- 秋菜播种：萝卜、白菜、秋菠菜\n- 清理晒场，准备秋收大忙
+LOCATION:晒场 / 庭院
+CATEGORIES:秋收
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240822
+DTEND;VALUE=DATE:20240823
+SUMMARY:🌽 处暑·收玉米
+DESCRIPTION:奶奶说："处暑收玉米，棒子要掰净。地里落一穗，灶里少一碗。"\n\n📋 农事清单：\n- 春玉米全面收获、脱粒、晾晒\n- 玉米秸秆收割、粉碎做饲料或堆肥\n- 晚稻田间管理，注意水肥\n- 芝麻、花生等油料作物收获\n- 收后耕地晾晒，准备秋播
+LOCATION:旱地 / 晒场
+CATEGORIES:秋收
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240907
+DTEND;VALUE=DATE:20240908
+SUMMARY:🌸 白露·采棉
+DESCRIPTION:奶奶说："白露棉花朵朵开，采摘要趁晴日来。露水未干不动手，棉花品相才好看。"\n\n📋 农事清单：\n- 棉花分批采摘，先开先摘\n- 采摘后分拣分级晾晒\n- 晚稻灌浆期保持水层\n- 秋菜定植：大白菜、花菜、甘蓝\n- 茶园秋茶采摘
+LOCATION:棉田 / 菜园
+CATEGORIES:秋收
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240922
+DTEND;VALUE=DATE:20240923
+SUMMARY:🌾 秋分·收稻
+DESCRIPTION:奶奶说："秋分收稻，一粒归仓。秋分无闲田，收完稻子种麦忙。"\n\n📋 农事清单：\n- 晚稻大面积收割、脱粒\n- 稻谷及时晾晒，含水率降至14%以下\n- 稻草收集堆放，备作冬季饲料或堆肥\n- 收割后翻耕土地\n- 冬小麦、油菜播种准备
+LOCATION:水田 / 晒场
+CATEGORIES:秋收
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241023
+DTEND;VALUE=DATE:20241024
+SUMMARY:🍠 霜降·收红薯
+DESCRIPTION:奶奶说："霜降收薯，薯甜如蜜。留种要选，来年不愁。薯皮破一点，一窖烂半年。"\n\n📋 农事清单：\n- 红薯抢在霜前收获\n- 选留种薯：个头匀称、无伤无病\n- 红薯入窖贮藏（窖温12-15°C）\n- 萝卜、胡萝卜收获\n- 果树施基肥、涂白防寒
+LOCATION:旱地 / 地窖
+CATEGORIES:秋收
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241107
+DTEND;VALUE=DATE:20241108
+SUMMARY:🏠 立冬·贮粮
+DESCRIPTION:奶奶说："立冬贮粮，仓满不慌。防虫防鼠防潮气，一粒粮食一滴滴汗。"\n\n📋 农事清单：\n- 所有粮食翻晒后密封入库\n- 粮仓放置防虫药包和捕鼠器具\n- 蔬菜入窖：白菜、萝卜分层码放\n- 农田冬灌，冻死越冬害虫\n- 塑料大棚覆膜，准备冬季蔬菜生产
+LOCATION:粮仓 / 储藏室
+CATEGORIES:冬藏
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241122
+DTEND;VALUE=DATE:20241123
+SUMMARY:🥬 小雪·腌菜
+DESCRIPTION:奶奶说："小雪腌菜，大雪腌肉。十斤菜七两盐，一把花椒几片香叶，腌出来的菜脆生生。"\n\n📋 农事清单：\n- 雪里蕻、芥菜、萝卜等收获腌制\n- 腌菜方子：10斤菜 + 7两盐 + 花椒 + 香叶\n- 酸菜入缸压实，加水密封发酵\n- 大棚蔬菜保温防冻\n- 果园清园，剪除病虫枝
+LOCATION:厨房 / 庭院
+CATEGORIES:冬藏
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241221
+DTEND;VALUE=DATE:20241222
+SUMMARY:🔧 冬至·积肥修农具
+DESCRIPTION:奶奶说："冬至大如年。积肥修农具，来年好种田。冬天多积一担肥，秋天多打一石粮。"\n\n📋 农事清单：\n- 清理畜圈厩肥，堆制发酵\n- 收集草木灰、塘泥、落叶沤肥\n- 全面检修农具：犁铧淬火、锄把更换\n- 编制竹筐、簸箕等农用器具\n- 兴修农田水利：挖塘泥、筑田埂
+LOCATION:工具间 / 畜圈
+CATEGORIES:冬藏
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20250105
+DTEND;VALUE=DATE:20250106
+SUMMARY:🌳 小寒·果树修剪
+DESCRIPTION:奶奶说："小寒剪枝，大寒追肥。枝不修不结果，人不勤不丰收。"\n\n📋 农事清单：\n- 落叶果树冬季修剪整形\n- 剪除枯枝、病虫枝、交叉枝\n- 大伤口涂保护剂防病菌侵入\n- 果园翻土，冻死越冬虫卵\n- 检查果树防寒包扎是否完好
+LOCATION:果园
+CATEGORIES:冬藏
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20250120
+DTEND;VALUE=DATE:20250121
+SUMMARY:📋 大寒·年终盘点和来年计划
+DESCRIPTION:奶奶说："大寒一过，又是一年。盘盘收成账，算算来年粮。吃不穷穿不穷，算计不到一世穷。"\n\n📋 农事清单：\n- 全年收成盘点：粮食、蔬菜、经济作物产量\n- 对照奶奶的老账本做对比分析\n- 种子库存盘点，列出需采购品种\n- 制定来年种植计划和轮作方案\n- 农资采购预算和农事日历更新\n- 吃碗热腾腾的红豆糯米饭，迎接又一个春天 🌱
+LOCATION:家中 / 办公室
+CATEGORIES:冬藏
+END:VEVENT
+
+END:VCALENDAR

@@ -1,0 +1,133 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//Freelancer Project Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:自由职业项目管理日历
+X-WR-CALDESC:深度工作、客户沟通、项目节点、财务日、休息日——自由职业者可持续工作节奏的时间管理系统。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Shanghai:20240701T080000
+DTEND;TZID=Asia/Shanghai:20240701T110000
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+SUMMARY:🧠 深度工作时间块
+DESCRIPTION:不可打扰的专注时段。\n📵 手机静音、关闭微信通知、不查看邮件。\n📋 周一/三：项目A品牌设计\n周二/四：项目B网站对接\n周五：项目C创意提案\n🕐 使用番茄工作法：55分钟专注 + 5分钟休息。\n☕ 提前准备好咖啡/茶和水。
+LOCATION:家庭办公室
+CATEGORIES:深度工作
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Shanghai:20240701T140000
+DTEND;TZID=Asia/Shanghai:20240701T160000
+RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR
+SUMMARY:📧 客户沟通窗口
+DESCRIPTION:集中处理对外沟通。\n- 回复微信和邮件\n- 项目进度同步\n- 安排下周会议\n- 处理客户反馈和修改意见\n⏰ 单条消息控制在5分钟内回复完。\n📝 需要长时间讨论的复杂事项安排到会议日。
+LOCATION:家庭办公室
+CATEGORIES:沟通
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Shanghai:20240701T140000
+DTEND;TZID=Asia/Shanghai:20240701T170000
+RRULE:FREQ=WEEKLY;BYDAY=TU,TH
+SUMMARY:🤝 会议日 — 客户会议集中时段
+DESCRIPTION:周二和周四下午为会议日。\n所有线上提案、进度同步、需求变更讨论集中安排。\n每个会议控制在30-45分钟。\n会前10分钟发Agenda，会后即时整理Action Items。\n其他工作日不接受会议请求（紧急情况除外）。
+LOCATION:线上会议 / 客户办公室
+CATEGORIES:沟通
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240715
+DTEND;VALUE=DATE:20240716
+SUMMARY:🎨 项目A：品牌视觉设计初稿交付
+DESCRIPTION:客户：品牌方\n交付物：Logo方案3个 + 配色方案 + 品牌字体建议\n交付后预留一周客户反馈时间。\n\N交付前24小时做最终自查：\n- 所有方案在不同尺寸下可辨识\n- 配色方案已做色盲友好测试
+LOCATION:家庭办公室
+CATEGORIES:项目
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240731
+DTEND;VALUE=DATE:20240801
+SUMMARY:🌐 项目B：电商网站开发对接上线
+DESCRIPTION:客户：电商客户\n与开发团队确认最终上线checklist：\n- 移动端适配\n- 支付流程测试\n- SEO meta标签\n- 404页面和sitemap\n- 上线后48小时密切监控
+LOCATION:线上
+CATEGORIES:项目
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240815
+DTEND;VALUE=DATE:20240816
+SUMMARY:📄 项目C：商业计划书排版提交
+DESCRIPTION:客户：创业公司\n排版完成，提交PDF和源文件。\n☑ 最终检查清单：\n- 图表编号和图注对应\n- 页码和目录一致\n- 所有外部链接可点击\n- 字体嵌入PDF
+LOCATION:家庭办公室
+CATEGORIES:项目
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240901
+DTEND;VALUE=DATE:20240902
+SUMMARY:💰 月度财务日 — 整理收支+开具发票+核对社保
+DESCRIPTION:每月1号财务例行。\n📋 任务清单：\n1. 整理上月所有收入和支出记录\n2. 给已完成项目的客户开具电子发票\n3. 核算个税和社保缴纳金额\n4. 更新月度收支报表\n5. 检查是否有未收回的应收账款\n💡 使用记账App扫描发票，即时归档。
+LOCATION:家庭办公室
+CATEGORIES:财务
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Shanghai:20240705T160000
+DTEND;TZID=Asia/Shanghai:20240705T170000
+RRULE:FREQ=WEEKLY;BYDAY=FR
+SUMMARY:📊 每周回顾 + 下周计划
+DESCRIPTION:每周五下午收尾仪式。\n📋 回顾清单：\n1. 本周完成了什么？\n2. 哪些任务延期了？原因是什么？\n3. 更新项目甘特图/Kanban\n4. 安排下周每日任务优先级\n5. 清理桌面和电脑桌面文件\n💡 未完成的任务不要自责，分析原因后重新排期即可。
+LOCATION:家庭办公室
+CATEGORIES:复盘
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240707
+DTEND;VALUE=DATE:20240708
+RRULE:FREQ=WEEKLY;BYDAY=SU
+SUMMARY:🌿 休息日 — 不回工作消息
+DESCRIPTION:周日全天不处理任何工作事务。\n📵 关闭工作微信通知。\n📖 建议活动：\n- 读一本和工作无关的书\n- 出门散步或骑行\n- 和亲友吃一顿不赶时间的饭\n- 做一顿复杂的菜\n⚠ 这一天的边界保护好，其他六天才能高效运转。
+LOCATION:任何不是办公室的地方
+CATEGORIES:休息
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240706
+DTEND;VALUE=DATE:20240707
+RRULE:FREQ=WEEKLY;BYDAY=SA
+SUMMARY:📚 技能学习日 — 周六上午自我提升
+DESCRIPTION:周六上午9-12点为固定学习时间。\n📖 技能路线（按月轮换）：\n- 7月：学习Blender 3D基础\n- 8月：TypeScript进阶\n- 9月：用户研究方法论\n💡 自由职业者的技能就是护城河，持续学习是最好的客户开发策略。
+LOCATION:家庭办公室 / 咖啡馆
+CATEGORIES:学习
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240925
+DTEND;VALUE=DATE:20240926
+SUMMARY:🗺️ 季度规划日 — 回顾Q3 + 规划Q4
+DESCRIPTION:每季度最后一周的周三为规划日。\n📋 回顾清单：\n1. Q3总收入与项目类型分析\n2. 哪些项目利润最高？哪些客户最契合？\n3. Q4目标设定（收入、项目类型、技能提升）\n4. 是否需要调整费率？\n5. 更新作品集和个人网站\n💡 把自己当成一个产品来迭代。
+LOCATION:家庭办公室
+CATEGORIES:规划
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240820
+DTEND;VALUE=DATE:20240821
+SUMMARY:🎤 项目A/B/C：客户演示与季度汇报
+DESCRIPTION:向主要客户进行季度成果演示。\n📋 准备清单：\n- 项目进度可视化PPT\n- 关键数据和KPI汇报\n- 下一阶段计划预览\n- 收集客户反馈和期望调整\n📍 线上进行，控制30分钟内完成。
+LOCATION:线上会议
+CATEGORIES:项目
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240930
+DTEND;VALUE=DATE:20241001
+SUMMARY:🔍 年度项目回顾 — 所有项目复盘
+DESCRIPTION:Q3结束，对所有完成项目进行复盘。\n📋 复盘维度：\n- 预估工时 vs 实际工时\n- 项目利润率和ROI\n- 客户满意度\n- 可复用的经验和踩过的坑\n- 是否值得和该客户长期合作\n💡 每年淘汰20%低价值项目，把时间留给更好的机会。
+LOCATION:家庭办公室
+CATEGORIES:复盘
+END:VEVENT
+
+END:VCALENDAR

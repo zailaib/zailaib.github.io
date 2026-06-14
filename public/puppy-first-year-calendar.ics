@@ -1,0 +1,140 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//Puppy First Year Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:幼犬第一年养育日历
+X-WR-CALDESC:从接回家的第一天到一周岁生日，涵盖疫苗、驱虫、换牙、训练、绝育等完整养育节点。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240501
+DTEND;VALUE=DATE:20240502
+SUMMARY:🏠 接豆豆回家日（8周龄）
+DESCRIPTION:金毛寻回犬，公，出生日期约2024年3月1日。\n犬舍已打第一针卫佳伍（六联）。\n准备物品：围栏、航空箱、尿垫、过渡粮、食盆、饮水器、磨牙玩具。\n到家后让幼犬慢慢适应，不要过度打扰。\n当晚开始记录饮食和排便情况。
+LOCATION:家中
+CATEGORIES:里程碑
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240501
+DTEND;VALUE=DATE:20240601
+RRULE:FREQ=DAILY
+SUMMARY:🏠 室内定点大小便训练
+DESCRIPTION:幼犬饭后15-30分钟、睡醒后、玩耍后带至指定地点。\n在尿垫或狗厕所上排便后立即奖励零食。\n尿错不要惩罚，默默清理并加强引导。\n逐渐将尿垫向门口方向移动，为户外排便过渡。
+LOCATION:家中
+CATEGORIES:训练
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240515
+DTEND;VALUE=DATE:20240516
+SUMMARY:💉 第二针疫苗（卫佳伍六联）
+DESCRIPTION:与第一针间隔21天。\n注射前确认幼犬精神食欲排便正常。\n注射后观察30分钟，当天不洗澡、不剧烈运动。\n可能出现轻微嗜睡或食欲下降，通常1-2天恢复。
+LOCATION:宠物医院
+CATEGORIES:疫苗
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240501
+DTEND;VALUE=DATE:20241101
+RRULE:FREQ=MONTHLY;INTERVAL=1
+SUMMARY:💊 体内驱虫（月度）
+DESCRIPTION:6月龄以下每月一次体内驱虫。\n空腹或饭后2小时喂药。\n按体重计算剂量。\n驱虫后观察粪便是否有虫体排出。\n推荐药物：拜耳拜宠清或犬心保。
+LOCATION:家中
+CATEGORIES:驱虫
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240501
+DTEND;VALUE=DATE:20241201
+RRULE:FREQ=MONTHLY;INTERVAL=1
+SUMMARY:🪲 体外驱虫（月度）
+DESCRIPTION:春夏秋季每月一次体外驱虫。\n滴剂滴于后颈皮肤（肩胛骨之间）。\n滴后48小时不洗澡。\n预防跳蚤、蜱虫、耳螨。\n推荐：福来恩滴剂或拜耳爱沃克。
+LOCATION:家中
+CATEGORIES:驱虫
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240605
+DTEND;VALUE=DATE:20240606
+SUMMARY:💉 第三针疫苗（卫佳伍六联）+ 狂犬疫苗
+DESCRIPTION:最后一针六联，可同日注射狂犬疫苗。\n注射后约2周产生充分免疫力。\n此后每年加强一针六联+狂犬。\n注射后领取免疫证，办理犬证所需。
+LOCATION:宠物医院
+CATEGORIES:疫苗
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240615
+DTEND;VALUE=DATE:20240831
+SUMMARY:🦷 换牙期 — 准备磨牙玩具
+DESCRIPTION:约3.5-6月龄开始换牙。\n乳牙脱落、恒牙萌出。\n收好鞋子、电线等危险物品。\n提供充足磨牙玩具：Kong漏食球、牛筋棒、鹿角。\n每周检查牙齿，确认乳牙按时脱落。\n如乳犬齿滞留（双排牙）需就医拔除。
+LOCATION:家中
+CATEGORIES:健康
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240620
+DTEND;VALUE=DATE:20240621
+SUMMARY:🌳 第一次户外散步
+DESCRIPTION:第三针疫苗后约2周，抗体水平充足可安全出门。\n从安静街道开始，每次15分钟，逐步延长。\n使用胸背带而非项圈，保护幼犬气管。\n携带零食用于正向强化。\n避开高温地面（用手背测试地面温度）。
+LOCATION:小区 / 附近公园
+CATEGORIES:训练
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240501
+DTEND;VALUE=DATE:20240901
+RRULE:FREQ=WEEKLY;BYDAY=SA
+SUMMARY:🎓 社会化训练（每周六）
+DESCRIPTION:黄金窗口：3-16周龄。\n本周主题轮换：\n- 接触不同的人（戴帽子、穿制服、骑自行车）\n- 接触不同的狗（已免疫、性格温和的成年犬）\n- 适应声音（吸尘器、门铃、雷声录音）\n- 适应环境（电梯、楼梯、不同地面材质）\n- 基本服从：坐、卧、等、来
+LOCATION:家中 / 公园 / 宠物友好商场
+CATEGORIES:训练
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20240701
+DTEND;VALUE=DATE:20240702
+SUMMARY:🍖 换粮过渡 — 幼犬粮更换
+DESCRIPTION:从过渡粮逐步换为选定品牌幼犬粮。\n7日换粮法：第1-2天 25%新+75%旧，第3-4天 50%+50%，第5-6天 75%+25%，第7天 100%新。\n观察粪便情况，软便则放慢过渡速度。\n金毛幼犬建议选择大型犬幼犬粮。
+LOCATION:家中
+CATEGORIES:营养
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241101
+DTEND;VALUE=DATE:20241102
+SUMMARY:🏥 绝育手术日（8月龄）
+DESCRIPTION:术前12小时禁食、4小时禁水。\n术前血常规和生化检查。\n手术后佩戴伊丽莎白圈防止舔伤口。\n术后当天可能会昏昏欲睡、走路不稳。\n限制运动7-10天，避免跳跃和奔跑。\n术后2周拆线。\n术后基础代谢率下降，需适当减少喂食量防止发胖。
+LOCATION:宠物医院
+CATEGORIES:健康
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20241115
+DTEND;VALUE=DATE:20241116
+SUMMARY:🩹 拆线 + 术后复查
+DESCRIPTION:术后2周拆线。\n兽医检查伤口愈合情况。\n确认一切正常后逐渐恢复正常运动量。\n咨询兽医术后饮食调整建议。
+LOCATION:宠物医院
+CATEGORIES:健康
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20250101
+DTEND;VALUE=DATE:20250102
+SUMMARY:🍖 换粮过渡 — 幼犬粮转成犬粮
+DESCRIPTION:金毛大型犬约10-12月龄换为成犬粮。\n使用7日换粮法逐步过渡。\n大型犬成犬粮注意关节保健配方（含葡萄糖胺和软骨素）。\n每日喂食量根据体重和运动量调整，分早晚两餐。
+LOCATION:家中
+CATEGORIES:营养
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20250301
+DTEND;VALUE=DATE:20250302
+SUMMARY:🎂 豆豆一周岁生日！
+DESCRIPTION:生日快乐豆豆！🎉\n\n📋 一岁健康检查项目：\n- 年度加强疫苗（六联+狂犬）\n- 血常规、生化检查\n- 髋关节X光筛查（金毛易发髋关节发育不良）\n- 牙齿检查和洁牙评估\n- 体重和体况评分\n\n🍰 订宠物友好生日蛋糕，邀请豆豆的狗狗朋友们来庆祝！
+LOCATION:宠物医院 + 家中
+CATEGORIES:里程碑
+END:VEVENT
+
+END:VCALENDAR
