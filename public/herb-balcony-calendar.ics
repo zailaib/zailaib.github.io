@@ -92,6 +92,11 @@ SUMMARY:🌿 罗勒首次采摘日
 DESCRIPTION:从顶部往下数第三对叶片上方剪断。保留底部2-3对叶片用于光合作用。采摘后2周可再次采收。新鲜罗勒可制作青酱或直接入菜。
 LOCATION:阳台
 CATEGORIES:采收
+BEGIN:VALARM
+TRIGGER:-PT120M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🌿 罗勒首次采摘日
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -120,6 +125,11 @@ SUMMARY:🌿 薄荷首次采摘日
 DESCRIPTION:采摘顶部嫩茎和叶片。留至少2/3的叶片保证植株健康。新鲜薄荷可泡茶、调酒、做甜品。采摘促进分枝，越采越茂盛。
 LOCATION:阳台
 CATEGORIES:采收
+BEGIN:VALARM
+TRIGGER:-PT120M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🌿 薄荷首次采摘日
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -129,6 +139,11 @@ SUMMARY:🌿 迷迭香首次可采摘
 DESCRIPTION:迷迭香生长缓慢，约种植后4-5个月可少量采摘。剪取顶部10-15cm嫩枝。每次不超过植株总量的1/4。可用于烤肉、烤蔬菜调味。
 LOCATION:阳台
 CATEGORIES:采收
+BEGIN:VALARM
+TRIGGER:-PT120M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🌿 迷迭香首次可采摘
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT

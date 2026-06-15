@@ -14,6 +14,11 @@ SUMMARY:🚗 第1-2天：海口出发 · 文昌
 DESCRIPTION:📍 目的地：文昌东郊椰林、石头公园、航天发射场\n🍜 必吃：文昌鸡（白切）、椰奶鸡、清补凉\n🏨 住宿：东郊椰林附近民宿\n📝 东郊椰林下午茶，傍晚海边看日落。第二天上午参观航天发射场，下午石头公园看火山岩海蚀地貌。
 LOCATION:海口 → 文昌
 CATEGORIES:东线
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🚗 第1-2天：海口出发 · 文昌
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -95,6 +100,11 @@ SUMMARY:🏁 第26-30天：返回海口 · 休整告别
 DESCRIPTION:📍 海口骑楼老街、火山口地质公园、假日海滩、冯小刚电影公社\n🍜 辣汤饭、老爸茶（恒兴发茶店）、海南粉、清补凉\n🏨 海口市区\n📝 最后几天节奏放缓，深度逛海口。骑楼老街喝老爸茶，感受南洋风情。火山口徒步。第30天晚上全员聚餐，海鲜大排档告别宴。🎉
 LOCATION:临高 → 海口
 CATEGORIES:东线
+BEGIN:VALARM
+TRIGGER:-PT120M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🏁 第26-30天：返回海口 · 休整告别
+END:VALARM
 END:VEVENT
 
 END:VCALENDAR

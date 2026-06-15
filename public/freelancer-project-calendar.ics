@@ -44,6 +44,11 @@ SUMMARY:🎨 项目A：品牌视觉设计初稿交付
 DESCRIPTION:客户：品牌方。交付物：Logo方案3个 + 配色方案 + 品牌字体建议。交付后预留一周客户反馈时间。交付前24小时做最终自查：所有方案在不同尺寸下可辨识、配色方案已做色盲友好测试。
 LOCATION:家庭办公室
 CATEGORIES:项目
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:截稿提醒：🎨 项目A：品牌视觉设计初稿交付
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -53,6 +58,11 @@ SUMMARY:🌐 项目B：电商网站开发对接上线
 DESCRIPTION:客户：电商客户。与开发团队确认最终上线checklist：移动端适配、支付流程测试、SEO meta标签、404页面和sitemap、上线后48小时密切监控。
 LOCATION:线上
 CATEGORIES:项目
+BEGIN:VALARM
+TRIGGER:-PT4320M
+ACTION:DISPLAY
+DESCRIPTION:上线提醒：🌐 项目B：电商网站开发对接上线
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -62,6 +72,11 @@ SUMMARY:📄 项目C：商业计划书排版提交
 DESCRIPTION:客户：创业公司。排版完成，提交PDF和源文件。最终检查清单：图表编号和图注对应、页码和目录一致、所有外部链接可点击、字体嵌入PDF。
 LOCATION:家庭办公室
 CATEGORIES:项目
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:截稿提醒：📄 项目C：商业计划书排版提交
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -71,6 +86,11 @@ SUMMARY:💰 月度财务日 — 整理收支+开具发票+核对社保
 DESCRIPTION:每月1号财务例行。任务清单：1.整理上月所有收入和支出记录 2.给已完成项目的客户开具电子发票 3.核算个税和社保缴纳金额 4.更新月度收支报表 5.检查是否有未收回的应收账款。使用记账App扫描发票，即时归档。
 LOCATION:家庭办公室
 CATEGORIES:财务
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:财务日提醒：💰 月度财务日 — 整理收支+开具发票+核对社保
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT

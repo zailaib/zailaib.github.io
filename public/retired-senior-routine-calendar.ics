@@ -35,6 +35,11 @@ SUMMARY:🍳 早餐+吃药
 DESCRIPTION:小米南瓜粥+蒸山药+坚果一小碟。高钙低盐。饭后吃药：降压药、阿司匹林、钙片+维生素D。药放在固定位置，日历提醒不能关。
 LOCATION:家中
 CATEGORIES:饮食,健康
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🍳 早餐+吃药
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT

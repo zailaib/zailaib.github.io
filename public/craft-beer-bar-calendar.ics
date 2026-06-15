@@ -23,6 +23,11 @@ SUMMARY:📍 最终选址确认 + 签租赁合同
 DESCRIPTION:确认选址：梧桐区法华镇路临街铺面 85㎡。\n📋 合同要点：\n- 押三付一\n- 免租装修期45天\n- 确认可办理餐饮和酒类经营许可\n- 确认上下水和排烟条件\n- 确认电容量（冷库+空调+设备用电约需20kW）\n⚠ 签约前请律师审核合同条款。
 LOCATION:目标铺位
 CATEGORIES:选址
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：📍 最终选址确认 + 签租赁合同
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -86,6 +91,11 @@ SUMMARY:🍻 软开业（Soft Opening）
 DESCRIPTION:仅限邀请的好友和街坊邻居，约50人。\n📋 软开业目标：\n- 测试所有设备在实际运营中的表现\n- 收集真实的客户反馈\n- 让员工熟悉高峰期的节奏\n📝 每人填写反馈表（音乐/灯光/酒单/服务/环境）。\n💰 所有酒水半价。\n💡 软开业的反馈是正式开业前最宝贵的礼物。
 LOCATION:店内
 CATEGORIES:开业
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🍻 软开业（Soft Opening）
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -95,6 +105,11 @@ SUMMARY:🔧 软开业后整改优化
 DESCRIPTION:根据47份反馈表逐项优化。\n📋 常见整改项：\n- 调整音乐音量和风格\n- 优化灯光亮度和色温\n- 更换品脱杯为郁金香杯（IPA类）\n- 酒单增加风味描述和苦度IBU标注\n- 厕所增加品牌和防滑垫\n- 增加无酒精饮品选项\n💡 认真对待每一条反馈，早期客人会成为你最忠实的传播者。
 LOCATION:店内
 CATEGORIES:优化
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🔧 软开业后整改优化
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -104,6 +119,16 @@ SUMMARY:🎉 正式开业！（GRAND OPENING）
 DESCRIPTION:🍻 终于开业了！\n📋 开业日准备：\n- 小黑板手写今日酒单\n- 所有啤酒九折\n- 备足物料（酒杯、纸巾、杯垫）\n- 员工统一着装\n- 社交平台发布开业消息\n💡 不需要花哨的仪式。好啤酒自己会说话。\n🏷️ 今日起，你是一个精酿酒吧老板了。
 LOCATION:店内
 CATEGORIES:里程碑
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🎉 正式开业！（GRAND OPENING）
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🎉 正式开业！（GRAND OPENING）
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT

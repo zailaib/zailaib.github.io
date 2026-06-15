@@ -25,6 +25,11 @@ SUMMARY:🍳 早餐+健康管理
 DESCRIPTION:燕麦/杂粮粥+鸡蛋+青菜。饭后吃药（降压药/降脂药/钙片）。量血压（每周至少3次，数值记日历备注）。55岁后健康不是加分项——是基本盘。
 LOCATION:家中
 CATEGORIES:饮食,健康
+BEGIN:VALARM
+TRIGGER:-PT30M
+ACTION:DISPLAY
+DESCRIPTION:吃药提醒：🍳 早餐+健康管理
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT

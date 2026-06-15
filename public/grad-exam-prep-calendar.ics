@@ -84,6 +84,11 @@ SUMMARY:🖥️ 考研网上正式报名 — 截止日期前完成
 DESCRIPTION:不可错过！登录研招网填写报名信息、上传照片（白底证件照，按规格裁剪）、选择报考点（注意户籍或工作地限制）、缴纳报名费、截图保存报名号和报名信息。尽早报名不要拖到最后一天，系统可能拥堵。
 LOCATION:线上（研招网）
 CATEGORIES:重要节点
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🖥️ 考研网上正式报名 — 截止日期前完成
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -93,6 +98,11 @@ SUMMARY:📸 现场（网上）确认 — 上传材料
 DESCRIPTION:不可错过！上传身份证正反面、学历学位证书（应届生上传学生证）、手持身份证照片、确认报考信息无误。各省确认时间略有不同，关注报考点公告。确认通过后截屏保存确认凭证。
 LOCATION:线上（研招网）
 CATEGORIES:重要节点
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：📸 现场（网上）确认 — 上传材料
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -132,6 +142,11 @@ SUMMARY:🖨️ 打印准考证
 DESCRIPTION:不可错过！登录研招网下载并打印准考证。打印多份备用（至少3份，放不同包里）。核对准考证信息：姓名、照片、考试地点。查看考点地址，提前规划路线。如需订酒店，出准考证当天立即预订。
 LOCATION:线上（研招网）
 CATEGORIES:重要节点
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🖨️ 打印准考证
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -150,6 +165,16 @@ SUMMARY:📝 考研初试！
 DESCRIPTION:12月21日：上午政治（8:30-11:30）下午英语（14:00-17:00）。12月22日：上午数学（8:30-11:30）下午专业课（14:00-17:00）。每天出门前检查：证件袋（准考证+身份证）、笔袋、水。提前1小时到达考点。中午不要在考点外面吃没吃过的东西。你已经准备了六个月，正常发挥就好。考完最后一门：恭喜！去大吃一顿吧 🎉
 LOCATION:考点
 CATEGORIES:考试
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：📝 考研初试！
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：📝 考研初试！
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT

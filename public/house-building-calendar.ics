@@ -41,6 +41,11 @@ SUMMARY:🏛️ 提交规划局审批
 DESCRIPTION:施工图定稿，正式提交规划局。\n📋 提交材料：\n- 建筑方案文本\n- 施工图\n- 土地证或用地许可\n- 邻里签字同意书（如需要）\n⚠ 审批周期通常2-3个月，期间可同步做施工准备。
 LOCATION:规划局
 CATEGORIES:审批
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🏛️ 提交规划局审批
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -50,6 +55,11 @@ SUMMARY:✅ 施工许可证获批！
 DESCRIPTION:拿到施工许可证。\n📋 开工前准备工作：\n- 施工队招标和合同签订\n- 临时水电申请\n- 材料供应商对接\n- 确定开工日期\n🎉 漫长的等待结束，即将动工！
 LOCATION:规划局
 CATEGORIES:审批
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：✅ 施工许可证获批！
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -131,6 +141,11 @@ SUMMARY:🔍 竣工验收 — 第三方验房
 DESCRIPTION:请第三方验房师进行竣工验收。\n📋 验收项目：\n- 墙面平整度和空鼓检查\n- 地面平整度\n- 门窗开关和密封性\n- 水电功能和安全性\n- 防水闭水试验\n📝 所有问题点记录并逐项整改。
 LOCATION:新家
 CATEGORIES:验收
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🔍 竣工验收 — 第三方验房
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -140,6 +155,11 @@ SUMMARY:🚛 搬家日 — 正式入住！
 DESCRIPTION:🏠 终于可以搬进自己建造的家了！\n📋 搬家准备：\n- 提前预定搬家公司\n- 打包标记每个箱子的目标房间\n- 搬家当天准备零食和水\n- 新家第一顿晚餐，值得好好庆祝 🎉\n\n从第一张草图到今天，历时约420天。\n每一道工序都凝聚了心血。\n欢迎回家 🏡
 LOCATION:新家
 CATEGORIES:里程碑
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🚛 搬家日 — 正式入住！
+END:VALARM
 END:VEVENT
 
 END:VCALENDAR

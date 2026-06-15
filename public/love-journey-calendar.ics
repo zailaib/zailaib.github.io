@@ -97,6 +97,11 @@ SUMMARY:💝 一周年纪念日
 DESCRIPTION:在一起整整一年。她送了我一本装订好的小册子，封面写着"过去一年的日历事件"。她把我们标记过的200多条事件全部打印了出来，每一条旁边手写了一个注释。那个册子现在放在床头柜里，是我最重要的东西。晚上回那家居酒屋吃饭，坐在第一张桌子。
 LOCATION:居酒屋
 CATEGORIES:里程碑
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：💝 一周年纪念日
+END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
@@ -132,6 +137,16 @@ SUMMARY:💍 求婚日 — 戒指在内袋里
 DESCRIPTION:回到第一次约会的居酒屋，坐在同一张桌子。没有单膝跪地，没有玫瑰花，没有无人机拉横幅。只是把戒指放在桌上，说："这三年，'我们'的日历里一共有四百多个事件。我想把它们变成一辈子的。你愿意吗？"她看了很久，笑了很久——笑到隔壁桌大叔都开始起哄——然后伸手把戒指拿过去自己戴上了。她说："从今天起，我们的日历分类名字还是不改。就叫'我们'。这个分类本来就没有截止日期。" 💛
 LOCATION:居酒屋（第一张桌子）
 CATEGORIES:里程碑
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：💍 求婚日 — 戒指在内袋里
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：💍 求婚日 — 戒指在内袋里
+END:VALARM
 END:VEVENT
 
 END:VCALENDAR
