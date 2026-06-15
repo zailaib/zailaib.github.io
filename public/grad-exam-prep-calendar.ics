@@ -4,170 +4,170 @@ PRODID:-//Zailab//Grad Exam Prep Calendar//ZH
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 X-WR-CALNAME:考研复习日历
-X-WR-CALDESC:六个月考研初试备考完整规划，涵盖三轮复习、模拟考试、报名节点和考前准备。
+X-WR-CALDESC:六个月考研初试备考完整规划（2026年7-12月），涵盖三轮复习、模拟考试、报名节点和考前准备。导入后可整体平移。
 X-WR-TIMEZONE:Asia/Shanghai
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240701
-DTEND;VALUE=DATE:20240901
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+DTSTART;VALUE=DATE:20260701
+DTEND;VALUE=DATE:20260901
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=20260831
 SUMMARY:📐 上午：数学基础复习（第一轮）
-DESCRIPTION:🔴 第一轮·筑基期（7-8月）\n📖 高数：同济教材逐章精读+课后习题全做\n线代：同济教材+网课视频\n概率论：茆诗松教材\n📝 不会的题用红色标记，回头看第二遍。\n💡 这个阶段不求快，每一个概念都要真正理解。
+DESCRIPTION:第一轮·筑基期（7-8月）。高数：同济教材逐章精读+课后习题全做。线代：同济教材+网课视频。概率论：茆诗松教材。不会的题用红色标记，回头看第二遍。这个阶段不求快，每一个概念都要真正理解。
 LOCATION:图书馆 / 自习室
 CATEGORIES:数学
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240701
-DTEND;VALUE=DATE:20240901
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+DTSTART;VALUE=DATE:20260701
+DTEND;VALUE=DATE:20260901
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=20260831
 SUMMARY:📖 下午：英语 + 专业课（第一轮）
-DESCRIPTION:🔴 第一轮·筑基期（7-8月）\n🇬🇧 英语（14:00-16:00）：\n- 每日1篇真题阅读精读+逐句翻译\n- 每日100个考研词汇（App+手写）\n📗 专业课（16:00-18:00）：\n- 通读参考书目，建立知识框架\n- 每章做思维导图\n💡 精读阅读时不要查单词，先做完题再逐句分析。
+DESCRIPTION:第一轮·筑基期（7-8月）。英语（14:00-16:00）：每日1篇真题阅读精读+逐句翻译、每日100个考研词汇（App+手写）。专业课（16:00-18:00）：通读参考书目，建立知识框架，每章做思维导图。精读阅读时不要查单词，先做完题再逐句分析。
 LOCATION:图书馆 / 自习室
 CATEGORIES:英语,专业课
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240701
-DTEND;VALUE=DATE:20240901
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+DTSTART;VALUE=DATE:20260701
+DTEND;VALUE=DATE:20260901
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=20260831
 SUMMARY:🏛️ 晚上：政治基础（第一轮）
-DESCRIPTION:🔴 第一轮·筑基期（7-8月）\n📖 19:00-21:00\n- 徐涛强化课或肖秀荣精讲精练通读\n- 搭建马原/毛中特/史纲/思修知识框架\n- 每章做配套选择题\n💡 第一轮不要背书，重点是理解和建立框架。\n📝 政治性价比最高的时间投入是选择题。
+DESCRIPTION:第一轮·筑基期（7-8月）。19:00-21:00。徐涛强化课或肖秀荣精讲精练通读。搭建马原/毛中特/史纲/思修知识框架。每章做配套选择题。第一轮不要背书，重点是理解和建立框架。政治性价比最高的时间投入是选择题。
 LOCATION:图书馆 / 自习室
 CATEGORIES:政治
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240901
-DTEND;VALUE=DATE:20241101
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20261101
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=20261031
 SUMMARY:📐 上午：数学强化 + 刷题（第二轮）
-DESCRIPTION:🟡 第二轮·强化期（9-10月）\n📖 李永乐复习全书逐章攻克\n📝 660题+880题配合练习\n📋 建立错题本，分析每个错题的错误类型\n💡 每章结束后做章节自测，低于80分重做。\n⚠ 这个阶段是分数提升最快的时期，不要松懈。
+DESCRIPTION:第二轮·强化期（9-10月）。李永乐复习全书逐章攻克。660题+880题配合练习。建立错题本，分析每个错题的错误类型。每章结束后做章节自测，低于80分重做。这个阶段是分数提升最快的时期，不要松懈。
 LOCATION:图书馆 / 自习室
 CATEGORIES:数学
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240901
-DTEND;VALUE=DATE:20241101
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20261101
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=20261031
 SUMMARY:📖 下午：英语真题 + 专业课背诵（第二轮）
-DESCRIPTION:🟡 第二轮·强化期（9-10月）\n🇬🇧 英语（14:00-16:00）：\n- 完整真题训练（限时）\n- 翻译和完型专项突破\n- 开始整理大小作文模板\n📗 专业课（16:00-18:00）：\n- 开始系统背诵核心考点\n- 做院校历年真题\n💡 英语真题至少做2遍，近10年的做3遍。
+DESCRIPTION:第二轮·强化期（9-10月）。英语（14:00-16:00）：完整真题训练（限时）、翻译和完型专项突破、开始整理大小作文模板。专业课（16:00-18:00）：开始系统背诵核心考点、做院校历年真题。英语真题至少做2遍，近10年的做3遍。
 LOCATION:图书馆 / 自习室
 CATEGORIES:英语,专业课
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240901
-DTEND;VALUE=DATE:20241101
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20261101
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=20261031
 SUMMARY:🏛️ 晚上：政治强化 + 1000题（第二轮）
-DESCRIPTION:🟡 第二轮·强化期（9-10月）\n📖 19:00-21:30\n- 肖秀荣1000题第一遍（全部选择题）\n- 错题整理，回到教材找对应知识点\n- 关注时政热点\n💡 1000题第一遍正确率不用焦虑，关键是错的要搞懂。\n📝 马原部分需要理解，不能死记。
+DESCRIPTION:第二轮·强化期（9-10月）。19:00-21:30。肖秀荣1000题第一遍（全部选择题）。错题整理，回到教材找对应知识点。关注时政热点。1000题第一遍正确率不用焦虑，关键是错的要搞懂。马原部分需要理解，不能死记。
 LOCATION:图书馆 / 自习室
 CATEGORIES:政治
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240713
-DTEND;VALUE=DATE:20240715
-RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=SA,SU
+DTSTART;VALUE=DATE:20260713
+DTEND;VALUE=DATE:20260715
+RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=SA,SU;UNTIL=20261215
 SUMMARY:📝 模拟考试（每两周一次）
-DESCRIPTION:严格按照考研时间模拟：\n周六：上午政治（8:30-11:30）下午英语（14:00-17:00）\n周日：上午数学（8:30-11:30）下午专业课（14:00-17:00）\n📋 考后当天对答案、分析错题。\n💡 模拟考不是为了分数，是为了暴露薄弱点。\n📝 记录每次模考各科得分，追踪进步趋势。
+DESCRIPTION:严格按照考研时间模拟：周六上午政治（8:30-11:30）下午英语（14:00-17:00）周日上午数学（8:30-11:30）下午专业课（14:00-17:00）。考后当天对答案、分析错题。模拟考不是为了分数，是为了暴露薄弱点。记录每次模考各科得分，追踪进步趋势。
 LOCATION:图书馆 / 自习室
 CATEGORIES:模拟考
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20241010
-DTEND;VALUE=DATE:20241011
+DTSTART;VALUE=DATE:20261010
+DTEND;VALUE=DATE:20261011
 SUMMARY:🖥️ 考研网上正式报名 — 截止日期前完成
-DESCRIPTION:⚠ 不可错过！\n📋 报名清单：\n- 登录研招网填写报名信息\n- 上传照片（白底证件照，按规格裁剪）\n- 选择报考点（注意户籍或工作地限制）\n- 缴纳报名费\n- 截图保存报名号和报名信息\n💡 尽早报名不要拖到最后一天，系统可能拥堵。\n📝 报名后下载并保存报名信息表PDF。
+DESCRIPTION:不可错过！登录研招网填写报名信息、上传照片（白底证件照，按规格裁剪）、选择报考点（注意户籍或工作地限制）、缴纳报名费、截图保存报名号和报名信息。尽早报名不要拖到最后一天，系统可能拥堵。
 LOCATION:线上（研招网）
 CATEGORIES:重要节点
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20241105
-DTEND;VALUE=DATE:20241106
+DTSTART;VALUE=DATE:20261105
+DTEND;VALUE=DATE:20261106
 SUMMARY:📸 现场（网上）确认 — 上传材料
-DESCRIPTION:⚠ 不可错过！\n📋 确认清单：\n- 上传身份证正反面\n- 上传学历学位证书（应届生上传学生证）\n- 上传手持身份证照片\n- 确认报考信息无误\n💡 各省确认时间略有不同，关注报考点公告。\n📝 确认通过后截屏保存确认凭证。
+DESCRIPTION:不可错过！上传身份证正反面、学历学位证书（应届生上传学生证）、手持身份证照片、确认报考信息无误。各省确认时间略有不同，关注报考点公告。确认通过后截屏保存确认凭证。
 LOCATION:线上（研招网）
 CATEGORIES:重要节点
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20241101
-DTEND;VALUE=DATE:20241220
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA
+DTSTART;VALUE=DATE:20261101
+DTEND;VALUE=DATE:20261220
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;UNTIL=20261219
 SUMMARY:🔥 上午：数学冲刺 — 真题+错题（第三轮）
-DESCRIPTION:🔵 第三轮·冲刺期（11-12月）\n📖 近15年真题（限时3小时模拟）\n📝 错题本反复刷，直到每道错题都能独立做对\n📋 重点攻克高频考点和自己常错的题型\n💡 真题做到3遍以上，你会看到命题规律。\n⚠ 这个阶段不再学新知识，专注做对已经会的题。
+DESCRIPTION:第三轮·冲刺期（11-12月）。近15年真题（限时3小时模拟）。错题本反复刷，直到每道错题都能独立做对。重点攻克高频考点和自己常错的题型。真题做到3遍以上，你会看到命题规律。这个阶段不再学新知识，专注做对已经会的题。
 LOCATION:图书馆 / 自习室
 CATEGORIES:数学
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20241101
-DTEND;VALUE=DATE:20241220
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA
+DTSTART;VALUE=DATE:20261101
+DTEND;VALUE=DATE:20261220
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;UNTIL=20261219
 SUMMARY:🔥 下午：英语+专业课冲刺（第三轮）
-DESCRIPTION:🔵 第三轮·冲刺期（11-12月）\n🇬🇧 英语：\n- 近10年真题反复刷\n- 作文模板默写到肌肉记忆\n- 保持每日单词复习\n📗 专业课：\n- 核心考点反复背诵\n- 历年真题模拟\n- 查漏补缺，扫除死角\n💡 专业课背诵利用碎片时间：卡片、录音、Anki。
+DESCRIPTION:第三轮·冲刺期（11-12月）。英语：近10年真题反复刷、作文模板默写到肌肉记忆、保持每日单词复习。专业课：核心考点反复背诵、历年真题模拟、查漏补缺扫除死角。专业课背诵利用碎片时间：卡片、录音。
 LOCATION:图书馆 / 自习室
 CATEGORIES:英语,专业课
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20241101
-DTEND;VALUE=DATE:20241220
-RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA
+DTSTART;VALUE=DATE:20261101
+DTEND;VALUE=DATE:20261220
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;UNTIL=20261219
 SUMMARY:🔥 晚上：政治冲刺 — 肖八肖四+时政（第三轮）
-DESCRIPTION:🔵 第三轮·冲刺期（11-12月）\n📖 肖八选择题（11月）+肖四全部（12月）\n📝 分析题背诵以肖四为核心\n📋 时政热点汇总\n💡 肖四分析题背到能默写框架的程度。\n⚠ 考前最后两周政治背诵时间是性价比最高的投资。
+DESCRIPTION:第三轮·冲刺期（11-12月）。肖八选择题（11月）+肖四全部（12月）。分析题背诵以肖四为核心。时政热点汇总。肖四分析题背到能默写框架的程度。考前最后两周政治背诵时间是性价比最高的投资。
 LOCATION:图书馆 / 自习室
 CATEGORIES:政治
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20241215
-DTEND;VALUE=DATE:20241216
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
 SUMMARY:🖨️ 打印准考证
-DESCRIPTION:⚠ 不可错过！\n📋 登录研招网下载并打印准考证。\n- 打印多份备用（至少3份，放不同包里）\n- 核对准考证信息：姓名、照片、考试地点\n- 查看考点地址，提前规划路线\n- 如需订酒店，出准考证当天立即预订。
+DESCRIPTION:不可错过！登录研招网下载并打印准考证。打印多份备用（至少3份，放不同包里）。核对准考证信息：姓名、照片、考试地点。查看考点地址，提前规划路线。如需订酒店，出准考证当天立即预订。
 LOCATION:线上（研招网）
 CATEGORIES:重要节点
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20241220
-DTEND;VALUE=DATE:20241221
+DTSTART;VALUE=DATE:20261220
+DTEND;VALUE=DATE:20261221
 SUMMARY:🎒 考前最后准备日
-DESCRIPTION:📋 考前清单：\n- 提前去考点踩点，计算路程时间\n- 准备考试用品：准考证×3、身份证、2B铅笔×2、黑色签字笔×4、橡皮、尺子、透明笔袋\n- 准备水和巧克力（无包装纸的）\n- 晚上正常吃饭，不吃没吃过的食物\n- 22:00前上床，即便睡不着也闭眼休息\n💡 不要再学新东西了。相信过去六个月的自己。
+DESCRIPTION:考前清单：提前去考点踩点，计算路程时间。准备考试用品：准考证×3、身份证、2B铅笔×2、黑色签字笔×4、橡皮、尺子、透明笔袋。准备水和巧克力（无包装纸的）。晚上正常吃饭，不吃没吃过的食物。22:00前上床，即便睡不着也闭眼休息。不要再学新东西了，相信过去六个月的自己。
 LOCATION:家中 / 考点附近酒店
 CATEGORIES:考试
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20241221
-DTEND;VALUE=DATE:20241223
+DTSTART;VALUE=DATE:20261221
+DTEND;VALUE=DATE:20261223
 SUMMARY:📝 考研初试！
-DESCRIPTION:🎯 12月21日：上午政治（8:30-11:30） 下午英语（14:00-17:00）\n🎯 12月22日：上午数学（8:30-11:30） 下午专业课（14:00-17:00）\n\n📋 每天出门前检查：证件袋（准考证+身份证）、笔袋、水\n🕐 提前1小时到达考点\n🍱 中午不要在考点外面吃没吃过的东西\n💪 你已经准备了六个月，剩下的就是正常发挥。\n\n考完最后一门后：恭喜你！去大吃一顿吧 🎉
+DESCRIPTION:12月21日：上午政治（8:30-11:30）下午英语（14:00-17:00）。12月22日：上午数学（8:30-11:30）下午专业课（14:00-17:00）。每天出门前检查：证件袋（准考证+身份证）、笔袋、水。提前1小时到达考点。中午不要在考点外面吃没吃过的东西。你已经准备了六个月，正常发挥就好。考完最后一门：恭喜！去大吃一顿吧 🎉
 LOCATION:考点
 CATEGORIES:考试
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240701
-DTEND;VALUE=DATE:20241221
-RRULE:FREQ=WEEKLY;BYDAY=SU
+DTSTART;VALUE=DATE:20260701
+DTEND;VALUE=DATE:20261221
+RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=20261215
 SUMMARY:🌿 每周休息日 — 轻复习+运动
-DESCRIPTION:周日只做轻量复习（回顾错题、背单词）。\n🏃 运动（每天30分钟）：\n- 跑步、跳绳或散步\n- 运动可提升记忆力和抗压能力\n🍲 吃一顿好的，补充营养\n😴 补觉，保证睡眠充足\n💡 休息不是偷懒，是长期作战的必需品。\n📝 考研是马拉松，不是短跑。每周一天的休息决定了你能跑多远。
+DESCRIPTION:周日只做轻量复习（回顾错题、背单词）。运动（每天30分钟）：跑步、跳绳或散步。运动可提升记忆力和抗压能力。吃一顿好的，补充营养。补觉，保证睡眠充足。休息不是偷懒，是长期作战的必需品。考研是马拉松不是短跑，每周一天的休息决定了你能跑多远。
 LOCATION:家 / 操场
 CATEGORIES:休息
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20240701
-DTEND;VALUE=DATE:20241221
-RRULE:FREQ=MONTHLY;BYMONTHDAY=1
+DTSTART;VALUE=DATE:20260701
+DTEND;VALUE=DATE:20261221
+RRULE:FREQ=MONTHLY;BYMONTHDAY=1;UNTIL=20261201
 SUMMARY:📊 月度复盘日 — 调整下月计划
-DESCRIPTION:每月1号回顾上月复习进度。\n📋 复盘清单：\n1. 各科完成了哪些内容？进度超前/落后？\n2. 模考成绩趋势如何？\n3. 哪些科目或章节需要加强？\n4. 调整下月每日时间分配\n5. 奖励自己本月完成的任务（一顿好吃的）\n💡 月度复盘是防止跑偏的关键机制。
+DESCRIPTION:每月1号回顾上月复习进度。复盘清单：1.各科完成了哪些内容？进度超前/落后？2.模考成绩趋势如何？3.哪些科目或章节需要加强？4.调整下月每日时间分配。月度复盘是防止跑偏的关键机制。
 LOCATION:图书馆
 CATEGORIES:复盘
 END:VEVENT
