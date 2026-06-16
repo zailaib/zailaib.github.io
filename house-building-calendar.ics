@@ -1,0 +1,165 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//House Building Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:建房子工程日历
+X-WR-CALDESC:从方案设计到竣工验收的独立住宅建造全流程日历，涵盖图纸、基础、结构、水电、装修、搬家。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20251101
+DTEND;VALUE=DATE:20251102
+SUMMARY:📐 第一次建筑师会议 — 确定建筑方案
+DESCRIPTION:与建筑师第一次正式会议。\n📋 讨论事项：\n- 家庭成员需求梳理（房间数量、功能布局）\n- 建筑风格方向（现代/传统/混搭）\n- 大致预算范围\n- 时间表预期\n💡 带参考图片和每个家庭成员的需求清单。
+LOCATION:建筑师办公室
+CATEGORIES:设计
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20251115
+DTEND;VALUE=DATE:20251116
+SUMMARY:📝 确定方案草图 — 进入施工图阶段
+DESCRIPTION:确认建筑方案草图，建筑师开始绘制施工图。\n📋 确认内容：\n- 各层平面布局\n- 立面效果\n- 主要材料选择\n- 预算初算\n工期：施工图约需4-6周。
+LOCATION:建筑师办公室
+CATEGORIES:设计
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20251215
+DTEND;VALUE=DATE:20251216
+SUMMARY:📄 施工图初稿完成 — 内部审查
+DESCRIPTION:收到施工图初稿，逐项审查。\n📋 审查重点：\n- 结构合理性\n- 水电点位是否够用\n- 门窗尺寸和开启方向\n- 层高和梁位是否影响使用\n💡 施工图一旦报审，修改成本将大幅增加。
+LOCATION:家中
+CATEGORIES:设计
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260105
+DTEND;VALUE=DATE:20260106
+SUMMARY:🏛️ 提交规划局审批
+DESCRIPTION:施工图定稿，正式提交规划局。\n📋 提交材料：\n- 建筑方案文本\n- 施工图\n- 土地证或用地许可\n- 邻里签字同意书（如需要）\n⚠ 审批周期通常2-3个月，期间可同步做施工准备。
+LOCATION:规划局
+CATEGORIES:审批
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🏛️ 提交规划局审批
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260325
+DTEND;VALUE=DATE:20260326
+SUMMARY:✅ 施工许可证获批！
+DESCRIPTION:拿到施工许可证。\n📋 开工前准备工作：\n- 施工队招标和合同签订\n- 临时水电申请\n- 材料供应商对接\n- 确定开工日期\n🎉 漫长的等待结束，即将动工！
+LOCATION:规划局
+CATEGORIES:审批
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：✅ 施工许可证获批！
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260401
+DTEND;VALUE=DATE:20260408
+SUMMARY:🚜 开挖基础 — 土方工程
+DESCRIPTION:挖掘机进场，开挖基础。\n📋 施工内容：\n- 场地平整和放线定位\n- 基础开挖至持力层\n- 验槽（请勘察单位到场确认）\n- 垫层浇筑（C15混凝土）\n⚠ 注意天气，雨天不宜开挖。
+LOCATION:工地现场
+CATEGORIES:基础
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260408
+DTEND;VALUE=DATE:20260422
+SUMMARY:🏗️ 基础浇筑 — 钢筋绑扎+模板+混凝土
+DESCRIPTION:基础钢筋绑扎和模板支设，验收后浇筑混凝土。\n📋 施工流程：\n- 钢筋绑扎（按结构图）\n- 模板支设\n- 地梁和基础柱预留钢筋\n- C30混凝土浇筑\n- 养护7天（每日浇水保持湿润）\n⚠ 浇筑前务必通知监理和结构工程师验收。
+LOCATION:工地现场
+CATEGORIES:基础
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260422
+DTEND;VALUE=DATE:20260520
+SUMMARY:🧱 主体结构施工 — 一层墙体+楼板
+DESCRIPTION:一层墙体砌筑和楼板浇筑。\n📋 施工内容：\n- 一层墙体砌筑（砖或砌块）\n- 构造柱和圈梁施工\n- 楼板模板、钢筋、浇筑\n- 养护\n💡 预留好水电管道孔洞，后期砸墙代价大。
+LOCATION:工地现场
+CATEGORIES:结构
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260520
+DTEND;VALUE=DATE:20260615
+SUMMARY:🏗️ 主体结构施工 — 二层墙体+屋顶
+DESCRIPTION:二层墙体砌筑和屋顶施工。\n📋 施工内容：\n- 二层墙体砌筑\n- 屋顶桁架或钢架安装\n- 屋面铺设（瓦/金属屋面）\n- 天沟和雨水管安装\n🎊 上梁仪式：主梁就位后系红布、放鞭炮。
+LOCATION:工地现场
+CATEGORIES:结构
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260615
+DTEND;VALUE=DATE:20260801
+SUMMARY:🔌 水电安装 — 给排水+强弱电
+DESCRIPTION:全屋水电管线铺设。\n📋 水电点位参考：\n- 强电：每间房至少2个双插座，厨房台面6个以上\n- 弱电：每间房预埋网线（六类）、电视线\n- 给水：厨房、卫生间、阳台\n- 排水：地漏防臭处理\n- 地暖/暖气片管道铺设\n📸 每面墙管线拍照存档，后期打孔参考。
+LOCATION:工地现场
+CATEGORIES:水电
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260801
+DTEND;VALUE=DATE:20260901
+SUMMARY:🪟 门窗安装 + 墙面处理
+DESCRIPTION:门窗安装和墙面施工。\n📋 施工内容：\n- 断桥铝/铝合金门窗安装\n- 窗框周边防水密封\n- 室内墙面抹灰、腻子\n- 打磨、底漆、面漆\n💡 墙面颜色先试色，在大面积涂刷前确认。
+LOCATION:工地现场
+CATEGORIES:装修
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20261001
+SUMMARY:🪵 地面铺装 + 木作安装
+DESCRIPTION:地面和固定家具安装。\n📋 施工内容：\n- 地面找平\n- 木地板/瓷砖铺装\n- 踢脚线安装\n- 橱柜、衣柜、书柜等定制柜安装\n- 室内门安装\n💡 木作安装前确保墙面、地面完全干燥。
+LOCATION:工地现场
+CATEGORIES:装修
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261001
+DTEND;VALUE=DATE:20261120
+SUMMARY:🎨 装饰收尾 — 灯具+卫浴+五金+软装
+DESCRIPTION:最后的装饰和收尾工作。\n📋 收尾清单：\n- 灯具、开关插座面板安装\n- 卫浴洁具安装\n- 五金挂件安装\n- 窗帘和百叶窗安装\n- 家具进场\n- 首次全屋保洁\n💡 入住前至少开窗通风1个月。
+LOCATION:工地现场
+CATEGORIES:装修
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261125
+DTEND;VALUE=DATE:20261126
+SUMMARY:🔍 竣工验收 — 第三方验房
+DESCRIPTION:请第三方验房师进行竣工验收。\n📋 验收项目：\n- 墙面平整度和空鼓检查\n- 地面平整度\n- 门窗开关和密封性\n- 水电功能和安全性\n- 防水闭水试验\n📝 所有问题点记录并逐项整改。
+LOCATION:新家
+CATEGORIES:验收
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🔍 竣工验收 — 第三方验房
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:🚛 搬家日 — 正式入住！
+DESCRIPTION:🏠 终于可以搬进自己建造的家了！\n📋 搬家准备：\n- 提前预定搬家公司\n- 打包标记每个箱子的目标房间\n- 搬家当天准备零食和水\n- 新家第一顿晚餐，值得好好庆祝 🎉\n\n从第一张草图到今天，历时约420天。\n每一道工序都凝聚了心血。\n欢迎回家 🏡
+LOCATION:新家
+CATEGORIES:里程碑
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🚛 搬家日 — 正式入住！
+END:VALARM
+END:VEVENT
+
+END:VCALENDAR
