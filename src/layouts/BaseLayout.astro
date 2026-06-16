@@ -150,7 +150,7 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
             wrapper.style.cssText = 'width:95vw;height:90vh;overflow:auto;display:flex;align-items:flex-start;justify-content:center';
             overlay.appendChild(wrapper);
             const close = () => overlay.remove();
-            overlay.addEventListener('click', e => { if (e.target === overlay || e.target.classList.contains('mermaid-overlay-close')) close(); });
+            overlay.addEventListener('click', close);
             document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); } });
             document.body.appendChild(overlay);
             // 以宽画布重新渲染，让 x 轴标签有足够空间
