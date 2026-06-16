@@ -132,34 +132,30 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       import mermaid from 'mermaid';
       mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
 
-      function renderMermaid() {
-        mermaid.run({ querySelector: 'pre.mermaid' }).then(() => {
-          document.querySelectorAll('pre.mermaid svg').forEach(svg => {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'mermaid-wrapper';
-            wrapper.title = '点击放大查看';
-            svg.parentNode.insertBefore(wrapper, svg);
-            wrapper.appendChild(svg);
-            wrapper.addEventListener('click', () => {
-              const overlay = document.createElement('div');
-              overlay.className = 'mermaid-overlay';
-              overlay.innerHTML = '<div class="mermaid-overlay-close">✕</div>';
-              const clone = svg.cloneNode(true);
-              clone.style.maxWidth = '95vw';
-              clone.style.maxHeight = '95vh';
-              clone.style.width = 'auto';
-              clone.style.height = 'auto';
-              overlay.appendChild(clone);
-              overlay.addEventListener('click', (e) => {
-                if (e.target === overlay || e.target.classList.contains('mermaid-overlay-close')) {
-                  overlay.remove();
-                }
-              });
-              document.addEventListener('keydown', function esc(e) {
-                if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', esc); }
-              });
-              document.body.appendChild(overlay);
-            });
+      async function renderMermaid() {
+        const blocks = document.querySelectorAll('pre.mermaid:not([data-rendered])');
+        if (!blocks.length) return;
+        // Save source before mermaid.run() replaces it with SVG
+        blocks.forEach(el => el.setAttribute('data-source', el.textContent));
+        await mermaid.run({ querySelector: 'pre.mermaid:not([data-rendered])' });
+        blocks.forEach(el => {
+          el.setAttribute('data-rendered', '1');
+          el.addEventListener('click', async () => {
+            const source = el.getAttribute('data-source');
+            if (!source) return;
+            const overlay = document.createElement('div');
+            overlay.className = 'mermaid-overlay';
+            overlay.innerHTML = '<div class="mermaid-overlay-close">✕</div>';
+            const container = document.createElement('div');
+            overlay.appendChild(container);
+            const close = () => overlay.remove();
+            overlay.addEventListener('click', e => { if (e.target === overlay || e.target.classList.contains('mermaid-overlay-close')) close(); });
+            document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); } });
+            document.body.appendChild(overlay);
+            // 重新渲染大尺寸甘特图，解决文字重叠
+            const id = 'mermaid-zoom-' + Math.random().toString(36).slice(2);
+            const { svg } = await mermaid.render(id, source);
+            container.innerHTML = svg;
           });
         });
       }
