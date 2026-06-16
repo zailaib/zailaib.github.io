@@ -140,22 +140,28 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
         await mermaid.run({ querySelector: 'pre.mermaid:not([data-rendered])' });
         blocks.forEach(el => {
           el.setAttribute('data-rendered', '1');
-          el.addEventListener('click', async () => {
-            const source = el.getAttribute('data-source');
-            if (!source) return;
+          el.addEventListener('click', () => {
+            const svg = el.querySelector('svg');
+            if (!svg) return;
             const overlay = document.createElement('div');
             overlay.className = 'mermaid-overlay';
             overlay.innerHTML = '<div class="mermaid-overlay-close">✕</div>';
-            const container = document.createElement('div');
-            overlay.appendChild(container);
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'width:95vw;height:90vh;overflow:auto;display:flex;align-items:flex-start;justify-content:center';
+            const clone = svg.cloneNode(true);
+            clone.style.cssText = 'min-width:900px;max-width:none;height:auto';
+            clone.removeAttribute('width');
+            clone.removeAttribute('height');
+            // 强制 SVG 用 viewBox 缩放
+            if (clone.getAttribute('viewBox')) {
+              clone.style.width = '100%';
+            }
+            wrapper.appendChild(clone);
+            overlay.appendChild(wrapper);
             const close = () => overlay.remove();
             overlay.addEventListener('click', e => { if (e.target === overlay || e.target.classList.contains('mermaid-overlay-close')) close(); });
             document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); } });
             document.body.appendChild(overlay);
-            // 重新渲染大尺寸甘特图，解决文字重叠
-            const id = 'mermaid-zoom-' + Math.random().toString(36).slice(2);
-            const { svg } = await mermaid.render(id, source);
-            container.innerHTML = svg;
           });
         });
       }
