@@ -105,8 +105,8 @@ END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20260301
-DTEND;VALUE=DATE:20260315
+DTSTART;VALUE=DATE:20280301
+DTEND;VALUE=DATE:20280315
 SUMMARY:🌸 京都赏樱 — 提前一年种下的期待
 DESCRIPTION:一年前在日历里设下的事件终于到了。京都赏樱经典路线：哲学之道→南禅寺→蹴上倾斜铁道、岚山→天龙寺→竹林。樱花花期只有一周，出发前密切关注开花预报。她说要在樱花树下拍一张比第一次旅行更"在一起"的照片。
 LOCATION:京都
@@ -114,8 +114,8 @@ CATEGORIES:旅行
 END:VEVENT
 
 BEGIN:VEVENT
-DTSTART;VALUE=DATE:20261001
-DTEND;VALUE=DATE:20261002
+DTSTART;VALUE=DATE:20281001
+DTEND;VALUE=DATE:20281002
 SUMMARY:🏠 考虑同居 — 提前认真讨论
 DESCRIPTION:在一起两年半，开始认真讨论同居。讨论话题：选哪个区？离地铁多远？几室几厅？书房归谁（大概率她）？家务分工（烹饪轮值、谁洗碗谁扫地）。个人空间的需求。同居不是"试婚"，是"决定把每一天都放进同一个日历里"。
 LOCATION:家中
