@@ -126,13 +126,18 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       </button>
     </div>
 
-    <script>
-      import mermaid from 'mermaid';
-      mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
-    </script>
-
     <!-- 页面过渡和脚本 -->
     <ClientRouter />
+    <script>
+      import mermaid from 'mermaid';
+      mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+      // 首次加载 + 每次 Astro 客户端导航都重新渲染甘特图
+      function renderMermaid() {
+        mermaid.run({ querySelector: 'pre.mermaid' });
+      }
+      renderMermaid();
+      document.addEventListener('astro:page-load', renderMermaid);
+    </script>
     <script is:inline src="/scripts/sidebar-interaction.js"></script>
     <script is:inline src="/scripts/mobile-interaction.js"></script>
     <script is:inline src="/scripts/bottom-buttons.js"></script>
