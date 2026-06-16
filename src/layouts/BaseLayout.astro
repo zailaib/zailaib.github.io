@@ -131,9 +131,37 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
     <script>
       import mermaid from 'mermaid';
       mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
-      // 首次加载 + 每次 Astro 客户端导航都重新渲染甘特图
+
       function renderMermaid() {
-        mermaid.run({ querySelector: 'pre.mermaid' });
+        mermaid.run({ querySelector: 'pre.mermaid' }).then(() => {
+          document.querySelectorAll('pre.mermaid svg').forEach(svg => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'mermaid-wrapper';
+            wrapper.title = '点击放大';
+            svg.parentNode.insertBefore(wrapper, svg);
+            wrapper.appendChild(svg);
+            wrapper.addEventListener('click', () => {
+              const overlay = document.createElement('div');
+              overlay.className = 'mermaid-overlay';
+              overlay.innerHTML = '<div class="mermaid-overlay-close">✕</div>';
+              const clone = svg.cloneNode(true);
+              clone.style.maxWidth = '95vw';
+              clone.style.maxHeight = '95vh';
+              clone.style.width = 'auto';
+              clone.style.height = 'auto';
+              overlay.appendChild(clone);
+              overlay.addEventListener('click', (e) => {
+                if (e.target === overlay || e.target.classList.contains('mermaid-overlay-close')) {
+                  overlay.remove();
+                }
+              });
+              document.addEventListener('keydown', function esc(e) {
+                if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', esc); }
+              });
+              document.body.appendChild(overlay);
+            });
+          });
+        });
       }
       renderMermaid();
       document.addEventListener('astro:page-load', renderMermaid);
