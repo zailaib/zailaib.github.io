@@ -126,6 +126,12 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       </button>
     </div>
 
+    <!-- Mermaid 图表 -->
+    <script type="module">
+      import mermaid from 'mermaid';
+      mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+
     <!-- 页面过渡和脚本 -->
     <ClientRouter />
     <script is:inline src="/scripts/sidebar-interaction.js"></script>

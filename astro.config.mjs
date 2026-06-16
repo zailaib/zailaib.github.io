@@ -1,10 +1,14 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import { remarkMermaid } from './src/lib/remark-mermaid.mjs';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://zailaib.github.io',
-  base: '/', // 如果是项目页（非用户页），改为 '/repo-name/'
+  base: '/',
+  markdown: {
+    remarkPlugins: [remarkMermaid],
+  },
   vite: {
     resolve: {
       alias: {
