@@ -31,7 +31,7 @@ export interface Translations {
 export const translations: Record<string, Translations> = {
   en: {
     common: {
-      siteTitle: 'Astro Basics',
+      siteTitle: 'Calendar Stories',
       navigation: 'Navigation',
       articles: 'Articles',
       readMore: 'Read More',
@@ -53,14 +53,14 @@ export const translations: Record<string, Translations> = {
       showLess: 'Show Less'
     },
     home: {
-      welcome: 'Welcome to Astro Basics',
-      description: 'A modern static site built with Astro framework',
+      welcome: 'Stories of Time',
+      description: 'Mark every moment in life with a calendar',
       latestArticles: 'Latest Articles'
     }
   },
   zh: {
     common: {
-      siteTitle: 'Astro 基础教程',
+      siteTitle: '日历故事',
       navigation: '导航',
       articles: '文章',
       readMore: '阅读更多',
@@ -82,8 +82,8 @@ export const translations: Record<string, Translations> = {
       showLess: '收起'
     },
     home: {
-      welcome: '欢迎来到 Astro 基础教程',
-      description: '使用 Astro 框架构建的现代化静态网站',
+      welcome: '时间的故事',
+      description: '用日历标记生活中的每一个重要节点',
       latestArticles: '最新文章'
     }
   }
