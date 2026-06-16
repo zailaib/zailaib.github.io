@@ -28,4 +28,13 @@
     --panel-bg: rgba(30, 41, 59, 0.45);
     --panel-border: rgba(148, 163, 184, 0.18);
   }
+
+  /* Mermaid 甘特图用浅色 neutral 主题渲染，深色模式下给一个浅底保持可读 */
+  .mermaid-wrapper {
+    background: #f8fafc;
+    border-color: var(--color-border-medium);
+  }
+  .mermaid-wrapper svg {
+    border-radius: var(--radius-md);
+  }
 }

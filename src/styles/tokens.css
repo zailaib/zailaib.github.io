@@ -87,5 +87,5 @@
   --header-height: 0rem; /* 顶栏已移除；保留 token 使各 calc() 自动归零 */
   --sidebar-width: 280px;
   --minimap-width: 240px;
-  --content-max-width: 65ch;
+  --content-max-width: 82ch;
 }

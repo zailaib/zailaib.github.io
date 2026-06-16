@@ -30,7 +30,7 @@ body {
   display: grid;
   grid-template-columns: var(--sidebar-width) 1fr var(--minimap-width);
   gap: var(--spacing-2xl);
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: var(--spacing-2xl);
   min-height: calc(100vh - var(--header-height));
@@ -46,7 +46,9 @@ body {
 }
 
 .sidebar-content {
+  max-height: calc(100vh - var(--header-height) - var(--spacing-4xl));
   overflow-y: auto;
+  overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-medium) transparent;
 }

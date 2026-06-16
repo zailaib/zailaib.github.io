@@ -137,7 +137,7 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
           document.querySelectorAll('pre.mermaid svg').forEach(svg => {
             const wrapper = document.createElement('div');
             wrapper.className = 'mermaid-wrapper';
-            wrapper.title = '点击放大';
+            wrapper.title = '点击放大查看';
             svg.parentNode.insertBefore(wrapper, svg);
             wrapper.appendChild(svg);
             wrapper.addEventListener('click', () => {

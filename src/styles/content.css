@@ -180,33 +180,47 @@
   cursor: zoom-in;
   position: relative;
   overflow-x: auto;
-  margin: var(--spacing-lg) 0;
-  padding: var(--spacing-sm);
-  border: 1px solid var(--color-border, #e2e8f0);
-  border-radius: var(--radius-md);
-  background: #fff;
-  transition: border-color 0.2s;
+  margin: var(--spacing-xl) 0;
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-accent);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-normal);
 }
 .mermaid-wrapper:hover {
-  border-color: var(--color-primary, #3b82f6);
+  border-color: var(--color-accent-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 .mermaid-wrapper::after {
-  content: '🔍 点击放大';
+  content: '⤢ 点击放大';
   position: absolute;
-  top: 6px;
-  right: 10px;
-  font-size: 12px;
-  color: #94a3b8;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-accent-primary);
+  background: var(--color-accent-light);
+  padding: 4px 10px;
+  border-radius: 999px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.2s;
+  transform: translateY(-4px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
 }
 .mermaid-wrapper:hover::after {
   opacity: 1;
+  transform: translateY(0);
 }
 .mermaid-wrapper svg {
   max-width: 100%;
   height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 /* Lightbox overlay */
@@ -214,32 +228,54 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0,0,0,0.75);
+  padding: var(--spacing-2xl);
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: zoom-out;
-  animation: fadeIn 0.2s ease;
+  animation: mermaidFadeIn var(--transition-normal) ease;
+}
+.mermaid-overlay svg {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  box-shadow: var(--shadow-xl);
+  cursor: default;
+  animation: mermaidZoomIn var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1);
 }
 .mermaid-overlay-close {
   position: absolute;
-  top: 16px;
-  right: 24px;
-  font-size: 32px;
+  top: var(--spacing-xl);
+  right: var(--spacing-xl);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xl);
+  line-height: 1;
   color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
   cursor: pointer;
   z-index: 1;
-  line-height: 1;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 .mermaid-overlay-close:hover {
-  color: #f87171;
+  background: #f87171;
+  border-color: #f87171;
+  color: #fff;
+  transform: rotate(90deg);
 }
-.mermaid-overlay svg {
-  background: #fff;
-  border-radius: 8px;
-  padding: 16px;
-}
-@keyframes fadeIn {
+@keyframes mermaidFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+@keyframes mermaidZoomIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
 }
