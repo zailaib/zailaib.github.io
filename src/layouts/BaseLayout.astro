@@ -127,8 +127,8 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
     </div>
 
     <!-- Mermaid 图表 -->
-    <script type="module">
-      import mermaid from 'mermaid';
+    <script is:inline src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script is:inline>
       mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
     </script>
 
