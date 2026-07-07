@@ -59,3 +59,32 @@ export async function getLatestPosts(lang: string, n: number): Promise<
       };
     });
 }
+
+// 首页最新 n 个游戏/应用
+export async function getLatestApps(lang: string, n: number): Promise<
+  { title: string; url: string; date?: Date; description?: string; cta?: string; ctaUrl?: string }[]
+> {
+  const all = await getCollection('apps');
+  const apps = all.filter((a) => {
+    const langPart = a.id.split('/')[0];
+    return langPart === lang;
+  });
+  return apps
+    .sort((a, b) => {
+      const da = a.data.date?.getTime() ?? 0;
+      const db = b.data.date?.getTime() ?? 0;
+      return db - da;
+    })
+    .slice(0, n)
+    .map((a) => {
+      const name = a.id.replace(/\.[^/.]+$/, '').split('/').pop();
+      return {
+        title: a.data.title,
+        url: `/${lang}/apps/${name}`,
+        date: a.data.date,
+        description: a.data.description,
+        cta: a.data.cta,
+        ctaUrl: a.data.ctaUrl,
+      };
+    });
+}

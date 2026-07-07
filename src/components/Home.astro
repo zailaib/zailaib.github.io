@@ -3,10 +3,11 @@ import { t } from '../i18n/utils';
 
 interface Props {
   latest: { title: string; url: string; date: Date; tags?: string }[];
+  latestApps: { title: string; url: string; date?: Date; description?: string; cta?: string; ctaUrl?: string }[];
   lang: string;
 }
 
-const { latest, lang } = Astro.props;
+const { latest, latestApps, lang } = Astro.props;
 ---
 
 <main class="home-content" data-astro-transition="persist">
@@ -35,6 +36,24 @@ const { latest, lang } = Astro.props;
       ))}
     </div>
   </section>
+
+  {latestApps.length > 0 && (
+    <section class="apps-section">
+      <h2 class="section-title">{t(lang, 'home.apps')}</h2>
+      <div class="apps-grid">
+        {latestApps.map(app => (
+          <a href={app.url} class="app-card">
+            <div class="app-icon">🎮</div>
+            <div class="app-info">
+              <h3 class="app-title">{app.title}</h3>
+              {app.description && <p class="app-desc">{app.description}</p>}
+            </div>
+            <span class="app-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 </main>
 
 <style>
@@ -135,6 +154,67 @@ const { latest, lang } = Astro.props;
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-sm);
     font-weight: var(--font-weight-medium);
+  }
+
+  .apps-section {
+    margin-top: var(--spacing-4xl);
+  }
+  .apps-grid {
+    display: grid;
+    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  .app-card {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    text-decoration: none;
+    color: inherit;
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--glass-shadow);
+  }
+  .app-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: #ff9800;
+  }
+  .app-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+  .app-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .app-title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0 0 4px 0;
+    line-height: var(--line-height-tight);
+  }
+  .app-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .app-arrow {
+    font-size: 20px;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+  .app-card:hover .app-arrow {
+    transform: translateX(4px);
+    color: #ff9800;
   }
 
   @media (max-width: 768px) {

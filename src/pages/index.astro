@@ -1,12 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Home from '../components/Home.astro';
-import { getLatestPosts } from '../lib/content';
+import { getLatestPosts, getLatestApps } from '../lib/content';
 import { DEFAULT_LANGUAGE } from '../i18n/languages';
 
 const lang = DEFAULT_LANGUAGE;
 const latest = await getLatestPosts(lang, 6);
+const latestApps = await getLatestApps(lang, 6);
 ---
 <BaseLayout currentSlug="">
-  <Home latest={latest} lang={lang} />
+  <Home latest={latest} latestApps={latestApps} lang={lang} />
 </BaseLayout>

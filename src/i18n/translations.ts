@@ -25,6 +25,7 @@ export interface Translations {
     welcome: string;
     description: string;
     latestArticles: string;
+    apps: string;
   };
 }
 
@@ -55,7 +56,8 @@ export const translations: Record<string, Translations> = {
     home: {
       welcome: 'Stories of Time',
       description: 'Mark every moment in life with a calendar',
-      latestArticles: 'Latest Articles'
+      latestArticles: 'Latest Articles',
+      apps: 'Mini Games & Apps'
     }
   },
   zh: {
@@ -84,7 +86,8 @@ export const translations: Record<string, Translations> = {
     home: {
       welcome: '时间的故事',
       description: '用日历标记生活中的每一个重要节点',
-      latestArticles: '最新文章'
+      latestArticles: '最新文章',
+      apps: '小游戏 & 应用'
     }
   }
 };
