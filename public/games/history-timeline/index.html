@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>历史时间轴 · History Timeline 3D</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="container"></div>
+
+<div id="title">
+  <h1>📜 历史时间轴 · 3D History Gantt</h1>
+  <div class="sub">横跨 5500 年 · 五大文明 · 时空对比</div>
+</div>
+
+<div id="info-popup"></div>
+<div id="time-indicator">📅 滑动查看</div>
+
+<!-- Jump buttons -->
+<div id="jump-btns">
+  <button class="jump-btn" data-x="-30">🏛 古埃及</button>
+  <button class="jump-btn" data-x="-10">🏺 古希腊</button>
+  <button class="jump-btn" data-x="-2">🏯 秦汉</button>
+  <button class="jump-btn" data-x="6">🏰 唐帝国</button>
+  <button class="jump-btn" data-x="13">⛵ 大航海</button>
+  <button class="jump-btn" data-x="19">⚔️ 世界大战</button>
+</div>
+
+<!-- Legend -->
+<div id="legend">
+  <div class="leg-row"><span class="leg-swatch" style="background:#d4534a"></span>中国</div>
+  <div class="leg-row"><span class="leg-swatch" style="background:#4a90d9"></span>欧洲</div>
+  <div class="leg-row"><span class="leg-swatch" style="background:#d4a040"></span>中东</div>
+  <div class="leg-row"><span class="leg-swatch" style="background:#e08830"></span>印度</div>
+  <div class="leg-row"><span class="leg-swatch" style="background:#48a060"></span>美洲</div>
+</div>
+
+<div id="hint">🖱 拖拽旋转 · 滚轮缩放/横向滚动时间 · 悬停看详情</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
