@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>光的衍射 · Diffraction Lab</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="container"></div>
+
+<div id="title">
+  <h1>🔬 光的衍射实验室</h1>
+  <div class="sub">Diffraction Lab · Young's Experiment</div>
+</div>
+
+<div id="hint">🖱 拖拽旋转 · 滚轮缩放 · 右键平移</div>
+
+<div id="panel">
+  <div class="control-group">
+    <label>狭缝宽度</label>
+    <input type="range" id="slit-width" min="0.2" max="2" step="0.05" value="0.5">
+    <span class="control-val" id="slit-width-val">0.5</span>
+  </div>
+  <div class="control-group" id="sep-group">
+    <label>狭缝间距</label>
+    <input type="range" id="slit-sep" min="0.5" max="4" step="0.1" value="2">
+    <span class="control-val" id="slit-sep-val">2.0</span>
+  </div>
+  <div class="control-group">
+    <label>波长</label>
+    <input type="range" id="wavelength" min="400" max="700" step="10" value="550">
+    <span class="control-val" id="wavelength-val">550nm</span>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;">
+    <button class="mode-btn" id="btn-single">单缝</button>
+    <button class="mode-btn active" id="btn-double">双缝</button>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
