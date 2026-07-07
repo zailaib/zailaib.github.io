@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>等高线山脉 · Contour Mountain 3D</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="container"></div>
+
+<div id="title">
+  <h1>🏔️ 等高线山脉 · Contour Mountain</h1>
+  <div class="sub">Topographic Map Demo — 拖动水位面理解等高线</div>
+</div>
+
+<!-- Control panel -->
+<div id="panel">
+  <div class="panel-row">
+    <span class="panel-label">🌊 水位高度</span>
+    <span class="val" id="water-val">240m</span>
+  </div>
+  <input type="range" id="water-slider" min="0" max="6" step="0.05" value="1.2">
+  <div class="panel-row">
+    <span class="panel-label" style="font-size:9px;color:#666;">≈ <span id="water-val-ft">787ft</span></span>
+  </div>
+
+  <div class="panel-row" style="margin-top:10px;">
+    <span class="panel-label">📏 等高线间距</span>
+    <span class="val" id="contour-interval">200m</span>
+  </div>
+  <input type="range" id="interval-slider" min="0.25" max="2.0" step="0.25" value="1.0">
+
+  <div class="panel-row" style="margin-top:10px;">
+    <span class="panel-label">等高线数量</span>
+    <span class="val" id="contour-count">6</span>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-top:10px;">
+    <button class="toggle-btn on" id="contour-toggle">等高线 ON</button>
+    <button class="toggle-btn" id="wireframe-toggle">线框 OFF</button>
+  </div>
+</div>
+
+<!-- Elevation color legend -->
+<div id="legend">
+  <div class="legend-row"><span class="legend-swatch" style="background:linear-gradient(to right,#fff,#ddd);"></span>🏔 雪线 / 高峰</div>
+  <div class="legend-row"><span class="legend-swatch" style="background:linear-gradient(to right,#c8a060,#e8c080);"></span>⛰ 岩石 / 山脊</div>
+  <div class="legend-row"><span class="legend-swatch" style="background:linear-gradient(to right,#88b050,#a8c860);"></span>🌲 草地 / 森林</div>
+  <div class="legend-row"><span class="legend-swatch" style="background:linear-gradient(to right,#3a7030,#558840);"></span>🌿 低地 / 山谷</div>
+  <div class="legend-row"><span class="legend-swatch" style="background:linear-gradient(to right,#4488cc,#4488cc);"></span>💧 水面 = 等高线</div>
+</div>
+
+<div id="hint">🖱 拖拽旋转 · 滚轮缩放 · 调节水位观察等高线</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
