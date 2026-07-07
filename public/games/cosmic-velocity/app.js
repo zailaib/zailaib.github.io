@@ -240,14 +240,21 @@ function buildOrbitLine(params) {
   const { r0, e, h } = params;
   const rp = h * h / (MU * (1 + Math.abs(e)));
 
-  // Sample the orbit
-  const thetaMax = e >= 1 ? Math.acos(-1 / e) - 0.05 : Math.PI * 2;
+  // Sample the orbit (with NaN guards)
+  const acosArg = Math.max(-1, Math.min(1, -1 / e)); // clamp to valid domain
+  const thetaMax = e >= 1 ? Math.acos(acosArg) - 0.05 : Math.PI * 2;
+  if (isNaN(thetaMax)) return;
   const nPts = 200;
   for (let i = 0; i <= nPts; i++) {
     const theta = -thetaMax + (i / nPts) * thetaMax * 2;
-    const r = h * h / (MU * (1 + e * Math.cos(theta)));
+    const denom = MU * (1 + e * Math.cos(theta));
+    if (Math.abs(denom) < 0.001) continue; // avoid division by near-zero
+    const r = h * h / denom;
+    if (isNaN(r) || !isFinite(r)) continue;
     if (r > 0 && r < 25 && r >= R_EARTH) {
-      pts.push(new THREE.Vector3(r * Math.cos(theta), 0, r * Math.sin(theta)));
+      const x = r * Math.cos(theta), z = r * Math.sin(theta);
+      if (isNaN(x) || isNaN(z)) continue;
+      pts.push(new THREE.Vector3(x, 0, z));
     }
   }
 
@@ -265,7 +272,10 @@ function buildOrbitLine(params) {
 // ---- Update rocket position along orbit ----
 function updateRocketPosition(params, theta) {
   const { r0, e, h } = params;
-  const r = h * h / (MU * (1 + e * Math.cos(theta)));
+  const denom = MU * (1 + e * Math.cos(theta));
+  if (Math.abs(denom) < 0.0001) return false;
+  const r = h * h / denom;
+  if (isNaN(r) || !isFinite(r)) return false;
   if (r < R_EARTH * 0.95) return false; // crashed
   rocketGroup.position.set(r * Math.cos(theta), 0, r * Math.sin(theta));
   rocketGroup.rotation.z = -theta - Math.PI / 2;
