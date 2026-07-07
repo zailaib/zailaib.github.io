@@ -133,12 +133,36 @@ const pageTitle = title === 'Astro Basics' ? translation.common.siteTitle : `${t
       mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
 
       async function renderMermaid() {
-        const blocks = document.querySelectorAll('pre.mermaid:not([data-rendered])');
-        if (!blocks.length) return;
-        // 提前标记，防止 astro:page-load 和初始调用竞态重复渲染
-        blocks.forEach(el => { el.setAttribute('data-rendered', '1'); el.setAttribute('data-source', el.textContent); });
+        // Astro 7 用 Shiki 高亮 mermaid 代码块，输出 pre.astro-code[data-language="mermaid"]
+        // 需要把它们转成 pre.mermaid 才能被 mermaid.run 渲染
+        const shikiBlocks = document.querySelectorAll('pre.astro-code[data-language="mermaid"]:not([data-rendered])');
+        shikiBlocks.forEach(el => {
+          // 创建真正的 mermaid pre 块
+          const mermaidPre = document.createElement('pre');
+          mermaidPre.className = 'mermaid';
+          mermaidPre.textContent = el.textContent;
+          mermaidPre.setAttribute('data-rendered', '1');
+          mermaidPre.setAttribute('data-source', el.textContent);
+          // 替换：隐藏 Shiki 高亮块，插入 mermaid 块
+          el.style.display = 'none';
+          el.setAttribute('data-rendered', '1');
+          el.parentNode.insertBefore(mermaidPre, el);
+        });
+
+        // 原有的 pre.mermaid 块（兼容旧格式 / remark 插件）
+        const legacyBlocks = document.querySelectorAll('pre.mermaid:not([data-rendered])');
+        legacyBlocks.forEach(el => {
+          el.setAttribute('data-rendered', '1');
+          el.setAttribute('data-source', el.textContent);
+        });
+
+        // 合并所有待渲染的 mermaid 块
+        const allBlocks = document.querySelectorAll('pre.mermaid[data-rendered]:not([data-processed])');
+        if (!allBlocks.length) return;
+
         await mermaid.run({ querySelector: 'pre.mermaid[data-rendered]:not([data-processed])' });
-        blocks.forEach(el => {
+
+        allBlocks.forEach(el => {
           el.setAttribute('data-processed', '1');
           el.addEventListener('click', async () => {
             const source = el.getAttribute('data-source');
