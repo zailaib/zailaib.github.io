@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>抓光点 ✨ Catch the Dot</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #0a0a0f;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+  canvas { display: block; }
+  #hud {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px; pointer-events: none; z-index: 10;
+  }
+  .hud-item {
+    color: rgba(255,255,255,0.85);
+    font-size: 18px; font-weight: 600;
+    letter-spacing: 1px;
+    text-shadow: 0 0 20px rgba(255,200,100,0.5);
+  }
+  #combo {
+    color: #ffb74d;
+    font-size: 24px;
+    transition: transform 0.1s;
+  }
+  #combo.pop { transform: scale(1.4); }
+  #overlay {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 20; pointer-events: none;
+  }
+  #overlay.active { pointer-events: auto; }
+  #message {
+    font-size: 48px; font-weight: 800; color: #fff;
+    text-shadow: 0 0 40px rgba(255,180,50,0.8);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  #message.show { opacity: 1; }
+  #sub-message {
+    font-size: 20px; color: rgba(255,255,255,0.7);
+    margin-top: 12px; opacity: 0; transition: opacity 0.4s;
+  }
+  #sub-message.show { opacity: 1; }
+  #restart-btn {
+    margin-top: 32px; padding: 14px 48px;
+    font-size: 20px; font-weight: 700;
+    border: 2px solid rgba(255,180,80,0.6);
+    border-radius: 50px; background: rgba(255,255,255,0.06);
+    color: #fff; cursor: pointer;
+    letter-spacing: 2px;
+    opacity: 0; transition: all 0.3s;
+    pointer-events: none;
+    backdrop-filter: blur(10px);
+  }
+  #restart-btn.show {
+    opacity: 1; pointer-events: auto;
+  }
+  #restart-btn:hover {
+    background: rgba(255,180,80,0.15);
+    border-color: rgba(255,180,80,1);
+    box-shadow: 0 0 30px rgba(255,150,50,0.3);
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud">
+  <span class="hud-item">⏱ <span id="timer">30</span>s</span>
+  <span class="hud-item" id="combo"></span>
+  <span class="hud-item">⭐ <span id="score">0</span></span>
+</div>
+<div id="overlay">
+  <div id="message"></div>
+  <div id="sub-message"></div>
+  <button id="restart-btn">再 来 一 次</button>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+// --- Game state ---
+const GAME_TIME = 30;
+let score = 0, combo = 0, bestCombo = 0, misses = 0;
+let timeLeft = GAME_TIME;
+let running = false;
+let gameStartTime = 0;
+let dot = { x: W/2, y: H/2, r: 18, vx: 0, vy: 0, pulse: 0 };
+let particles = [];
+let missRipples = [];
+let bgStars = [];
+
+// --- Init bg stars ---
+for (let i = 0; i < 80; i++) {
+  bgStars.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 1.5 + 0.3,
+    a: Math.random(),
+    speed: Math.random() * 0.3 + 0.1,
+  });
+}
+
+// --- DOM ---
+const timerEl = document.getElementById('timer');
+const scoreEl = document.getElementById('score');
+const comboEl = document.getElementById('combo');
+const messageEl = document.getElementById('message');
+const subMsgEl = document.getElementById('sub-message');
+const restartBtn = document.getElementById('restart-btn');
+const overlay = document.getElementById('overlay');
+
+function updateHUD() {
+  timerEl.textContent = Math.ceil(timeLeft);
+  scoreEl.textContent = score;
+  comboEl.textContent = combo > 1 ? `🔥 x${combo}` : '';
+}
+
+// --- Move dot ---
+function moveDot() {
+  const margin = 60;
+  const speed = 180 + combo * 15 + Math.random() * 120;
+  // Random direction, but avoid going off-screen
+  let tx = dot.x + (Math.random() - 0.5) * 400;
+  let ty = dot.y + (Math.random() - 0.5) * 400;
+  tx = Math.max(margin, Math.min(W - margin, tx));
+  ty = Math.max(margin, Math.min(H - margin, ty));
+  const dx = tx - dot.x;
+  const dy = ty - dot.y;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist > 0) {
+    dot.vx = (dx / dist) * speed;
+    dot.vy = (dy / dist) * speed;
+  }
+  // Reduce radius as combo increases for difficulty
+  dot.r = Math.max(10, 18 - combo * 0.6);
+}
+
+// --- Spawn catch particles ---
+function burst(x, y) {
+  const count = 16 + combo * 3;
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.3;
+    const speed = 120 + Math.random() * 260;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      decay: 0.6 + Math.random() * 0.8,
+      r: 2 + Math.random() * 3,
+      color: `hsl(${35 + Math.random() * 20}, 90%, ${55 + Math.random() * 30}%)`,
+    });
+  }
+}
+
+// --- Miss ripple ---
+function missRipple(x, y) {
+  missRipples.push({ x, y, r: 5, life: 1 });
+}
+
+// --- Handle click/tap ---
+function onPointer(e) {
+  e.preventDefault();
+  if (!running) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const px = e.clientX - rect.left;
+  const py = e.clientY - rect.top;
+
+  const dx = px - dot.x;
+  const dy = py - dot.y;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  const hitRadius = dot.r + 16; // generous hit area
+
+  if (dist < hitRadius) {
+    // HIT!
+    combo++;
+    if (combo > bestCombo) bestCombo = combo;
+    score += combo;
+    burst(dot.x, dot.y);
+    moveDot();
+  } else {
+    // MISS
+    combo = 0;
+    misses++;
+    missRipple(px, py);
+  }
+  updateHUD();
+
+  // Combo pop
+  if (combo >= 5) {
+    comboEl.classList.add('pop');
+    setTimeout(() => comboEl.classList.remove('pop'), 100);
+  }
+}
+
+canvas.addEventListener('pointerdown', onPointer);
+canvas.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+
+// --- Start / Restart ---
+function startGame() {
+  score = 0; combo = 0; bestCombo = 0; misses = 0;
+  timeLeft = GAME_TIME;
+  particles = [];
+  missRipples = [];
+  dot.x = W/2; dot.y = H/2; dot.r = 18;
+  dot.vx = 0; dot.vy = 0;
+  running = true;
+  gameStartTime = performance.now();
+  moveDot();
+  updateHUD();
+  messageEl.classList.remove('show');
+  subMsgEl.classList.remove('show');
+  restartBtn.classList.remove('show');
+  overlay.classList.remove('active');
+}
+
+function endGame() {
+  running = false;
+  overlay.classList.add('active');
+  messageEl.textContent = score >= 30 ? '🎉 太厉害了！' : score >= 15 ? '👏 不错哦！' : score >= 5 ? '😺 继续加油~' : '😿 再试试？';
+  messageEl.classList.add('show');
+  subMsgEl.textContent = `抓到 ${score} 个 · 最高连击 x${bestCombo} · 失误 ${misses} 次`;
+  subMsgEl.classList.add('show');
+  restartBtn.classList.add('show');
+}
+
+restartBtn.addEventListener('click', startGame);
+
+// --- Game loop ---
+let lastTime = performance.now();
+function loop(now) {
+  requestAnimationFrame(loop);
+  if (!running) {
+    // Still draw the static scene
+    draw(now);
+    return;
+  }
+
+  const dt = Math.min((now - lastTime) / 1000, 0.1);
+  lastTime = now;
+
+  // Timer
+  timeLeft -= dt;
+  if (timeLeft <= 0) {
+    timeLeft = 0;
+    updateHUD();
+    endGame();
+  }
+
+  // Move dot
+  dot.x += dot.vx * dt;
+  dot.y += dot.vy * dt;
+
+  // Bounce off walls
+  const margin = 30;
+  if (dot.x < margin) { dot.x = margin; dot.vx *= -0.6; moveDot(); }
+  if (dot.x > W - margin) { dot.x = W - margin; dot.vx *= -0.6; moveDot(); }
+  if (dot.y < margin) { dot.y = margin; dot.vy *= -0.6; moveDot(); }
+  if (dot.y > H - margin) { dot.y = H - margin; dot.vy *= -0.6; moveDot(); }
+
+  // Slow down (arrive at target)
+  const spd = Math.sqrt(dot.vx*dot.vx + dot.vy*dot.vy);
+  if (spd < 30 && spd > 0) {
+    dot.vx = 0; dot.vy = 0;
+    // Pick new target after a brief pause — handled by moveDot timeout approach
+    if (!dot._moveTimeout) {
+      dot._moveTimeout = setTimeout(() => {
+        moveDot();
+        dot._moveTimeout = null;
+      }, 400 + Math.random() * 600);
+    }
+  }
+
+  // Update particles
+  for (let p of particles) {
+    p.x += p.vx * dt;
+    p.y += p.vy * dt;
+    p.life -= p.decay * dt;
+  }
+  particles = particles.filter(p => p.life > 0);
+
+  // Update miss ripples
+  for (let r of missRipples) {
+    r.r += 200 * dt;
+    r.life -= 1.8 * dt;
+  }
+  missRipples = missRipples.filter(r => r.life > 0);
+
+  draw(now);
+}
+
+function draw(now) {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle radial gradient at center
+  const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W, H) * 0.7);
+  grad.addColorStop(0, '#151525');
+  grad.addColorStop(1, '#0a0a0f');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Background stars
+  for (let s of bgStars) {
+    s.a += s.speed * 0.01;
+    const alpha = 0.25 + Math.sin(s.a) * 0.25;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fill();
+  }
+
+  // Miss ripples
+  for (let r of missRipples) {
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(255,100,100,${r.life * 0.4})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  // Dot glow layers
+  const pulse = 1 + Math.sin(now * 0.008) * 0.15;
+  for (let i = 3; i >= 0; i--) {
+    const gr = dot.r * (1 + i * 1.2) * pulse;
+    const alpha = 0.08 - i * 0.018;
+    const glow = ctx.createRadialGradient(dot.x, dot.y, dot.r * 0.5, dot.x, dot.y, gr);
+    glow.addColorStop(0, `rgba(255,200,80,${0.7})`);
+    glow.addColorStop(0.3, `rgba(255,160,40,${0.35})`);
+    glow.addColorStop(0.7, `rgba(255,120,20,${alpha})`);
+    glow.addColorStop(1, 'rgba(255,80,10,0)');
+    ctx.beginPath();
+    ctx.arc(dot.x, dot.y, gr, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+  }
+
+  // Inner bright core
+  const core = ctx.createRadialGradient(dot.x, dot.y, 0, dot.x, dot.y, dot.r * pulse);
+  core.addColorStop(0, '#fffde8');
+  core.addColorStop(0.2, '#fff9c4');
+  core.addColorStop(0.5, '#ffcc80');
+  core.addColorStop(1, 'rgba(255,150,30,0)');
+  ctx.beginPath();
+  ctx.arc(dot.x, dot.y, dot.r * pulse, 0, Math.PI * 2);
+  ctx.fillStyle = core;
+  ctx.fill();
+
+  // Shimmer ring
+  ctx.beginPath();
+  ctx.arc(dot.x, dot.y, dot.r * 1.5 * pulse, 0, Math.PI * 2);
+  ctx.strokeStyle = `rgba(255,220,150,${0.25 + Math.sin(now * 0.015) * 0.15})`;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Particles
+  for (let p of particles) {
+    const alpha = p.life;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
+    ctx.fillStyle = p.color.replace('%)', `%, ${alpha})`).replace('hsl', 'hsla');
+    ctx.fill();
+    // Trail
+    ctx.beginPath();
+    ctx.arc(p.x - p.vx * 0.03, p.y - p.vy * 0.03, p.r * p.life * 0.5, 0, Math.PI * 2);
+    ctx.fillStyle = p.color.replace('%)', `%, ${alpha * 0.4})`).replace('hsl', 'hsla');
+    ctx.fill();
+  }
+}
+
+// --- On load ---
+updateHUD();
+draw(performance.now());
+requestAnimationFrame(loop);
+
+// Start after a short delay
+setTimeout(startGame, 600);
+</script>
+</body>
+</html>
