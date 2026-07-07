@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>谬误侦探 · Fallacy Detective</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="rain-canvas"></canvas>
+<div id="app"></div>
+
+<script>
+// ---- Rain effect (noir atmosphere) ----
+const rainCanvas = document.getElementById('rain-canvas');
+const rctx = rainCanvas.getContext('2d');
+let raindrops = [];
+
+function rainResize() {
+  rainCanvas.width = window.innerWidth;
+  rainCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', rainResize);
+rainResize();
+
+for (let i = 0; i < 60; i++) {
+  raindrops.push({
+    x: Math.random() * rainCanvas.width,
+    y: Math.random() * rainCanvas.height,
+    len: 6 + Math.random() * 16,
+    speed: 2 + Math.random() * 5,
+    opacity: 0.08 + Math.random() * 0.12,
+  });
+}
+
+function rainLoop() {
+  requestAnimationFrame(rainLoop);
+  rctx.clearRect(0, 0, rainCanvas.width, rainCanvas.height);
+  for (const d of raindrops) {
+    rctx.beginPath();
+    rctx.moveTo(d.x, d.y);
+    rctx.lineTo(d.x - 1, d.y + d.len);
+    rctx.strokeStyle = `rgba(200,200,220,${d.opacity})`;
+    rctx.lineWidth = 0.5;
+    rctx.stroke();
+    d.y += d.speed;
+    if (d.y > rainCanvas.height) {
+      d.y = -d.len;
+      d.x = Math.random() * rainCanvas.width;
+    }
+  }
+}
+rainLoop();
+</script>
+<script src="game.js"></script>
+</body>
+</html>
