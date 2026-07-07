@@ -2,14 +2,16 @@
 
 ## 项目概览
 
-Astro 5 静态站点，部署 GitHub Pages。双语 (zh/en) 内容驱动博客 + H5 小游戏平台。
+Astro 7 静态站点，部署 GitHub Pages。双语 (zh/en) 内容驱动博客 + H5 小游戏平台。
 
 ## 技术栈
 
-- **框架**: Astro 5 (SSG)
+- **框架**: Astro 7 (SSG) — Rust 编译器 + Sätteri Markdown + Rolldown(Vite 8)
 - **运行时**: Bun
 - **样式**: CSS Variables + 暗色主题，见 `src/styles/`
 - **内容**: Astro Content Collections (`posts`, `apps`)
+- **Markdown**: `@astrojs/markdown-remark`（v7 需显式安装才能用 remark 插件）
+- **配置**: remark 插件用 `unified()` 包裹（v7 新 API），`compressHTML: true`（保持中文空白兼容）
 - **i18n**: `src/i18n/` — 双语路由 `[lang]/...`，支持 zh/en
 
 ## 目录结构
