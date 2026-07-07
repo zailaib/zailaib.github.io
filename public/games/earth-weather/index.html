@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>地球气象 · Earth Weather 3D</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="container"></div>
+
+<div id="title">
+  <h1>🌍 地球气象 · Earth Weather</h1>
+  <div class="sub">洋流 · 大气环流 · 冷锋暖锋交汇降雨</div>
+</div>
+
+<div id="info">☀️ 夏季：南亚季风从海洋吹向大陆（暖湿）</div>
+
+<!-- Season toggle -->
+<div id="season">
+  <button class="season-btn active" data-season="summer">☀️ 夏季</button>
+  <button class="season-btn" data-season="winter">❄️ 冬季</button>
+</div>
+
+<!-- Layer toggles -->
+<div id="toggles">
+  <button class="toggle-btn on" data-layer="currents"><span class="dot" style="background:#ff6644"></span>洋流</button>
+  <button class="toggle-btn on" data-layer="winds"><span class="dot" style="background:#ffaa44"></span>风带</button>
+  <button class="toggle-btn on" data-layer="fronts"><span class="dot" style="background:#889999"></span>锋面 + 雨</button>
+</div>
+
+<!-- Legend -->
+<div id="legend">
+  <div class="leg-item"><span class="leg-dot" style="background:#ff5533"></span>暖洋流（赤道→极地）</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#3388bb"></span>寒洋流（极地→赤道）</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#ffaa44"></span>信风 / 季风</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#88aacc"></span>西风带</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#4488dd;border-radius:2px"></span>冷锋（冷气团）</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#dd4433;border-radius:2px"></span>暖锋（暖气团）</div>
+  <div class="leg-item"><span class="leg-dot" style="background:#88bbee;width:2px;border-radius:0"></span>降雨粒子</div>
+</div>
+
+<div id="front-label"></div>
+
+<div id="hint">🖱 拖拽旋转 · 滚轮缩放 · 开关图层观察不同系统</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
