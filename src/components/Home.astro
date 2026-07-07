@@ -52,6 +52,7 @@ const { latest, latestApps, lang } = Astro.props;
           </a>
         ))}
       </div>
+      <a href={`/${lang}/apps/`} class="view-all-link">{t(lang, 'home.viewAllApps')} →</a>
     </section>
   )}
 </main>
@@ -216,6 +217,14 @@ const { latest, latestApps, lang } = Astro.props;
     transform: translateX(4px);
     color: #ff9800;
   }
+
+  .view-all-link {
+    display: block; text-align: center; margin-top: var(--spacing-xl);
+    font-size: var(--font-size-sm); color: var(--color-accent-primary);
+    text-decoration: none; letter-spacing: 1px;
+    transition: all 0.3s;
+  }
+  .view-all-link:hover { color: var(--color-accent-hover); text-decoration: underline; }
 
   @media (max-width: 768px) {
     .home-content {
