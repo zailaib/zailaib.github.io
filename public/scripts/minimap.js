@@ -49,16 +49,17 @@ function initializeMinimap() {
       const level = parseInt(heading.tagName.substring(1));
       const text = heading.textContent?.trim() || `Heading ${index + 1}`;
 
-      // 生成更好的ID
+      // 生成更好的ID（保留 Unicode 字母，避免中文标题被删光）
       let id = heading.id;
       if (!id) {
-        // 基于标题文本生成ID
-        id = text
-          .toLowerCase()
-          .replace(/[^\w\s-]/g, '') // 移除特殊字符
-          .replace(/\s+/g, '-') // 空格替换为连字符
-          .replace(/--+/g, '-') // 多个连字符合并为一个
-          .trim('-') || `heading-${index}`;
+        // 取文本前20个有意义的字符生成ID
+        const base = text
+          .replace(/[^\p{L}\p{N}\s-]/gu, '') // 保留字母数字空格连字符（含中文）
+          .replace(/\s+/g, '-')
+          .replace(/--+/g, '-')
+          .replace(/^-+|-+$/g, '') // trim hyphens
+          .slice(0, 48);
+        id = base || `section-${index}`;
 
         // 确保ID唯一
         let uniqueId = id;
@@ -67,7 +68,6 @@ function initializeMinimap() {
           uniqueId = `${id}-${counter}`;
           counter++;
         }
-
         heading.id = uniqueId;
         id = uniqueId;
       }
@@ -81,25 +81,19 @@ function initializeMinimap() {
       // 添加点击事件，确保平滑滚动并避免被 header 覆盖
       link.addEventListener('click', (e) => {
         e.preventDefault();
-        const target = document.getElementById(id);
-        if (target) {
-          // 计算 header 高度和额外偏移
+        try {
+          const target = document.getElementById(id);
+          if (!target) return;
           const header = document.querySelector('header') || document.querySelector('.header-content');
           const headerHeight = header ? header.offsetHeight : 0;
-          const extraOffset = 20; // 额外的间距，避免紧贴
-          const totalOffset = headerHeight + extraOffset;
-
-          // 计算目标位置
-          const targetPosition = target.offsetTop - totalOffset;
-
-          // 平滑滚动到计算后的位置
+          const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
           window.scrollTo({
-            top: Math.max(0, targetPosition), // 确保不会滚动到负数位置
+            top: Math.max(0, targetPosition),
             behavior: 'smooth'
           });
-
-          // 更新URL
-          history.pushState(null, null, `#${id}`);
+          history.pushState(null, '', `#${id}`);
+        } catch (err) {
+          console.warn('Minimap scroll error:', err);
         }
       });
 
