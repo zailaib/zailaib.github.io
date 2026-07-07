@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>元素周期表 · Periodic Table 3D</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="header">
+  <h1>⚛️ 元素周期表 · Periodic Table</h1>
+  <button class="lang-toggle" id="lang-toggle">EN</button>
+</div>
+
+<div id="main">
+
+  <!-- Left: Periodic Table -->
+  <div id="table-panel">
+    <div id="table-grid"></div>
+    <div id="cat-legend"></div>
+  </div>
+
+  <!-- Right: 3D Atom View -->
+  <div id="atom-panel">
+    <canvas id="atom-canvas"></canvas>
+    <div id="shell-legend"></div>
+    <div id="info-card"></div>
+    <div id="hint">🖱 拖拽旋转 · 滚轮缩放</div>
+  </div>
+
+</div>
+
+<!-- Element data -->
+<script src="elements.js"></script>
+
+<!-- Three.js -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
