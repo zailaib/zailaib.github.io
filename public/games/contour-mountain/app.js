@@ -22,6 +22,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 1.5, 0);
 controls.enableDamping = true; controls.dampingFactor = 0.08;
 controls.minDistance = 3; controls.maxDistance = 18;
+controls.zoomSpeed = 0.5;
 controls.maxPolarAngle = Math.PI * 0.55;
 controls.update();
 
@@ -47,6 +48,7 @@ scene.add(base);
 const TERRAIN_SIZE = 10;
 const GRID_RES = 120;
 const MAX_HEIGHT = 6;
+const SADDLE_ELEVATION = 2.2; // elevation where contour splits from one loop into two
 
 function noise2D(x, y) {
   // Simple value noise using sinusoidal hashing
@@ -80,27 +82,31 @@ function fbm(x, y) {
 }
 
 function terrainHeight(wx, wy) {
-  // Mountain peak structure
-  const cx = 0, cy = 0;
-  const dist = Math.sqrt((wx - cx) ** 2 + (wy - cy) ** 2);
+  // === TWO PEAKS demonstrating "equal height" contour concept ===
+  // Peak West (higher): visible from afar
+  const dWest = Math.sqrt((wx + 2.2) ** 2 + (wy + 0.3) ** 2);
+  let h = Math.max(0, 1 - dWest / 3.0) * 5.5;
 
-  // Main peak
-  let h = Math.max(0, 1 - dist / 3.5) * 5.5;
+  // Peak East (slightly lower): forms the pair
+  const dEast = Math.sqrt((wx - 2.5) ** 2 + (wy - 0.1) ** 2);
+  h += Math.max(0, 1 - dEast / 2.8) * 4.8;
 
-  // Secondary peaks
-  h += Math.max(0, 1 - Math.sqrt((wx - 1.5) ** 2 + (wy - 1.2) ** 2) / 1.8) * 2.5;
-  h += Math.max(0, 1 - Math.sqrt((wx + 1.8) ** 2 + (wy + 0.5) ** 2) / 1.5) * 2.0;
-  h += Math.max(0, 1 - Math.sqrt((wx + 0.5) ** 2 + (wy - 1.8) ** 2) / 1.3) * 1.8;
+  // Saddle ridge connecting the two peaks (key: contour lines merge!)
+  const saddleY = 0.15 * wx;
+  const saddleDist = Math.abs(wy - saddleY);
+  const alongRidge = Math.abs(wx) < 3.5 ? 1 - Math.abs(wx) / 3.5 : 0;
+  h += Math.max(0, alongRidge) * Math.max(0, 1 - saddleDist / 1.2) * 2.0;
 
-  // Ridge connecting main peak to satellite
-  const ridgeDist = Math.abs((wy - 0.3 * wx - 0.2));
-  h += Math.max(0, 1 - ridgeDist / 0.8) * Math.max(0, 1 - dist / 4) * 1.5;
+  // Small third peak (north) — makes interesting contour patterns
+  const dNorth = Math.sqrt((wx + 0.2) ** 2 + (wy - 2.8) ** 2);
+  h += Math.max(0, 1 - dNorth / 1.6) * 2.8;
 
-  // Noise detail
-  h += fbm(wx * 1.5 + 0.3, wy * 1.5 + 0.7) * 1.2;
+  // Noise detail for natural look
+  h += fbm(wx * 1.3 + 0.3, wy * 1.3 + 0.7) * 1.0;
 
-  // Valley to the south
-  h *= 0.7 + 0.3 * Math.min(1, (wy + 3) / 5);
+  // Gentle slope down at edges
+  const edgeDist = Math.sqrt(wx ** 2 + wy ** 2);
+  h *= Math.min(1, 1.1 - edgeDist / 7.5);
 
   return Math.max(0, h);
 }
@@ -258,19 +264,34 @@ const markerGroup = new THREE.Group();
 scene.add(markerGroup);
 function buildMarkers() {
   while (markerGroup.children.length > 0) markerGroup.remove(markerGroup.children[0]);
+  // Side elevation ruler
   for (let h = 1; h <= Math.floor(MAX_HEIGHT); h++) {
-    const wy = -4;
-    const wx = 4.5;
+    const wy = -4.5, wx = 4.5;
     const poleGeo = new THREE.CylinderGeometry(0.03, 0.03, h, 8);
     const pole = new THREE.Mesh(poleGeo, new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.5 }));
-    pole.position.set(wx, h / 2, wy);
-    pole.castShadow = true;
+    pole.position.set(wx, h / 2, wy); pole.castShadow = true;
     markerGroup.add(pole);
-    // Label using a tiny sphere on top
     const dot = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff }));
     dot.position.set(wx, h, wy);
     markerGroup.add(dot);
   }
+  // Peak markers — two flag poles on the summits
+  const peaks = [{ x: -2.2, z: 0.3, h: 5.4, label: '西峰' }, { x: 2.5, z: -0.1, h: 4.7, label: '东峰' }];
+  peaks.forEach(p => {
+    const flagPole = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.04, 0.04, p.h + 0.8, 8),
+      new THREE.MeshStandardMaterial({ color: 0xdd4444, roughness: 0.3, emissive: 0x441111, emissiveIntensity: 0.3 })
+    );
+    flagPole.position.set(p.x, (p.h + 0.8) / 2, p.z);
+    flagPole.castShadow = true;
+    markerGroup.add(flagPole);
+    const flag = new THREE.Mesh(
+      new THREE.SphereGeometry(0.13, 8, 8),
+      new THREE.MeshBasicMaterial({ color: 0xff4444 })
+    );
+    flag.position.set(p.x, p.h + 0.8, p.z);
+    markerGroup.add(flag);
+  });
 }
 buildMarkers();
 

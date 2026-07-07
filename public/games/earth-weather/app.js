@@ -17,6 +17,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true; controls.dampingFactor = 0.08;
 controls.autoRotate = true; controls.autoRotateSpeed = 0.3;
 controls.minDistance = 3.5; controls.maxDistance = 14;
+controls.zoomSpeed = 0.5;
 controls.update();
 
 // Lights

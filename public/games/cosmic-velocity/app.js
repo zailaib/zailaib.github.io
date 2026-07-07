@@ -6,7 +6,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const R_EARTH = 2;            // display units (Earth radius)
 const MU = 25;                // gravitational parameter (display units)
 const KM_PER_UNIT = 6371 / R_EARTH;  // km per display unit
-const UNIT_PER_KMS = 1 / 7.9; // 7.9 km/s → 1 unit/s (for display scaling)
+const V_CIRC_DISPLAY = Math.sqrt(MU / R_EARTH); // ~3.54 display-units/s at surface
+const SPEED_TO_KMS = 7.9 / V_CIRC_DISPLAY; // multiply display speed → km/s (~2.23)
+const SPEED_TO_DISPLAY = 1 / SPEED_TO_KMS;  // multiply km/s → display speed (~0.447)
 
 // Cosmic velocities (km/s)
 const V1 = 7.9;   // first cosmic: circular orbit at surface
@@ -45,6 +47,7 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.minDistance = 3;
 controls.maxDistance = 30;
+controls.zoomSpeed = 0.5;
 controls.target.set(0, 0, 0);
 controls.update();
 
@@ -200,7 +203,7 @@ function computeOrbit(vKms, altKm) {
   const r0 = R_EARTH + altKm / KM_PER_UNIT;
   const vCirc = Math.sqrt(MU / r0);
   const vEsc = Math.sqrt(2) * vCirc;
-  const v0 = vKms / KM_PER_UNIT; // convert to display units
+  const v0 = vKms * SPEED_TO_DISPLAY; // km/s → display units/s
   const h = r0 * v0;
   const energy = v0 * v0 / 2 - MU / r0;
   let e, type, desc;
@@ -227,7 +230,7 @@ function computeOrbit(vKms, altKm) {
     type = 'hyperbolic';
     desc = '双曲线轨道 · 高速逃逸';
   }
-  return { r0, e, h, type, desc, vCirc: vCirc * KM_PER_UNIT, vEsc: vEsc * KM_PER_UNIT };
+  return { r0, e, h, type, desc, vCirc: vCirc * SPEED_TO_KMS, vEsc: vEsc * SPEED_TO_KMS };
 }
 
 // ---- Build orbit path line ----
@@ -416,9 +419,9 @@ function animate(now) {
     }
 
     // Update HUD
-    const speedNow = Math.sqrt(2 * (MU / r + (rocketFlying ? 0 : 0))) * KM_PER_UNIT;
+    const actualSpeed = omega * r * SPEED_TO_KMS; // display → km/s
     const altNow = (r - R_EARTH) * KM_PER_UNIT;
-    document.getElementById('hud-speed').textContent = (omega * r * KM_PER_UNIT).toFixed(1) + ' km/s';
+    document.getElementById('hud-speed').textContent = actualSpeed.toFixed(1) + ' km/s';
     document.getElementById('hud-alt').textContent = Math.max(0, Math.round(altNow)) + ' km';
     document.getElementById('hud-type').textContent = orbitParams.desc;
   }

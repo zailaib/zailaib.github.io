@@ -26,6 +26,7 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 controls.minDistance = 3;
 controls.maxDistance = 15;
+controls.zoomSpeed = 0.5;
 controls.maxPolarAngle = Math.PI * 0.7;
 controls.update();
 

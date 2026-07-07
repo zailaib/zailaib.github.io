@@ -27,6 +27,7 @@ controls.autoRotate = true;
 controls.autoRotateSpeed = 0.4;
 controls.minDistance = 3;
 controls.maxDistance = 15;
+controls.zoomSpeed = 0.5;
 controls.target.set(0, 0, 0);
 controls.update();
 
