@@ -192,8 +192,18 @@ function makeVacuole(size = 0.9) {
 }
 
 // ---- Cell model builders ----
+function disposeMeshes(group) {
+  group.traverse(c => {
+    if (c.geometry) c.geometry.dispose();
+    if (c.material) (Array.isArray(c.material) ? c.material : [c.material]).forEach(m => m.dispose());
+  });
+}
 function clearCell() {
-  while (cellGroup.children.length > 0) cellGroup.remove(cellGroup.children[0]);
+  while (cellGroup.children.length > 0) {
+    const c = cellGroup.children[0];
+    disposeMeshes(c);
+    cellGroup.remove(c);
+  }
 }
 
 function buildCell(type) {

@@ -87,8 +87,9 @@ const barrierMat = new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 
 // Barrier parts (rebuilt when slit params change)
 let barrierParts = [];
 
+function disposeMeshes(g) { g.traverse(c => { if (c.geometry) c.geometry.dispose(); if (c.material) (Array.isArray(c.material)?c.material:[c.material]).forEach(m=>m.dispose()); }); }
 function buildBarrier() {
-  barrierParts.forEach(p => barrierGroup.remove(p));
+  barrierParts.forEach(p => { disposeMeshes(p); barrierGroup.remove(p); });
   barrierParts = [];
 
   const wallWidth = 8;

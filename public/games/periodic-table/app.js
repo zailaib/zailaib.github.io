@@ -81,8 +81,16 @@ for (let i = 0; i < 3; i++) {
 let shellGroups = [];
 let electronMeshes = []; // flat array for animation
 
+function disposeMeshes(group) {
+  group.traverse(c => {
+    if (c.geometry) c.geometry.dispose();
+    if (c.material) {
+      (Array.isArray(c.material) ? c.material : [c.material]).forEach(m => m.dispose());
+    }
+  });
+}
 function clearShells() {
-  shellGroups.forEach(g => atomGroup.remove(g));
+  shellGroups.forEach(g => { disposeMeshes(g); atomGroup.remove(g); });
   shellGroups = [];
   electronMeshes = [];
 }

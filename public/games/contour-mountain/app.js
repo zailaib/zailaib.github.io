@@ -172,9 +172,12 @@ scene.add(terrain);
 const contourGroup = new THREE.Group();
 scene.add(contourGroup);
 
+function disposeMeshes(g) {
+  g.traverse(c => { if (c.geometry) c.geometry.dispose(); if (c.material) (Array.isArray(c.material)?c.material:[c.material]).forEach(m=>m.dispose()); });
+}
 function buildContourLines(interval) {
-  // Clear existing
-  while (contourGroup.children.length > 0) contourGroup.remove(contourGroup.children[0]);
+  // Clear existing with proper disposal
+  while (contourGroup.children.length > 0) { const c = contourGroup.children[0]; disposeMeshes(c); contourGroup.remove(c); }
 
   const offset = 0.03; // slight lift to avoid z-fighting
   const step = TERRAIN_SIZE / GRID_RES;
@@ -263,7 +266,7 @@ function updateWater() {
 const markerGroup = new THREE.Group();
 scene.add(markerGroup);
 function buildMarkers() {
-  while (markerGroup.children.length > 0) markerGroup.remove(markerGroup.children[0]);
+  while (markerGroup.children.length > 0) { const c = markerGroup.children[0]; disposeMeshes(c); markerGroup.remove(c); }
   // Side elevation ruler
   for (let h = 1; h <= Math.floor(MAX_HEIGHT); h++) {
     const wy = -4.5, wx = 4.5;
@@ -301,7 +304,7 @@ let showContours = true;
 
 function updateContours() {
   if (showContours) buildContourLines(contourInterval);
-  else { while (contourGroup.children.length > 0) contourGroup.remove(contourGroup.children[0]); }
+  else { while (contourGroup.children.length > 0) { const c = contourGroup.children[0]; disposeMeshes(c); contourGroup.remove(c); } }
   document.getElementById('contour-interval').textContent = (contourInterval * 200).toFixed(0) + 'm';
 }
 
