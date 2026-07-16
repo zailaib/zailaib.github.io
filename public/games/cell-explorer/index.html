@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>细胞探索者 · Cell Explorer 3D</title>
+<script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
 <link rel="stylesheet" href="../shared/theme.css">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -11,6 +12,7 @@
 
 <button id="theme-btn" title="切换主题">☀️</button>
 
+<div id="loading"><div class="loader"></div><span>加载中...</span></div>
 <div id="container"></div>
 
 <!-- Cell type tabs -->
@@ -32,6 +34,8 @@
 </div>
 
 <div id="hint">🖱 拖拽旋转 · 滚轮缩放 · 悬停查看细胞器</div>
+
+<button id="tour-btn" title="自动导览">🎬 导览</button>
 
 <script type="importmap">
 {

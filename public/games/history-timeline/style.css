@@ -77,6 +77,21 @@
   font-size: 13px; color: #ffe0a0; letter-spacing: 1px;
 }
 
+/* Region filter */
+#region-filter {
+  position: fixed; left: 8px; top: 50px; z-index: 10;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.region-btn {
+  padding: 3px 8px; font-size: 8px; border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel-bg); color: var(--label); cursor: pointer;
+  font-family: inherit; letter-spacing: 0.5px; transition: all 0.3s;
+  backdrop-filter: blur(6px); white-space: nowrap;
+}
+.region-btn:hover { border-color: rgba(255,255,255,0.3); color: var(--text); }
+.region-btn.active { border-color: #ffe0a0; color: #ffe0a0; background: rgba(255,200,100,0.1); }
+
 /* Jump buttons */
 #jump-btns {
   position: fixed; left: 8px; top: 80px; z-index: 10;

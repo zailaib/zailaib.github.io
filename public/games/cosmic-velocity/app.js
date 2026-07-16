@@ -299,6 +299,14 @@ function updateRocketPosition(params, theta) {
 
 // ---- Launch ----
 function launch() {
+  // Clean up previous explosion
+  explosionGroup.visible = false;
+  explosionGroup.clear();
+  explosionParticles = [];
+  // Reset HUD crash message
+  document.getElementById('hud-type').style.color = '';
+  rocketGroup.visible = true;
+
   orbitParams = computeOrbit(launchSpeed, altitude);
   // Suborbital: rocket starts at apogee (highest point), θ=π
   // All other orbits: rocket starts at perigee, θ=0
@@ -410,6 +418,67 @@ document.querySelectorAll('.view-btn').forEach(btn => {
   });
 });
 
+// ---- Explosion effect ----
+let explosionParticles = [];
+const explosionGroup = new THREE.Group();
+explosionGroup.visible = false;
+scene.add(explosionGroup);
+
+function spawnExplosion(pos) {
+  // Create burst of 40 particles
+  explosionGroup.position.copy(pos);
+  explosionGroup.visible = true;
+  explosionGroup.children.forEach(c => {
+    if (c.geometry) c.geometry.dispose();
+    if (c.material) c.material.dispose();
+  });
+  explosionGroup.clear();
+  explosionParticles = [];
+
+  for (let i = 0; i < 40; i++) {
+    const geo = new THREE.SphereGeometry(0.03 + Math.random() * 0.04, 4, 4);
+    const mat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color().setHSL(0.08 + Math.random() * 0.12, 1, 0.4 + Math.random() * 0.6),
+      transparent: true, opacity: 1, depthWrite: false,
+    });
+    const particle = new THREE.Mesh(geo, mat);
+    const dir = new THREE.Vector3(
+      (Math.random() - 0.5) * 2,
+      (Math.random() - 0.5) * 2,
+      (Math.random() - 0.5) * 2
+    ).normalize();
+    particle.userData = { vel: dir.multiplyScalar(0.5 + Math.random() * 2), life: 0.8 + Math.random() * 0.8 };
+    explosionGroup.add(particle);
+    explosionParticles.push(particle);
+  }
+
+  // Flash
+  const flashGeo = new THREE.SphereGeometry(0.25, 16, 16);
+  const flashMat = new THREE.MeshBasicMaterial({ color: 0xff8844, transparent: true, opacity: 0.9, depthWrite: false });
+  const flash = new THREE.Mesh(flashGeo, flashMat);
+  flash.userData = { life: 0.3, isFlash: true };
+  explosionGroup.add(flash);
+  explosionParticles.push(flash);
+
+  // Camera shake
+  const origPos = camera.position.clone();
+  const shakeStart = performance.now();
+  function shake(now) {
+    const elapsed = (now - shakeStart) / 1000;
+    if (elapsed > 0.4) { camera.position.copy(origPos); return; }
+    const intensity = (1 - elapsed / 0.4) * 0.2;
+    camera.position.x = origPos.x + (Math.random() - 0.5) * intensity;
+    camera.position.y = origPos.y + (Math.random() - 0.5) * intensity;
+    camera.position.z = origPos.z + (Math.random() - 0.5) * intensity * 0.5;
+    requestAnimationFrame(shake);
+  }
+  requestAnimationFrame(shake);
+
+  // HUD crash message
+  document.getElementById('hud-type').textContent = '💥 坠毁！速度不足以入轨';
+  document.getElementById('hud-type').style.color = '#ff4444';
+}
+
 // ---- Animation ----
 function animate(now) {
   requestAnimationFrame(animate);
@@ -425,8 +494,11 @@ function animate(now) {
 
     const alive = updateRocketPosition(orbitParams, rocketAngle);
     if (!alive) {
-      // Rocket crashed
+      // Rocket crashed — spawn explosion
+      const crashPos = rocketGroup.position.clone();
       rocketFlying = false;
+      spawnExplosion(crashPos);
+      rocketGroup.visible = false;
       document.getElementById('launch-btn').textContent = '🚀 发射';
       document.getElementById('launch-btn').classList.remove('reset-mode');
     }
@@ -458,6 +530,27 @@ function animate(now) {
         child.position.z = child.userData.dist * Math.sin(child.userData.angle);
       }
     });
+  }
+
+  // Animate explosion particles
+  if (explosionGroup.visible) {
+    let allDead = true;
+    explosionParticles.forEach(p => {
+      p.userData.life -= dt;
+      if (p.userData.life <= 0) { p.visible = false; return; }
+      allDead = false;
+      p.material.opacity = Math.max(0, p.userData.life / (p.userData.isFlash ? 0.3 : 1.6));
+      if (!p.userData.isFlash && p.userData.vel) {
+        p.position.add(p.userData.vel.clone().multiplyScalar(dt));
+        p.userData.vel.multiplyScalar(0.96); // drag
+      }
+      if (p.userData.isFlash) p.scale.setScalar(1 + (0.3 - p.userData.life) * 5);
+    });
+    if (allDead) {
+      explosionGroup.visible = false;
+      explosionGroup.clear();
+      explosionParticles = [];
+    }
   }
 
   // Flame flicker

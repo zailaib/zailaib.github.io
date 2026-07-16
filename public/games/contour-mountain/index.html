@@ -2,6 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
+<script>if(localStorage.getItem("theme")==="light")document.documentElement.classList.add("light");</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>等高线山脉 · Contour Mountain 3D</title>
 <link rel="stylesheet" href="../shared/theme.css">
@@ -11,6 +12,7 @@
 
 <button id="theme-btn" title="切换主题">☀️</button>
 
+<div id="loading"><div class="loader"></div><span>加载中...</span></div>
 <div id="container"></div>
 
 <div id="title">

@@ -564,6 +564,76 @@ window.addEventListener('resize', () => {
   renderer.setSize(container.clientWidth, container.clientHeight);
 });
 
+// ---- Auto tour ----
+let tourRunning = false;
+let tourStep = 0;
+let tourTimer = null;
+
+function startTour() {
+  if (tourRunning) { stopTour(); return; }
+  tourRunning = true;
+  tourStep = 0;
+  document.getElementById('tour-btn').textContent = '⏹ 停止';
+  document.getElementById('tour-btn').classList.add('active');
+  document.getElementById('hint').textContent = '🎬 导览模式 · 自动旋转观察细胞器';
+  runTourStep();
+}
+
+function stopTour() {
+  tourRunning = false;
+  if (tourTimer) clearTimeout(tourTimer);
+  document.getElementById('tour-btn').textContent = '🎬 导览';
+  document.getElementById('tour-btn').classList.remove('active');
+  document.getElementById('hint').textContent = '🖱 拖拽旋转 · 滚轮缩放 · 悬停查看细胞器';
+  document.querySelectorAll('.legend-item').forEach(el => el.classList.remove('highlight'));
+}
+
+function runTourStep() {
+  if (!tourRunning) return;
+  const parts = (cellGroup.userData.parts || []).filter((p, i, arr) =>
+    arr.findIndex(x => x.name === p.name) === i
+  );
+  if (parts.length === 0) { stopTour(); return; }
+
+  const part = parts[tourStep % parts.length];
+  // Highlight in legend
+  highlightLegend(part.name);
+  showInfo(part);
+  document.querySelectorAll('.legend-item').forEach(el =>
+    el.classList.toggle('highlight', el.dataset.name === part.name)
+  );
+
+  // Move camera to look at the organelle
+  const target = new THREE.Vector3();
+  part.group.getWorldPosition(target);
+  // Animate camera
+  const startPos = camera.position.clone();
+  const endPos = target.clone().add(new THREE.Vector3(2, 1.5, 3));
+  const startTarget = controls.target.clone();
+  const startTime = performance.now();
+  const duration = 2000; // 2 seconds per organelle
+
+  function animateCam(now) {
+    if (!tourRunning) return;
+    const t = Math.min((now - startTime) / duration, 1);
+    const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // easeInOutQuad
+    camera.position.lerpVectors(startPos, endPos, ease);
+    controls.target.lerpVectors(startTarget, target, ease);
+    if (t < 1) {
+      requestAnimationFrame(animateCam);
+    } else {
+      // Pause briefly, then next
+      tourTimer = setTimeout(() => {
+        tourStep++;
+        runTourStep();
+      }, 2000);
+    }
+  }
+  requestAnimationFrame(animateCam);
+}
+
+document.getElementById('tour-btn').addEventListener('click', startTour);
+
 // ---- Init ----
 buildCell('plant');
 animate();

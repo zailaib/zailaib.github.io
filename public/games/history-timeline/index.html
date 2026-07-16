@@ -2,6 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
+<script>if(localStorage.getItem("theme")==="light")document.documentElement.classList.add("light");</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>历史大道 · History Run</title>
 <link rel="stylesheet" href="../shared/theme.css">
@@ -11,6 +12,7 @@
 
 <button id="theme-btn" title="切换主题">☀️</button>
 
+<div id="loading"><div class="loader"></div><span>加载中...</span></div>
 <div id="container"></div>
 
 <!-- HUD -->
@@ -27,6 +29,16 @@
 
 <!-- Vehicle indicator -->
 <div id="vehicle-ind">🚶</div>
+
+<!-- Region filter -->
+<div id="region-filter">
+  <button class="region-btn active" data-region="all">🌍 全部</button>
+  <button class="region-btn" data-region="中国">🇨🇳 中国</button>
+  <button class="region-btn" data-region="欧洲">🏰 欧洲</button>
+  <button class="region-btn" data-region="中东">🕌 中东</button>
+  <button class="region-btn" data-region="印度">🛕 印度</button>
+  <button class="region-btn" data-region="美洲">🗽 美洲</button>
+</div>
 
 <!-- Jump -->
 <div id="jump-btns">

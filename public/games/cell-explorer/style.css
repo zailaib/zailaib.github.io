@@ -69,6 +69,18 @@ body.light .tab-btn.active { background: rgba(0,0,0,0.08); }
 }
 body.light #hint { color: rgba(0,0,0,0.25); }
 
+/* -- Tour button -- */
+#tour-btn {
+  position: fixed; bottom: 24px; right: 16px; z-index: 20;
+  padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--panel-border); cursor: pointer;
+  background: var(--panel-bg); color: var(--text);
+  backdrop-filter: blur(8px); letter-spacing: 1px;
+  transition: all 0.3s; font-family: inherit;
+}
+#tour-btn:hover { background: rgba(100,200,150,0.15); border-color: #6c6; }
+#tour-btn.active { background: rgba(100,200,150,0.2); border-color: #6c6; color: #6c6; }
+
 /* -- Responsive -- */
 @media (max-width: 640px) {
   #tabs { gap: 2px; padding: 3px; }

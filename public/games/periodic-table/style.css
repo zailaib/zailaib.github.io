@@ -17,6 +17,15 @@
 }
 #header .lang-toggle:hover { border-color: rgba(255,255,255,0.4); color: var(--text); }
 
+#search-input {
+  flex: 1; max-width: 200px; padding: 4px 12px; border-radius: 14px;
+  border: 1px solid var(--panel-border); background: rgba(255,255,255,0.05);
+  color: var(--text); font-size: 12px; font-family: inherit; outline: none;
+  transition: border-color 0.3s;
+}
+#search-input::placeholder { color: var(--text-dim); }
+#search-input:focus { border-color: rgba(255,255,255,0.4); }
+
 /* -- Layout -- */
 #main {
   display: flex;

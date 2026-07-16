@@ -280,6 +280,25 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+// ---- Search ----
+document.getElementById('search-input').addEventListener('input', (e) => {
+  const query = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('.el-cell').forEach(cell => {
+    const num = cell.querySelector('.num')?.textContent;
+    const sym = cell.querySelector('.sym')?.textContent;
+    if (!query) { cell.style.opacity = '1'; return; }
+    const el = ELEMENTS[parseInt(num) - 1];
+    if (!el) return;
+    const [symbol, nameZh, nameEn] = el;
+    const match = sym === query ||
+      symbol.toLowerCase() === query ||
+      num === query ||
+      nameZh.includes(query) ||
+      nameEn.toLowerCase().includes(query);
+    cell.style.opacity = match ? '1' : '0.2';
+  });
+});
+
 // ---- Lang toggle ----
 document.getElementById('lang-toggle').addEventListener('click', () => {
   lang = lang === 'zh' ? 'en' : 'zh';

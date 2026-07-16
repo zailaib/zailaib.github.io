@@ -187,6 +187,7 @@ EVENTS.forEach(e => {
   const pillarGeo = new THREE.CylinderGeometry(0.02, 0.05, 0.5, 8);
   const pillar = new THREE.Mesh(pillarGeo, new THREE.MeshBasicMaterial({ color: 0xffd700, transparent: true, opacity: 0.3, depthWrite: false }));
   pillar.position.set(x, 0.25, 0);
+  pillar.userData = { belongsTo: orb }; // link pillar to orb
   eventGroup.add(pillar);
 });
 
@@ -419,6 +420,32 @@ document.getElementById('btn-pause').addEventListener('click', () => {
 function updateSpeedDisplay() {
   document.getElementById('speed-display').textContent = targetSpeed < 0.01 ? '⏸' : targetSpeed.toFixed(1) + 'x';
 }
+
+// Region filter
+let activeRegion = 'all';
+document.querySelectorAll('.region-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeRegion = btn.dataset.region;
+    document.querySelectorAll('.region-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.region === activeRegion)
+    );
+    // Filter event orbs and their pillars
+    eventMeshes.forEach(orb => {
+      const region = orb.userData.event.region;
+      orb.visible = activeRegion === 'all' || region === activeRegion;
+    });
+    eventGroup.children.forEach(child => {
+      if (child.userData?.belongsTo) {
+        child.visible = child.userData.belongsTo.visible;
+      }
+    });
+    // Update collect count
+    const visibleOrbs = eventMeshes.filter(o => o.visible);
+    const visibleCollected = visibleOrbs.filter(o => o.userData.collected).length;
+    document.getElementById('collect-count').textContent =
+      `📦 ${visibleCollected}/${visibleOrbs.length}` + (activeRegion !== 'all' ? ' 🏷' : '');
+  });
+});
 
 // Jump buttons
 document.querySelectorAll('.jump-btn').forEach(btn => {

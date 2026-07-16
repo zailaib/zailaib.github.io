@@ -7,6 +7,32 @@
 export const DARK_BG = 0x0a0a14;
 export const LIGHT_BG = 0xd8dae8;
 
+// ---- Loading & Error ----
+
+/** Remove loading spinner. Call after Three.js scene is initialized. */
+export function hideLoading() {
+  const el = document.getElementById('loading');
+  if (el) { el.classList.add('hidden'); setTimeout(() => el.remove(), 500); }
+}
+
+/** Show error fallback message. Call on fatal init failure. */
+export function showError(msg = '3D 引擎加载失败，请检查网络后刷新') {
+  const el = document.getElementById('error-msg');
+  if (el) {
+    el.style.display = 'flex';
+    el.innerHTML = `⚠️ ${msg}<br><small>请检查网络连接后刷新页面重试</small>`;
+  }
+  const load = document.getElementById('loading');
+  if (load) load.remove();
+}
+
+// ---- Global error boundary ----
+window.addEventListener('error', (e) => {
+  if (e.target instanceof HTMLScriptElement || e.filename?.includes('three')) {
+    showError('3D 引擎加载失败');
+  }
+});
+
 // ---- Dispose helpers ----
 
 /** Recursively dispose all geometries and materials in a group */
@@ -86,6 +112,29 @@ export function createStarfield({
   return new THREE.Points(geo, mat);
 }
 
+// ---- Visibility pause (save GPU/battery when tab hidden) ----
+
+/**
+ * Pause render loop when the tab is hidden.
+ * @param {() => void} startLoop - function that calls requestAnimationFrame(animate)
+ * @returns cleanup function
+ */
+export function setupVisibilityPause(startLoop) {
+  let rafId = 0;
+  const onVisibility = () => {
+    if (document.hidden) {
+      if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
+    } else {
+      if (!rafId) startLoop();
+    }
+  };
+  document.addEventListener('visibilitychange', onVisibility);
+  return () => {
+    document.removeEventListener('visibilitychange', onVisibility);
+    if (rafId) cancelAnimationFrame(rafId);
+  };
+}
+
 // ---- Resize handler ----
 
 /**
@@ -120,17 +169,34 @@ export function setupThemeToggle({
   const btn = document.getElementById('theme-btn');
   if (!btn) return () => {};
 
-  const handler = () => {
-    const light = document.body.classList.toggle('light');
-    btn.textContent = light ? '\u{1F319}' : '\u{2600}\u{FE0F}';
+  // Restore saved theme on load
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light') {
+    document.body.classList.add('light');
+    btn.textContent = '\u{1F319}';
+  }
 
+  const applyTheme = (light) => {
+    btn.textContent = light ? '\u{1F319}' : '\u{2600}\u{FE0F}';
     if (scene) {
       const bg = light ? LIGHT_BG : DARK_BG;
       scene.background = new THREE.Color(bg);
       scene.fog = new THREE.Fog(bg, fogNear, fogFar);
     }
-
     if (onThemeChange) onThemeChange(light);
+    localStorage.setItem('theme', light ? 'light' : 'dark');
+  };
+
+  // Apply saved theme to scene on load
+  if (saved === 'light' && scene) {
+    scene.background = new THREE.Color(LIGHT_BG);
+    scene.fog = new THREE.Fog(LIGHT_BG, fogNear, fogFar);
+    if (onThemeChange) onThemeChange(true);
+  }
+
+  const handler = () => {
+    const light = document.body.classList.toggle('light');
+    applyTheme(light);
   };
 
   btn.addEventListener('click', handler);
