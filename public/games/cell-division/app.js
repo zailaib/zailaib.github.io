@@ -36,7 +36,9 @@ controls.update();
 scene.add(new THREE.AmbientLight(0x334466, 1.6));
 const key = new THREE.DirectionalLight(0xffffff, 1.5);
 key.position.set(5, 8, 5); scene.add(key);
-scene.add(new THREE.DirectionalLight(0x8899cc, 0.5).position.set(-3, 0, -3));
+const fill = new THREE.DirectionalLight(0x8899cc, 0.5);
+fill.position.set(-3, 0, -3);
+scene.add(fill);
 
 // ---- Cell membrane (outer sphere) ----
 const membraneGeo = new THREE.SphereGeometry(2.2, 64, 48);

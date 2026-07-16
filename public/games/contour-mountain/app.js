@@ -35,7 +35,9 @@ sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 40;
 sun.shadow.camera.left = -10; sun.shadow.camera.right = 10;
 sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10;
 scene.add(sun);
-scene.add(new THREE.DirectionalLight(0x8899cc, 0.5).position.set(-3, 2, -3));
+const fillLight2 = new THREE.DirectionalLight(0x8899cc, 0.5);
+fillLight2.position.set(-3, 2, -3);
+scene.add(fillLight2);
 
 // Base plane
 const baseGeo = new THREE.PlaneGeometry(16, 16);
