@@ -1,6 +1,7 @@
 /* Cell Division — 3D Mitosis Animation */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { hideLoading } from '/games/shared/three-utils.js';
 
 // ---- State ----
 let progress = 0;        // 0-1 across all phases
@@ -173,38 +174,46 @@ for (let i = 0; i < 8; i++) {
   chromosomes.push(chr);
 }
 
-// ---- Spindle fibers (drawn dynamically each frame) ----
+// ---- Spindle fibers (pre-created, updated per frame) ----
 const spindleGroup = new THREE.Group();
+const spindleFibers = []; // { mesh, centrosome, chromosome }
 scene.add(spindleGroup);
 
-function updateSpindles() {
-  while (spindleGroup.children.length > 0) {
-    const c = spindleGroup.children[0];
-    if (c.geometry) c.geometry.dispose();
-    if (c.material) c.material.dispose();
-    spindleGroup.remove(c);
-  }
-  // Only visible during metaphase→anaphase
-  const spindleAlpha = progress < 0.2 ? 0 : progress < 0.35 ? (progress - 0.2) / 0.15 : progress < 0.8 ? 1 : (0.9 - progress) / 0.1;
-  if (spindleAlpha <= 0) return;
-
-  centrosomes.forEach(cs => {
-    const polePos = cs.position.clone();
-    chromosomes.forEach(chr => {
-      const chrPos = chr.position.clone();
-      const mid = new THREE.Vector3().addVectors(polePos, chrPos).multiplyScalar(0.5);
-      const dir = new THREE.Vector3().subVectors(chrPos, polePos);
-      const len = dir.length();
-      const geo = new THREE.CylinderGeometry(0.012, 0.012, len, 4);
-      const mat = new THREE.MeshBasicMaterial({
-        color: 0x88aacc, transparent: true, opacity: spindleAlpha * 0.3, depthWrite: false,
-      });
-      const fiber = new THREE.Mesh(geo, mat);
-      fiber.position.copy(mid);
-      fiber.lookAt(chrPos);
-      fiber.rotateX(Math.PI / 2);
-      spindleGroup.add(fiber);
+// Pre-create all fibers once (2 centrosomes × 8 chromosomes)
+centrosomes.forEach(cs => {
+  chromosomes.forEach(chr => {
+    const geo = new THREE.CylinderGeometry(0.012, 0.012, 1, 4);
+    const mat = new THREE.MeshBasicMaterial({
+      color: 0x88aacc, transparent: true, opacity: 0, depthWrite: false,
     });
+    const fiber = new THREE.Mesh(geo, mat);
+    fiber.name = 'spindle';
+    spindleGroup.add(fiber);
+    spindleFibers.push({ mesh: fiber, centrosome: cs, chromosome: chr });
+  });
+});
+
+function updateSpindles() {
+  const spindleAlpha = progress < 0.2 ? 0 : progress < 0.35 ? (progress - 0.2) / 0.15 : progress < 0.8 ? 1 : (0.9 - progress) / 0.1;
+
+  spindleFibers.forEach(({ mesh, centrosome, chromosome }) => {
+    if (spindleAlpha <= 0 || !chromosome.visible) {
+      mesh.visible = false;
+      return;
+    }
+    mesh.visible = true;
+    mesh.material.opacity = spindleAlpha * 0.25;
+
+    const polePos = centrosome.position;
+    const chrPos = chromosome.position;
+    const dir = new THREE.Vector3().subVectors(chrPos, polePos);
+    const len = dir.length();
+    const mid = new THREE.Vector3().addVectors(polePos, chrPos).multiplyScalar(0.5);
+
+    mesh.position.copy(mid);
+    mesh.scale.y = len;
+    mesh.lookAt(chrPos);
+    mesh.rotateX(Math.PI / 2);
   });
 }
 
@@ -441,6 +450,7 @@ animate.last = performance.now();
 // ---- Init ----
 updateScene();
 requestAnimationFrame(animate);
+hideLoading();
 
 // Theme toggle
 document.getElementById('theme-btn').addEventListener('click', () => {
