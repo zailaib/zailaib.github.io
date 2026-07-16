@@ -397,22 +397,28 @@ function updateScene() {
       membraneMat.opacity = 0;
     }
 
-    // Daughter cells: membranes grow, nuclei appear inside
+    // Daughter cells: membrane grows first, then nucleus appears inside it
     daughterCells.forEach(d => {
       const sign = d.userData.sign;
-      d.position.y = sign * sepEased * 1.8;
-      // Membrane fades in
-      d.children[0].material.opacity = sepEased * 0.18;
-      // Nuclear envelope appears (inside the membrane, slightly later)
-      d.children[1].material.opacity = Math.max(0, (sepEased - 0.15)) * 0.22;
+      const dist = sepEased * 1.8;
+      d.position.y = sign * dist;
+      d.position.x = 0;
+      d.position.z = 0;
+      // Membrane: fades in, slight pulse when new
+      const memOpacity = sepEased * 0.2;
+      d.children[0].material.opacity = memOpacity;
+      const pulse = 1 + (1 - sepEased) * 0.08 * Math.sin(Date.now() * 0.01);
+      d.children[0].scale.setScalar(pulse);
+      // Nuclear envelope: appears inside membrane after membrane is visible
+      d.children[1].material.opacity = Math.max(0, sepEased - 0.2) * 0.25;
     });
 
-    // Chromosomes settle inside daughter nuclei
+    // Chromosomes: enter daughter nuclei and decondense
     chromosomes.forEach(chr => {
       const sign = chr.userData.poleSign;
-      const targetY = sign * (sepEased * 1.8 + 0.15);
-      chr.position.y += (targetY - chr.position.y) * 0.06;
-      chr.scale.setScalar(0.7 - sepEased * 0.25);
+      const targetY = sign * (sepEased * 1.8);
+      chr.position.lerp(new THREE.Vector3(0, targetY, 0), 0.06);
+      chr.scale.setScalar(0.65 - sepEased * 0.2);
     });
 
     // Furrow fades as split completes
