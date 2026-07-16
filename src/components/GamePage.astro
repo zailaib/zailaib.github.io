@@ -8,7 +8,12 @@
 //   frameHeight: number — desktop iframe height in px
 //   frameHeightMobile: number — mobile iframe height in px
 //   content: { zh: {...}, en: {...} } — bilingual content
+//   paper?: { zh: {...}, en: {...} } — optional further reading reference
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Paper {
+  title: string; author: string; journal: string; year: string; doi: string; desc: string;
+}
 
 interface Props {
   game: string;
@@ -25,6 +30,7 @@ interface Props {
     zh: { title: string; subtitle: string; desc: string; play: string };
     en: { title: string; subtitle: string; desc: string; play: string };
   };
+  paper?: { zh: Paper; en: Paper };
 }
 
 const {
@@ -32,6 +38,7 @@ const {
   accentColor, accentBg, accentBorder, accentBgHover, accentBorderHover,
   frameBg, frameMaxWidth = 1000, frameHeight, frameHeightMobile,
   content,
+  paper,
 } = Astro.props;
 
 const { lang } = Astro.params;
@@ -49,6 +56,25 @@ const c = content[lang as 'zh' | 'en'];
     <div class="game-frame">
       <iframe src={`/games/${game}/`} title={c.title} allowfullscreen scrolling="no"></iframe>
     </div>
+    {
+      paper && (
+        <div class="paper-card">
+          <h3>📚 {lang === 'zh' ? '延伸阅读' : 'Further Reading'}</h3>
+          {paper[lang as 'zh' | 'en'].doi ? (
+            <a href={`https://doi.org/${paper[lang as 'zh' | 'en'].doi}`} target="_blank" rel="noopener">
+              <span class="paper-title">{paper[lang as 'zh' | 'en'].title}</span>
+              <span class="paper-meta">{paper[lang as 'zh' | 'en'].author} ({paper[lang as 'zh' | 'en'].year}) · <em>{paper[lang as 'zh' | 'en'].journal}</em></span>
+            </a>
+          ) : (
+            <div class="paper-info">
+              <span class="paper-title">{paper[lang as 'zh' | 'en'].title}</span>
+              <span class="paper-meta">{paper[lang as 'zh' | 'en'].author} ({paper[lang as 'zh' | 'en'].year}) · <em>{paper[lang as 'zh' | 'en'].journal}</em></span>
+            </div>
+          )}
+          <p class="paper-desc">{paper[lang as 'zh' | 'en'].desc}</p>
+        </div>
+      )
+    }
   </div>
 </BaseLayout>
 
@@ -110,8 +136,38 @@ const c = content[lang as 'zh' | 'en'];
     display: block;
   }
 
+  .paper-card {
+    max-width: 640px; margin: var(--spacing-xl) auto 0;
+    padding: 20px 24px;
+    border-radius: 6px;
+    border: 1px solid var(--color-border, rgba(255,255,255,0.06));
+    background: var(--color-bg-elevated, rgba(255,255,255,0.02));
+  }
+  .paper-card h3 {
+    font-size: 13px; color: var(--color-text-tertiary);
+    margin-bottom: 12px; letter-spacing: 1px; font-weight: 600;
+  }
+  .paper-card a, .paper-info {
+    display: flex; flex-direction: column; gap: 4px;
+    text-decoration: none; color: inherit;
+  }
+  .paper-card a { transition: opacity 0.2s; }
+  .paper-card a:hover { opacity: 0.7; }
+  .paper-title {
+    font-size: 15px; font-weight: 600; color: {accentColor};
+    line-height: 1.4;
+  }
+  .paper-meta {
+    font-size: 12px; color: var(--color-text-tertiary);
+  }
+  .paper-desc {
+    font-size: 13px; color: var(--color-text-secondary);
+    margin-top: 10px; line-height: var(--line-height-relaxed);
+  }
+
   @media (max-width: 768px) {
     .game-page { padding: var(--spacing-md); }
     .game-frame iframe { height: {frameHeightMobile}px; }
+    .paper-card { padding: 16px 18px; }
   }
 </style>
