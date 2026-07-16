@@ -1,5 +1,6 @@
 /* History Run — Time-travel road trip through 5500 years */
 import * as THREE from 'three';
+import { hideLoading } from '/games/shared/three-utils.js';
 
 // ---- Scene ----
 const container = document.getElementById('container');
@@ -468,6 +469,7 @@ document.getElementById('vehicle-ind').textContent = '🚶';
 document.getElementById('collect-count').textContent = '📦 0/' + EVENTS.length;
 updateSpeedDisplay();
 requestAnimationFrame(animate);
+hideLoading();
 
 // Theme toggle
 document.getElementById('theme-btn').addEventListener('click', () => {

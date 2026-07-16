@@ -1,6 +1,7 @@
 /* Diffraction Lab — Three.js 3D Light Diffraction Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { hideLoading } from '/games/shared/three-utils.js';
 
 // ---- Theme ----
 let darkMode = true;
@@ -475,6 +476,7 @@ function animate() {
 }
 
 animate();
+hideLoading();
 
 // ---- Resize ----
 window.addEventListener('resize', () => {

@@ -1,6 +1,7 @@
 /* Cosmic Velocity — Orbital Mechanics 3D Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { hideLoading } from '/games/shared/three-utils.js';
 
 // ---- Constants ----
 const R_EARTH = 2;            // display units (Earth radius)
@@ -574,6 +575,7 @@ window.addEventListener('resize', () => {
 // ---- Init ----
 updateSpeedDisplay();
 requestAnimationFrame(animate);
+hideLoading();
 
 // Theme toggle
 document.getElementById('theme-btn').addEventListener('click', () => {

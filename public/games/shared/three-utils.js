@@ -1,7 +1,7 @@
 /* Shared Three.js Utilities for H5 Games
-   Import from CDN: import * as THREE from 'three';
    Import this:  import { ... } from '/games/shared/three-utils.js';
 */
+import * as THREE from 'three';
 
 // ---- Standardized theme colors ----
 export const DARK_BG = 0x0a0a14;

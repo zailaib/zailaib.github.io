@@ -1,6 +1,7 @@
 /* Cell Explorer — 3D Cell Structure Visualization */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { hideLoading } from '/games/shared/three-utils.js';
 
 // ---- State ----
 let cellType = 'plant';
@@ -637,6 +638,7 @@ document.getElementById('tour-btn').addEventListener('click', startTour);
 // ---- Init ----
 buildCell('plant');
 animate();
+hideLoading();
 
 // Theme toggle
 document.getElementById('theme-btn').addEventListener('click', () => {

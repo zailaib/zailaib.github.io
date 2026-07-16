@@ -1,6 +1,7 @@
 /* Earth Weather — 3D Climate & Front Systems Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { hideLoading } from '/games/shared/three-utils.js';
 
 // ---- Scene ----
 const container = document.getElementById('container');
@@ -410,6 +411,7 @@ function animate(now) {
 }
 animate.lastTime = performance.now();
 requestAnimationFrame(animate);
+hideLoading();
 
 // Theme toggle
 document.getElementById('theme-btn').addEventListener('click', () => {

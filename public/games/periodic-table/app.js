@@ -1,6 +1,7 @@
 /* Periodic Table — 3D Electron Shell Visualization */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { hideLoading } from '/games/shared/three-utils.js';
 
 let lang = 'zh';
 
@@ -313,6 +314,7 @@ updateAtom(selectedZ);
 updateInfoCard(selectedZ);
 resizeAtom();
 animate();
+hideLoading();
 
 window.addEventListener('resize', resizeAtom);
 
