@@ -397,3 +397,11 @@ function animate(now) {
 }
 animate.lastTime = performance.now();
 requestAnimationFrame(animate);
+
+// Theme toggle
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const light = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
+  const bg = light ? 0xb0b8d0 : 0x000011;
+  scene.background = new THREE.Color(bg);
+});

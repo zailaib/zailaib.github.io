@@ -350,3 +350,13 @@ function animate() {
 updateWater();
 updateContours();
 animate();
+
+// Theme toggle
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const light = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
+  const bg = light ? 0xd8dae8 : 0x1a1a2e;
+  scene.background = new THREE.Color(bg);
+  scene.fog = new THREE.Fog(bg, 12, 35);
+  baseMat.color.set(light ? 0x889966 : 0x335533);
+});

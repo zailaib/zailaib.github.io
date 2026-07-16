@@ -567,3 +567,12 @@ window.addEventListener('resize', () => {
 // ---- Init ----
 buildCell('plant');
 animate();
+
+// Theme toggle
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const light = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
+  const bg = light ? 0xd8dae8 : 0x080814;
+  scene.background = new THREE.Color(bg);
+  scene.fog = new THREE.Fog(bg, 8, 25);
+});

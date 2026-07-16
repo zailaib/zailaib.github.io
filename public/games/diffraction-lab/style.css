@@ -1,15 +1,51 @@
 /* Diffraction Lab — Styles */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+:root {
+  --bg: #000;
+  --panel-bg: rgba(10,10,15,0.85);
+  --panel-border: rgba(255,255,255,0.1);
+  --text: rgba(255,255,255,0.85);
+  --text-dim: rgba(255,255,255,0.4);
+  --label: #888;
+  --val: #ccc;
+  --btn-border: rgba(255,255,255,0.2);
+  --btn-text: #999;
+  --slider-track: rgba(255,255,255,0.15);
+}
+body.light {
+  --bg: #d8dae8;
+  --panel-bg: rgba(240,242,250,0.92);
+  --panel-border: rgba(0,0,0,0.12);
+  --text: rgba(0,0,0,0.8);
+  --text-dim: rgba(0,0,0,0.45);
+  --label: #555;
+  --val: #333;
+  --btn-border: rgba(0,0,0,0.2);
+  --btn-text: #555;
+  --slider-track: rgba(0,0,0,0.15);
+}
+
 html, body {
   width: 100%; height: 100%;
   overflow: hidden;
-  background: #000;
+  background: var(--bg);
   font-family: 'Segoe UI', system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 
 #container { width: 100%; height: 100%; }
+
+/* -- Theme toggle -- */
+#theme-btn {
+  position: fixed; top: 16px; right: 16px; z-index: 30;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--btn-border); cursor: pointer;
+  background: var(--panel-bg); font-size: 18px;
+  transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+}
+#theme-btn:hover { transform: scale(1.1); }
 
 /* -- Control panel -- */
 #panel {
@@ -19,9 +55,9 @@ html, body {
   display: flex; gap: 12px; flex-wrap: wrap;
   justify-content: center;
   z-index: 10;
-  background: rgba(10,10,15,0.85);
+  background: var(--panel-bg);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid var(--panel-border);
   border-radius: 12px;
   padding: 14px 18px;
   max-width: 95vw;
@@ -31,30 +67,30 @@ html, body {
   min-width: 80px;
 }
 .control-group label {
-  font-size: 10px; color: #888;
+  font-size: 10px; color: var(--label);
   text-transform: uppercase; letter-spacing: 1px;
   text-align: center;
 }
 .control-group input[type=range] {
   -webkit-appearance: none; width: 100%; height: 4px;
-  background: rgba(255,255,255,0.15); border-radius: 2px; outline: none;
+  background: var(--slider-track); border-radius: 2px; outline: none;
 }
 .control-group input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none; width: 18px; height: 18px;
-  background: #fff; border-radius: 50%; cursor: pointer;
+  background: var(--text); border-radius: 50%; cursor: pointer;
 }
 .control-val {
-  font-size: 11px; color: #ccc; text-align: center; font-weight: 600;
+  font-size: 11px; color: var(--val); text-align: center; font-weight: 600;
 }
 .mode-btn {
   padding: 6px 14px; border-radius: 20px; font-size: 12px;
-  border: 1px solid rgba(255,255,255,0.2); cursor: pointer;
-  background: transparent; color: #999; letter-spacing: 1px;
+  border: 1px solid var(--btn-border); cursor: pointer;
+  background: transparent; color: var(--btn-text); letter-spacing: 1px;
   transition: all 0.3s; font-family: inherit;
 }
 .mode-btn.active {
-  background: rgba(255,255,255,0.12); color: #fff;
-  border-color: rgba(255,255,255,0.5);
+  background: rgba(100,150,255,0.15); color: #6af;
+  border-color: rgba(100,150,255,0.5);
 }
 
 /* -- Title -- */
@@ -65,12 +101,12 @@ html, body {
   text-align: center;
 }
 #title h1 {
-  font-size: 18px; color: rgba(255,255,255,0.85);
+  font-size: 18px; color: var(--text);
   letter-spacing: 3px; font-weight: 600;
   margin-bottom: 2px;
 }
 #title .sub {
-  font-size: 11px; color: rgba(255,255,255,0.4);
+  font-size: 11px; color: var(--text-dim);
   letter-spacing: 1px;
 }
 
@@ -78,7 +114,7 @@ html, body {
 #hint {
   position: fixed; bottom: 120px; left: 50%;
   transform: translateX(-50%);
-  font-size: 11px; color: rgba(255,255,255,0.3);
+  font-size: 11px; color: var(--text-dim);
   z-index: 10; pointer-events: none;
   letter-spacing: 1px;
 }

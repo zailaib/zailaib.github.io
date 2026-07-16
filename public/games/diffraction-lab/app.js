@@ -2,11 +2,19 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+// ---- Theme ----
+let darkMode = true;
+const themeColors = {
+  dark:  { bg: 0x050510, fog: 0x050510, floor: 0x111122, grid: 0x333355, grid2: 0x222244, barrier: 0x1a1a2e, barrierEdge: 0x2a2a44, frame: 0x2a2a44 },
+  light: { bg: 0xd8dae8, fog: 0xd8dae8, floor: 0xc8cad8, grid: 0x999aac, grid2: 0xaaaabc, barrier: 0xc0c2d0, barrierEdge: 0xa0a2b0, frame: 0xa0a2b0 },
+};
+
 // ---- Scene setup ----
 const container = document.getElementById('container');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050510);
-scene.fog = new THREE.Fog(0x050510, 15, 40);
+const col = darkMode ? themeColors.dark : themeColors.light;
+scene.background = new THREE.Color(col.bg);
+scene.fog = new THREE.Fog(col.fog, 15, 40);
 
 const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.5, 50);
 camera.position.set(2, 3.5, -4);
@@ -45,10 +53,10 @@ let wavelength = 550;       // nm → color
 let mode = 'double';        // 'single' | 'double'
 
 // ---- Floor grid ----
-const gridHelper = new THREE.PolarGridHelper(10, 32, 24, 64, 0x333355, 0x222244);
+let gridHelper = new THREE.PolarGridHelper(10, 32, 24, 64, col.grid, col.grid2);
 scene.add(gridHelper);
 
-const floorMat = new THREE.MeshStandardMaterial({ color: 0x111122, roughness: 0.8, metalness: 0.1 });
+const floorMat = new THREE.MeshStandardMaterial({ color: col.floor, roughness: 0.8, metalness: 0.1 });
 const floor = new THREE.Mesh(new THREE.PlaneGeometry(16, 16), floorMat);
 floor.rotation.x = -Math.PI / 2;
 floor.position.y = -2.5;
@@ -82,7 +90,8 @@ scene.add(ptLight);
 
 // ---- Barrier wall ----
 const barrierGroup = new THREE.Group();
-const barrierMat = new THREE.MeshStandardMaterial({ color: 0x1a1a2e, roughness: 0.4, metalness: 0.3 });
+const barrierMat = new THREE.MeshStandardMaterial({ color: col.barrier, roughness: 0.4, metalness: 0.3 });
+const barrierEdgeMat = new THREE.MeshStandardMaterial({ color: col.barrierEdge, roughness: 0.3, metalness: 0.5 });
 
 // Barrier parts (rebuilt when slit params change)
 let barrierParts = [];
@@ -161,8 +170,7 @@ function buildBarrier() {
 
   // Decorative border
   const edgeGeo = new THREE.BoxGeometry(wallWidth + 0.15, wallHeight + 0.15, wallDepth + 0.05);
-  const edgeMat = new THREE.MeshStandardMaterial({ color: 0x2a2a44, roughness: 0.3, metalness: 0.5 });
-  const edge = new THREE.Mesh(edgeGeo, edgeMat);
+  const edge = new THREE.Mesh(edgeGeo, barrierEdgeMat);
   edge.position.z = 0.01;
   edge.material.depthWrite = true;
   barrierGroup.add(edge);
@@ -195,7 +203,7 @@ scene.add(screenPlane);
 
 // Screen frame
 const frameGeo = new THREE.BoxGeometry(6.2, 6.2, 0.15);
-const frameMat = new THREE.MeshStandardMaterial({ color: 0x2a2a44, roughness: 0.3, metalness: 0.5 });
+const frameMat = new THREE.MeshStandardMaterial({ color: col.frame, roughness: 0.3, metalness: 0.5 });
 const frame = new THREE.Mesh(frameGeo, frameMat);
 frame.position.copy(screenPlane.position);
 frame.position.z += 0.08;
@@ -482,3 +490,29 @@ doubleBtn.addEventListener('click', () => {
   document.getElementById('slit-sep').parentElement.style.pointerEvents = 'auto';
   updateScene();
 });
+
+// ---- Theme toggle ----
+document.getElementById('theme-btn').addEventListener('click', () => {
+  darkMode = !darkMode;
+  const tcol = darkMode ? themeColors.dark : themeColors.light;
+  document.body.classList.toggle('light', !darkMode);
+  document.getElementById('theme-btn').textContent = darkMode ? '☀️' : '🌙';
+
+  // Update Three.js scene
+  scene.background = new THREE.Color(tcol.bg);
+  scene.fog = new THREE.Fog(tcol.bg, 15, 40);
+  floorMat.color.set(tcol.floor);
+  barrierMat.color.set(tcol.barrier);
+  barrierEdgeMat.color.set(tcol.barrierEdge);
+  frameMat.color.set(tcol.frame);
+
+  // Recreate grid
+  scene.remove(gridHelper);
+  gridHelper = new THREE.PolarGridHelper(10, 32, 24, 64, tcol.grid, tcol.grid2);
+  scene.add(gridHelper);
+
+  // Rebuild barrier with new colors
+  buildBarrier();
+  computePattern();
+});
+

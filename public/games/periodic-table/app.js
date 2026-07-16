@@ -302,3 +302,10 @@ setTimeout(() => {
   const firstCell = grid.querySelector('.el-cell');
   if (firstCell) firstCell.classList.add('selected');
 }, 100);
+
+// Theme toggle
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const light = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
+  renderer.setClearColor(light ? 0xd8dae8 : 0x000000);
+});

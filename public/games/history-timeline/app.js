@@ -441,3 +441,12 @@ document.getElementById('vehicle-ind').textContent = '🚶';
 document.getElementById('collect-count').textContent = '📦 0/' + EVENTS.length;
 updateSpeedDisplay();
 requestAnimationFrame(animate);
+
+// Theme toggle
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const light = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
+  const bg = light ? 0xd0d4e0 : 0x0a0a15;
+  scene.background = new THREE.Color(bg);
+  scene.fog = new THREE.Fog(bg, 5, 25);
+});

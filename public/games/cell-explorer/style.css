@@ -1,4 +1,24 @@
 /* Cell Explorer — Styles */
+
+/* Theme */
+:root {
+  --bg: #0a0a12; --panel-bg: rgba(10,10,20,0.85); --panel-border: rgba(255,255,255,0.08);
+  --text: #e0e0e0; --text-dim: #666; --label: #888;
+}
+body.light {
+  --bg: #d8dae8; --panel-bg: rgba(240,242,250,0.9); --panel-border: rgba(0,0,0,0.1);
+  --text: #222; --text-dim: #555; --label: #444;
+}
+html,body { background: var(--bg); }
+#theme-btn {
+  position: fixed; top: 12px; right: 12px; z-index: 50;
+  width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--panel-border); background: var(--panel-bg);
+  font-size: 18px; transition: all 0.3s;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+}
+#theme-btn:hover { transform: scale(1.1); }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {

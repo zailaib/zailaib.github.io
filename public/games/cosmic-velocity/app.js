@@ -468,3 +468,14 @@ window.addEventListener('resize', () => {
 // ---- Init ----
 updateSpeedDisplay();
 requestAnimationFrame(animate);
+
+// Theme toggle
+document.getElementById('theme-btn').addEventListener('click', () => {
+  const light = document.body.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
+  const bg = light ? 0xc0c8d8 : 0x000011;
+  scene.background = new THREE.Color(bg);
+  scene.fog = new THREE.Fog(bg, 15, 40);
+  earthMat.color.set(light ? 0x5588cc : 0x2266aa);
+  floor.material.color.set(light ? 0x8899aa : 0x111122);
+});
