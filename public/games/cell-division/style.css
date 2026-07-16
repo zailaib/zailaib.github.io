@@ -1,0 +1,101 @@
+/* Cell Division — Styles (shared theme is in ../shared/theme.css) */
+
+/* -- Phase bar -- */
+#phase-bar {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+  z-index: 10; display: flex; gap: 2px;
+  background: var(--panel-bg); backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  border-radius: 20px; padding: 4px;
+}
+.phase-step {
+  padding: 6px 14px; font-size: 11px; border-radius: 16px;
+  color: var(--text-dim); letter-spacing: 1px; transition: all 0.4s;
+  font-weight: 500; cursor: pointer; white-space: nowrap;
+}
+.phase-step:hover { color: var(--text); }
+.phase-step.active { background: rgba(100,180,255,0.2); color: #6af; font-weight: 700; }
+.phase-step.done { color: rgba(100,180,255,0.4); }
+
+/* -- Phase info -- */
+#phase-info {
+  position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+  z-index: 10; pointer-events: none; text-align: center;
+  transition: all 0.5s;
+}
+.phase-title { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: 2px; }
+.phase-desc { font-size: 12px; color: var(--text-dim); margin-top: 4px; letter-spacing: 0.5px; }
+
+/* -- Controls -- */
+#controls {
+  position: fixed; bottom: 48px; left: 50%; transform: translateX(-50%);
+  z-index: 10; display: flex; gap: 6px; align-items: center;
+  background: var(--panel-bg); backdrop-filter: blur(10px);
+  border: 1px solid var(--panel-border); border-radius: 24px;
+  padding: 6px 14px;
+}
+#controls button {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--panel-border); cursor: pointer;
+  background: transparent; color: var(--text); font-size: 14px;
+  transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+}
+#controls button:hover { background: rgba(255,255,255,0.1); }
+#controls button.playing { color: #6af; border-color: #6af; }
+.speed-label { font-size: 10px; color: var(--text-dim); margin: 0 2px 0 8px; letter-spacing: 1px; }
+#speed-slider {
+  -webkit-appearance: none; width: 50px; height: 3px;
+  background: var(--panel-border); border-radius: 2px; outline: none;
+}
+#speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px;
+  background: var(--text); border-radius: 50%; cursor: pointer;
+}
+
+/* -- Timeline scrubber -- */
+#timeline {
+  position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+  z-index: 10; width: 60%; max-width: 600px;
+}
+#progress-slider {
+  -webkit-appearance: none; width: 100%; height: 6px;
+  border-radius: 3px; outline: none;
+  background: linear-gradient(to right, #334466, #4488cc, #44cc88, #ccaa44, #cc6644);
+}
+#progress-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 22px; height: 22px;
+  background: #fff; border-radius: 50%; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* -- Hint -- */
+#hint {
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; color: var(--text-dim); z-index: 10;
+  pointer-events: none; letter-spacing: 1px;
+}
+
+/* -- Legend -- */
+#legend {
+  position: fixed; right: 12px; top: 100px; z-index: 10; pointer-events: none;
+  display: flex; flex-direction: column; gap: 4px;
+  background: var(--panel-bg); backdrop-filter: blur(8px);
+  border: 1px solid var(--panel-border); border-radius: 8px; padding: 10px 12px;
+}
+.legend-row {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; color: var(--text-secondary); letter-spacing: 0.5px;
+}
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* -- Responsive -- */
+@media (max-width: 640px) {
+  .phase-step { padding: 4px 8px; font-size: 9px; }
+  #phase-info { top: 70px; }
+  .phase-title { font-size: 16px; }
+  #controls { gap: 3px; padding: 4px 10px; }
+  #controls button { width: 28px; height: 28px; font-size: 12px; }
+  #timeline { width: 80%; }
+  #legend { right: 4px; top: 85px; padding: 6px 8px; }
+  .legend-row { font-size: 8px; }
+}
