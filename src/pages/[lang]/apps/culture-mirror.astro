@@ -1,0 +1,34 @@
+---
+import GamePage from '../../../components/GamePage.astro';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const content = {
+  zh: {
+    title: '文化之镜 · Culture Mirror',
+    subtitle: '穿越四重边界，追问"文化"的本质',
+    desc: '从鲸群方言到尼安德特骨笛，从 AI 黑话到外星文明——一场关于"文化"的沉浸式哲学探索。四层文化光谱 + 三个哲学内核 + 一个终极悖论：如果 AI 永不死亡，它会有文化吗？',
+    play: '开始探索 🪞',
+  },
+  en: {
+    title: 'Culture Mirror · Beyond Human Culture',
+    subtitle: 'Cross four boundaries to question the essence of culture',
+    desc: 'From whale dialects to Neanderthal flutes, from emergent AI languages to alien civilizations — an immersive philosophical exploration of what "culture" truly means. Four layers, three philosophical pillars, one ultimate paradox.',
+    play: 'Explore 🪞',
+  },
+};
+---
+<GamePage
+  game="culture-mirror"
+  accentColor="#c8a860"
+  accentBg="rgba(200,168,96,0.12)"
+  accentBorder="rgba(200,168,96,0.3)"
+  accentBgHover="rgba(200,168,96,0.2)"
+  accentBorderHover="rgba(200,168,96,0.5)"
+  frameBg="#0d0d12"
+  frameHeight={720}
+  frameHeightMobile={560}
+  content={content}
+/>
