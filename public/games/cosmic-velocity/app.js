@@ -238,11 +238,22 @@ function buildOrbitLine(params) {
   if (orbitLine) { scene.remove(orbitLine); orbitLine.geometry.dispose(); }
   const pts = [];
   const { r0, e, h } = params;
-  const rp = h * h / (MU * (1 + Math.abs(e)));
 
-  // Sample the orbit (with NaN guards)
-  const acosArg = Math.max(-1, Math.min(1, -1 / e)); // clamp to valid domain
-  const thetaMax = e >= 1 ? Math.acos(acosArg) - 0.05 : Math.PI * 2;
+  // Determine theta range for orbit line
+  let thetaMax;
+  if (params.type === 'suborbital') {
+    // For suborbital: only show arc above Earth surface
+    // r(θ) = h²/(μ(1+e*cosθ)) = R_EARTH → cosθ = (h²/(μ*R_EARTH) - 1) / e
+    const cosSurface = (h * h / (MU * R_EARTH) - 1) / e;
+    thetaMax = (cosSurface >= -1 && cosSurface <= 1)
+      ? Math.acos(Math.max(-1, Math.min(1, cosSurface)))
+      : Math.PI;
+  } else if (e >= 1) {
+    const acosArg = Math.max(-1, Math.min(1, -1 / e));
+    thetaMax = Math.acos(acosArg) - 0.05;
+  } else {
+    thetaMax = Math.PI * 2;
+  }
   if (isNaN(thetaMax)) return;
   const nPts = 200;
   for (let i = 0; i <= nPts; i++) {
@@ -289,7 +300,9 @@ function updateRocketPosition(params, theta) {
 // ---- Launch ----
 function launch() {
   orbitParams = computeOrbit(launchSpeed, altitude);
-  rocketAngle = 0;
+  // Suborbital: rocket starts at apogee (highest point), θ=π
+  // All other orbits: rocket starts at perigee, θ=0
+  rocketAngle = orbitParams.type === 'suborbital' ? Math.PI : 0;
   rocketFlying = true;
   trailPoints = [];
   if (rocketTrailLine) { scene.remove(rocketTrailLine); rocketTrailLine = null; }
@@ -473,9 +486,8 @@ requestAnimationFrame(animate);
 document.getElementById('theme-btn').addEventListener('click', () => {
   const light = document.body.classList.toggle('light');
   document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  const bg = light ? 0xc0c8d8 : 0x000011;
+  const bg = light ? 0xd8dae8 : 0x0a0a14;
   scene.background = new THREE.Color(bg);
   scene.fog = new THREE.Fog(bg, 15, 40);
   earthMat.color.set(light ? 0x5588cc : 0x2266aa);
-  floor.material.color.set(light ? 0x8899aa : 0x111122);
 });

@@ -1,56 +1,25 @@
-/* Cell Explorer — Styles */
-
-/* Theme */
-:root {
-  --bg: #0a0a12; --panel-bg: rgba(10,10,20,0.85); --panel-border: rgba(255,255,255,0.08);
-  --text: #e0e0e0; --text-dim: #666; --label: #888;
-}
-body.light {
-  --bg: #d8dae8; --panel-bg: rgba(240,242,250,0.9); --panel-border: rgba(0,0,0,0.1);
-  --text: #222; --text-dim: #555; --label: #444;
-}
-html,body { background: var(--bg); }
-#theme-btn {
-  position: fixed; top: 12px; right: 12px; z-index: 50;
-  width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
-  border: 1px solid var(--panel-border); background: var(--panel-bg);
-  font-size: 18px; transition: all 0.3s;
-  display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(8px);
-}
-#theme-btn:hover { transform: scale(1.1); }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: #080814;
-  color: #ccc;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#container { width: 100%; height: 100%; }
+/* Cell Explorer — Styles (shared theme is in ../shared/theme.css) */
 
 /* -- Top tabs -- */
 #tabs {
   position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
   display: flex; gap: 6px; z-index: 10;
-  background: rgba(8,8,20,0.85);
+  background: var(--panel-bg);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid var(--panel-border);
   border-radius: 28px; padding: 5px;
 }
 .tab-btn {
   padding: 8px 18px; border-radius: 22px; border: none;
-  background: transparent; color: #999; cursor: pointer;
+  background: transparent; color: var(--text-secondary); cursor: pointer;
   font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
   transition: all 0.3s; font-family: inherit; white-space: nowrap;
 }
-.tab-btn:hover { color: #ddd; }
+.tab-btn:hover { color: var(--text); }
 .tab-btn.active {
-  background: rgba(255,255,255,0.12); color: #fff;
+  background: rgba(255,255,255,0.12); color: var(--text);
 }
+body.light .tab-btn.active { background: rgba(0,0,0,0.08); }
 
 /* -- Organelle legend -- */
 #legend {
@@ -61,50 +30,44 @@ html, body {
 }
 .legend-item {
   display: flex; align-items: center; gap: 8px;
-  font-size: 10px; color: #aaa; letter-spacing: 0.5px;
+  font-size: 10px; color: var(--text-secondary); letter-spacing: 0.5px;
   transition: all 0.3s;
 }
 .legend-dot {
   width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
 }
-.legend-item.highlight {
-  color: #fff; font-size: 11px;
-}
+.legend-item.highlight { color: var(--text); font-size: 11px; }
 .legend-item.highlight .legend-dot {
   box-shadow: 0 0 10px currentColor;
 }
 
 /* -- Info panel -- */
 #info-panel {
-  position: fixed; bottom: 24px; left: 50%;
-  transform: translateX(-50%);
-  background: rgba(8,8,20,0.9);
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--panel-bg);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 14px 22px;
-  text-align: center;
-  z-index: 10; pointer-events: none;
-  min-width: 200px;
-  transition: all 0.4s;
+  border: 1px solid var(--panel-border);
+  border-radius: 12px; padding: 14px 22px;
+  text-align: center; z-index: 10; pointer-events: none;
+  min-width: 200px; transition: all 0.4s;
 }
 #info-panel .org-name {
-  font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px;
+  font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px;
 }
 #info-panel .org-desc {
-  font-size: 11px; color: #999; line-height: 1.5;
+  font-size: 11px; color: var(--text-secondary); line-height: 1.5;
 }
 #info-panel .cell-type {
-  font-size: 13px; color: #aaa; margin-bottom: 6px; letter-spacing: 1px;
+  font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; letter-spacing: 1px;
 }
 
 /* -- Hint -- */
 #hint {
-  position: fixed; bottom: 100px; left: 50%;
-  transform: translateX(-50%);
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
   font-size: 10px; color: rgba(255,255,255,0.22);
   z-index: 10; pointer-events: none; letter-spacing: 1px;
 }
+body.light #hint { color: rgba(0,0,0,0.25); }
 
 /* -- Responsive -- */
 @media (max-width: 640px) {

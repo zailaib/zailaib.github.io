@@ -1,51 +1,4 @@
-/* Diffraction Lab — Styles */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-:root {
-  --bg: #000;
-  --panel-bg: rgba(10,10,15,0.85);
-  --panel-border: rgba(255,255,255,0.1);
-  --text: rgba(255,255,255,0.85);
-  --text-dim: rgba(255,255,255,0.4);
-  --label: #888;
-  --val: #ccc;
-  --btn-border: rgba(255,255,255,0.2);
-  --btn-text: #999;
-  --slider-track: rgba(255,255,255,0.15);
-}
-body.light {
-  --bg: #d8dae8;
-  --panel-bg: rgba(240,242,250,0.92);
-  --panel-border: rgba(0,0,0,0.12);
-  --text: rgba(0,0,0,0.8);
-  --text-dim: rgba(0,0,0,0.45);
-  --label: #555;
-  --val: #333;
-  --btn-border: rgba(0,0,0,0.2);
-  --btn-text: #555;
-  --slider-track: rgba(0,0,0,0.15);
-}
-
-html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: var(--bg);
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#container { width: 100%; height: 100%; }
-
-/* -- Theme toggle -- */
-#theme-btn {
-  position: fixed; top: 16px; right: 16px; z-index: 30;
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 1px solid var(--btn-border); cursor: pointer;
-  background: var(--panel-bg); font-size: 18px;
-  transition: all 0.3s; display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(8px);
-}
-#theme-btn:hover { transform: scale(1.1); }
+/* Diffraction Lab — Styles (shared theme is in ../shared/theme.css) */
 
 /* -- Control panel -- */
 #panel {
@@ -73,19 +26,19 @@ html, body {
 }
 .control-group input[type=range] {
   -webkit-appearance: none; width: 100%; height: 4px;
-  background: var(--slider-track); border-radius: 2px; outline: none;
+  background: var(--slider-track, rgba(255,255,255,0.15)); border-radius: 2px; outline: none;
 }
 .control-group input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none; width: 18px; height: 18px;
   background: var(--text); border-radius: 50%; cursor: pointer;
 }
 .control-val {
-  font-size: 11px; color: var(--val); text-align: center; font-weight: 600;
+  font-size: 11px; color: var(--val, #ccc); text-align: center; font-weight: 600;
 }
 .mode-btn {
   padding: 6px 14px; border-radius: 20px; font-size: 12px;
-  border: 1px solid var(--btn-border); cursor: pointer;
-  background: transparent; color: var(--btn-text); letter-spacing: 1px;
+  border: 1px solid var(--btn-border, rgba(255,255,255,0.2)); cursor: pointer;
+  background: transparent; color: var(--btn-text, #999); letter-spacing: 1px;
   transition: all 0.3s; font-family: inherit;
 }
 .mode-btn.active {
@@ -102,8 +55,7 @@ html, body {
 }
 #title h1 {
   font-size: 18px; color: var(--text);
-  letter-spacing: 3px; font-weight: 600;
-  margin-bottom: 2px;
+  letter-spacing: 3px; font-weight: 600; margin-bottom: 2px;
 }
 #title .sub {
   font-size: 11px; color: var(--text-dim);

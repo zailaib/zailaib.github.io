@@ -1,11 +1,9 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GamePage from '../../../components/GamePage.astro';
 
 export function getStaticPaths() {
   return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
 }
-
-const { lang } = Astro.params;
 
 const content = {
   zh: {
@@ -20,33 +18,17 @@ const content = {
     desc: '3D globe showing major ocean currents (Gulf Stream, Kuroshio, Circumpolar), atmospheric circulation (trade winds, westerlies), and cold/warm front collision creating precipitation. Toggle layers and switch seasons.',
     play: 'Explore 🌍',
   },
-} as const;
-
-const c = content[lang as 'zh' | 'en'];
+};
 ---
-<BaseLayout title={c.title} currentSlug="" showMinimap={false}>
-  <div class="game-page">
-    <header class="game-header">
-      <h1>{c.title}</h1>
-      <p class="subtitle">{c.subtitle}</p>
-      <p class="desc">{c.desc}</p>
-      <a class="play-btn" href="/games/earth-weather/" target="_blank">{c.play}</a>
-    </header>
-    <div class="game-frame">
-      <iframe src="/games/earth-weather/" title={c.title} allowfullscreen scrolling="no"></iframe>
-    </div>
-  </div>
-</BaseLayout>
-
-<style>
-  .game-page { max-width: 1000px; margin: 0 auto; padding: var(--spacing-xl) var(--spacing-lg); }
-  .game-header { text-align: center; margin-bottom: var(--spacing-xl); }
-  .game-header h1 { font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-sm); letter-spacing: 2px; }
-  .subtitle { font-size: var(--font-size-md); color: var(--color-text-tertiary); margin-bottom: var(--spacing-md); }
-  .desc { color: var(--color-text-secondary); max-width: 600px; margin: 0 auto var(--spacing-xl); line-height: var(--line-height-relaxed); font-size: 14px; }
-  .play-btn { display: inline-block; padding: 12px 36px; background: rgba(80,160,220,0.12); color: #6af; text-decoration: none; border-radius: 2px; font-weight: 600; font-size: 15px; letter-spacing: 2px; border: 1px solid rgba(80,160,220,0.3); transition: all 0.3s; }
-  .play-btn:hover { background: rgba(80,160,220,0.2); border-color: rgba(80,160,220,0.5); }
-  .game-frame { border-radius: 4px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.5); background: #000011; }
-  .game-frame iframe { width: 100%; height: 560px; border: none; display: block; }
-  @media (max-width: 768px) { .game-page { padding: var(--spacing-md); } .game-frame iframe { height: 420px; } }
-</style>
+<GamePage
+  game="earth-weather"
+  accentColor="#6af"
+  accentBg="rgba(80,160,220,0.12)"
+  accentBorder="rgba(80,160,220,0.3)"
+  accentBgHover="rgba(80,160,220,0.2)"
+  accentBorderHover="rgba(80,160,220,0.5)"
+  frameBg="#0a0a14"
+  frameHeight={560}
+  frameHeightMobile={420}
+  content={content}
+/>

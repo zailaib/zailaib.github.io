@@ -1,0 +1,117 @@
+---
+// GamePage.astro — Reusable app entry page for all games
+// Props:
+//   game: string — game directory name
+//   accentColor, accentBg, accentBorder, accentBgHover, accentBorderHover: CSS color values
+//   frameBg: string — iframe wrapper background
+//   frameMaxWidth?: number — default 1000
+//   frameHeight: number — desktop iframe height in px
+//   frameHeightMobile: number — mobile iframe height in px
+//   content: { zh: {...}, en: {...} } — bilingual content
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  game: string;
+  accentColor: string;
+  accentBg: string;
+  accentBorder: string;
+  accentBgHover: string;
+  accentBorderHover: string;
+  frameBg: string;
+  frameMaxWidth?: number;
+  frameHeight: number;
+  frameHeightMobile: number;
+  content: {
+    zh: { title: string; subtitle: string; desc: string; play: string };
+    en: { title: string; subtitle: string; desc: string; play: string };
+  };
+}
+
+const {
+  game,
+  accentColor, accentBg, accentBorder, accentBgHover, accentBorderHover,
+  frameBg, frameMaxWidth = 1000, frameHeight, frameHeightMobile,
+  content,
+} = Astro.props;
+
+const { lang } = Astro.params;
+const c = content[lang as 'zh' | 'en'];
+---
+
+<BaseLayout title={c.title} currentSlug="" showMinimap={false}>
+  <div class="game-page">
+    <header class="game-header">
+      <h1>{c.title}</h1>
+      <p class="subtitle">{c.subtitle}</p>
+      <p class="desc">{c.desc}</p>
+      <a class="play-btn" href={`/games/${game}/`} target="_blank">{c.play}</a>
+    </header>
+    <div class="game-frame">
+      <iframe src={`/games/${game}/`} title={c.title} allowfullscreen scrolling="no"></iframe>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .game-page {
+    max-width: {frameMaxWidth}px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+  .game-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+  }
+  .game-header h1 {
+    font-size: var(--font-size-3xl);
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: 2px;
+  }
+  .subtitle {
+    font-size: var(--font-size-md);
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--spacing-md);
+  }
+  .desc {
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto var(--spacing-xl);
+    line-height: var(--line-height-relaxed);
+    font-size: 14px;
+  }
+  .play-btn {
+    display: inline-block;
+    padding: 12px 36px;
+    background: {accentBg};
+    color: {accentColor};
+    text-decoration: none;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 2px;
+    border: 1px solid {accentBorder};
+    transition: all 0.3s;
+  }
+  .play-btn:hover {
+    background: {accentBgHover};
+    border-color: {accentBorderHover};
+  }
+  .game-frame {
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+    background: {frameBg};
+  }
+  .game-frame iframe {
+    width: 100%;
+    height: {frameHeight}px;
+    border: none;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .game-page { padding: var(--spacing-md); }
+    .game-frame iframe { height: {frameHeightMobile}px; }
+  }
+</style>

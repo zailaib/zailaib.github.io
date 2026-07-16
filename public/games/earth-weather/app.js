@@ -54,7 +54,7 @@ const landGroup = new THREE.Group();
 function addLandPatch(lat, lon, w, h, color = 0x338844) {
   // Create a small curved patch on the sphere
   const patchGeo = new THREE.PlaneGeometry(w, h, 4, 4);
-  const patch = new THREE.Mesh(patchGeo, new THREE.MeshStandardMaterial({ color, roughness: 0.6, metalness: 0.02 }));
+  const patch = new THREE.Mesh(patchGeo, new THREE.MeshStandardMaterial({ color, roughness: 0.6, metalness: 0.02, side: THREE.DoubleSide }));
   const phi = (90 - lat) * Math.PI / 180;
   const theta = lon * Math.PI / 180;
   patch.position.set(
@@ -132,8 +132,21 @@ const currentPaths = {
   'Canary':        { pts: [[33,-14],[28,-16],[23,-18],[18,-19]], color: 0x3388bb, warm: false },
 };
 
+function disposeGroupChildren(group) {
+  while (group.children.length > 0) {
+    const child = group.children[0];
+    child.traverse(c => {
+      if (c.geometry) c.geometry.dispose();
+      if (c.material) {
+        (Array.isArray(c.material) ? c.material : [c.material]).forEach(m => m.dispose());
+      }
+    });
+    group.remove(child);
+  }
+}
+
 function buildCurrents() {
-  while (currentsGroup.children.length > 0) currentsGroup.remove(currentsGroup.children[0]);
+  disposeGroupChildren(currentsGroup);
   currentParticles.length = 0;
 
   for (const [name, cfg] of Object.entries(currentPaths)) {
@@ -184,7 +197,7 @@ const windParticles = [];
 
 // Define circulation cells as curved arrows on the globe
 function buildWinds() {
-  while (windGroup.children.length > 0) windGroup.remove(windGroup.children[0]);
+  disposeGroupChildren(windGroup);
   windParticles.length = 0;
 
   // Trade winds (easterlies) — surface winds toward equator
@@ -238,8 +251,8 @@ scene.add(rainGroup);
 const rainDrops = [];
 
 function buildFrontSystem() {
-  while (frontGroup.children.length > 0) frontGroup.remove(frontGroup.children[0]);
-  while (rainGroup.children.length > 0) rainGroup.remove(rainGroup.children[0]);
+  disposeGroupChildren(frontGroup);
+  disposeGroupChildren(rainGroup);
   rainDrops.length = 0;
 
   // Position the front system over the North Atlantic (~45°N, -40°W)
@@ -402,6 +415,7 @@ requestAnimationFrame(animate);
 document.getElementById('theme-btn').addEventListener('click', () => {
   const light = document.body.classList.toggle('light');
   document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  const bg = light ? 0xb0b8d0 : 0x000011;
+  const bg = light ? 0xd8dae8 : 0x0a0a14;
   scene.background = new THREE.Color(bg);
+  oceanMat.color.set(light ? 0x5588cc : 0x1a4488);
 });

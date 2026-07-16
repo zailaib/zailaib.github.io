@@ -168,13 +168,37 @@ function buildBarrier() {
     barrierParts.push(botBlock);
   }
 
-  // Decorative border
-  const edgeGeo = new THREE.BoxGeometry(wallWidth + 0.15, wallHeight + 0.15, wallDepth + 0.05);
-  const edge = new THREE.Mesh(edgeGeo, barrierEdgeMat);
-  edge.position.z = 0.01;
-  edge.material.depthWrite = true;
-  barrierGroup.add(edge);
-  barrierParts.push(edge);
+  // Decorative border (hollow frame — four strips, not a solid box)
+  const frameThick = 0.06;
+  const frameDepth = wallDepth + 0.04;
+  // Top strip
+  const topEdge = new THREE.Mesh(
+    new THREE.BoxGeometry(wallWidth + 0.1, frameThick, frameDepth), barrierEdgeMat
+  );
+  topEdge.position.set(0, wallHeight / 2 + 0.03, 0);
+  barrierGroup.add(topEdge);
+  barrierParts.push(topEdge);
+  // Bottom strip
+  const botEdge = new THREE.Mesh(
+    new THREE.BoxGeometry(wallWidth + 0.1, frameThick, frameDepth), barrierEdgeMat
+  );
+  botEdge.position.set(0, -wallHeight / 2 - 0.03, 0);
+  barrierGroup.add(botEdge);
+  barrierParts.push(botEdge);
+  // Left strip
+  const leftEdge = new THREE.Mesh(
+    new THREE.BoxGeometry(frameThick, wallHeight + 0.1, frameDepth), barrierEdgeMat
+  );
+  leftEdge.position.set(-wallWidth / 2 - 0.03, 0, 0);
+  barrierGroup.add(leftEdge);
+  barrierParts.push(leftEdge);
+  // Right strip
+  const rightEdge = new THREE.Mesh(
+    new THREE.BoxGeometry(frameThick, wallHeight + 0.1, frameDepth), barrierEdgeMat
+  );
+  rightEdge.position.set(wallWidth / 2 + 0.03, 0, 0);
+  barrierGroup.add(rightEdge);
+  barrierParts.push(rightEdge);
 }
 barrierGroup.position.set(0, 0, 0);
 buildBarrier();
@@ -380,7 +404,11 @@ function computeWaveField(col, lambda) {
 
       if (z < 0.1) continue; // behind barrier
 
-      const theta = Math.atan2(x, z);
+      // Slit is narrow in Y; diffraction depends on angle from slit to floor point.
+      // Floor is at y=-2.48 below the slit plane (y=0).
+      // Use total scattering angle for physically correct radial pattern.
+      const dy = -2.48;
+      const theta = Math.atan2(Math.sqrt(x * x + dy * dy), z);
       const beta = (Math.PI * slitWidth / lambda) * Math.sin(theta);
 
       let intensity;
@@ -506,8 +534,14 @@ document.getElementById('theme-btn').addEventListener('click', () => {
   barrierEdgeMat.color.set(tcol.barrierEdge);
   frameMat.color.set(tcol.frame);
 
-  // Recreate grid
+  // Recreate grid (dispose old one first)
   scene.remove(gridHelper);
+  gridHelper.geometry.dispose();
+  if (Array.isArray(gridHelper.material)) {
+    gridHelper.material.forEach(m => m.dispose());
+  } else if (gridHelper.material) {
+    gridHelper.material.dispose();
+  }
   gridHelper = new THREE.PolarGridHelper(10, 32, 24, 64, tcol.grid, tcol.grid2);
   scene.add(gridHelper);
 

@@ -307,5 +307,5 @@ setTimeout(() => {
 document.getElementById('theme-btn').addEventListener('click', () => {
   const light = document.body.classList.toggle('light');
   document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  renderer.setClearColor(light ? 0xd8dae8 : 0x000000);
+  renderer.setClearColor(light ? 0xd8dae8 : 0x000000, 0);
 });
