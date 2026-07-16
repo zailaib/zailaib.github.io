@@ -79,6 +79,33 @@ const nucleolusMat = new THREE.MeshStandardMaterial({
 nucleusGroup.add(new THREE.Mesh(nucleolusGeo, nucleolusMat));
 scene.add(nucleusGroup);
 
+// ---- Daughter cells (appear during cytokinesis) ----
+const daughterCells = [];
+[-1, 1].forEach(sign => {
+  const dGroup = new THREE.Group();
+  // Daughter membrane
+  const dMemGeo = new THREE.SphereGeometry(1.5, 48, 36);
+  const dMem = new THREE.Mesh(dMemGeo, new THREE.MeshPhysicalMaterial({
+    color: 0xddaa88, roughness: 0.2, metalness: 0, transparent: true,
+    opacity: 0, depthWrite: false, clearcoat: 0.1,
+  }));
+  dMem.name = 'membrane';
+  dGroup.add(dMem);
+  // Daughter nuclear envelope
+  const dNucGeo = new THREE.SphereGeometry(0.7, 36, 24);
+  const dNuc = new THREE.Mesh(dNucGeo, new THREE.MeshPhysicalMaterial({
+    color: 0x8899cc, roughness: 0.15, metalness: 0, transparent: true,
+    opacity: 0, depthWrite: false,
+  }));
+  dNuc.name = 'nucleus';
+  dGroup.add(dNuc);
+  dGroup.position.set(0, 0, 0);
+  dGroup.userData = { sign };
+  dGroup.visible = true;
+  scene.add(dGroup);
+  daughterCells.push(dGroup);
+});
+
 // ---- Centrosomes (2 poles) ----
 const centrosomes = [];
 [-1, 1].forEach(sign => {
@@ -298,19 +325,23 @@ function updateScene() {
       // Telophase: chromatids at poles, decondensing
       const tt = (progress - 0.75) / 0.15;
       chr.scale.setScalar(1.0 - tt * 0.3);
-    } else {
-      // Cytokinesis: cell divides, chromosomes in daughter cells
-      const ct = (progress - 0.90) / 0.1;
-      chr.scale.setScalar(0.7 - ct * 0.1);
     }
+    // Cytokinesis chromosome movement handled in the daughter cell section below
   });
 
   // --- Cleavage furrow ---
-  if (progress >= 0.88) {
+  if (progress >= 0.88 && progress < 0.98) {
     furrow.visible = true;
-    const ct = Math.min(1, (progress - 0.88) / 0.12);
-    furrow.scale.set(1 - ct * 0.7, 1 - ct * 0.7, 1);
-    furrow.material.opacity = ct;
+    const pinch = Math.min(1, (progress - 0.88) / 0.06);
+    // Furrow contracts then fades as cells separate
+    if (progress < 0.94) {
+      furrow.scale.set(1 - pinch * 0.7, 1 - pinch * 0.7, 1);
+      furrow.material.opacity = 0.5 + pinch * 0.5;
+    } else {
+      const fade = (progress - 0.94) / 0.04;
+      furrow.scale.set(0.3, 0.3, 1);
+      furrow.material.opacity = 1 - fade;
+    }
   } else {
     furrow.visible = false;
   }
@@ -324,17 +355,57 @@ function updateScene() {
     nucEnv.material.opacity = (progress - 0.78) / 0.12 * 0.2;
     nucEnv.scale.setScalar(0.5 + (progress - 0.78) / 0.12 * 0.2);
   } else if (progress >= 0.90) {
+    // Original nucleus fades as daughter nuclei take over
     nucEnv.visible = true;
-    nucEnv.material.opacity = 0.2;
+    nucEnv.material.opacity = 0.2 * (1 - Math.min(1, (progress - 0.90) / 0.05));
     nucEnv.scale.setScalar(0.7);
   }
 
-  // --- Membrane deformation during cytokinesis ---
-  if (progress >= 0.92) {
-    const ct = (progress - 0.92) / 0.08;
-    membrane.scale.set(1, 1 - ct * 0.15, 1);
-  } else {
+  // --- Cytokinesis: cell division into two daughter cells ---
+  if (progress < 0.90) {
+    // Normal single cell
+    membrane.visible = true;
     membrane.scale.set(1, 1, 1);
+    membraneMat.opacity = 0.18;
+    daughterCells.forEach(d => {
+      d.children[0].material.opacity = 0; // membrane invisible
+      d.children[1].material.opacity = 0; // nucleus invisible
+    });
+  } else {
+    const ct = Math.min(1, (progress - 0.90) / 0.10);
+
+    // Phase 1: pinch (0.90→0.94)
+    const pinch = Math.min(1, ct / 0.4);
+    membrane.scale.set(1, 1 - pinch * 0.7, 1);
+    membraneMat.opacity = 0.18 * (1 - pinch);
+
+    // Phase 2: separate (0.94→1.0)
+    const sep = Math.max(0, (ct - 0.4) / 0.6);
+    const sepEased = sep < 0.5 ? 2 * sep * sep : -1 + (4 - 2 * sep) * sep;
+
+    daughterCells.forEach(d => {
+      const sign = d.userData.sign;
+      const dist = sepEased * 1.6;
+      d.position.y = sign * dist;
+      // Grow membranes as cells separate
+      const memOpacity = sep * 0.18;
+      d.children[0].material.opacity = memOpacity;
+      d.children[1].material.opacity = sep * 0.22;
+    });
+
+    // Hide original membrane when split complete
+    if (sep > 0.8) membrane.visible = false;
+
+    // Move chromosomes into daughter cells
+    chromosomes.forEach(chr => {
+      const sign = chr.userData.poleSign;
+      const targetY = sign * (0.6 + sepEased * 1.2);
+      chr.position.y += (targetY - chr.position.y) * 0.05;
+      chr.scale.setScalar(0.7 - sep * 0.2);
+    });
+
+    // Cleavage furrow fades as split completes
+    furrow.material.opacity = (1 - sep) * pinch;
   }
 
   // --- Update UI ---
@@ -348,7 +419,7 @@ const phaseInfo = {
   metaphase: { zh: '中期 · Metaphase', descZh: '染色体排列在赤道板，纺锤丝连接着丝粒', descEn: 'Chromosomes align at metaphase plate, spindle fibers attach to kinetochores' },
   anaphase: { zh: '后期 · Anaphase', descZh: '姐妹染色单体分离，向细胞两极移动', descEn: 'Sister chromatids separate, pulled toward opposite poles' },
   telophase: { zh: '末期 · Telophase', descZh: '染色单体到达两极，核膜重新形成，染色体解旋', descEn: 'Chromatids reach poles, nuclear envelopes reform, chromosomes decondense' },
-  cytokinesis: { zh: '胞质分裂 · Cytokinesis', descZh: '细胞质分裂，形成两个子细胞', descEn: 'Cytoplasm divides, two daughter cells form' },
+  cytokinesis: { zh: '胞质分裂 · Cytokinesis', descZh: '卵裂沟收缩 → 细胞一分为二，两个子细胞各自含一套完整染色体', descEn: 'Cleavage furrow contracts → cell splits into two daughter cells, each with a complete set of chromosomes' },
 };
 
 function updateUI(phase) {
@@ -462,4 +533,7 @@ document.getElementById('theme-btn').addEventListener('click', () => {
   scene.background = new THREE.Color(bg);
   scene.fog = new THREE.Fog(bg, 12, 35);
   membraneMat.color.set(light ? 0x996644 : 0xddaa88);
+  daughterCells.forEach(d => {
+    d.children[0].material.color.set(light ? 0x996644 : 0xddaa88);
+  });
 });
