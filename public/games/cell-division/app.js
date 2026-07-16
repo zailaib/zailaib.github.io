@@ -75,6 +75,7 @@ nucleusGroup.add(nucEnv);
 const nucleolusGeo = new THREE.SphereGeometry(0.3, 32, 24);
 const nucleolusMat = new THREE.MeshStandardMaterial({
   color: 0x445588, roughness: 0.2, emissive: 0x334466, emissiveIntensity: 0.4,
+  transparent: true, opacity: 1,
 });
 nucleusGroup.add(new THREE.Mesh(nucleolusGeo, nucleolusMat));
 scene.add(nucleusGroup);
@@ -275,6 +276,10 @@ function updateScene() {
   } else {
     nucEnv.visible = false;
     nucleolusMat.opacity = 0;
+    // Also hide the nucleolus mesh itself
+    nucleusGroup.children.forEach(c => {
+      if (c !== nucEnv) c.visible = false;
+    });
   }
 
   // --- Centrosome positions ---
@@ -354,11 +359,14 @@ function updateScene() {
     nucEnv.visible = true;
     nucEnv.material.opacity = (progress - 0.78) / 0.12 * 0.2;
     nucEnv.scale.setScalar(0.5 + (progress - 0.78) / 0.12 * 0.2);
+    nucleolusMat.opacity = 0.8;
+    nucleusGroup.children.forEach(c => { if (c !== nucEnv) c.visible = true; });
   } else if (progress >= 0.90) {
-    // Original nucleus fades as daughter nuclei take over
-    nucEnv.visible = true;
-    nucEnv.material.opacity = 0.2 * (1 - Math.min(1, (progress - 0.90) / 0.05));
-    nucEnv.scale.setScalar(0.7);
+    // Original nucleus & nucleolus fade out completely as daughter nuclei form
+    const fade = 1 - Math.min(1, (progress - 0.90) / 0.06);
+    nucEnv.material.opacity = 0.2 * fade;
+    nucleolusMat.opacity = fade;
+    if (fade <= 0.01) { nucEnv.visible = false; nucleolusMat.opacity = 0; }
   }
 
   // --- Cytokinesis: cell division into two daughter cells ---
@@ -368,44 +376,47 @@ function updateScene() {
     membrane.scale.set(1, 1, 1);
     membraneMat.opacity = 0.18;
     daughterCells.forEach(d => {
-      d.children[0].material.opacity = 0; // membrane invisible
-      d.children[1].material.opacity = 0; // nucleus invisible
+      d.children[0].material.opacity = 0;
+      d.children[1].material.opacity = 0;
     });
   } else {
     const ct = Math.min(1, (progress - 0.90) / 0.10);
 
-    // Phase 1: pinch (0.90→0.94)
-    const pinch = Math.min(1, ct / 0.4);
-    membrane.scale.set(1, 1 - pinch * 0.7, 1);
+    // Phase 1: pinch (0.90→0.935)
+    const pinch = Math.min(1, ct / 0.35);
+    membrane.scale.set(1, 1 - pinch * 0.75, 1);
     membraneMat.opacity = 0.18 * (1 - pinch);
 
-    // Phase 2: separate (0.94→1.0)
-    const sep = Math.max(0, (ct - 0.4) / 0.6);
+    // Phase 2: separate (0.935→1.0)
+    const sep = Math.max(0, (ct - 0.35) / 0.65);
     const sepEased = sep < 0.5 ? 2 * sep * sep : -1 + (4 - 2 * sep) * sep;
 
+    // Original membrane fully gone
+    if (sep > 0.3) {
+      membrane.visible = false;
+      membraneMat.opacity = 0;
+    }
+
+    // Daughter cells: membranes grow, nuclei appear inside
     daughterCells.forEach(d => {
       const sign = d.userData.sign;
-      const dist = sepEased * 1.6;
-      d.position.y = sign * dist;
-      // Grow membranes as cells separate
-      const memOpacity = sep * 0.18;
-      d.children[0].material.opacity = memOpacity;
-      d.children[1].material.opacity = sep * 0.22;
+      d.position.y = sign * sepEased * 1.8;
+      // Membrane fades in
+      d.children[0].material.opacity = sepEased * 0.18;
+      // Nuclear envelope appears (inside the membrane, slightly later)
+      d.children[1].material.opacity = Math.max(0, (sepEased - 0.15)) * 0.22;
     });
 
-    // Hide original membrane when split complete
-    if (sep > 0.8) membrane.visible = false;
-
-    // Move chromosomes into daughter cells
+    // Chromosomes settle inside daughter nuclei
     chromosomes.forEach(chr => {
       const sign = chr.userData.poleSign;
-      const targetY = sign * (0.6 + sepEased * 1.2);
-      chr.position.y += (targetY - chr.position.y) * 0.05;
-      chr.scale.setScalar(0.7 - sep * 0.2);
+      const targetY = sign * (sepEased * 1.8 + 0.15);
+      chr.position.y += (targetY - chr.position.y) * 0.06;
+      chr.scale.setScalar(0.7 - sepEased * 0.25);
     });
 
-    // Cleavage furrow fades as split completes
-    furrow.material.opacity = (1 - sep) * pinch;
+    // Furrow fades as split completes
+    furrow.material.opacity = Math.max(0, 1 - sep * 2);
   }
 
   // --- Update UI ---
