@@ -1,7 +1,7 @@
 /* Earth Weather — 3D Climate & Front Systems Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { hideLoading } from '/games/shared/three-utils.js';
+import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
 
 // ---- Scene ----
 const container = document.getElementById('container');
@@ -28,17 +28,7 @@ sunLight.position.set(5, 3, 5);
 scene.add(sunLight);
 
 // Stars
-const starsGeo = new THREE.BufferGeometry();
-const starPos = new Float32Array(600);
-for (let i = 0; i < 200; i++) {
-  const r = 12 + Math.random() * 15;
-  const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
-  starPos[i * 3] = r * Math.sin(ph) * Math.cos(th);
-  starPos[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th);
-  starPos[i * 3 + 2] = r * Math.cos(ph);
-}
-starsGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({ size: 0.03, color: 0x8899cc, transparent: true, opacity: 0.6, depthWrite: false })));
+scene.add(createStarfield({ count: 200, radius: 12, radiusRange: 15, size: 0.03, opacity: 0.6 }));
 
 // ---- Earth globe ----
 const R = 2;
@@ -383,11 +373,7 @@ function animateFronts(dt) {
 }
 
 // ---- Resize ----
-window.addEventListener('resize', () => {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-});
+setupResizeHandler(renderer, camera, container);
 
 // ---- Init ----
 buildCurrents();
@@ -414,10 +400,9 @@ requestAnimationFrame(animate);
 hideLoading();
 
 // Theme toggle
-document.getElementById('theme-btn').addEventListener('click', () => {
-  const light = document.body.classList.toggle('light');
-  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  const bg = light ? 0xd8dae8 : 0x0a0a14;
-  scene.background = new THREE.Color(bg);
-  oceanMat.color.set(light ? 0x5588cc : 0x1a4488);
+setupThemeToggle({
+  scene, fogNear: 15, fogFar: 40,
+  onThemeChange: (light) => {
+    oceanMat.color.set(light ? 0x5588cc : 0x1a4488);
+  },
 });

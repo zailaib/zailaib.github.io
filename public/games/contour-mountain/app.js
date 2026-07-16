@@ -1,7 +1,7 @@
 /* Contour Mountain — 3D Topographic Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { hideLoading } from '/games/shared/three-utils.js';
+import { hideLoading, setupThemeToggle, setupResizeHandler } from '/games/shared/three-utils.js';
 
 // ---- Scene ----
 const container = document.getElementById('container');
@@ -336,11 +336,7 @@ document.getElementById('wireframe-toggle').addEventListener('click', () => {
 });
 
 // ---- Resize ----
-window.addEventListener('resize', () => {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-});
+setupResizeHandler(renderer, camera, container);
 
 // ---- Animate ----
 function animate() {
@@ -356,11 +352,9 @@ animate();
 hideLoading();
 
 // Theme toggle
-document.getElementById('theme-btn').addEventListener('click', () => {
-  const light = document.body.classList.toggle('light');
-  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  const bg = light ? 0xd8dae8 : 0x1a1a2e;
-  scene.background = new THREE.Color(bg);
-  scene.fog = new THREE.Fog(bg, 12, 35);
-  baseMat.color.set(light ? 0x889966 : 0x335533);
+setupThemeToggle({
+  scene, darkBg: 0x1a1a2e, fogNear: 12, fogFar: 35,
+  onThemeChange: (light) => {
+    baseMat.color.set(light ? 0x889966 : 0x335533);
+  },
 });

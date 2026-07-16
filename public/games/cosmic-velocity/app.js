@@ -1,7 +1,7 @@
 /* Cosmic Velocity — Orbital Mechanics 3D Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { hideLoading } from '/games/shared/three-utils.js';
+import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
 
 // ---- Constants ----
 const R_EARTH = 2;            // display units (Earth radius)
@@ -59,18 +59,7 @@ sunLight.position.set(10, 5, 10);
 scene.add(sunLight);
 
 // Stars
-const starsGeo = new THREE.BufferGeometry();
-const starsPos = new Float32Array(600);
-for (let i = 0; i < 200; i++) {
-  const r = 20 + Math.random() * 25;
-  const theta = Math.random() * Math.PI * 2;
-  const phi = Math.acos(2 * Math.random() - 1);
-  starsPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-  starsPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-  starsPos[i * 3 + 2] = r * Math.cos(phi);
-}
-starsGeo.setAttribute('position', new THREE.BufferAttribute(starsPos, 3));
-scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({ size: 0.04, color: 0x8899cc, transparent: true, opacity: 0.7, depthWrite: false })));
+scene.add(createStarfield({ count: 200, radius: 20, radiusRange: 25 }));
 
 // ---- Earth ----
 const earthGroup = new THREE.Group();
@@ -566,11 +555,7 @@ function animate(now) {
 animate.lastTime = performance.now();
 
 // ---- Resize ----
-window.addEventListener('resize', () => {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-});
+setupResizeHandler(renderer, camera, container);
 
 // ---- Init ----
 updateSpeedDisplay();
@@ -578,11 +563,9 @@ requestAnimationFrame(animate);
 hideLoading();
 
 // Theme toggle
-document.getElementById('theme-btn').addEventListener('click', () => {
-  const light = document.body.classList.toggle('light');
-  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  const bg = light ? 0xd8dae8 : 0x0a0a14;
-  scene.background = new THREE.Color(bg);
-  scene.fog = new THREE.Fog(bg, 15, 40);
-  earthMat.color.set(light ? 0x5588cc : 0x2266aa);
+setupThemeToggle({
+  scene, fogNear: 15, fogFar: 40,
+  onThemeChange: (light) => {
+    earthMat.color.set(light ? 0x5588cc : 0x2266aa);
+  },
 });

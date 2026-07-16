@@ -1,7 +1,7 @@
 /* Periodic Table — 3D Electron Shell Visualization */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { hideLoading } from '/games/shared/three-utils.js';
+import { hideLoading, setupThemeToggle, createStarfield } from '/games/shared/three-utils.js';
 
 let lang = 'zh';
 
@@ -42,17 +42,7 @@ pointLight.position.set(0, 0, 0);
 scene.add(pointLight);
 
 // Background stars
-const starsGeo = new THREE.BufferGeometry();
-const starsCount = 200;
-const starsPos = new Float32Array(starsCount * 3);
-for (let i = 0; i < starsCount; i++) {
-  starsPos[i * 3] = (Math.random() - 0.5) * 20;
-  starsPos[i * 3 + 1] = (Math.random() - 0.5) * 20;
-  starsPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
-}
-starsGeo.setAttribute('position', new THREE.BufferAttribute(starsPos, 3));
-const starsMat = new THREE.PointsMaterial({ size: 0.02, color: 0x8888cc, transparent: true, opacity: 0.6, depthWrite: false });
-scene.add(new THREE.Points(starsGeo, starsMat));
+scene.add(createStarfield({ count: 200, radius: 20, distribution: 'cube', size: 0.02, color: 0x8888cc, opacity: 0.6 }));
 
 // ---- Atom objects ----
 const atomGroup = new THREE.Group();
@@ -325,8 +315,9 @@ setTimeout(() => {
 }, 100);
 
 // Theme toggle
-document.getElementById('theme-btn').addEventListener('click', () => {
-  const light = document.body.classList.toggle('light');
-  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  renderer.setClearColor(light ? 0xd8dae8 : 0x000000, 0);
+setupThemeToggle({
+  scene, darkBg: 0x000000, lightBg: 0xd8dae8, noFog: true,
+  onThemeChange: (light) => {
+    renderer.setClearColor(light ? 0xd8dae8 : 0x000000, 0);
+  },
 });

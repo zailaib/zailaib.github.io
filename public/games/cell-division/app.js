@@ -1,7 +1,7 @@
 /* Cell Division — 3D Mitosis Animation */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { hideLoading } from '/games/shared/three-utils.js';
+import { hideLoading, setupThemeToggle, setupResizeHandler } from '/games/shared/three-utils.js';
 
 // ---- State ----
 let progress = 0;        // 0-1 across all phases
@@ -511,11 +511,7 @@ document.querySelectorAll('.phase-step').forEach(el => {
 });
 
 // ---- Resize ----
-window.addEventListener('resize', () => {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-});
+setupResizeHandler(renderer, camera, container);
 
 // ---- Animation ----
 function animate(now) {
@@ -543,14 +539,12 @@ requestAnimationFrame(animate);
 hideLoading();
 
 // Theme toggle
-document.getElementById('theme-btn').addEventListener('click', () => {
-  const light = document.body.classList.toggle('light');
-  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  const bg = light ? 0xd8dae8 : 0x0a0a14;
-  scene.background = new THREE.Color(bg);
-  scene.fog = new THREE.Fog(bg, 12, 35);
-  membraneMat.color.set(light ? 0x996644 : 0xddaa88);
-  daughterCells.forEach(d => {
-    d.children[0].material.color.set(light ? 0x996644 : 0xddaa88);
-  });
+setupThemeToggle({
+  scene, fogNear: 12, fogFar: 35,
+  onThemeChange: (light) => {
+    membraneMat.color.set(light ? 0x996644 : 0xddaa88);
+    daughterCells.forEach(d => {
+      d.children[0].material.color.set(light ? 0x996644 : 0xddaa88);
+    });
+  },
 });

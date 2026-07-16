@@ -1,7 +1,7 @@
 /* Cell Explorer — 3D Cell Structure Visualization */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { hideLoading } from '/games/shared/three-utils.js';
+import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
 
 // ---- State ----
 let cellType = 'plant';
@@ -50,15 +50,7 @@ rimLight.position.set(0, -1, 5);
 scene.add(rimLight);
 
 // Background particles
-const starsGeo = new THREE.BufferGeometry();
-const starsPos = new Float32Array(600);
-for (let i = 0; i < 200; i++) {
-  starsPos[i * 3] = (Math.random() - 0.5) * 16;
-  starsPos[i * 3 + 1] = (Math.random() - 0.5) * 16;
-  starsPos[i * 3 + 2] = (Math.random() - 0.5) * 16;
-}
-starsGeo.setAttribute('position', new THREE.BufferAttribute(starsPos, 3));
-scene.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({ size: 0.02, color: 0x6677aa, transparent: true, opacity: 0.5, depthWrite: false })));
+scene.add(createStarfield({ count: 200, radius: 16, distribution: 'cube', size: 0.02, color: 0x6677aa, opacity: 0.5 }));
 
 // Grid
 const grid = new THREE.PolarGridHelper(6, 24, 16, 64, 0x222244, 0x161630);
@@ -559,11 +551,7 @@ function animate() {
 }
 
 // ---- Resize ----
-window.addEventListener('resize', () => {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-});
+setupResizeHandler(renderer, camera, container);
 
 // ---- Auto tour ----
 let tourRunning = false;
@@ -641,10 +629,6 @@ animate();
 hideLoading();
 
 // Theme toggle
-document.getElementById('theme-btn').addEventListener('click', () => {
-  const light = document.body.classList.toggle('light');
-  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  const bg = light ? 0xd8dae8 : 0x080814;
-  scene.background = new THREE.Color(bg);
-  scene.fog = new THREE.Fog(bg, 8, 25);
+setupThemeToggle({
+  scene, darkBg: 0x080814, fogNear: 8, fogFar: 25,
 });

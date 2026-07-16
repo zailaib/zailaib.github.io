@@ -1,6 +1,6 @@
 /* History Run — Time-travel road trip through 5500 years */
 import * as THREE from 'three';
-import { hideLoading } from '/games/shared/three-utils.js';
+import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
 
 // ---- Scene ----
 const container = document.getElementById('container');
@@ -23,15 +23,7 @@ sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 35;
 scene.add(sun);
 
 // Stars
-const stGeo = new THREE.BufferGeometry();
-const stPos = new Float32Array(400);
-for (let i = 0; i < 200; i++) {
-  stPos[i * 3] = (Math.random() - 0.5) * 30;
-  stPos[i * 3 + 1] = 4 + Math.random() * 8;
-  stPos[i * 3 + 2] = (Math.random() - 0.5) * 10;
-}
-stGeo.setAttribute('position', new THREE.BufferAttribute(stPos, 3));
-scene.add(new THREE.Points(stGeo, new THREE.PointsMaterial({ size: 0.04, color: 0x8899cc, transparent: true, opacity: 0.5, depthWrite: false })));
+scene.add(createStarfield({ count: 200, radius: 30, radiusRange: 10, distribution: 'rect', yMin: 4, yMax: 12, opacity: 0.5 }));
 
 // ---- Constants ----
 const TIME_MIN = -35, TIME_MAX = 21; // -3500 to 2025 in centuries
@@ -457,11 +449,7 @@ document.querySelectorAll('.jump-btn').forEach(btn => {
 });
 
 // Resize
-window.addEventListener('resize', () => {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-});
+setupResizeHandler(renderer, camera, container);
 
 // Init
 buildVehicle('walker');
@@ -472,10 +460,6 @@ requestAnimationFrame(animate);
 hideLoading();
 
 // Theme toggle
-document.getElementById('theme-btn').addEventListener('click', () => {
-  const light = document.body.classList.toggle('light');
-  document.getElementById('theme-btn').textContent = light ? '🌙' : '☀️';
-  const bg = light ? 0xd0d4e0 : 0x0a0a15;
-  scene.background = new THREE.Color(bg);
-  scene.fog = new THREE.Fog(bg, 5, 25);
+setupThemeToggle({
+  scene, darkBg: 0x0a0a15, lightBg: 0xd0d4e0, fogNear: 5, fogFar: 25,
 });

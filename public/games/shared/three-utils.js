@@ -156,14 +156,20 @@ export function setupResizeHandler(renderer, camera, container) {
  * Setup standardized theme toggle. Returns cleanup function.
  * @param {Object} opts
  * @param {THREE.Scene} opts.scene
+ * @param {number} [opts.darkBg] - dark background color (default DARK_BG)
+ * @param {number} [opts.lightBg] - light background color (default LIGHT_BG)
  * @param {number} [opts.fogNear] - fog near distance (default 5)
  * @param {number} [opts.fogFar] - fog far distance (default 40)
+ * @param {boolean} [opts.noFog] - skip fog updates (default false)
  * @param {(light: boolean) => void} [opts.onThemeChange] - callback for per-app material updates
  */
 export function setupThemeToggle({
   scene,
+  darkBg = DARK_BG,
+  lightBg = LIGHT_BG,
   fogNear = 5,
   fogFar = 40,
+  noFog = false,
   onThemeChange,
 } = {}) {
   const btn = document.getElementById('theme-btn');
@@ -179,9 +185,9 @@ export function setupThemeToggle({
   const applyTheme = (light) => {
     btn.textContent = light ? '\u{1F319}' : '\u{2600}\u{FE0F}';
     if (scene) {
-      const bg = light ? LIGHT_BG : DARK_BG;
+      const bg = light ? lightBg : darkBg;
       scene.background = new THREE.Color(bg);
-      scene.fog = new THREE.Fog(bg, fogNear, fogFar);
+      if (!noFog) scene.fog = new THREE.Fog(bg, fogNear, fogFar);
     }
     if (onThemeChange) onThemeChange(light);
     localStorage.setItem('theme', light ? 'light' : 'dark');
@@ -189,8 +195,8 @@ export function setupThemeToggle({
 
   // Apply saved theme to scene on load
   if (saved === 'light' && scene) {
-    scene.background = new THREE.Color(LIGHT_BG);
-    scene.fog = new THREE.Fog(LIGHT_BG, fogNear, fogFar);
+    scene.background = new THREE.Color(lightBg);
+    if (!noFog) scene.fog = new THREE.Fog(lightBg, fogNear, fogFar);
     if (onThemeChange) onThemeChange(true);
   }
 

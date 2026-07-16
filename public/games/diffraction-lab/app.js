@@ -1,7 +1,7 @@
 /* Diffraction Lab — Three.js 3D Light Diffraction Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { hideLoading } from '/games/shared/three-utils.js';
+import { hideLoading, setupThemeToggle, setupResizeHandler } from '/games/shared/three-utils.js';
 
 // ---- Theme ----
 let darkMode = true;
@@ -479,11 +479,7 @@ animate();
 hideLoading();
 
 // ---- Resize ----
-window.addEventListener('resize', () => {
-  camera.aspect = container.clientWidth / container.clientHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-});
+setupResizeHandler(renderer, camera, container);
 
 // ---- UI Controls ----
 document.getElementById('slit-width').addEventListener('input', (e) => {
@@ -522,33 +518,30 @@ doubleBtn.addEventListener('click', () => {
 });
 
 // ---- Theme toggle ----
-document.getElementById('theme-btn').addEventListener('click', () => {
-  darkMode = !darkMode;
-  const tcol = darkMode ? themeColors.dark : themeColors.light;
-  document.body.classList.toggle('light', !darkMode);
-  document.getElementById('theme-btn').textContent = darkMode ? '☀️' : '🌙';
+setupThemeToggle({
+  scene, darkBg: 0x050510, lightBg: 0xd8dae8, fogNear: 15, fogFar: 40,
+  onThemeChange: (light) => {
+    darkMode = !light;
+    const tcol = light ? themeColors.light : themeColors.dark;
+    floorMat.color.set(tcol.floor);
+    barrierMat.color.set(tcol.barrier);
+    barrierEdgeMat.color.set(tcol.barrierEdge);
+    frameMat.color.set(tcol.frame);
 
-  // Update Three.js scene
-  scene.background = new THREE.Color(tcol.bg);
-  scene.fog = new THREE.Fog(tcol.bg, 15, 40);
-  floorMat.color.set(tcol.floor);
-  barrierMat.color.set(tcol.barrier);
-  barrierEdgeMat.color.set(tcol.barrierEdge);
-  frameMat.color.set(tcol.frame);
+    // Recreate grid (dispose old one first)
+    scene.remove(gridHelper);
+    gridHelper.geometry.dispose();
+    if (Array.isArray(gridHelper.material)) {
+      gridHelper.material.forEach(m => m.dispose());
+    } else if (gridHelper.material) {
+      gridHelper.material.dispose();
+    }
+    gridHelper = new THREE.PolarGridHelper(10, 32, 24, 64, tcol.grid, tcol.grid2);
+    scene.add(gridHelper);
 
-  // Recreate grid (dispose old one first)
-  scene.remove(gridHelper);
-  gridHelper.geometry.dispose();
-  if (Array.isArray(gridHelper.material)) {
-    gridHelper.material.forEach(m => m.dispose());
-  } else if (gridHelper.material) {
-    gridHelper.material.dispose();
-  }
-  gridHelper = new THREE.PolarGridHelper(10, 32, 24, 64, tcol.grid, tcol.grid2);
-  scene.add(gridHelper);
-
-  // Rebuild barrier with new colors
-  buildBarrier();
-  computePattern();
+    // Rebuild barrier with new colors
+    buildBarrier();
+    computePattern();
+  },
 });
 
