@@ -53,7 +53,7 @@ const c = content[lang as 'zh' | 'en'];
       <p class="desc">{c.desc}</p>
       <a class="play-btn" href={`/games/${game}/`} target="_blank">{c.play}</a>
     </header>
-    <div class="game-frame">
+    <div class="game-frame" style={`background:${frameBg};--fh:${frameHeight}px;--fhm:${frameHeightMobile}px`}>
       <iframe src={`/games/${game}/`} title={c.title} allowfullscreen scrolling="no"></iframe>
     </div>
     {
@@ -127,13 +127,18 @@ const c = content[lang as 'zh' | 'en'];
     border-radius: 4px;
     overflow: hidden;
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-    background: {frameBg};
   }
   .game-frame iframe {
     width: 100%;
-    height: {frameHeight}px;
+    height: var(--fh);
     border: none;
     display: block;
+  }
+
+  @media (max-width: 768px) {
+    .game-page { padding: var(--spacing-md); }
+    .game-frame iframe { height: var(--fhm); }
+    .paper-card { padding: 16px 18px; }
   }
 
   .paper-card {
@@ -163,11 +168,5 @@ const c = content[lang as 'zh' | 'en'];
   .paper-desc {
     font-size: 13px; color: var(--color-text-secondary);
     margin-top: 10px; line-height: var(--line-height-relaxed);
-  }
-
-  @media (max-width: 768px) {
-    .game-page { padding: var(--spacing-md); }
-    .game-frame iframe { height: {frameHeightMobile}px; }
-    .paper-card { padding: 16px 18px; }
   }
 </style>
