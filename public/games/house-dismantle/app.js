@@ -1,54 +1,22 @@
-/* House Dismantle — Traditional Rural 3-Room House
-   Mouse drag-select parts → press 1 to disassemble → press 1 to reassemble
-   Unselected parts stay intact unless structurally dependent. */
+/* House Dismantle — Main Entry: setup, interaction, animation */
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {
-  hideLoading, showError, setupThemeToggle, setupResizeHandler,
-  createStarfield,
+  hideLoading, showError, setupThemeToggle, setupResizeHandler, createStarfield,
 } from '/games/shared/three-utils.js';
+import { MATS, CATEGORIES, PART_DEFS, getDisassembleOffset } from './config.js';
+import { buildHouse } from './house.js';
 
-// ── Dimensions (meters, 1 unit = 1m) ──────────────────────────────
-const HOUSE_W   = 12;      // width (3 bays × 4m)
-const HOUSE_D   = 7;       // depth
-const WALL_H1   = 2.8;     // first floor wall height
-const WALL_H2   = 1.5;     // upper half-story wall height (2.8→4.3m)
-const ROOF_H    = 5.5;     // roof ridge height from ground
-const EAVE_H    = WALL_H1 + WALL_H2; // eave height = 4.3m
-const WALL_T    = 0.24;    // wall thickness
-const FLOOR_H   = 0.2;     // foundation/platform thickness
-const ROOF_OH   = 1.0;     // roof overhang beyond walls
-const BAY_W     = HOUSE_W / 3; // ~4m per bay
-
-const HW2 = HOUSE_W / 2;   // half width
-const HD2 = HOUSE_D / 2;   // half depth
-
-// ── Materials ─────────────────────────────────────────────────────
-const MATS = {
-  roofTile:   new THREE.MeshStandardMaterial({ color: 0x4a4a5a, roughness: 0.7, metalness: 0.05 }),
-  roofFrame:  new THREE.MeshStandardMaterial({ color: 0x5a3a28, roughness: 0.6, metalness: 0.0 }),
-  wall:       new THREE.MeshStandardMaterial({ color: 0xf2ece0, roughness: 0.8, metalness: 0.0 }),
-  upperWall:  new THREE.MeshStandardMaterial({ color: 0xe8e0d0, roughness: 0.8, metalness: 0.0 }),
-  interior:   new THREE.MeshStandardMaterial({ color: 0xede6d8, roughness: 0.8, metalness: 0.0 }),
-  floor:      new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.7, metalness: 0.1 }),
-  column:     new THREE.MeshStandardMaterial({ color: 0x6b3a20, roughness: 0.5, metalness: 0.0 }),
-  door:       new THREE.MeshStandardMaterial({ color: 0x4a2818, roughness: 0.5, metalness: 0.0 }),
-  window:     new THREE.MeshStandardMaterial({ color: 0x5a3828, roughness: 0.4, metalness: 0.0, emissive: 0x331100, emissiveIntensity: 0.3 }),
-  ridge:      new THREE.MeshStandardMaterial({ color: 0x3a3a48, roughness: 0.6, metalness: 0.05 }),
-  base:       new THREE.MeshStandardMaterial({ color: 0x6e6e6e, roughness: 0.75, metalness: 0.05 }),
-  pipe:       new THREE.MeshStandardMaterial({ color: 0x8b6b4a, roughness: 0.4, metalness: 0.6 }),
-  pipeJoint:  new THREE.MeshStandardMaterial({ color: 0x7a5c3e, roughness: 0.35, metalness: 0.7 }),
-};
-
-// ── Global state ──────────────────────────────────────────────────
+// ── State ─────────────────────────────────────────────────────────
 const houseGroup = new THREE.Group();
-/** @type {Map<string, { group: THREE.Group, label: string, color: string, deps: string[], orig: THREE.Vector3, target: THREE.Vector3, assembled: boolean, meshArr: THREE.Mesh[] }>} */
+/** @type {Map<string, { group: THREE.Group, label: string, color: string, deps: string[], assembled: boolean, meshArr: THREE.Mesh[] }>} */
 const parts = new Map();
 const selected = new Set();
 let isDisassembled = false;
 let hoveredPart = null;
-let animationSpeed = 4.0; // lerp speed
+let tweenActive = false;
+const animSpeed = 5.0;
 
 // ── Three.js setup ────────────────────────────────────────────────
 const container = document.getElementById('container');
@@ -83,14 +51,10 @@ scene.add(new THREE.AmbientLight(0x334466, 1.8));
 const sun = new THREE.DirectionalLight(0xffeedd, 2.5);
 sun.position.set(15, 20, 10);
 sun.castShadow = true;
-sun.shadow.mapSize.width = 2048;
-sun.shadow.mapSize.height = 2048;
-sun.shadow.camera.near = 0.5;
-sun.shadow.camera.far = 80;
-sun.shadow.camera.left = -20;
-sun.shadow.camera.right = 20;
-sun.shadow.camera.top = 20;
-sun.shadow.camera.bottom = -20;
+sun.shadow.mapSize.width = 2048; sun.shadow.mapSize.height = 2048;
+sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 80;
+sun.shadow.camera.left = -20; sun.shadow.camera.right = 20;
+sun.shadow.camera.top = 20; sun.shadow.camera.bottom = -20;
 sun.shadow.bias = -0.0001;
 scene.add(sun);
 
@@ -105,472 +69,94 @@ scene.add(rim);
 // ── Environment ───────────────────────────────────────────────────
 scene.add(createStarfield({ count: 150, radius: 40, distribution: 'cube', size: 0.03, color: 0x667799, opacity: 0.4 }));
 
-// Ground plane
 const groundGeo = new THREE.PlaneGeometry(40, 40);
-const groundMat = new THREE.MeshStandardMaterial({ color: 0x2a2a30, roughness: 0.9, metalness: 0 });
-const ground = new THREE.Mesh(groundGeo, groundMat);
+const ground = new THREE.Mesh(groundGeo, new THREE.MeshStandardMaterial({ color: 0x2a2a30, roughness: 0.9, metalness: 0 }));
 ground.rotation.x = -Math.PI / 2;
 ground.position.y = -0.05;
 ground.receiveShadow = true;
 ground.name = '_ground';
 scene.add(ground);
 
-// Grid helper
 const grid = new THREE.PolarGridHelper(12, 32, 24, 128, 0x222233, 0x161622);
 grid.position.y = -0.04;
 scene.add(grid);
 
 // ── Build house ───────────────────────────────────────────────────
 scene.add(houseGroup);
+buildHouse(houseGroup, parts, MATS);
 
-// Helper: create a part group with metadata
-function createPart(name, label, color, deps = []) {
-  const g = new THREE.Group();
-  g.name = name;
-  const orig = new THREE.Vector3();
-  parts.set(name, {
-    group: g, label, color, deps,
-    orig: new THREE.Vector3(),
-    target: new THREE.Vector3(),
-    assembled: true,
-    meshArr: [],
-  });
-  houseGroup.add(g);
-  return g;
+// ── Stash original group positions for tween target ───────────────
+// Each part group starts at local (0,0,0) in houseGroup.
+// We store a "home" position (always 0,0,0) and a "target" offset.
+const homePos = new Map();  // partName → THREE.Vector3
+const targetOff = new Map(); // partName → THREE.Vector3
+
+for (const [name] of parts) {
+  homePos.set(name, new THREE.Vector3(0, 0, 0));
+  targetOff.set(name, new THREE.Vector3(0, 0, 0));
 }
-
-// Helper: add mesh to part, tracking it
-function addMesh(partName, mesh) {
-  const p = parts.get(partName);
-  if (p) {
-    p.meshArr.push(mesh);
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    mesh.userData.partName = partName;
-  }
-}
-
-// Convenience: box mesh
-function box(w, h, d, material, partName) {
-  const geo = new THREE.BoxGeometry(w, h, d);
-  const mesh = new THREE.Mesh(geo, material);
-  if (partName) addMesh(partName, mesh);
-  return mesh;
-}
-
-// ── Categories (for filter UI) ──────────────────────────────────
-const CATEGORIES = {
-  roof:     { label: '屋顶', enLabel: 'Roof',     parts: ['roofTiles', 'roofFrame'], color: '#4a4a5a' },
-  walls:    { label: '墙体', enLabel: 'Walls',    parts: ['wallFront', 'wallBack', 'wallLeft', 'wallRight', 'upperWallFront', 'upperWallBack', 'upperWallLeft', 'upperWallRight', 'interiorWall1', 'interiorWall2'], color: '#f2ece0' },
-  doorsWin: { label: '门窗', enLabel: 'Doors&Win',parts: ['doorFront', 'windows'], color: '#4a2818' },
-  columns:  { label: '柱梁', enLabel: 'Columns',  parts: ['columns'], color: '#6b3a20' },
-  base:     { label: '地基', enLabel: 'Base',     parts: ['base', 'floor'], color: '#6e6e6e' },
-  plumbing: { label: '管道', enLabel: 'Plumbing', parts: ['pipelines'], color: '#8b6b4a' },
-};
-
-// ── Floor / Foundation ───────────────────────────────────────────
-const floorGrp = createPart('floor', '地板平台', '#888888', [
-  'wallFront', 'wallBack', 'wallLeft', 'wallRight',
-  'interiorWall1', 'interiorWall2',
-]);
-const floorMesh = box(HOUSE_W + 0.6, FLOOR_H, HOUSE_D + 0.6, MATS.floor, 'floor');
-floorMesh.position.y = FLOOR_H / 2;
-floorGrp.add(floorMesh);
-// Stone step at front entrance
-const step = box(BAY_W * 0.8, 0.12, 1.2, MATS.floor, 'floor');
-step.position.set(0, FLOOR_H + 0.06, HD2 + 0.5);
-floorGrp.add(step);
-
-// ── Base (stone foundation platform) ─────────────────────────────
-const BASE_H = 0.45;
-const baseGrp = createPart('base', '石基平台', '#6e6e6e', [
-  'floor', 'columns',
-]);
-// Main foundation slab
-const baseMesh = box(HOUSE_W + 1.0, BASE_H, HOUSE_D + 1.0, MATS.base, 'base');
-baseMesh.position.y = -BASE_H / 2;
-baseGrp.add(baseMesh);
-// Stone block pattern — horizontal grooves
-for (let i = 0; i < 5; i++) {
-  const z = -HOUSE_D / 2 - 0.3 + i * (HOUSE_D + 0.6) / 4;
-  const groove = box(HOUSE_W + 1.05, 0.03, 0.04,
-    new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.9, metalness: 0 }), 'base');
-  groove.position.set(0, -0.02, z);
-  baseGrp.add(groove);
-}
-// Corner stone blocks (slightly raised)
-const cornerStones = [
-  [-HW2 - 0.4, -HD2 - 0.4], [HW2 + 0.4, -HD2 - 0.4],
-  [-HW2 - 0.4,  HD2 + 0.4], [HW2 + 0.4,  HD2 + 0.4],
-];
-cornerStones.forEach(([cx, cz]) => {
-  const cs = box(0.7, BASE_H + 0.06, 0.7,
-    new THREE.MeshStandardMaterial({ color: 0x5a5a5a, roughness: 0.7, metalness: 0.05 }), 'base');
-  cs.position.set(cx, -BASE_H / 2 + 0.03, cz);
-  baseGrp.add(cs);
-});
-
-// ── Columns ───────────────────────────────────────────────────────
-const COLUMN_R = 0.15;
-const colGrp = createPart('columns', '木柱', '#6b3a20', ['roofFrame']);
-const colPositions = [
-  [-HW2 + 0.3, HD2 - 0.3], [0, HD2 - 0.3], [HW2 - 0.3, HD2 - 0.3], // front
-  [-HW2 + 0.3, -HD2 + 0.3], [0, -HD2 + 0.3], [HW2 - 0.3, -HD2 + 0.3], // back
-  [-HW2 + 0.3, 0], [HW2 - 0.3, 0], // sides center
-];
-colPositions.forEach(([cx, cz]) => {
-  const colGeo = new THREE.CylinderGeometry(COLUMN_R, COLUMN_R * 1.15, WALL_H1 + FLOOR_H, 16);
-  const col = new THREE.Mesh(colGeo, MATS.column);
-  col.position.set(cx, (WALL_H1 + FLOOR_H) / 2, cz);
-  addMesh('columns', col);
-  colGrp.add(col);
-});
-
-// ── First Floor Walls ─────────────────────────────────────────────
-function makeWall(name, label, color, w, h, d, px, py, pz, deps) {
-  const grp = createPart(name, label, color, deps);
-  const mesh = box(w, h, d, MATS.wall, name);
-  mesh.position.set(px, py, pz);
-  grp.add(mesh);
-  return grp;
-}
-
-const WY1 = WALL_H1 / 2 + FLOOR_H; // first floor wall center Y
-
-makeWall('wallFront', '前墙(一层)', '#f2ece0', HOUSE_W, WALL_H1, WALL_T, 0, WY1, HD2,
-  ['upperWallFront']);
-makeWall('wallBack',  '后墙(一层)', '#f2ece0', HOUSE_W, WALL_H1, WALL_T, 0, WY1, -HD2,
-  ['upperWallBack']);
-makeWall('wallLeft',  '左墙(一层)', '#f2ece0', WALL_T, WALL_H1, HOUSE_D, -HW2, WY1, 0,
-  ['upperWallLeft']);
-makeWall('wallRight', '右墙(一层)', '#f2ece0', WALL_T, WALL_H1, HOUSE_D, HW2, WY1, 0,
-  ['upperWallRight']);
-
-// Interior walls (between 3 bays)
-function makeInteriorWall(name, label, x, deps) {
-  const grp = createPart(name, label, '#ede6d8', deps);
-  // Slightly thinner, fits between front and back walls
-  const mesh = box(WALL_T * 0.8, WALL_H1, HOUSE_D - WALL_T * 2, MATS.interior, name);
-  mesh.position.set(x, WY1, 0);
-  grp.add(mesh);
-  return grp;
-}
-makeInteriorWall('interiorWall1', '隔墙(左)', -BAY_W / 2, ['upperWallFront', 'upperWallBack']);
-makeInteriorWall('interiorWall2', '隔墙(右)',  BAY_W / 2, ['upperWallFront', 'upperWallBack']);
-
-// ── Upper Half-Story Walls ───────────────────────────────────────
-const WY2 = WALL_H1 + WALL_H2 / 2 + FLOOR_H; // upper wall center Y
-
-function makeUpperWall(name, label, color, w, h, d, px, py, pz, deps) {
-  const grp = createPart(name, label, color, deps);
-  const mesh = box(w, h, d, MATS.upperWall, name);
-  mesh.position.set(px, py, pz);
-  grp.add(mesh);
-  return grp;
-}
-
-makeUpperWall('upperWallFront', '前墙(二层)', '#e8e0d0', HOUSE_W, WALL_H2, WALL_T, 0, WY2, HD2,
-  ['roofFrame']);
-makeUpperWall('upperWallBack',  '后墙(二层)', '#e8e0d0', HOUSE_W, WALL_H2, WALL_T, 0, WY2, -HD2,
-  ['roofFrame']);
-
-// Gable walls (left/right upper walls — triangular tops, but simplified as rectangles)
-makeUpperWall('upperWallLeft',  '山墙(左)', '#e0d8c8', WALL_T, WALL_H2 + 0.5, HOUSE_D, -HW2, WY2 - 0.25, 0,
-  ['roofFrame']);
-makeUpperWall('upperWallRight', '山墙(右)', '#e0d8c8', WALL_T, WALL_H2 + 0.5, HOUSE_D, HW2, WY2 - 0.25, 0,
-  ['roofFrame']);
-
-// ── Roof Frame (beams & purlins) ──────────────────────────────────
-const rfGrp = createPart('roofFrame', '屋架(梁檩)', '#5a3a28', ['roofTiles']);
-// Ridge purlin
-const ridgeBeam = box(HOUSE_W + 1.4, 0.15, 0.12, MATS.roofFrame, 'roofFrame');
-ridgeBeam.position.set(0, ROOF_H - 0.08, 0);
-rfGrp.add(ridgeBeam);
-// Eave purlins (front & back)
-[-HD2 - 0.8, HD2 + 0.8].forEach(z => {
-  const purlin = box(HOUSE_W + 1.4, 0.1, 0.1, MATS.roofFrame, 'roofFrame');
-  purlin.position.set(0, EAVE_H + 0.05, z);
-  rfGrp.add(purlin);
-});
-// Rafters (slanted beams, simplified as thin boxes)
-for (let i = 0; i < 11; i++) {
-  const x = -HOUSE_W / 2 - 0.5 + i * (HOUSE_W + 1) / 10;
-  for (let side = -1; side <= 1; side += 2) {
-    const rafterGeo = new THREE.BoxGeometry(0.06, 0.06, HOUSE_D / 2 + 1.2);
-    const rafter = new THREE.Mesh(rafterGeo, MATS.roofFrame);
-    const zMid = side * (HOUSE_D / 4 + 0.25);
-    const yMid = (ROOF_H + EAVE_H) / 2;
-    rafter.position.set(x, yMid, zMid);
-    const angle = side * Math.atan2(ROOF_H - EAVE_H, HOUSE_D / 2 + 1);
-    rafter.rotation.x = angle;
-    addMesh('roofFrame', rafter);
-    rfGrp.add(rafter);
-  }
-}
-
-// ── Roof Tiles (gable roof as triangular prism) ───────────────────
-const roofGrp = createPart('roofTiles', '瓦片屋顶', '#4a4a5a', []);
-const rHW = HW2 + ROOF_OH + 0.1;  // half width with overhang
-const rHD = HD2 + ROOF_OH + 0.1;  // half depth with overhang
-
-// Build roof as custom BufferGeometry
-const roofVerts = new Float32Array([
-  // Ridge line
-  -rHW, ROOF_H, 0,
-   rHW, ROOF_H, 0,
-  // Front eave
-  -rHW, EAVE_H,  rHD,
-   rHW, EAVE_H,  rHD,
-  // Back eave
-  -rHW, EAVE_H, -rHD,
-   rHW, EAVE_H, -rHD,
-]);
-const roofIndices = [
-  // Front slope
-  0, 1, 3,  0, 3, 2,
-  // Back slope
-  0, 5, 1,  0, 4, 5,
-  // Left gable
-  0, 2, 4,
-  // Right gable
-  1, 5, 3,
-];
-const roofGeo = new THREE.BufferGeometry();
-roofGeo.setAttribute('position', new THREE.BufferAttribute(roofVerts, 3));
-roofGeo.setIndex(roofIndices);
-roofGeo.computeVertexNormals();
-
-const roofMesh = new THREE.Mesh(roofGeo, MATS.roofTile);
-addMesh('roofTiles', roofMesh);
-roofGrp.add(roofMesh);
-
-// Ridge cap (decorative ridge tiles)
-const ridgeCap = box(HOUSE_W + 1.8, 0.2, 0.3, MATS.ridge, 'roofTiles');
-ridgeCap.position.set(0, ROOF_H + 0.1, 0);
-roofGrp.add(ridgeCap);
-
-// Ridge end ornaments (curved up tips — simplified)
-[-1, 1].forEach(side => {
-  const tipGeo = new THREE.BoxGeometry(0.3, 0.1, 0.35);
-  const tip = new THREE.Mesh(tipGeo, MATS.ridge);
-  tip.position.set(side * (HW2 + 1.0), ROOF_H + 0.25, 0);
-  tip.rotation.z = side * 0.15;
-  tip.rotation.x = 0.1;
-  addMesh('roofTiles', tip);
-  roofGrp.add(tip);
-});
-
-// ── Door (central bay, front) ─────────────────────────────────────
-const doorGrp = createPart('doorFront', '大门', '#4a2818', ['wallFront']);
-// Door frame
-const doorFrameL = box(0.1, 2.3, 0.08, MATS.door, 'doorFront');
-doorFrameL.position.set(-0.75, 1.3 + FLOOR_H, HD2 + WALL_T / 2 + 0.04);
-doorGrp.add(doorFrameL);
-const doorFrameR = box(0.1, 2.3, 0.08, MATS.door, 'doorFront');
-doorFrameR.position.set(0.75, 1.3 + FLOOR_H, HD2 + WALL_T / 2 + 0.04);
-doorGrp.add(doorFrameR);
-const doorFrameT = box(1.6, 0.1, 0.08, MATS.door, 'doorFront');
-doorFrameT.position.set(0, 2.4 + FLOOR_H, HD2 + WALL_T / 2 + 0.04);
-doorGrp.add(doorFrameT);
-// Door panels (two leaves)
-[-0.35, 0.35].forEach(xo => {
-  const panel = box(0.7, 2.0, 0.05, new THREE.MeshStandardMaterial({
-    color: 0x5a3020, roughness: 0.4, metalness: 0.05,
-  }), 'doorFront');
-  panel.position.set(xo, 1.15 + FLOOR_H, HD2 + WALL_T / 2 + 0.06);
-  doorGrp.add(panel);
-});
-// Doorstep
-const doorstep = box(1.8, 0.08, 0.25, MATS.floor, 'doorFront');
-doorstep.position.set(0, FLOOR_H + 0.04, HD2 + WALL_T / 2 + 0.1);
-doorGrp.add(doorstep);
-
-// ── Windows ───────────────────────────────────────────────────────
-const winGrp = createPart('windows', '窗户', '#5a3828', ['wallFront', 'wallBack']);
-
-function makeWindow(x, y, z, ry = 0) {
-  const wGrp = new THREE.Group();
-  // Frame
-  const fw = 1.1, fh = 1.4, ft = 0.06;
-  const frameV = box(ft, fh, ft, MATS.window, 'windows');
-  [-fw / 2, fw / 2].forEach(xo => {
-    const f = frameV.clone();
-    f.material = frameV.material;
-    f.position.set(xo, 0, 0);
-    wGrp.add(f);
-  });
-  const frameH = box(fw, ft, ft, MATS.window, 'windows');
-  [-fh / 2, fh / 2].forEach(yo => {
-    const f = frameH.clone();
-    f.material = frameH.material;
-    f.position.set(0, yo, 0);
-    wGrp.add(f);
-  });
-  // Cross mullions
-  const mullV = box(ft * 0.7, fh * 0.85, ft * 0.7, MATS.window, 'windows');
-  wGrp.add(mullV);
-  const mullH = box(fw * 0.85, ft * 0.7, ft * 0.7, MATS.window, 'windows');
-  wGrp.add(mullH);
-
-  wGrp.position.set(x, y, z);
-  wGrp.rotation.y = ry;
-  return wGrp;
-}
-
-// Front windows (side bays)
-const winY = 1.6 + FLOOR_H;
-const winZ = HD2 + WALL_T / 2 + 0.05;
-[-BAY_W, BAY_W].forEach(x => {
-  winGrp.add(makeWindow(x, winY, winZ));
-});
-// Back windows (each bay)
-[-BAY_W, 0, BAY_W].forEach(x => {
-  winGrp.add(makeWindow(x, winY, -HD2 - WALL_T / 2 - 0.05, Math.PI));
-});
-
-// ── Pipelines (drainage / water pipes) ───────────────────────────
-const pipeGrp = createPart('pipelines', '管道系统', '#8b6b4a', ['roofTiles']);
-
-function cylinder(radius, length, material, partName) {
-  const geo = new THREE.CylinderGeometry(radius, radius, length, 12);
-  const mesh = new THREE.Mesh(geo, material);
-  if (partName) addMesh(partName, mesh);
-  return mesh;
-}
-
-const PIPE_R = 0.06; // pipe radius
-
-// Eave drain pipes (horizontal, under front & back eaves)
-[-1, 1].forEach(side => {
-  const z = side * (HD2 + ROOF_OH * 0.6);
-  const drainPipe = cylinder(PIPE_R, HOUSE_W + 0.8, MATS.pipe, 'pipelines');
-  drainPipe.rotation.x = Math.PI / 2;
-  drainPipe.position.set(0, EAVE_H - 0.35, z);
-  pipeGrp.add(drainPipe);
-
-  // Pipe brackets (small rings every ~2m)
-  for (let bx = -HOUSE_W / 2 + 0.5; bx <= HOUSE_W / 2 - 0.5; bx += 2.5) {
-    const bracket = new THREE.Mesh(
-      new THREE.TorusGeometry(PIPE_R + 0.02, 0.015, 6, 12),
-      MATS.pipeJoint
-    );
-    bracket.position.set(bx, EAVE_H - 0.35, z);
-    addMesh('pipelines', bracket);
-    pipeGrp.add(bracket);
-  }
-});
-
-// Vertical downspouts (back corners, from eave to ground)
-[-1, 1].forEach(side => {
-  const x = side * (HW2 - 0.3);
-  const z = -(HD2 + ROOF_OH * 0.6); // back side
-
-  const downspout = cylinder(PIPE_R * 0.9, EAVE_H - 0.35, MATS.pipe, 'pipelines');
-  downspout.position.set(x, (EAVE_H - 0.35) / 2, z);
-  pipeGrp.add(downspout);
-
-  // Elbow joint at top (connecting horizontal to vertical)
-  const elbowGeo = new THREE.TorusGeometry(PIPE_R * 1.2, PIPE_R * 0.6, 6, 8, Math.PI / 2);
-  const elbow = new THREE.Mesh(elbowGeo, MATS.pipeJoint);
-  elbow.position.set(x, EAVE_H - 0.35, z);
-  elbow.rotation.set(Math.PI / 2, 0, side > 0 ? Math.PI : 0);
-  addMesh('pipelines', elbow);
-  pipeGrp.add(elbow);
-
-  // Drain outlet at ground level
-  const outletGeo = new THREE.CylinderGeometry(PIPE_R * 0.7, PIPE_R * 1.0, 0.25, 8);
-  const outlet = new THREE.Mesh(outletGeo, MATS.pipeJoint);
-  outlet.position.set(x, -0.1, z);
-  addMesh('pipelines', outlet);
-  pipeGrp.add(outlet);
-});
-
-// Ground-level drain trench (along the back)
-const trench = box(HOUSE_W - 1.0, 0.06, 0.2,
-  new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.8, metalness: 0.1 }), 'pipelines');
-trench.position.set(0, -0.2, -HD2 - 0.7);
-pipeGrp.add(trench);
-
-// ── Store original positions ──────────────────────────────────────
-parts.forEach((p) => {
-  p.group.getWorldPosition(p.orig);
-  p.target.copy(p.orig);
-});
-
-// ── Collect & annotate all meshes (for raycasting) ─────────────────
-parts.forEach((p, name) => {
-  p.meshArr = [];
-  p.group.traverse((child) => {
-    if (child.isMesh) {
-      child.userData.partName = name;
-      p.meshArr.push(child);
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-});
 
 // ── Legend UI ─────────────────────────────────────────────────────
 const legendItems = document.getElementById('legend-items');
 
-// Build category filter buttons
+// Category filter buttons
 const catBar = document.createElement('div');
 catBar.id = 'cat-bar';
 let activeCat = null;
 
-Object.entries(CATEGORIES).forEach(([catKey, cat]) => {
+for (const [catKey, cat] of Object.entries(CATEGORIES)) {
   const btn = document.createElement('button');
   btn.className = 'cat-btn';
   btn.dataset.cat = catKey;
   btn.textContent = cat.label;
-  btn.style.cssText = `--cat-color:${cat.color}`;
+  btn.style.setProperty('--cat-color', cat.color);
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
     if (activeCat === catKey) {
-      // Deselect category
       activeCat = null;
       btn.classList.remove('active');
       clearSelection();
     } else {
-      // Select category
       document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeCat = catKey;
-      // Select all parts in this category
       selected.clear();
       cat.parts.forEach(n => { if (parts.has(n)) selected.add(n); });
-      updateLegendUI();
-      updatePartHighlights();
-      updateInfoPanel();
+      refreshUI();
     }
   });
   catBar.appendChild(btn);
-});
+}
 legendItems.before(catBar);
 
-// Build part items (grouped by category)
-Object.entries(CATEGORIES).forEach(([catKey, cat]) => {
+// Part items (grouped by category)
+for (const [catKey, cat] of Object.entries(CATEGORIES)) {
   const catLabel = document.createElement('div');
   catLabel.className = 'legend-cat-label';
   catLabel.textContent = cat.label;
   catLabel.dataset.cat = catKey;
   legendItems.appendChild(catLabel);
 
-  cat.parts.forEach(name => {
+  for (const name of cat.parts) {
     const p = parts.get(name);
-    if (!p) return;
+    if (!p) continue;
     const div = document.createElement('div');
     div.className = 'legend-item';
     div.dataset.part = name;
-    div.dataset.cat = catKey;
     div.innerHTML = `<span class="legend-dot" style="background:${p.color}"></span>${p.label}`;
     div.addEventListener('click', (e) => {
       e.stopPropagation();
       togglePart(name);
     });
     legendItems.appendChild(div);
-  });
-});
+  }
+}
+
+function refreshUI() {
+  updateLegendUI();
+  updatePartHighlights();
+  updateInfoPanel();
+}
 
 function updateLegendUI() {
   document.querySelectorAll('.legend-item').forEach(el => {
@@ -581,21 +167,55 @@ function updateLegendUI() {
     const sel = selected.has(name);
     const dis = !p.assembled;
     el.classList.toggle('selected', sel);
-    if (dis) el.style.opacity = '0.5';
-    else el.style.opacity = sel ? '1' : '';
+    el.style.opacity = dis ? '0.5' : sel ? '1' : '';
   });
 }
 
-// ── Selection logic ───────────────────────────────────────────────
+function updatePartHighlights() {
+  for (const [name, p] of parts) {
+    const sel = selected.has(name);
+    for (const m of p.meshArr) {
+      const mat = m.material;
+      if (Array.isArray(mat)) {
+        for (const mm of mat) {
+          mm.emissive = new THREE.Color(sel ? 0x336699 : 0x000000);
+          mm.emissiveIntensity = sel ? 0.5 : 0;
+        }
+      } else {
+        mat.emissive = new THREE.Color(sel ? 0x336699 : 0x000000);
+        mat.emissiveIntensity = sel ? 0.5 : 0;
+      }
+    }
+  }
+}
+
+function updateInfoPanel() {
+  const nameEl = document.getElementById('part-name');
+  const hintEl = document.getElementById('part-hint');
+  if (selected.size === 0) {
+    nameEl.textContent = '点击选择部件';
+    hintEl.innerHTML = '拖拽框选 · 按 <kbd>1</kbd> 拆解';
+  } else if (selected.size === 1) {
+    const [n] = selected;
+    const p = parts.get(n);
+    nameEl.textContent = p ? p.label : n;
+    hintEl.innerHTML = '按 <kbd>1</kbd> 拆解 · 点击取消选择';
+  } else {
+    nameEl.textContent = `已选 ${selected.size} 个部件`;
+    hintEl.innerHTML = '按 <kbd>1</kbd> 拆解 · 点击空白取消';
+  }
+}
+
+// ── Selection ─────────────────────────────────────────────────────
 const raycaster = new THREE.Raycaster();
 raycaster.far = 30;
 const mouse = new THREE.Vector2();
 
 function getAllSelectable() {
   const meshes = [];
-  parts.forEach(p => {
-    p.meshArr.forEach(m => meshes.push(m));
-  });
+  for (const [, p] of parts) {
+    for (const m of p.meshArr) meshes.push(m);
+  }
   return meshes;
 }
 
@@ -621,94 +241,35 @@ function togglePart(name) {
   } else {
     selected.add(name);
   }
-  updateLegendUI();
-  updatePartHighlights();
-  updateInfoPanel();
+  refreshUI();
 }
 
 function clearSelection() {
   selected.clear();
-  updateLegendUI();
-  updatePartHighlights();
-  updateInfoPanel();
-}
-
-function updatePartHighlights() {
-  parts.forEach((p, name) => {
-    const sel = selected.has(name);
-    p.meshArr.forEach(m => {
-      if (Array.isArray(m.material)) {
-        m.material.forEach(mat => {
-          mat.emissive = new THREE.Color(sel ? 0x336699 : 0x000000);
-          mat.emissiveIntensity = sel ? 0.5 : 0;
-        });
-      } else {
-        m.material.emissive = new THREE.Color(sel ? 0x336699 : 0x000000);
-        m.material.emissiveIntensity = sel ? 0.5 : 0;
-      }
-    });
-  });
-}
-
-function updateInfoPanel() {
-  const nameEl = document.getElementById('part-name');
-  const hintEl = document.getElementById('part-hint');
-  if (selected.size === 0) {
-    nameEl.textContent = '点击选择部件';
-    hintEl.innerHTML = '拖拽框选 · 按 <kbd>1</kbd> 拆解';
-  } else if (selected.size === 1) {
-    const [n] = selected;
-    const p = parts.get(n);
-    nameEl.textContent = p.label;
-    hintEl.innerHTML = '按 <kbd>1</kbd> 拆解 · 点击取消选择';
-  } else {
-    nameEl.textContent = `已选 ${selected.size} 个部件`;
-    hintEl.innerHTML = '按 <kbd>1</kbd> 拆解 · 点击空白取消';
-  }
+  refreshUI();
 }
 
 // ── Rubber-band selection ─────────────────────────────────────────
 const selBox = document.getElementById('sel-box');
 let selStart = new THREE.Vector2();
 let selActive = false;
-
-function screenPos(worldPos) {
-  const v = worldPos.clone().project(camera);
-  const rect = renderer.domElement.getBoundingClientRect();
-  return {
-    x: (v.x * 0.5 + 0.5) * rect.width + rect.left,
-    y: (-v.y * 0.5 + 0.5) * rect.height + rect.top,
-  };
-}
+let ctrlSelecting = false;
 
 function selectInRect(x1, y1, x2, y2) {
-  const minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
-  const minY = Math.min(y1, y2), maxY = Math.max(y1, y2);
-
+  const mx = Math.min(x1, x2), MX = Math.max(x1, x2);
+  const my = Math.min(y1, y2), MY = Math.max(y1, y2);
   const found = new Set();
-  parts.forEach((p, name) => {
-    // Use group world position for selection test
+  for (const [name, p] of parts) {
     const wp = new THREE.Vector3();
     p.group.getWorldPosition(wp);
-    // Check several points on the part for better coverage
-    const checkPoints = [wp];
-    if (p.meshArr.length > 0) {
-      // Add mesh bounding box corners
-      p.meshArr.forEach(m => {
-        const box = new THREE.Box3().setFromObject(m);
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-        checkPoints.push(center);
-      });
+    const v = wp.clone().project(camera);
+    const rect = renderer.domElement.getBoundingClientRect();
+    const sx = (v.x * 0.5 + 0.5) * rect.width + rect.left;
+    const sy = (-v.y * 0.5 + 0.5) * rect.height + rect.top;
+    if (sx >= mx && sx <= MX && sy >= my && sy <= MY) {
+      found.add(name);
     }
-    for (const pt of checkPoints) {
-      const sp = screenPos(pt);
-      if (sp.x >= minX && sp.x <= maxX && sp.y >= minY && sp.y <= maxY) {
-        found.add(name);
-        break;
-      }
-    }
-  });
+  }
   return found;
 }
 
@@ -731,75 +292,33 @@ function getRequiredParts(forParts) {
 }
 
 // ── Disassemble / Reassemble ──────────────────────────────────────
-let tweenActive = false;
-
-function setTargetPositions(partNames, disassemble) {
-  partNames.forEach(name => {
-    const p = parts.get(name);
-    if (!p) return;
-    if (disassemble) {
-      // Compute offset based on part type
-      const offset = getDisassembleOffset(name);
-      p.target.copy(p.orig).add(offset);
-    } else {
-      p.target.copy(p.orig);
-    }
-  });
-  tweenActive = true;
-}
-
-function getDisassembleOffset(name) {
-  const v = new THREE.Vector3();
-  const dist = 3.5;
-  switch (name) {
-    case 'roofTiles':     v.set(0, dist, 0); break;
-    case 'roofFrame':     v.set(0, dist * 0.7, 0); break;
-    case 'upperWallFront': v.set(0, 0.3, dist * 0.6); break;
-    case 'upperWallBack':  v.set(0, 0.3, -dist * 0.6); break;
-    case 'upperWallLeft':  v.set(-dist * 0.5, 0.3, 0); break;
-    case 'upperWallRight': v.set(dist * 0.5, 0.3, 0); break;
-    case 'wallFront':      v.set(0, 0, dist); break;
-    case 'wallBack':       v.set(0, 0, -dist); break;
-    case 'wallLeft':       v.set(-dist, 0, 0); break;
-    case 'wallRight':      v.set(dist, 0, 0); break;
-    case 'interiorWall1':  v.set(0, 2, -0.5); break;
-    case 'interiorWall2':  v.set(0, 2, 0.5); break;
-    case 'doorFront':      v.set(0, 0.5, dist * 1.2); break;
-    case 'windows':        v.set(0, 0.3, dist * 1.1); break;
-    case 'columns':      v.set(0, dist * 0.5, dist * 0.4); break;
-    case 'floor':        v.set(0, -dist * 0.3, 0); break;
-    case 'base':         v.set(0, -dist * 0.7, 0); break;
-    case 'pipelines':    v.set(0, -dist * 0.3, -dist * 0.5); break;
-    default: v.set(0, dist * 0.5, 0);
-  }
-  return v;
-}
-
 function doDisassemble() {
   if (selected.size === 0) {
-    // If nothing selected and currently disassembled, reassemble all
-    if (isDisassembled) {
-      doReassembleAll();
-    }
+    if (isDisassembled) doReassembleAll();
     return;
   }
 
   const toMove = getRequiredParts(selected);
-  setTargetPositions(toMove, true);
-  toMove.forEach(name => {
+  for (const name of toMove) {
+    const offset = getDisassembleOffset(name);
+    targetOff.get(name).set(offset[0], offset[1], offset[2]);
     const p = parts.get(name);
     if (p) p.assembled = false;
-  });
+  }
   isDisassembled = true;
+  tweenActive = true;
   updateLegendUI();
   updateDismantleBtn();
 }
 
 function doReassembleAll() {
-  const allParts = new Set(parts.keys());
-  setTargetPositions(allParts, false);
-  parts.forEach(p => { p.assembled = true; });
+  for (const [name] of parts) {
+    targetOff.get(name).set(0, 0, 0);
+    const p = parts.get(name);
+    if (p) p.assembled = true;
+  }
   isDisassembled = false;
+  tweenActive = true;
   updateLegendUI();
   updateDismantleBtn();
 }
@@ -816,16 +335,13 @@ function updateDismantleBtn() {
 }
 
 // ── Event handlers ────────────────────────────────────────────────
-let pointerMoved = false;
-let pointerDownPos = new THREE.Vector2();
-let ctrlSelection = false;
+const pointerDownPos = new THREE.Vector2();
 
 renderer.domElement.addEventListener('pointerdown', (event) => {
   pointerDownPos.set(event.clientX, event.clientY);
-  pointerMoved = false;
 
   if (event.ctrlKey || event.metaKey) {
-    ctrlSelection = true;
+    ctrlSelecting = true;
     event.stopPropagation();
     selStart.set(event.clientX, event.clientY);
     selBox.style.display = 'block';
@@ -835,30 +351,29 @@ renderer.domElement.addEventListener('pointerdown', (event) => {
     selBox.style.height = '0px';
     renderer.domElement.style.cursor = 'crosshair';
   } else {
-    ctrlSelection = false;
+    ctrlSelecting = false;
   }
 }, { capture: true });
 
 window.addEventListener('pointermove', (event) => {
-  const dx = event.clientX - pointerDownPos.x;
-  const dy = event.clientY - pointerDownPos.y;
-  if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
-    pointerMoved = true;
+  if (ctrlSelecting) {
+    const dx = event.clientX - pointerDownPos.x;
+    const dy = event.clientY - pointerDownPos.y;
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+      selActive = true;
+    }
+    if (selActive) {
+      const x1 = selStart.x, y1 = selStart.y;
+      const x2 = event.clientX, y2 = event.clientY;
+      selBox.style.left = Math.min(x1, x2) + 'px';
+      selBox.style.top = Math.min(y1, y2) + 'px';
+      selBox.style.width = Math.abs(x2 - x1) + 'px';
+      selBox.style.height = Math.abs(y2 - y1) + 'px';
+    }
   }
 
-  if (ctrlSelection && selActive) {
-    const x1 = selStart.x, y1 = selStart.y;
-    const x2 = event.clientX, y2 = event.clientY;
-    selBox.style.left = Math.min(x1, x2) + 'px';
-    selBox.style.top = Math.min(y1, y2) + 'px';
-    selBox.style.width = Math.abs(x2 - x1) + 'px';
-    selBox.style.height = Math.abs(y2 - y1) + 'px';
-  } else if (ctrlSelection && pointerMoved) {
-    selActive = true;
-  }
-
-  // Hover detection (when not in selection mode)
-  if (!ctrlSelection) {
+  // Hover detection
+  if (!ctrlSelecting) {
     const part = raycastPart(event);
     if (part !== hoveredPart) {
       hoveredPart = part;
@@ -868,39 +383,46 @@ window.addEventListener('pointermove', (event) => {
 });
 
 window.addEventListener('pointerup', (event) => {
-  if (ctrlSelection && selActive) {
+  // Compute click distance (reliable click detection)
+  const clickDist = Math.hypot(
+    event.clientX - pointerDownPos.x,
+    event.clientY - pointerDownPos.y
+  );
+  const wasClick = clickDist < 4;
+
+  if (ctrlSelecting && selActive) {
     // Finish rubber-band selection
     const found = selectInRect(selStart.x, selStart.y, event.clientX, event.clientY);
     selected.clear();
-    found.forEach(n => selected.add(n));
-    updateLegendUI();
-    updatePartHighlights();
-    updateInfoPanel();
-  } else if (ctrlSelection && !pointerMoved) {
-    // Ctrl+click — toggle single part
+    for (const n of found) selected.add(n);
+    refreshUI();
+  } else if (ctrlSelecting && wasClick) {
+    // Ctrl+click toggle single part
     const part = raycastPart(event);
     if (part) togglePart(part);
-  } else if (!ctrlSelection && !pointerMoved && !isDisassembled) {
-    // Plain click — toggle single part (only when assembled)
-    const part = raycastPart(event);
-    if (part) {
-      togglePart(part);
-    } else {
+  } else if (!ctrlSelecting && wasClick) {
+    if (isDisassembled) {
+      // Click on disassembled house → reassemble
       clearSelection();
+      doReassembleAll();
+    } else {
+      // Plain click → toggle single part
+      const part = raycastPart(event);
+      if (part) {
+        togglePart(part);
+      } else {
+        clearSelection();
+      }
     }
-  } else if (!ctrlSelection && !pointerMoved && isDisassembled) {
-    // Click on disassembled house → reassemble
-    clearSelection();
-    doReassembleAll();
   }
 
-  // Reset selection box
+  // Reset
   selActive = false;
-  ctrlSelection = false;
+  ctrlSelecting = false;
   selBox.style.display = 'none';
   selBox.style.width = '0px';
   selBox.style.height = '0px';
-  renderer.domElement.style.cursor = '';
+  renderer.domElement.style.cursor = hoveredPart ? 'pointer' : '';
 });
 
 // Keyboard
@@ -917,7 +439,6 @@ window.addEventListener('keydown', (event) => {
     clearSelection();
   }
   if (event.key === '0') {
-    // Reset camera
     camera.position.set(10, 7, 16);
     controls.target.set(0, 2.2, 0);
     controls.update();
@@ -926,11 +447,8 @@ window.addEventListener('keydown', (event) => {
 
 // Buttons
 document.getElementById('btn-dismantle').addEventListener('click', () => {
-  if (isDisassembled) {
-    doReassembleAll();
-  } else {
-    doDisassemble();
-  }
+  if (isDisassembled) doReassembleAll();
+  else doDisassemble();
 });
 document.getElementById('btn-reset').addEventListener('click', () => {
   clearSelection();
@@ -940,16 +458,8 @@ document.getElementById('btn-reset').addEventListener('click', () => {
   controls.update();
 });
 
-// ── Theme ─────────────────────────────────────────────────────────
-setupThemeToggle({
-  scene,
-  darkBg: 0x0a0a14,
-  lightBg: 0xd8dae8,
-  fogNear: 12,
-  fogFar: 40,
-});
-
-// ── Resize ────────────────────────────────────────────────────────
+// ── Theme & Resize ────────────────────────────────────────────────
+setupThemeToggle({ scene, darkBg: 0x0a0a14, lightBg: 0xd8dae8, fogNear: 12, fogFar: 40 });
 setupResizeHandler(renderer, camera, container);
 
 // ── Animation loop ────────────────────────────────────────────────
@@ -961,28 +471,31 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.1);
   controls.update();
 
-  // Tween parts toward targets
+  // Tween parts toward target offsets
   if (tweenActive) {
     let allDone = true;
-    parts.forEach((p) => {
-      const dx = p.target.x - p.group.position.x;
-      const dy = p.target.y - p.group.position.y;
-      const dz = p.target.z - p.group.position.z;
+    for (const [name, p] of parts) {
+      const target = targetOff.get(name);
+      const pos = p.group.position;
+      const dx = target.x - pos.x;
+      const dy = target.y - pos.y;
+      const dz = target.z - pos.z;
       const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-      if (dist < 0.005) {
-        p.group.position.copy(p.target);
+      if (dist < 0.003) {
+        pos.copy(target);
       } else {
         allDone = false;
-        const speed = animationSpeed * dt;
-        const t = Math.min(speed / dist, 1);
-        p.group.position.x += dx * t;
-        p.group.position.y += dy * t;
-        p.group.position.z += dz * t;
+        const step = Math.min(animSpeed * dt / dist, 1);
+        pos.x += dx * step;
+        pos.y += dy * step;
+        pos.z += dz * step;
       }
-    });
+    }
     if (allDone) {
       tweenActive = false;
-      parts.forEach(p => p.group.position.copy(p.target));
+      for (const [name, p] of parts) {
+        p.group.position.copy(targetOff.get(name));
+      }
     }
   }
 
