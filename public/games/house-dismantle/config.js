@@ -29,7 +29,7 @@ export const MATS = {
   roofTile:    new THREE.MeshStandardMaterial({ color: 0x4a4a5a, roughness: 0.7, metalness: 0.05 }),
   roofFrame:   new THREE.MeshStandardMaterial({ color: 0x5a3a28, roughness: 0.6, metalness: 0.0 }),
   wall:        new THREE.MeshStandardMaterial({ color: 0xf2ece0, roughness: 0.8, metalness: 0.0 }),
-  upperWall:   new THREE.MeshStandardMaterial({ color: 0xd4c8b0, roughness: 0.8, metalness: 0.0 }),
+  upperWall:   new THREE.MeshStandardMaterial({ color: 0xc4b898, roughness: 0.8, metalness: 0.0 }),
   interior:    new THREE.MeshStandardMaterial({ color: 0xede6d8, roughness: 0.8, metalness: 0.0 }),
   floor:       new THREE.MeshStandardMaterial({ color: 0x908878, roughness: 0.7, metalness: 0.05 }),
   column:      new THREE.MeshStandardMaterial({ color: 0x6b3a20, roughness: 0.5, metalness: 0.0 }),
@@ -104,16 +104,13 @@ export const PART_DEFS = [
   { name: 'tableChairs', label: '桌椅',      color: '#8b6914', deps: ['wallFront','wallBack','interiorWall1','interiorWall2'], cat: 'interior' },
   { name: 'stove',       label: '灶台',      color: '#8b5a3a', deps: ['wallLeft','interiorWall1'], cat: 'interior' },
   { name: 'shrine',      label: '神龛',      color: '#4a2010', deps: ['wallBack'], cat: 'interior' },
-  { name: 'grainStore',  label: '粮仓(二层)', color: '#8b6914', deps: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight'], cat: 'interior' },
 
   // ── Yard ──
-  { name: 'chickens',    label: '鸡',        color: '#d4a030', deps: [], cat: 'yard' },
   { name: 'well',        label: '水井',      color: '#7a7a7a', deps: [], cat: 'yard' },
   { name: 'yardFence',   label: '院墙',      color: '#9b8b70', deps: [], cat: 'yard' },
-  { name: 'haystack',    label: '草垛',      color: '#b8a040', deps: [], cat: 'yard' },
 
   // ── Plumbing ──
-  { name: 'pipelines',   label: '管道系统',  color: '#8b6b4a', deps: ['roofTiles'], cat: 'plumbing' },
+  { name: 'pipelines',   label: '管道系统',  color: '#8b6b4a', deps: ['roofTiles'], cat: 'yard' },
 ];
 
 // ── Categories (for filter UI) ────────────────────────────────────
@@ -122,9 +119,8 @@ export const CATEGORIES = {
   structure: { label: '结构',  parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWall1','interiorWall2','upperWallFront','upperWallBack','upperWallLeft','upperWallRight','columns'], color: '#d4c8b0' },
   base:      { label: '地基',  parts: ['base','floor'],                                        color: '#6e6e6e' },
   openings:  { label: '门窗梯',parts: ['doors','windows','stairs'],                            color: '#8b6914' },
-  interior:  { label: '家具',  parts: ['beds','tableChairs','stove','shrine','grainStore'],    color: '#7a4a20' },
-  yard:      { label: '院子',  parts: ['chickens','well','yardFence','haystack'],              color: '#80a050' },
-  plumbing:  { label: '管道',  parts: ['pipelines'],                                           color: '#8b6b4a' },
+  interior:  { label: '家具',  parts: ['beds','tableChairs','stove','shrine'],               color: '#7a4a20' },
+  yard:      { label: '院子',  parts: ['well','yardFence','pipelines'],                          color: '#80a050' },
 };
 
 // ── Disassemble offsets ───────────────────────────────────────────
@@ -160,12 +156,9 @@ export function getDisassembleOffset(name) {
     tableChairs:      [0, 1.5, 1.5],
     stove:            [-d * 0.7, 0.3, 0],
     shrine:           [0, 0.5, -2],
-    grainStore:       [0, 2.5, 0],
     // Yard
-    chickens:         [0, -0.3, 3],
     well:             [0, -0.5, -2.5],
     yardFence:        [0, -0.8, 0],
-    haystack:         [1.5, 0, -1.5],
     // Plumbing
     pipelines:        [0, -d * 0.3, -d * 0.5],
   };

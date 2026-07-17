@@ -115,6 +115,30 @@ export function buildStructure(houseGroup, parts, MATS) {
   }
   makeUpperWall('upperWallFront', '前墙(二层)', '#d4c8b0', HOUSE_W, WALL_H2, WALL_T, 0, WY2, HD2, ['roofFrame']);
   makeUpperWall('upperWallBack',  '后墙(二层)', '#d4c8b0', HOUSE_W, WALL_H2, WALL_T, 0, WY2, -HD2, ['roofFrame']);
+
+  // Upper ventilation windows (small round/square openings in upper walls)
+  // These make the second floor visually obvious
+  for (const [side, z] of [['Front', HD2 + WALL_T/2 + 0.03], ['Back', -HD2 - WALL_T/2 - 0.03]]) {
+    const up = parts.get(`upperWall${side}`);
+    if (!up) continue;
+    for (let vx = -HW2 + 1.5; vx <= HW2 - 1.5; vx += 3.0) {
+      // Window frame (small square)
+      const frame = box(0.5, 0.5, 0.06, MATS.window);
+      frame.position.set(vx, WY2, z);
+      addTo(`upperWall${side}`, frame);
+      up.group.add(frame);
+      // Cross mullion
+      const mullH = box(0.4, 0.04, 0.07, MATS.window);
+      mullH.position.set(vx, WY2, z);
+      addTo(`upperWall${side}`, mullH);
+      up.group.add(mullH);
+      const mullV = box(0.04, 0.4, 0.07, MATS.window);
+      mullV.position.set(vx, WY2, z);
+      addTo(`upperWall${side}`, mullV);
+      up.group.add(mullV);
+    }
+  }
+
   makeUpperWall('upperWallLeft',  '山墙(左)',   '#ccc0a8', WALL_T, WALL_H2 + 0.5, HOUSE_D, -HW2, WY2 - 0.25, 0, ['roofFrame']);
   makeUpperWall('upperWallRight', '山墙(右)',   '#ccc0a8', WALL_T, WALL_H2 + 0.5, HOUSE_D, HW2, WY2 - 0.25, 0, ['roofFrame']);
 

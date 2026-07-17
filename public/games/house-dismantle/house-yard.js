@@ -26,65 +26,10 @@ export function buildYard(houseGroup, parts, MATS) {
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // CHICKENS (in front yard)
-  // ═══════════════════════════════════════════════════════════════
-  const chickenGrp = partGrp('chickens', '鸡', '#d4a030', []);
-
-  function makeChicken(cx, cz, rotY = 0) {
-    const cg = new THREE.Group();
-    // Body (ellipsoid)
-    const bodyGeo = new THREE.SphereGeometry(0.18, 10, 8);
-    bodyGeo.scale(1, 0.75, 1.4);
-    const body = new THREE.Mesh(bodyGeo, MATS.chickenBody);
-    body.position.y = 0.2;
-    addTo('chickens', body); cg.add(body);
-
-    // Head
-    const headGeo = new THREE.SphereGeometry(0.08, 8, 6);
-    const head = new THREE.Mesh(headGeo, MATS.chickenBody);
-    head.position.set(0, 0.28, 0.22);
-    addTo('chickens', head); cg.add(head);
-
-    // Comb
-    const combGeo = new THREE.ConeGeometry(0.05, 0.08, 6);
-    const comb = new THREE.Mesh(combGeo, MATS.chickenComb);
-    comb.position.set(0, 0.35, 0.22);
-    addTo('chickens', comb); cg.add(comb);
-
-    // Beak
-    const beakGeo = new THREE.ConeGeometry(0.02, 0.05, 4);
-    const beak = new THREE.Mesh(beakGeo, new THREE.MeshStandardMaterial({ color: 0xcc8800, roughness: 0.5 }));
-    beak.position.set(0, 0.27, 0.30);
-    beak.rotation.x = Math.PI/2;
-    addTo('chickens', beak); cg.add(beak);
-
-    // Legs
-    for (const lx of [-0.04, 0.04]) {
-      const leg = cyl(0.015, 0.1, MATS.woodLight, 4);
-      leg.position.set(lx, 0.05, 0.05);
-      addTo('chickens', leg); cg.add(leg);
-    }
-
-    cg.position.set(cx, FLOOR_H, cz);
-    cg.rotation.y = rotY;
-    return cg;
-  }
-
-  // Place chickens in front yard
-  const chickenPositions = [
-    [-HW2+1.2, HD2+1.8, 0.3], [-HW2+2.5, HD2+2.5, -0.5],
-    [1.0, HD2+2.0, Math.PI],   [-1.5, HD2+3.0, 0.8],
-    [HW2-1.0, HD2+1.5, -1.2],  [2.5, HD2+2.8, Math.PI/2],
-  ];
-  for (const [cx, cz, ry] of chickenPositions) {
-    chickenGrp.add(makeChicken(cx, cz, ry));
-  }
-
-  // ═══════════════════════════════════════════════════════════════
-  // WATER WELL (front-left yard)
+  // WATER WELL (behind house, back-left)
   // ═══════════════════════════════════════════════════════════════
   const wellGrp = partGrp('well', '水井', '#7a7a7a', []);
-  const wellX = -HW2-1.8, wellZ = HD2+3.0;
+  const wellX = -HW2-1.8, wellZ = -HD2-3.0;
 
   // Well base (stone ring)
   const wellRingGeo = new THREE.TorusGeometry(0.4, 0.15, 8, 16);
@@ -169,26 +114,4 @@ export function buildYard(houseGroup, parts, MATS) {
   gateR.position.set(0.4, FLOOR_H + 0.3, fenceY + 0.6);
   addTo('yardFence', gateR); fenceGrp.add(gateR);
 
-  // ═══════════════════════════════════════════════════════════════
-  // HAYSTACK (right-front yard)
-  // ═══════════════════════════════════════════════════════════════
-  const hayGrp = partGrp('haystack', '草垛', '#b8a040', []);
-  const hayX = HW2 + 1.5, hayZ = HD2 + 2.0;
-
-  // Main stack (cone)
-  const hayGeo = new THREE.ConeGeometry(0.8, 1.2, 8, 4);
-  const hayStack = new THREE.Mesh(hayGeo, MATS.hayMat);
-  hayStack.position.set(hayX, FLOOR_H + 0.6, hayZ);
-  addTo('haystack', hayStack); hayGrp.add(hayStack);
-
-  // Smaller stack beside it
-  const haySmallGeo = new THREE.ConeGeometry(0.5, 0.8, 6, 3);
-  const haySmall = new THREE.Mesh(haySmallGeo, MATS.hayMat);
-  haySmall.position.set(hayX + 1.0, FLOOR_H + 0.4, hayZ - 0.2);
-  addTo('haystack', haySmall); hayGrp.add(haySmall);
-
-  // Base platform
-  const hayBase = box(2.0, 0.08, 1.5, MATS.wood);
-  hayBase.position.set(hayX + 0.3, FLOOR_H + 0.04, hayZ);
-  addTo('haystack', hayBase); hayGrp.add(hayBase);
 }
