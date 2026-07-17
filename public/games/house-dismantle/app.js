@@ -5,8 +5,12 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {
   hideLoading, showError, setupThemeToggle, setupResizeHandler, createStarfield,
 } from '/games/shared/three-utils.js';
-import { MATS, CATEGORIES, PART_DEFS, getDisassembleOffset } from './config.js';
-import { buildHouse } from './house.js';
+import { MATS, CATEGORIES, getDisassembleOffset } from './config.js';
+import { buildStructure } from './house-core.js';
+import { buildOpenings } from './house-openings.js';
+import { buildInterior } from './house-interior.js';
+import { buildYard }      from './house-yard.js';
+import { buildPlumbing }  from './house-plumbing.js';
 
 // ── State ─────────────────────────────────────────────────────────
 const houseGroup = new THREE.Group();
@@ -22,10 +26,10 @@ const animSpeed = 5.0;
 const container = document.getElementById('container');
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x0a0a14);
-scene.fog = new THREE.Fog(0x0a0a14, 12, 40);
+scene.fog = new THREE.Fog(0x0a0a14, 12, 45);
 
-const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.5, 60);
-camera.position.set(10, 7, 16);
+const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.5, 70);
+camera.position.set(12, 8, 18);
 camera.lookAt(0, 2.2, 0);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -40,59 +44,70 @@ container.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
-controls.minDistance = 5;
-controls.maxDistance = 30;
+controls.minDistance = 4;
+controls.maxDistance = 35;
 controls.maxPolarAngle = Math.PI * 0.7;
 controls.target.set(0, 2.2, 0);
 controls.update();
 
 // ── Lighting ──────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0x334466, 1.8));
-const sun = new THREE.DirectionalLight(0xffeedd, 2.5);
+scene.add(new THREE.AmbientLight(0x334466, 2.0));
+const sun = new THREE.DirectionalLight(0xffeedd, 3.0);
 sun.position.set(15, 20, 10);
 sun.castShadow = true;
 sun.shadow.mapSize.width = 2048; sun.shadow.mapSize.height = 2048;
 sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 80;
-sun.shadow.camera.left = -20; sun.shadow.camera.right = 20;
-sun.shadow.camera.top = 20; sun.shadow.camera.bottom = -20;
+sun.shadow.camera.left = -25; sun.shadow.camera.right = 25;
+sun.shadow.camera.top = 25; sun.shadow.camera.bottom = -25;
 sun.shadow.bias = -0.0001;
 scene.add(sun);
 
-const fill = new THREE.DirectionalLight(0x8899cc, 0.8);
+const fill = new THREE.DirectionalLight(0x8899cc, 0.9);
 fill.position.set(-8, 3, -6);
 scene.add(fill);
 
-const rim = new THREE.DirectionalLight(0xaabbdd, 0.5);
+const rim = new THREE.DirectionalLight(0xaabbdd, 0.6);
 rim.position.set(0, -1, 8);
 scene.add(rim);
 
 // ── Environment ───────────────────────────────────────────────────
-scene.add(createStarfield({ count: 150, radius: 40, distribution: 'cube', size: 0.03, color: 0x667799, opacity: 0.4 }));
+scene.add(createStarfield({ count: 180, radius: 45, distribution: 'cube', size: 0.03, color: 0x667799, opacity: 0.4 }));
 
-const groundGeo = new THREE.PlaneGeometry(40, 40);
+const groundGeo = new THREE.PlaneGeometry(50, 50);
 const ground = new THREE.Mesh(groundGeo, new THREE.MeshStandardMaterial({ color: 0x2a2a30, roughness: 0.9, metalness: 0 }));
-ground.rotation.x = -Math.PI / 2;
-ground.position.y = -0.05;
-ground.receiveShadow = true;
-ground.name = '_ground';
+ground.rotation.x = -Math.PI / 2; ground.position.y = -0.05; ground.receiveShadow = true;
 scene.add(ground);
 
-const grid = new THREE.PolarGridHelper(12, 32, 24, 128, 0x222233, 0x161622);
+const grid = new THREE.PolarGridHelper(14, 32, 28, 128, 0x222233, 0x161622);
 grid.position.y = -0.04;
 scene.add(grid);
 
 // ── Build house ───────────────────────────────────────────────────
 scene.add(houseGroup);
-buildHouse(houseGroup, parts, MATS);
 
-// ── Stash original group positions for tween target ───────────────
-// Each part group starts at local (0,0,0) in houseGroup.
-// We store a "home" position (always 0,0,0) and a "target" offset.
-const homePos = new Map();  // partName → THREE.Vector3
+buildStructure(houseGroup, parts, MATS);
+buildOpenings(houseGroup, parts, MATS);
+buildInterior(houseGroup, parts, MATS);
+buildYard(houseGroup, parts, MATS);
+buildPlumbing(houseGroup, parts, MATS);
+
+// Verify all PART_DEFS were created (imported from config)
+import { PART_DEFS } from './config.js';
+for (const def of PART_DEFS) {
+  if (!parts.has(def.name)) {
+    // Create a placeholder group if not built by any module
+    const g = new THREE.Group(); g.name = def.name;
+    parts.set(def.name, {
+      group: g, label: def.label, color: def.color,
+      deps: def.deps, assembled: true, meshArr: [],
+    });
+    houseGroup.add(g);
+  }
+}
+
+// ── Animation targets ─────────────────────────────────────────────
 const targetOff = new Map(); // partName → THREE.Vector3
-
 for (const [name] of parts) {
-  homePos.set(name, new THREE.Vector3(0, 0, 0));
   targetOff.set(name, new THREE.Vector3(0, 0, 0));
 }
 
@@ -107,7 +122,6 @@ let activeCat = null;
 for (const [catKey, cat] of Object.entries(CATEGORIES)) {
   const btn = document.createElement('button');
   btn.className = 'cat-btn';
-  btn.dataset.cat = catKey;
   btn.textContent = cat.label;
   btn.style.setProperty('--cat-color', cat.color);
   btn.addEventListener('click', (e) => {
@@ -129,12 +143,11 @@ for (const [catKey, cat] of Object.entries(CATEGORIES)) {
 }
 legendItems.before(catBar);
 
-// Part items (grouped by category)
+// Part items grouped by category
 for (const [catKey, cat] of Object.entries(CATEGORIES)) {
   const catLabel = document.createElement('div');
   catLabel.className = 'legend-cat-label';
   catLabel.textContent = cat.label;
-  catLabel.dataset.cat = catKey;
   legendItems.appendChild(catLabel);
 
   for (const name of cat.parts) {
@@ -144,14 +157,12 @@ for (const [catKey, cat] of Object.entries(CATEGORIES)) {
     div.className = 'legend-item';
     div.dataset.part = name;
     div.innerHTML = `<span class="legend-dot" style="background:${p.color}"></span>${p.label}`;
-    div.addEventListener('click', (e) => {
-      e.stopPropagation();
-      togglePart(name);
-    });
+    div.addEventListener('click', (e) => { e.stopPropagation(); togglePart(name); });
     legendItems.appendChild(div);
   }
 }
 
+// ── UI refresh ────────────────────────────────────────────────────
 function refreshUI() {
   updateLegendUI();
   updatePartHighlights();
@@ -164,10 +175,8 @@ function updateLegendUI() {
     if (!name) return;
     const p = parts.get(name);
     if (!p) return;
-    const sel = selected.has(name);
-    const dis = !p.assembled;
-    el.classList.toggle('selected', sel);
-    el.style.opacity = dis ? '0.5' : sel ? '1' : '';
+    el.classList.toggle('selected', selected.has(name));
+    el.style.opacity = p.assembled ? (selected.has(name) ? '1' : '') : '0.5';
   });
 }
 
@@ -176,14 +185,10 @@ function updatePartHighlights() {
     const sel = selected.has(name);
     for (const m of p.meshArr) {
       const mat = m.material;
-      if (Array.isArray(mat)) {
-        for (const mm of mat) {
-          mm.emissive = new THREE.Color(sel ? 0x336699 : 0x000000);
-          mm.emissiveIntensity = sel ? 0.5 : 0;
-        }
-      } else {
-        mat.emissive = new THREE.Color(sel ? 0x336699 : 0x000000);
-        mat.emissiveIntensity = sel ? 0.5 : 0;
+      const mats = Array.isArray(mat) ? mat : [mat];
+      for (const mm of mats) {
+        mm.emissive = new THREE.Color(sel ? 0x336699 : 0x000000);
+        mm.emissiveIntensity = sel ? 0.5 : 0;
       }
     }
   }
@@ -199,7 +204,7 @@ function updateInfoPanel() {
     const [n] = selected;
     const p = parts.get(n);
     nameEl.textContent = p ? p.label : n;
-    hintEl.innerHTML = '按 <kbd>1</kbd> 拆解 · 点击取消选择';
+    hintEl.innerHTML = '按 <kbd>1</kbd> 拆解 · 点击取消';
   } else {
     nameEl.textContent = `已选 ${selected.size} 个部件`;
     hintEl.innerHTML = '按 <kbd>1</kbd> 拆解 · 点击空白取消';
@@ -207,15 +212,12 @@ function updateInfoPanel() {
 }
 
 // ── Selection ─────────────────────────────────────────────────────
-const raycaster = new THREE.Raycaster();
-raycaster.far = 30;
+const raycaster = new THREE.Raycaster(); raycaster.far = 40;
 const mouse = new THREE.Vector2();
 
 function getAllSelectable() {
   const meshes = [];
-  for (const [, p] of parts) {
-    for (const m of p.meshArr) meshes.push(m);
-  }
+  for (const [, p] of parts) for (const m of p.meshArr) meshes.push(m);
   return meshes;
 }
 
@@ -236,39 +238,28 @@ function raycastPart(event) {
 }
 
 function togglePart(name) {
-  if (selected.has(name)) {
-    selected.delete(name);
-  } else {
-    selected.add(name);
-  }
+  if (selected.has(name)) selected.delete(name); else selected.add(name);
   refreshUI();
 }
 
-function clearSelection() {
-  selected.clear();
-  refreshUI();
-}
+function clearSelection() { selected.clear(); refreshUI(); }
 
 // ── Rubber-band selection ─────────────────────────────────────────
 const selBox = document.getElementById('sel-box');
 let selStart = new THREE.Vector2();
-let selActive = false;
-let ctrlSelecting = false;
+let selActive = false, ctrlSelecting = false;
 
 function selectInRect(x1, y1, x2, y2) {
   const mx = Math.min(x1, x2), MX = Math.max(x1, x2);
   const my = Math.min(y1, y2), MY = Math.max(y1, y2);
   const found = new Set();
   for (const [name, p] of parts) {
-    const wp = new THREE.Vector3();
-    p.group.getWorldPosition(wp);
+    const wp = new THREE.Vector3(); p.group.getWorldPosition(wp);
     const v = wp.clone().project(camera);
     const rect = renderer.domElement.getBoundingClientRect();
     const sx = (v.x * 0.5 + 0.5) * rect.width + rect.left;
     const sy = (-v.y * 0.5 + 0.5) * rect.height + rect.top;
-    if (sx >= mx && sx <= MX && sy >= my && sy <= MY) {
-      found.add(name);
-    }
+    if (sx >= mx && sx <= MX && sy >= my && sy <= MY) found.add(name);
   }
   return found;
 }
@@ -282,10 +273,7 @@ function getRequiredParts(forParts) {
     const p = parts.get(name);
     if (!p) continue;
     for (const dep of p.deps) {
-      if (!required.has(dep)) {
-        required.add(dep);
-        queue.push(dep);
-      }
+      if (!required.has(dep)) { required.add(dep); queue.push(dep); }
     }
   }
   return required;
@@ -297,11 +285,10 @@ function doDisassemble() {
     if (isDisassembled) doReassembleAll();
     return;
   }
-
   const toMove = getRequiredParts(selected);
   for (const name of toMove) {
-    const offset = getDisassembleOffset(name);
-    targetOff.get(name).set(offset[0], offset[1], offset[2]);
+    const off = getDisassembleOffset(name);
+    targetOff.get(name).set(off[0], off[1], off[2]);
     const p = parts.get(name);
     if (p) p.assembled = false;
   }
@@ -326,11 +313,9 @@ function doReassembleAll() {
 function updateDismantleBtn() {
   const btn = document.getElementById('btn-dismantle');
   if (isDisassembled) {
-    btn.textContent = '🔧 组装 (1)';
-    btn.classList.add('active');
+    btn.textContent = '🔧 组装 (1)'; btn.classList.add('active');
   } else {
-    btn.textContent = '🔧 拆解 (1)';
-    btn.classList.remove('active');
+    btn.textContent = '🔧 拆解 (1)'; btn.classList.remove('active');
   }
 }
 
@@ -339,7 +324,6 @@ const pointerDownPos = new THREE.Vector2();
 
 renderer.domElement.addEventListener('pointerdown', (event) => {
   pointerDownPos.set(event.clientX, event.clientY);
-
   if (event.ctrlKey || event.metaKey) {
     ctrlSelecting = true;
     event.stopPropagation();
@@ -359,69 +343,46 @@ window.addEventListener('pointermove', (event) => {
   if (ctrlSelecting) {
     const dx = event.clientX - pointerDownPos.x;
     const dy = event.clientY - pointerDownPos.y;
-    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
-      selActive = true;
-    }
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) selActive = true;
     if (selActive) {
-      const x1 = selStart.x, y1 = selStart.y;
-      const x2 = event.clientX, y2 = event.clientY;
+      const x1 = selStart.x, y1 = selStart.y, x2 = event.clientX, y2 = event.clientY;
       selBox.style.left = Math.min(x1, x2) + 'px';
       selBox.style.top = Math.min(y1, y2) + 'px';
       selBox.style.width = Math.abs(x2 - x1) + 'px';
       selBox.style.height = Math.abs(y2 - y1) + 'px';
     }
   }
-
-  // Hover detection
   if (!ctrlSelecting) {
     const part = raycastPart(event);
-    if (part !== hoveredPart) {
-      hoveredPart = part;
-      renderer.domElement.style.cursor = part ? 'pointer' : '';
-    }
+    if (part !== hoveredPart) { hoveredPart = part; renderer.domElement.style.cursor = part ? 'pointer' : ''; }
   }
 });
 
 window.addEventListener('pointerup', (event) => {
-  // Compute click distance (reliable click detection)
-  const clickDist = Math.hypot(
-    event.clientX - pointerDownPos.x,
-    event.clientY - pointerDownPos.y
-  );
+  const clickDist = Math.hypot(event.clientX - pointerDownPos.x, event.clientY - pointerDownPos.y);
   const wasClick = clickDist < 4;
 
   if (ctrlSelecting && selActive) {
-    // Finish rubber-band selection
     const found = selectInRect(selStart.x, selStart.y, event.clientX, event.clientY);
-    selected.clear();
-    for (const n of found) selected.add(n);
+    selected.clear(); for (const n of found) selected.add(n);
     refreshUI();
   } else if (ctrlSelecting && wasClick) {
-    // Ctrl+click toggle single part
     const part = raycastPart(event);
     if (part) togglePart(part);
   } else if (!ctrlSelecting && wasClick) {
     if (isDisassembled) {
-      // Click on disassembled house → reassemble
       clearSelection();
       doReassembleAll();
     } else {
-      // Plain click → toggle single part
       const part = raycastPart(event);
-      if (part) {
-        togglePart(part);
-      } else {
-        clearSelection();
-      }
+      if (part) togglePart(part);
+      else clearSelection();
     }
   }
 
-  // Reset
-  selActive = false;
-  ctrlSelecting = false;
+  selActive = false; ctrlSelecting = false;
   selBox.style.display = 'none';
-  selBox.style.width = '0px';
-  selBox.style.height = '0px';
+  selBox.style.width = '0px'; selBox.style.height = '0px';
   renderer.domElement.style.cursor = hoveredPart ? 'pointer' : '';
 });
 
@@ -429,37 +390,27 @@ window.addEventListener('pointerup', (event) => {
 window.addEventListener('keydown', (event) => {
   if (event.key === '1' || event.key === 'd' || event.key === 'D') {
     event.preventDefault();
-    if (isDisassembled) {
-      doReassembleAll();
-    } else {
-      doDisassemble();
-    }
+    if (isDisassembled) doReassembleAll(); else doDisassemble();
   }
-  if (event.key === 'Escape') {
-    clearSelection();
-  }
+  if (event.key === 'Escape') clearSelection();
   if (event.key === '0') {
-    camera.position.set(10, 7, 16);
+    camera.position.set(12, 8, 18);
     controls.target.set(0, 2.2, 0);
     controls.update();
   }
 });
 
 // Buttons
-document.getElementById('btn-dismantle').addEventListener('click', () => {
-  if (isDisassembled) doReassembleAll();
-  else doDisassemble();
-});
+document.getElementById('btn-dismantle').addEventListener('click',
+  () => isDisassembled ? doReassembleAll() : doDisassemble());
 document.getElementById('btn-reset').addEventListener('click', () => {
-  clearSelection();
-  doReassembleAll();
-  camera.position.set(10, 7, 16);
-  controls.target.set(0, 2.2, 0);
-  controls.update();
+  clearSelection(); doReassembleAll();
+  camera.position.set(12, 8, 18);
+  controls.target.set(0, 2.2, 0); controls.update();
 });
 
 // ── Theme & Resize ────────────────────────────────────────────────
-setupThemeToggle({ scene, darkBg: 0x0a0a14, lightBg: 0xd8dae8, fogNear: 12, fogFar: 40 });
+setupThemeToggle({ scene, darkBg: 0x0a0a14, lightBg: 0xd8dae8, fogNear: 12, fogFar: 45 });
 setupResizeHandler(renderer, camera, container);
 
 // ── Animation loop ────────────────────────────────────────────────
@@ -467,35 +418,26 @@ const clock = new THREE.Clock();
 
 function animate() {
   requestAnimationFrame(animate);
-
   const dt = Math.min(clock.getDelta(), 0.1);
   controls.update();
 
-  // Tween parts toward target offsets
   if (tweenActive) {
     let allDone = true;
     for (const [name, p] of parts) {
-      const target = targetOff.get(name);
+      const tgt = targetOff.get(name);
       const pos = p.group.position;
-      const dx = target.x - pos.x;
-      const dy = target.y - pos.y;
-      const dz = target.z - pos.z;
-      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-      if (dist < 0.003) {
-        pos.copy(target);
-      } else {
+      const dx = tgt.x - pos.x, dy = tgt.y - pos.y, dz = tgt.z - pos.z;
+      const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+      if (dist < 0.003) { pos.copy(tgt); }
+      else {
         allDone = false;
         const step = Math.min(animSpeed * dt / dist, 1);
-        pos.x += dx * step;
-        pos.y += dy * step;
-        pos.z += dz * step;
+        pos.x += dx * step; pos.y += dy * step; pos.z += dz * step;
       }
     }
     if (allDone) {
       tweenActive = false;
-      for (const [name, p] of parts) {
-        p.group.position.copy(targetOff.get(name));
-      }
+      for (const [name, p] of parts) p.group.position.copy(targetOff.get(name));
     }
   }
 
