@@ -1,0 +1,153 @@
+/* House Dismantle — Styles (shared theme is in ../shared/theme.css) */
+
+/* ---- Container ---- */
+#container {
+  position: fixed; inset: 0;
+}
+
+/* ---- Selection box ---- */
+#sel-box {
+  position: fixed;
+  border: 1px solid rgba(100, 200, 255, 0.6);
+  background: rgba(100, 180, 255, 0.1);
+  pointer-events: none;
+  z-index: 20;
+  display: none;
+}
+
+/* ---- Legend ---- */
+#legend {
+  position: fixed; left: 16px; top: 100px;
+  display: flex; flex-direction: column; gap: 4px;
+  z-index: 10; pointer-events: none;
+  max-width: 160px;
+}
+.legend-title {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  margin-bottom: 4px; letter-spacing: 1px;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--text-secondary);
+  transition: all 0.3s; padding: 2px 0;
+}
+.legend-dot {
+  width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0;
+}
+.legend-item.selected {
+  color: #4af; font-weight: 600;
+}
+.legend-item.selected .legend-dot {
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* ---- Info panel ---- */
+#info-panel {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px; padding: 12px 24px;
+  text-align: center; z-index: 10; pointer-events: none;
+  min-width: 200px; transition: all 0.4s;
+}
+#info-panel .part-name {
+  font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 4px;
+}
+#info-panel .part-hint {
+  font-size: 11px; color: var(--text-secondary);
+}
+#info-panel .part-hint kbd {
+  display: inline-block; padding: 2px 7px;
+  background: rgba(255,255,255,0.1); border-radius: 4px;
+  border: 1px solid var(--panel-border);
+  font-family: monospace; font-size: 12px;
+  margin: 0 2px;
+}
+body.light #info-panel .part-hint kbd {
+  background: rgba(0,0,0,0.06);
+}
+
+/* ---- Action bar ---- */
+#action-bar {
+  position: fixed; bottom: 24px; right: 16px;
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 20;
+}
+.action-btn {
+  padding: 10px 20px; border-radius: 24px;
+  font-size: 13px; font-weight: 600; font-family: inherit;
+  border: 1px solid var(--panel-border);
+  cursor: pointer; letter-spacing: 0.5px;
+  background: var(--panel-bg); color: var(--text);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.action-btn:hover {
+  border-color: rgba(100,180,255,0.5);
+}
+.action-btn.primary {
+  border-color: rgba(100,180,255,0.4);
+  background: rgba(100,150,220,0.15);
+  color: #6af;
+}
+.action-btn.primary:hover {
+  background: rgba(100,150,220,0.25);
+  border-color: #6af;
+}
+.action-btn.primary.active {
+  background: rgba(255,130,80,0.2);
+  border-color: #f84;
+  color: #f84;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,130,80,0.3); }
+  50% { box-shadow: 0 0 12px 4px rgba(255,130,80,0.15); }
+}
+
+/* ---- Hint ---- */
+#hint {
+  position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; color: rgba(255,255,255,0.2);
+  z-index: 10; pointer-events: none; letter-spacing: 0.5px;
+  transition: opacity 0.8s;
+}
+body.light #hint { color: rgba(0,0,0,0.2); }
+
+/* ---- Loading ---- */
+#loading {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: var(--bg, #0a0a14);
+  color: var(--text-secondary); font-size: 14px; gap: 16px;
+  transition: opacity 0.4s;
+}
+#loading.hidden { opacity: 0; pointer-events: none; }
+.loader {
+  width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: rgba(100,180,255,0.6);
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- Error ---- */
+#error-msg {
+  position: fixed; inset: 0; z-index: 200;
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(10,10,20,0.95); color: #f66;
+  font-size: 16px; gap: 8px; text-align: center; padding: 20px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  #legend { left: 8px; top: 80px; max-width: 120px; }
+  .legend-item { font-size: 10px; gap: 4px; }
+  .legend-dot { width: 6px; height: 6px; }
+  #info-panel { bottom: 12px; padding: 10px 16px; min-width: 160px; }
+  #info-panel .part-name { font-size: 14px; }
+  #action-bar { bottom: 12px; right: 8px; gap: 6px; }
+  .action-btn { padding: 8px 14px; font-size: 11px; }
+  #hint { display: none; }
+}
