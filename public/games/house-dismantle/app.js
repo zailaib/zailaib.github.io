@@ -36,6 +36,9 @@ const MATS = {
   door:       new THREE.MeshStandardMaterial({ color: 0x4a2818, roughness: 0.5, metalness: 0.0 }),
   window:     new THREE.MeshStandardMaterial({ color: 0x5a3828, roughness: 0.4, metalness: 0.0, emissive: 0x331100, emissiveIntensity: 0.3 }),
   ridge:      new THREE.MeshStandardMaterial({ color: 0x3a3a48, roughness: 0.6, metalness: 0.05 }),
+  base:       new THREE.MeshStandardMaterial({ color: 0x6e6e6e, roughness: 0.75, metalness: 0.05 }),
+  pipe:       new THREE.MeshStandardMaterial({ color: 0x8b6b4a, roughness: 0.4, metalness: 0.6 }),
+  pipeJoint:  new THREE.MeshStandardMaterial({ color: 0x7a5c3e, roughness: 0.35, metalness: 0.7 }),
 };
 
 // ── Global state ──────────────────────────────────────────────────
@@ -155,8 +158,18 @@ function box(w, h, d, material, partName) {
   return mesh;
 }
 
+// ── Categories (for filter UI) ──────────────────────────────────
+const CATEGORIES = {
+  roof:     { label: '屋顶', enLabel: 'Roof',     parts: ['roofTiles', 'roofFrame'], color: '#4a4a5a' },
+  walls:    { label: '墙体', enLabel: 'Walls',    parts: ['wallFront', 'wallBack', 'wallLeft', 'wallRight', 'upperWallFront', 'upperWallBack', 'upperWallLeft', 'upperWallRight', 'interiorWall1', 'interiorWall2'], color: '#f2ece0' },
+  doorsWin: { label: '门窗', enLabel: 'Doors&Win',parts: ['doorFront', 'windows'], color: '#4a2818' },
+  columns:  { label: '柱梁', enLabel: 'Columns',  parts: ['columns'], color: '#6b3a20' },
+  base:     { label: '地基', enLabel: 'Base',     parts: ['base', 'floor'], color: '#6e6e6e' },
+  plumbing: { label: '管道', enLabel: 'Plumbing', parts: ['pipelines'], color: '#8b6b4a' },
+};
+
 // ── Floor / Foundation ───────────────────────────────────────────
-const floorGrp = createPart('floor', '地基', '#888888', [
+const floorGrp = createPart('floor', '地板平台', '#888888', [
   'wallFront', 'wallBack', 'wallLeft', 'wallRight',
   'interiorWall1', 'interiorWall2',
 ]);
@@ -167,6 +180,35 @@ floorGrp.add(floorMesh);
 const step = box(BAY_W * 0.8, 0.12, 1.2, MATS.floor, 'floor');
 step.position.set(0, FLOOR_H + 0.06, HD2 + 0.5);
 floorGrp.add(step);
+
+// ── Base (stone foundation platform) ─────────────────────────────
+const BASE_H = 0.45;
+const baseGrp = createPart('base', '石基平台', '#6e6e6e', [
+  'floor', 'columns',
+]);
+// Main foundation slab
+const baseMesh = box(HOUSE_W + 1.0, BASE_H, HOUSE_D + 1.0, MATS.base, 'base');
+baseMesh.position.y = -BASE_H / 2;
+baseGrp.add(baseMesh);
+// Stone block pattern — horizontal grooves
+for (let i = 0; i < 5; i++) {
+  const z = -HOUSE_D / 2 - 0.3 + i * (HOUSE_D + 0.6) / 4;
+  const groove = box(HOUSE_W + 1.05, 0.03, 0.04,
+    new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.9, metalness: 0 }), 'base');
+  groove.position.set(0, -0.02, z);
+  baseGrp.add(groove);
+}
+// Corner stone blocks (slightly raised)
+const cornerStones = [
+  [-HW2 - 0.4, -HD2 - 0.4], [HW2 + 0.4, -HD2 - 0.4],
+  [-HW2 - 0.4,  HD2 + 0.4], [HW2 + 0.4,  HD2 + 0.4],
+];
+cornerStones.forEach(([cx, cz]) => {
+  const cs = box(0.7, BASE_H + 0.06, 0.7,
+    new THREE.MeshStandardMaterial({ color: 0x5a5a5a, roughness: 0.7, metalness: 0.05 }), 'base');
+  cs.position.set(cx, -BASE_H / 2 + 0.03, cz);
+  baseGrp.add(cs);
+});
 
 // ── Columns ───────────────────────────────────────────────────────
 const COLUMN_R = 0.15;
@@ -386,6 +428,69 @@ const winZ = HD2 + WALL_T / 2 + 0.05;
   winGrp.add(makeWindow(x, winY, -HD2 - WALL_T / 2 - 0.05, Math.PI));
 });
 
+// ── Pipelines (drainage / water pipes) ───────────────────────────
+const pipeGrp = createPart('pipelines', '管道系统', '#8b6b4a', ['roofTiles']);
+
+function cylinder(radius, length, material, partName) {
+  const geo = new THREE.CylinderGeometry(radius, radius, length, 12);
+  const mesh = new THREE.Mesh(geo, material);
+  if (partName) addMesh(partName, mesh);
+  return mesh;
+}
+
+const PIPE_R = 0.06; // pipe radius
+
+// Eave drain pipes (horizontal, under front & back eaves)
+[-1, 1].forEach(side => {
+  const z = side * (HD2 + ROOF_OH * 0.6);
+  const drainPipe = cylinder(PIPE_R, HOUSE_W + 0.8, MATS.pipe, 'pipelines');
+  drainPipe.rotation.x = Math.PI / 2;
+  drainPipe.position.set(0, EAVE_H - 0.35, z);
+  pipeGrp.add(drainPipe);
+
+  // Pipe brackets (small rings every ~2m)
+  for (let bx = -HOUSE_W / 2 + 0.5; bx <= HOUSE_W / 2 - 0.5; bx += 2.5) {
+    const bracket = new THREE.Mesh(
+      new THREE.TorusGeometry(PIPE_R + 0.02, 0.015, 6, 12),
+      MATS.pipeJoint
+    );
+    bracket.position.set(bx, EAVE_H - 0.35, z);
+    addMesh('pipelines', bracket);
+    pipeGrp.add(bracket);
+  }
+});
+
+// Vertical downspouts (back corners, from eave to ground)
+[-1, 1].forEach(side => {
+  const x = side * (HW2 - 0.3);
+  const z = -(HD2 + ROOF_OH * 0.6); // back side
+
+  const downspout = cylinder(PIPE_R * 0.9, EAVE_H - 0.35, MATS.pipe, 'pipelines');
+  downspout.position.set(x, (EAVE_H - 0.35) / 2, z);
+  pipeGrp.add(downspout);
+
+  // Elbow joint at top (connecting horizontal to vertical)
+  const elbowGeo = new THREE.TorusGeometry(PIPE_R * 1.2, PIPE_R * 0.6, 6, 8, Math.PI / 2);
+  const elbow = new THREE.Mesh(elbowGeo, MATS.pipeJoint);
+  elbow.position.set(x, EAVE_H - 0.35, z);
+  elbow.rotation.set(Math.PI / 2, 0, side > 0 ? Math.PI : 0);
+  addMesh('pipelines', elbow);
+  pipeGrp.add(elbow);
+
+  // Drain outlet at ground level
+  const outletGeo = new THREE.CylinderGeometry(PIPE_R * 0.7, PIPE_R * 1.0, 0.25, 8);
+  const outlet = new THREE.Mesh(outletGeo, MATS.pipeJoint);
+  outlet.position.set(x, -0.1, z);
+  addMesh('pipelines', outlet);
+  pipeGrp.add(outlet);
+});
+
+// Ground-level drain trench (along the back)
+const trench = box(HOUSE_W - 1.0, 0.06, 0.2,
+  new THREE.MeshStandardMaterial({ color: 0x555555, roughness: 0.8, metalness: 0.1 }), 'pipelines');
+trench.position.set(0, -0.2, -HD2 - 0.7);
+pipeGrp.add(trench);
+
 // ── Store original positions ──────────────────────────────────────
 parts.forEach((p) => {
   p.group.getWorldPosition(p.orig);
@@ -407,16 +512,64 @@ parts.forEach((p, name) => {
 
 // ── Legend UI ─────────────────────────────────────────────────────
 const legendItems = document.getElementById('legend-items');
-parts.forEach((p, name) => {
-  const div = document.createElement('div');
-  div.className = 'legend-item';
-  div.dataset.part = name;
-  div.innerHTML = `<span class="legend-dot" style="background:${p.color}"></span>${p.label}`;
-  div.addEventListener('click', (e) => {
+
+// Build category filter buttons
+const catBar = document.createElement('div');
+catBar.id = 'cat-bar';
+let activeCat = null;
+
+Object.entries(CATEGORIES).forEach(([catKey, cat]) => {
+  const btn = document.createElement('button');
+  btn.className = 'cat-btn';
+  btn.dataset.cat = catKey;
+  btn.textContent = cat.label;
+  btn.style.cssText = `--cat-color:${cat.color}`;
+  btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    togglePart(name);
+    if (activeCat === catKey) {
+      // Deselect category
+      activeCat = null;
+      btn.classList.remove('active');
+      clearSelection();
+    } else {
+      // Select category
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = catKey;
+      // Select all parts in this category
+      selected.clear();
+      cat.parts.forEach(n => { if (parts.has(n)) selected.add(n); });
+      updateLegendUI();
+      updatePartHighlights();
+      updateInfoPanel();
+    }
   });
-  legendItems.appendChild(div);
+  catBar.appendChild(btn);
+});
+legendItems.before(catBar);
+
+// Build part items (grouped by category)
+Object.entries(CATEGORIES).forEach(([catKey, cat]) => {
+  const catLabel = document.createElement('div');
+  catLabel.className = 'legend-cat-label';
+  catLabel.textContent = cat.label;
+  catLabel.dataset.cat = catKey;
+  legendItems.appendChild(catLabel);
+
+  cat.parts.forEach(name => {
+    const p = parts.get(name);
+    if (!p) return;
+    const div = document.createElement('div');
+    div.className = 'legend-item';
+    div.dataset.part = name;
+    div.dataset.cat = catKey;
+    div.innerHTML = `<span class="legend-dot" style="background:${p.color}"></span>${p.label}`;
+    div.addEventListener('click', (e) => {
+      e.stopPropagation();
+      togglePart(name);
+    });
+    legendItems.appendChild(div);
+  });
 });
 
 function updateLegendUI() {
@@ -424,6 +577,7 @@ function updateLegendUI() {
     const name = el.dataset.part;
     if (!name) return;
     const p = parts.get(name);
+    if (!p) return;
     const sel = selected.has(name);
     const dis = !p.assembled;
     el.classList.toggle('selected', sel);
@@ -613,7 +767,9 @@ function getDisassembleOffset(name) {
     case 'doorFront':      v.set(0, 0.5, dist * 1.2); break;
     case 'windows':        v.set(0, 0.3, dist * 1.1); break;
     case 'columns':      v.set(0, dist * 0.5, dist * 0.4); break;
-    case 'floor': v.set(0, -dist * 0.5, 0); break;
+    case 'floor':        v.set(0, -dist * 0.3, 0); break;
+    case 'base':         v.set(0, -dist * 0.7, 0); break;
+    case 'pipelines':    v.set(0, -dist * 0.3, -dist * 0.5); break;
     default: v.set(0, dist * 0.5, 0);
   }
   return v;

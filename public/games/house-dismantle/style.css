@@ -17,19 +17,52 @@
 
 /* ---- Legend ---- */
 #legend {
-  position: fixed; left: 16px; top: 100px;
-  display: flex; flex-direction: column; gap: 4px;
+  position: fixed; left: 16px; top: 80px;
+  display: flex; flex-direction: column; gap: 2px;
   z-index: 10; pointer-events: none;
-  max-width: 160px;
+  max-width: 165px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
 }
+#legend::-webkit-scrollbar { width: 3px; }
+#legend::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
 .legend-title {
   font-size: 12px; font-weight: 700; color: var(--text);
   margin-bottom: 4px; letter-spacing: 1px;
+}
+/* Category filter buttons */
+#cat-bar {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-bottom: 6px; pointer-events: auto;
+}
+.cat-btn {
+  padding: 3px 8px; border-radius: 10px; border: 1px solid var(--panel-border);
+  background: var(--panel-bg); color: var(--text-secondary);
+  font-size: 10px; font-weight: 600; cursor: pointer;
+  font-family: inherit; letter-spacing: 0.5px;
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+.cat-btn:hover {
+  border-color: var(--cat-color, #888);
+  color: var(--text);
+}
+.cat-btn.active {
+  background: color-mix(in srgb, var(--cat-color, #4af) 20%, transparent);
+  border-color: var(--cat-color, #4af);
+  color: var(--cat-color, #4af);
+}
+/* Category group labels */
+.legend-cat-label {
+  font-size: 9px; font-weight: 700; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 1.5px;
+  margin: 6px 0 2px; opacity: 0.5;
 }
 .legend-item {
   display: flex; align-items: center; gap: 8px;
   font-size: 11px; color: var(--text-secondary);
   transition: all 0.3s; padding: 2px 0;
+  pointer-events: auto; cursor: pointer;
 }
 .legend-dot {
   width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0;
@@ -142,7 +175,9 @@ body.light #hint { color: rgba(0,0,0,0.2); }
 
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
-  #legend { left: 8px; top: 80px; max-width: 120px; }
+  #legend { left: 4px; top: 70px; max-width: 130px; max-height: calc(100vh - 180px); }
+  .cat-btn { padding: 2px 6px; font-size: 9px; }
+  .legend-cat-label { font-size: 8px; margin: 4px 0 1px; }
   .legend-item { font-size: 10px; gap: 4px; }
   .legend-dot { width: 6px; height: 6px; }
   #info-panel { bottom: 12px; padding: 10px 16px; min-width: 160px; }
