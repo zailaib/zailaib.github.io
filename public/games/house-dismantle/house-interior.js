@@ -82,7 +82,7 @@ export function buildInterior(houseGroup, parts, MATS) {
 
   // Table top
   const tableTop = box(2.0, 0.06, 1.5, MATS.woodLight);
-  tableTop.position.set(0, 0.85, 0);
+  tableTop.position.set(0, 0.85, 2.5); // front room, center bay
   addTo('tableChairs', tableTop); tableGrp.add(tableTop);
 
   // Table legs
@@ -107,10 +107,10 @@ export function buildInterior(houseGroup, parts, MATS) {
     bg.rotation.y = rotY;
     return bg;
   }
-  tableGrp.add(makeBench(0, -1.1, 0));           // front (south)
-  tableGrp.add(makeBench(0, 1.1, Math.PI));       // back (north)
-  tableGrp.add(makeBench(-1.1, 0, Math.PI/2));    // left (west)
-  tableGrp.add(makeBench(1.1, 0, -Math.PI/2));    // right (east)
+  tableGrp.add(makeBench(0, 1.4, 0));             // front of table
+  tableGrp.add(makeBench(0, 3.6, Math.PI));       // back of table
+  tableGrp.add(makeBench(-1.1, 2.5, Math.PI/2));  // left
+  tableGrp.add(makeBench(1.1, 2.5, -Math.PI/2));  // right
 
   // ═══════════════════════════════════════════════════════════════
   // KITCHEN STOVE (left bay)

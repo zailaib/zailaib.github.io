@@ -149,6 +149,18 @@ export function buildOpenings(houseGroup, parts, MATS) {
   bdPanel.position.set(backDoorX, 1.1 + FLOOR_H, backDoorZ);
   addTo('doors', bdPanel); doorGrp.add(bdPanel);
 
+  // Wind screen (small wooden panel just inside back door)
+  const wsGrp = partGrp('windScreen', '后门风挡', '#8b6914', ['doors']);
+  const wsPanel = box(1.2, 1.8, 0.04, MATS.woodLight);
+  wsPanel.position.set(backDoorX, 1.0 + FLOOR_H, backDoorZ + 0.6);
+  addTo('windScreen', wsPanel); wsGrp.add(wsPanel);
+  // Screen frame posts
+  for (const sx of [-0.5, 0.5]) {
+    const post = box(0.04, 0.04, 1.8, MATS.woodDark);
+    post.position.set(backDoorX + sx, 1.0 + FLOOR_H, backDoorZ + 0.6);
+    addTo('windScreen', post); wsGrp.add(post);
+  }
+
   // ═══════════════════════════════════════════════════════════════
   // STAIRS (L-shaped wooden staircase to second floor)
   // Fits entirely inside the center bay, hugging the back wall

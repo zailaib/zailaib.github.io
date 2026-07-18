@@ -90,35 +90,59 @@ export function buildStructure(houseGroup, parts, MATS) {
   makeWall('wallLeft',  '左墙(一层)', '#f2ece0', WALL_T, WALL_H1, HOUSE_D, -HW2, WY1, 0, ['upperWallLeft']);
   makeWall('wallRight', '右墙(一层)', '#f2ece0', WALL_T, WALL_H1, HOUSE_D, HW2, WY1, 0, ['upperWallRight']);
 
-  // Interior walls
+  // Interior walls (3 bays)
   for (const [name, x, deps] of [
-    ['interiorWall1', -BAY_W/2, ['upperWallFront','upperWallBack']],
-    ['interiorWall2',  BAY_W/2, ['upperWallFront','upperWallBack']],
+    ['interiorWall1', -BAY_W/2, ['upperWallFront','upperWallBack','crossWall']],
+    ['interiorWall2',  BAY_W/2, ['upperWallFront','upperWallBack','crossWall']],
   ]) {
     const grp = partGrp(name, name === 'interiorWall1' ? '隔墙(左)' : '隔墙(右)', '#ede6d8', deps);
     const wallD = HOUSE_D - WALL_T * 2;
-    // Full wall as main surface
     const m = box(WALL_T * 0.8, WALL_H1, wallD, MATS.interior);
     m.position.set(x, WY1, 0);
     addTo(name, m); grp.add(m);
   }
 
+  // Cross wall (front/back divider, at z = 1.0 — front rooms deeper)
+  const crossZ = 1.0;
+  const crossWallDeps = ['upperWallFront','upperWallBack','interiorWall1','interiorWall2'];
+  const cwGrp = partGrp('crossWall', '前后隔墙', '#e8e0d0', crossWallDeps);
+  const cwSpan = HOUSE_W - WALL_T * 2;
+  // Split into 3 segments (one per bay), each with a doorway
+  for (const [cx, segW] of [[-BAY_W, BAY_W - WALL_T*0.4], [0, BAY_W - WALL_T*0.4], [BAY_W, BAY_W - WALL_T*0.4]]) {
+    const seg = box(segW, WALL_H1, WALL_T * 0.7, MATS.interior);
+    seg.position.set(cx, WY1, crossZ);
+    addTo('crossWall', seg); cwGrp.add(seg);
+  }
+
   // ═══════════════════════════════════════════════════════════════
-  // SECOND FLOOR (wooden platform at y = BAND_Y)
+  // SECOND FLOOR (wooden platform at y = BAND_Y, open space, no rooms)
   // ═══════════════════════════════════════════════════════════════
   const floor2Grp = partGrp('floor2', '二层地板', '#a08060',
     ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight']);
-  // Wooden floor surface (interior area, between walls)
-  const floor2InnerW = HOUSE_W - WALL_T * 2;
-  const floor2InnerD = HOUSE_D - WALL_T * 2;
-  const floor2Slab = box(floor2InnerW, 0.06, floor2InnerD, MATS.woodLight);
+  const f2W = HOUSE_W - WALL_T * 2;
+  const f2D = HOUSE_D - WALL_T * 2;
+  // Full floor slab (open loft, no room partitions)
+  const floor2Slab = box(f2W, 0.06, f2D, MATS.woodLight);
   floor2Slab.position.set(0, BAND_Y + 0.03, 0);
   addTo('floor2', floor2Slab); floor2Grp.add(floor2Slab);
-  // Floor joists (cross beams supporting the floor)
-  for (let jx = -floor2InnerW/2 + 0.5; jx <= floor2InnerW/2 - 0.5; jx += 1.2) {
-    const joist = box(0.08, 0.1, floor2InnerD, MATS.woodDark);
+  // Joists
+  for (let jx = -f2W/2 + 0.5; jx <= f2W/2 - 0.5; jx += 1.2) {
+    const joist = box(0.08, 0.1, f2D, MATS.woodDark);
     joist.position.set(jx, BAND_Y - 0.02, 0);
     addTo('floor2', joist); floor2Grp.add(joist);
+  }
+  // Stairwell railing (around where L-shaped stairs come up)
+  // The stairs come up at ~ (0.5, BAND_Y, -0.5), facing +Z
+  const railX = 0.2, railW = 1.0;
+  const railZ = -0.5, railD = 1.2;
+  for (const [rx, rz, rw, rd] of [
+    [railX, railZ - railD/2, 0.04, railD],  // left side
+    [railX + railW, railZ - railD/2, 0.04, railD],  // right side
+    [railX + railW/2, railZ + railD/2, railW + 0.08, 0.04],  // back
+  ]) {
+    const r = box(rw, 0.7, rd, MATS.woodDark);
+    r.position.set(rx, BAND_Y + 0.38, rz);
+    addTo('floor2', r); floor2Grp.add(r);
   }
 
   // ═══════════════════════════════════════════════════════════════

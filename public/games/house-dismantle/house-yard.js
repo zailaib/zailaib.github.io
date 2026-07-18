@@ -26,6 +26,50 @@ export function buildYard(houseGroup, parts, MATS) {
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // CHICKENS (left side of yard)
+  // ═══════════════════════════════════════════════════════════════
+  const chickenGrp = partGrp('chickens', '鸡', '#d4a030', []);
+
+  function makeChicken(cx, cz, rotY = 0) {
+    const cg = new THREE.Group();
+    const bodyGeo = new THREE.SphereGeometry(0.16, 8, 6);
+    bodyGeo.scale(1, 0.7, 1.3);
+    const body = new THREE.Mesh(bodyGeo, MATS.chickenBody);
+    body.position.y = 0.18;
+    addTo('chickens', body); cg.add(body);
+    const headGeo = new THREE.SphereGeometry(0.07, 6, 4);
+    const head = new THREE.Mesh(headGeo, MATS.chickenBody);
+    head.position.set(0, 0.25, 0.2);
+    addTo('chickens', head); cg.add(head);
+    const combGeo = new THREE.ConeGeometry(0.04, 0.07, 4);
+    const comb = new THREE.Mesh(combGeo, MATS.chickenComb);
+    comb.position.set(0, 0.32, 0.2);
+    addTo('chickens', comb); cg.add(comb);
+    const beakGeo = new THREE.ConeGeometry(0.015, 0.04, 4);
+    const beak = new THREE.Mesh(beakGeo, MATS.chickenBeak);
+    beak.position.set(0, 0.24, 0.27);
+    beak.rotation.x = Math.PI/2;
+    addTo('chickens', beak); cg.add(beak);
+    for (const lx of [-0.03, 0.03]) {
+      const leg = cyl(0.012, 0.08, MATS.woodLight, 4);
+      leg.position.set(lx, 0.04, 0.04);
+      addTo('chickens', leg); cg.add(leg);
+    }
+    cg.position.set(cx, FLOOR_H, cz);
+    cg.rotation.y = rotY;
+    return cg;
+  }
+
+  // Chickens in left yard
+  for (const [cx, cz, ry] of [
+    [-HW2-1.5, HD2-0.5, 0.3], [-HW2-2.0, HD2+1.0, -0.5],
+    [-HW2-0.8, HD2+2.0, Math.PI*0.7], [-HW2-2.5, HD2-1.5, 1.2],
+    [-HW2-1.0, HD2-2.0, -0.8],
+  ]) {
+    chickenGrp.add(makeChicken(cx, cz, ry));
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // WATER WELL (behind house, back-left)
   // ═══════════════════════════════════════════════════════════════
   const wellGrp = partGrp('well', '水井', '#7a7a7a', []);

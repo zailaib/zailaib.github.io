@@ -4,7 +4,7 @@ import * as THREE from 'three';
 
 // ── Dimensions (meters, 1 unit = 1m) ──────────────────────────────
 export const HOUSE_W   = 12;      // width (3 bays × 4m)
-export const HOUSE_D   = 7;       // depth
+export const HOUSE_D   = 9;       // depth
 export const WALL_H1   = 2.8;     // first floor wall height
 export const WALL_H2   = 1.5;     // upper half-story wall height (2.8→4.3m)
 export const ROOF_H    = 5.5;     // roof ridge height from ground
@@ -57,6 +57,7 @@ export const MATS = {
   // Yard
   chickenBody: new THREE.MeshStandardMaterial({ color: 0xd4a030, roughness: 0.7, metalness: 0.0 }),
   chickenComb: new THREE.MeshStandardMaterial({ color: 0xcc2200, roughness: 0.5, metalness: 0.0 }),
+  chickenBeak: new THREE.MeshStandardMaterial({ color: 0xcc8800, roughness: 0.5, metalness: 0 }),
   wellStone:   new THREE.MeshStandardMaterial({ color: 0x7a7a7a, roughness: 0.7, metalness: 0.05 }),
   wellRoof:    new THREE.MeshStandardMaterial({ color: 0x5a4a3a, roughness: 0.6, metalness: 0.0 }),
   hayMat:      new THREE.MeshStandardMaterial({ color: 0xb8a040, roughness: 0.9, metalness: 0.0 }),
@@ -83,8 +84,9 @@ export const PART_DEFS = [
   { name: 'wallBack',    label: '后墙(一层)', color: '#f2ece0', deps: ['upperWallBack'], cat: 'structure' },
   { name: 'wallLeft',    label: '左墙(一层)', color: '#f2ece0', deps: ['upperWallLeft'], cat: 'structure' },
   { name: 'wallRight',   label: '右墙(一层)', color: '#f2ece0', deps: ['upperWallRight'], cat: 'structure' },
-  { name: 'interiorWall1', label: '隔墙(左)', color: '#ede6d8', deps: ['upperWallFront','upperWallBack'], cat: 'structure' },
-  { name: 'interiorWall2', label: '隔墙(右)', color: '#ede6d8', deps: ['upperWallFront','upperWallBack'], cat: 'structure' },
+  { name: 'interiorWall1', label: '隔墙(左)', color: '#ede6d8', deps: ['upperWallFront','upperWallBack','crossWall'], cat: 'structure' },
+  { name: 'interiorWall2', label: '隔墙(右)', color: '#ede6d8', deps: ['upperWallFront','upperWallBack','crossWall'], cat: 'structure' },
+  { name: 'crossWall',    label: '前后隔墙', color: '#e8e0d0', deps: ['upperWallFront','upperWallBack','interiorWall1','interiorWall2'], cat: 'structure' },
   { name: 'upperWallFront', label: '前墙(二层)', color: '#d4c8b0', deps: ['roofFrame'], cat: 'structure' },
   { name: 'upperWallBack',  label: '后墙(二层)', color: '#d4c8b0', deps: ['roofFrame'], cat: 'structure' },
   { name: 'upperWallLeft',  label: '山墙(左)',   color: '#ccc0a8', deps: ['roofFrame'], cat: 'structure' },
@@ -106,7 +108,11 @@ export const PART_DEFS = [
   { name: 'shrine',      label: '神龛',      color: '#4a2010', deps: ['wallBack'], cat: 'interior' },
 
   // ── Yard ──
+  { name: 'chickens',    label: '鸡',        color: '#d4a030', deps: [], cat: 'yard' },
   { name: 'well',        label: '水井',      color: '#7a7a7a', deps: [], cat: 'yard' },
+
+  // ── Details ──
+  { name: 'windScreen',  label: '后门风挡',  color: '#8b6914', deps: ['doors'], cat: 'openings' },
 
   // ── Plumbing ──
   { name: 'pipelines',   label: '排水系统',  color: '#8b6b4a', deps: ['base'], cat: 'plumbing' },
@@ -115,11 +121,11 @@ export const PART_DEFS = [
 // ── Categories (for filter UI) ────────────────────────────────────
 export const CATEGORIES = {
   roof:      { label: '屋顶',  parts: ['roofTiles','roofFrame'],                              color: '#4a4a5a' },
-  structure: { label: '结构',  parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWall1','interiorWall2','upperWallFront','upperWallBack','upperWallLeft','upperWallRight','columns'], color: '#d4c8b0' },
+  structure: { label: '结构',  parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWall1','interiorWall2','crossWall','upperWallFront','upperWallBack','upperWallLeft','upperWallRight','columns'], color: '#d4c8b0' },
   base:      { label: '地基',  parts: ['base','floor','floor2'],                                color: '#6e6e6e' },
-  openings:  { label: '门窗梯',parts: ['doors','windows','stairs'],                            color: '#8b6914' },
-  interior:  { label: '家具',  parts: ['beds','tableChairs','stove','shrine'],               color: '#7a4a20' },
-  yard:      { label: '院子',  parts: ['well'],                                                 color: '#80a050' },
+  openings:  { label: '门窗梯',parts: ['doors','windows','stairs','windScreen'],                color: '#8b6914' },
+  interior:  { label: '家具',  parts: ['beds','tableChairs','stove','shrine'],                  color: '#7a4a20' },
+  yard:      { label: '院子',  parts: ['chickens','well'],                                      color: '#80a050' },
   plumbing:  { label: '管道',  parts: ['pipelines'],                                           color: '#8b6b4a' },
 };
 
@@ -142,6 +148,7 @@ export function getDisassembleOffset(name) {
     wallRight:        [d, 0, 0],
     interiorWall1:    [0, 2, -0.5],
     interiorWall2:    [0, 2, 0.5],
+    crossWall:        [0, 0.5, 0],
     // Foundation
     floor:            [0, -d * 0.3, 0],
     floor2:           [0, d * 0.5, 0],
@@ -152,12 +159,14 @@ export function getDisassembleOffset(name) {
     doors:            [0, 0.5, d * 1.2],
     windows:          [0, 0.3, d * 1.1],
     stairs:           [0, 1.5, -2.5],
+    windScreen:       [0, 0, -1.5],
     // Interior
     beds:             [d * 0.7, 0, 0],
     tableChairs:      [0, 1.5, 1.5],
     stove:            [-d * 0.7, 0.3, 0],
     shrine:           [0, 0.5, -2],
     // Yard
+    chickens:         [0, -0.3, 3],
     well:             [0, -0.5, -2.5],
     // Plumbing
     pipelines:        [0, -1.0, 0],

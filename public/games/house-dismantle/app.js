@@ -402,14 +402,14 @@ window.addEventListener('keydown', (event) => {
 
 // ── Camera Tour ──────────────────────────────────────────────────
 const tourKeyframes = [
-  { pos: [4,1.5,5],   tgt: [4,1.5,3.5], dur: 1.5 }, // 0: outside front door
-  { pos: [4,1.5,2.5], tgt: [0,1.5,0],    dur: 2.5 }, // 1: enter door → center bay
-  { pos: [0,1.8,0],    tgt: [0,1.5,-3],   dur: 2.0 }, // 2: center bay → shrine
-  { pos: [-4,1.5,-1],  tgt: [-4,1.2,-3],  dur: 2.5 }, // 3: left bay → stove/kitchen
-  { pos: [4,1.5,-1],   tgt: [4,1.2,-3],   dur: 2.5 }, // 4: right bay → beds
-  { pos: [0,3.2,-0.5], tgt: [0,3.0,0],    dur: 2.0 }, // 5: go upstairs via stairs
-  { pos: [0,3.5,0],    tgt: [0,3.5,1.5],  dur: 2.0 }, // 6: look around upstairs
-  { pos: [-10,7,16],   tgt: [0,2.2,0],    dur: 2.0 }, // 7: return to overview
+  { pos: [4,1.5,6],   tgt: [4,1.5,4.3], dur: 1.5 }, // 0: outside front door
+  { pos: [4,1.5,3.5], tgt: [0,1.5,2],   dur: 2.5 }, // 1: enter → front-center room
+  { pos: [0,1.8,2],   tgt: [0,1.5,-3.5],dur: 2.5 }, // 2: front room → shrine (back)
+  { pos: [-4,1.5,-2], tgt: [-4,1.2,-3.5],dur: 2.5 }, // 3: left bay → stove (back room)
+  { pos: [4,1.5,-2],  tgt: [4,1.2,-3.5], dur: 2.5 }, // 4: right bay → beds (back room)
+  { pos: [0,3.2,-1],  tgt: [0,3.0,0.5],  dur: 2.0 }, // 5: upstairs via L-stairs
+  { pos: [0,3.5,1],   tgt: [0,3.5,2],    dur: 2.0 }, // 6: look around upper floor
+  { pos: [10,7,16],   tgt: [0,2.2,0],    dur: 2.0 }, // 7: return
 ];
 let tourActive = false;
 let tourIndex = 0;
