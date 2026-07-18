@@ -107,10 +107,9 @@ export const PART_DEFS = [
 
   // ── Yard ──
   { name: 'well',        label: '水井',      color: '#7a7a7a', deps: [], cat: 'yard' },
-  { name: 'yardFence',   label: '院墙',      color: '#9b8b70', deps: [], cat: 'yard' },
 
   // ── Plumbing ──
-  { name: 'pipelines',   label: '管道系统',  color: '#8b6b4a', deps: ['roofTiles'], cat: 'yard' },
+  { name: 'pipelines',   label: '排水系统',  color: '#8b6b4a', deps: ['base'], cat: 'plumbing' },
 ];
 
 // ── Categories (for filter UI) ────────────────────────────────────
@@ -120,7 +119,8 @@ export const CATEGORIES = {
   base:      { label: '地基',  parts: ['base','floor'],                                        color: '#6e6e6e' },
   openings:  { label: '门窗梯',parts: ['doors','windows','stairs'],                            color: '#8b6914' },
   interior:  { label: '家具',  parts: ['beds','tableChairs','stove','shrine'],               color: '#7a4a20' },
-  yard:      { label: '院子',  parts: ['well','yardFence','pipelines'],                          color: '#80a050' },
+  yard:      { label: '院子',  parts: ['well'],                                                 color: '#80a050' },
+  plumbing:  { label: '管道',  parts: ['pipelines'],                                           color: '#8b6b4a' },
 };
 
 // ── Disassemble offsets ───────────────────────────────────────────
@@ -158,9 +158,8 @@ export function getDisassembleOffset(name) {
     shrine:           [0, 0.5, -2],
     // Yard
     well:             [0, -0.5, -2.5],
-    yardFence:        [0, -0.8, 0],
     // Plumbing
-    pipelines:        [0, -d * 0.3, -d * 0.5],
+    pipelines:        [0, -1.0, 0],
   };
   return map[name] || [0, d * 0.5, 0];
 }
