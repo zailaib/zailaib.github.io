@@ -26,7 +26,7 @@ export const BAND_Y = WALL_H1 + FLOOR_H;             // floor separator band
 // ── Materials ─────────────────────────────────────────────────────
 export const MATS = {
   // Structure
-  roofTile:    new THREE.MeshStandardMaterial({ color: 0x4a4a5a, roughness: 0.7, metalness: 0.05 }),
+  roofTile:    new THREE.MeshStandardMaterial({ color: 0x4a4a5a, roughness: 0.7, metalness: 0.05, side: THREE.DoubleSide }),
   roofFrame:   new THREE.MeshStandardMaterial({ color: 0x5a3a28, roughness: 0.6, metalness: 0.0 }),
   wall:        new THREE.MeshStandardMaterial({ color: 0xf2ece0, roughness: 0.8, metalness: 0.0 }),
   upperWall:   new THREE.MeshStandardMaterial({ color: 0xc4b898, roughness: 0.8, metalness: 0.0 }),

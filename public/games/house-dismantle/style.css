@@ -129,7 +129,7 @@ body.light #info-panel .part-hint kbd {
   background: rgba(100,150,220,0.25);
   border-color: #6af;
 }
-.action-btn.primary.active {
+.action-btn.primary.active, .action-btn.active {
   background: rgba(255,130,80,0.2);
   border-color: #f84;
   color: #f84;

@@ -29,7 +29,7 @@ scene.background = new THREE.Color(0x0a0a14);
 scene.fog = new THREE.Fog(0x0a0a14, 12, 45);
 
 const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.5, 70);
-camera.position.set(12, 8, 18);
+camera.position.set(-10, 7, 16);
 camera.lookAt(0, 2.2, 0);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -394,18 +394,69 @@ window.addEventListener('keydown', (event) => {
   }
   if (event.key === 'Escape') clearSelection();
   if (event.key === '0') {
-    camera.position.set(12, 8, 18);
+    camera.position.set(-10, 7, 16);
     controls.target.set(0, 2.2, 0);
     controls.update();
   }
 });
 
-// Buttons
+// ── Camera Tour ──────────────────────────────────────────────────
+const tourKeyframes = [
+  { pos: [-4,1.5,5],   tgt: [-4,1.5,3.5], dur: 1.5 }, // 0: outside front door
+  { pos: [-4,1.5,2.5], tgt: [0,1.5,0],    dur: 2.5 }, // 1: enter door → center bay
+  { pos: [0,1.8,0],    tgt: [0,1.5,-3],   dur: 2.0 }, // 2: center bay → shrine
+  { pos: [-4,1.5,-1],  tgt: [-4,1.2,-3],  dur: 2.5 }, // 3: left bay → stove/kitchen
+  { pos: [4,1.5,-1],   tgt: [4,1.2,-3],   dur: 2.5 }, // 4: right bay → beds
+  { pos: [0,3.2,-0.5], tgt: [0,3.0,0],    dur: 2.0 }, // 5: go upstairs via stairs
+  { pos: [0,3.5,0],    tgt: [0,3.5,1.5],  dur: 2.0 }, // 6: look around upstairs
+  { pos: [-10,7,16],   tgt: [0,2.2,0],    dur: 2.0 }, // 7: return to overview
+];
+let tourActive = false;
+let tourIndex = 0;
+let tourT = 0;
+const tourStartPos = new THREE.Vector3();
+const tourStartTgt = new THREE.Vector3();
+const tourEndPos = new THREE.Vector3();
+const tourEndTgt = new THREE.Vector3();
+
+function startTour() {
+  if (tourActive) { stopTour(); return; }
+  if (isDisassembled) doReassembleAll();
+  clearSelection();
+  tourActive = true;
+  tourIndex = 0;
+  startKeyframe(0);
+  document.getElementById('btn-tour').classList.add('active');
+  document.getElementById('btn-tour').textContent = '⏹ 停止';
+  controls.enabled = false;
+}
+
+function stopTour() {
+  tourActive = false;
+  document.getElementById('btn-tour').classList.remove('active');
+  document.getElementById('btn-tour').textContent = '🎥 参观';
+  controls.enabled = true;
+}
+
+function startKeyframe(idx) {
+  if (idx >= tourKeyframes.length) { stopTour(); return; }
+  tourIndex = idx;
+  tourT = 0;
+  const kf = tourKeyframes[idx];
+  tourStartPos.copy(camera.position);
+  tourStartTgt.copy(controls.target);
+  tourEndPos.set(kf.pos[0], kf.pos[1], kf.pos[2]);
+  tourEndTgt.set(kf.tgt[0], kf.tgt[1], kf.tgt[2]);
+}
+
+// ── Buttons ───────────────────────────────────────────────────────
 document.getElementById('btn-dismantle').addEventListener('click',
   () => isDisassembled ? doReassembleAll() : doDisassemble());
+document.getElementById('btn-tour').addEventListener('click', startTour);
 document.getElementById('btn-reset').addEventListener('click', () => {
+  stopTour();
   clearSelection(); doReassembleAll();
-  camera.position.set(12, 8, 18);
+  camera.position.set(-10, 7, 16);
   controls.target.set(0, 2.2, 0); controls.update();
 });
 
@@ -419,6 +470,23 @@ const clock = new THREE.Clock();
 function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.1);
+
+  // Camera tour
+  if (tourActive) {
+    const kf = tourKeyframes[tourIndex];
+    tourT += dt / kf.dur;
+    if (tourT >= 1.0) {
+      tourT = 1.0;
+      camera.position.copy(tourEndPos);
+      controls.target.copy(tourEndTgt);
+      startKeyframe(tourIndex + 1);
+    } else {
+      // Smooth ease-in-out
+      const t = tourT < 0.5 ? 2*tourT*tourT : 1 - Math.pow(-2*tourT + 2, 2)/2;
+      camera.position.lerpVectors(tourStartPos, tourEndPos, t);
+      controls.target.lerpVectors(tourStartTgt, tourEndTgt, t);
+    }
+  }
   controls.update();
 
   if (tweenActive) {
