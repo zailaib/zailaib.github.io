@@ -59,7 +59,6 @@ export const MATS = {
   chickenComb: new THREE.MeshStandardMaterial({ color: 0xcc2200, roughness: 0.5, metalness: 0.0 }),
   wellStone:   new THREE.MeshStandardMaterial({ color: 0x7a7a7a, roughness: 0.7, metalness: 0.05 }),
   wellRoof:    new THREE.MeshStandardMaterial({ color: 0x5a4a3a, roughness: 0.6, metalness: 0.0 }),
-  fenceWood:   new THREE.MeshStandardMaterial({ color: 0x9b8b70, roughness: 0.7, metalness: 0.0 }),
   hayMat:      new THREE.MeshStandardMaterial({ color: 0xb8a040, roughness: 0.9, metalness: 0.0 }),
   // Plumbing
   pipe:        new THREE.MeshStandardMaterial({ color: 0x8b6b4a, roughness: 0.4, metalness: 0.6 }),
