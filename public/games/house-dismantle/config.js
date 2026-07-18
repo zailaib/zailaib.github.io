@@ -73,8 +73,9 @@ export const MATS = {
 // deps = parts that MUST be removed before this one
 export const PART_DEFS = [
   // ── Foundation ──
-  { name: 'base',        label: '石基平台',  color: '#6e6e6e', deps: ['floor','columns'], cat: 'base' },
-  { name: 'floor',       label: '地板平台',  color: '#908878', deps: ['wallFront','wallBack','wallLeft','wallRight','interiorWall1','interiorWall2'], cat: 'base' },
+  { name: 'base',        label: '石基平台',  color: '#6e6e6e', deps: ['floor','floor2','columns'], cat: 'base' },
+  { name: 'floor',       label: '一层地板',  color: '#908878', deps: ['wallFront','wallBack','wallLeft','wallRight','interiorWall1','interiorWall2'], cat: 'base' },
+  { name: 'floor2',      label: '二层地板',  color: '#a08060', deps: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight'], cat: 'base' },
 
   // ── Structure ──
   { name: 'columns',     label: '木柱',      color: '#6b3a20', deps: ['roofFrame'], cat: 'structure' },
@@ -115,7 +116,7 @@ export const PART_DEFS = [
 export const CATEGORIES = {
   roof:      { label: '屋顶',  parts: ['roofTiles','roofFrame'],                              color: '#4a4a5a' },
   structure: { label: '结构',  parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWall1','interiorWall2','upperWallFront','upperWallBack','upperWallLeft','upperWallRight','columns'], color: '#d4c8b0' },
-  base:      { label: '地基',  parts: ['base','floor'],                                        color: '#6e6e6e' },
+  base:      { label: '地基',  parts: ['base','floor','floor2'],                                color: '#6e6e6e' },
   openings:  { label: '门窗梯',parts: ['doors','windows','stairs'],                            color: '#8b6914' },
   interior:  { label: '家具',  parts: ['beds','tableChairs','stove','shrine'],               color: '#7a4a20' },
   yard:      { label: '院子',  parts: ['well'],                                                 color: '#80a050' },
@@ -143,6 +144,7 @@ export function getDisassembleOffset(name) {
     interiorWall2:    [0, 2, 0.5],
     // Foundation
     floor:            [0, -d * 0.3, 0],
+    floor2:           [0, d * 0.5, 0],
     base:             [0, -d * 0.7, 0],
     // Columns
     columns:          [0, d * 0.5, d * 0.4],

@@ -29,7 +29,7 @@ scene.background = new THREE.Color(0x0a0a14);
 scene.fog = new THREE.Fog(0x0a0a14, 12, 45);
 
 const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.5, 70);
-camera.position.set(-10, 7, 16);
+camera.position.set(10, 7, 16);
 camera.lookAt(0, 2.2, 0);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -394,7 +394,7 @@ window.addEventListener('keydown', (event) => {
   }
   if (event.key === 'Escape') clearSelection();
   if (event.key === '0') {
-    camera.position.set(-10, 7, 16);
+    camera.position.set(10, 7, 16);
     controls.target.set(0, 2.2, 0);
     controls.update();
   }
@@ -402,8 +402,8 @@ window.addEventListener('keydown', (event) => {
 
 // ── Camera Tour ──────────────────────────────────────────────────
 const tourKeyframes = [
-  { pos: [-4,1.5,5],   tgt: [-4,1.5,3.5], dur: 1.5 }, // 0: outside front door
-  { pos: [-4,1.5,2.5], tgt: [0,1.5,0],    dur: 2.5 }, // 1: enter door → center bay
+  { pos: [4,1.5,5],   tgt: [4,1.5,3.5], dur: 1.5 }, // 0: outside front door
+  { pos: [4,1.5,2.5], tgt: [0,1.5,0],    dur: 2.5 }, // 1: enter door → center bay
   { pos: [0,1.8,0],    tgt: [0,1.5,-3],   dur: 2.0 }, // 2: center bay → shrine
   { pos: [-4,1.5,-1],  tgt: [-4,1.2,-3],  dur: 2.5 }, // 3: left bay → stove/kitchen
   { pos: [4,1.5,-1],   tgt: [4,1.2,-3],   dur: 2.5 }, // 4: right bay → beds
@@ -456,7 +456,7 @@ document.getElementById('btn-tour').addEventListener('click', startTour);
 document.getElementById('btn-reset').addEventListener('click', () => {
   stopTour();
   clearSelection(); doReassembleAll();
-  camera.position.set(-10, 7, 16);
+  camera.position.set(10, 7, 16);
   controls.target.set(0, 2.2, 0); controls.update();
 });
 

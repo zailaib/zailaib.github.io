@@ -56,7 +56,7 @@ export function buildStructure(houseGroup, parts, MATS) {
 
   // Front step at left bay door
   const step = box(BAY_W * 0.8, 0.12, 1.2, MATS.floor);
-  step.position.set(-BAY_W, FLOOR_H + 0.06, HD2 + 0.5);
+  step.position.set(BAY_W, FLOOR_H + 0.06, HD2 + 0.5);
   addTo('floor', step); floorGrp.add(step);
 
   // ═══════════════════════════════════════════════════════════════
@@ -101,6 +101,24 @@ export function buildStructure(houseGroup, parts, MATS) {
     const m = box(WALL_T * 0.8, WALL_H1, wallD, MATS.interior);
     m.position.set(x, WY1, 0);
     addTo(name, m); grp.add(m);
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECOND FLOOR (wooden platform at y = BAND_Y)
+  // ═══════════════════════════════════════════════════════════════
+  const floor2Grp = partGrp('floor2', '二层地板', '#a08060',
+    ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight']);
+  // Wooden floor surface (interior area, between walls)
+  const floor2InnerW = HOUSE_W - WALL_T * 2;
+  const floor2InnerD = HOUSE_D - WALL_T * 2;
+  const floor2Slab = box(floor2InnerW, 0.06, floor2InnerD, MATS.woodLight);
+  floor2Slab.position.set(0, BAND_Y + 0.03, 0);
+  addTo('floor2', floor2Slab); floor2Grp.add(floor2Slab);
+  // Floor joists (cross beams supporting the floor)
+  for (let jx = -floor2InnerW/2 + 0.5; jx <= floor2InnerW/2 - 0.5; jx += 1.2) {
+    const joist = box(0.08, 0.1, floor2InnerD, MATS.woodDark);
+    joist.position.set(jx, BAND_Y - 0.02, 0);
+    addTo('floor2', joist); floor2Grp.add(joist);
   }
 
   // ═══════════════════════════════════════════════════════════════

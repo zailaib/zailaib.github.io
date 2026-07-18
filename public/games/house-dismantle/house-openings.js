@@ -27,7 +27,7 @@ export function buildOpenings(houseGroup, parts, MATS) {
   // FRONT DOOR (left bay, at x = -BAY_W)
   // ═══════════════════════════════════════════════════════════════
   const doorGrp = partGrp('doors', '门', '#4a2818', ['wallFront']);
-  const doorX = -BAY_W; // left bay center
+  const doorX = BAY_W; // right bay center
 
   // Door frame
   const frameL = box(0.1, 2.3, 0.08, MATS.door);
@@ -76,9 +76,24 @@ export function buildOpenings(houseGroup, parts, MATS) {
   const winZf = HD2 + WALL_T/2 + 0.05;
   const winZb = -HD2 - WALL_T/2 - 0.05;
 
+  const GLASS_MAT = new THREE.MeshStandardMaterial({
+    color: 0xaaccff, roughness: 0.1, metalness: 0.1,
+    transparent: true, opacity: 0.35,
+  });
+
   function makeWindow(x, y, z, ry = 0) {
     const wg = new THREE.Group();
     const fw = 1.1, fh = 1.4, ft = 0.06;
+    // Glass panels (4 panes in a 2×2 grid)
+    const paneW = (fw - ft*3) / 2, paneH = (fh - ft*3) / 2;
+    for (const px of [-1, 1]) {
+      for (const py of [-1, 1]) {
+        const glass = box(paneW - 0.02, paneH - 0.02, ft * 0.3, GLASS_MAT);
+        glass.position.set(px * (paneW/2 + ft/2), py * (paneH/2 + ft/2), 0);
+        addTo('windows', glass); wg.add(glass);
+      }
+    }
+    // Frame
     for (const xo of [-fw/2, fw/2]) {
       const f = box(ft, fh, ft, MATS.window);
       f.position.set(xo, 0, 0); addTo('windows', f); wg.add(f);
@@ -87,23 +102,33 @@ export function buildOpenings(houseGroup, parts, MATS) {
       const f = box(fw, ft, ft, MATS.window);
       f.position.set(0, yo, 0); addTo('windows', f); wg.add(f);
     }
+    // Cross mullions
     const mv = box(ft*0.7, fh*0.85, ft*0.7, MATS.window);
     addTo('windows', mv); wg.add(mv);
     const mh = box(fw*0.85, ft*0.7, ft*0.7, MATS.window);
     addTo('windows', mh); wg.add(mh);
+    // Lintel/head above window (decorative beam)
+    const lintel = box(fw + 0.2, 0.06, ft + 0.04, MATS.woodDark);
+    lintel.position.set(0, fh/2 + 0.04, 0);
+    addTo('windows', lintel); wg.add(lintel);
+    // Window sill (bottom ledge)
+    const sill = box(fw + 0.15, 0.05, ft + 0.06, MATS.woodDark);
+    sill.position.set(0, -fh/2 - 0.03, 0);
+    addTo('windows', sill); wg.add(sill);
+
     wg.position.set(x, y, z); wg.rotation.y = ry;
     return wg;
   }
 
-  // Front windows: center + right bay (left bay has the door)
-  [0, BAY_W].forEach(x => { winGrp.add(makeWindow(x, winY, winZf)); });
+  // Front windows: left + center bay (right bay has the door)
+  [-BAY_W, 0].forEach(x => { winGrp.add(makeWindow(x, winY, winZf)); });
   // Back windows: all three bays
   [-BAY_W, 0, BAY_W].forEach(x => { winGrp.add(makeWindow(x, winY, winZb, Math.PI)); });
 
   // ═══════════════════════════════════════════════════════════════
   // BACK DOOR (single-leaf, left bay, back wall)
   // ═══════════════════════════════════════════════════════════════
-  const backDoorX = -BAY_W; // same bay as front door (left bay)
+  const backDoorX = BAY_W; // same bay as front door (right bay)
   const backDoorZ = -HD2 - WALL_T/2 - 0.05;
 
   // Simple single door frame
@@ -125,54 +150,78 @@ export function buildOpenings(houseGroup, parts, MATS) {
   addTo('doors', bdPanel); doorGrp.add(bdPanel);
 
   // ═══════════════════════════════════════════════════════════════
-  // STAIRS (wooden staircase to second floor)
-  // Center bay, along left wall, going up from back toward front
+  // STAIRS (L-shaped wooden staircase to second floor)
+  // Fits entirely inside the center bay, hugging the back wall
+  // and left interior wall — does NOT break through any wall
   // ═══════════════════════════════════════════════════════════════
   const stairGrp = partGrp('stairs', '楼梯', '#8b6914', ['upperWallFront', 'upperWallBack']);
-  const stairStartZ = -HD2 + 1.5; // back of house, inside (~ -2.0)
-  const stairEndZ   = 0.5;         // toward front, middle of house
-  const stairBaseY  = FLOOR_H;     // 0.2
-  const stairTopY   = BAND_Y;      // 3.0 = top of 1F floor
-  const numSteps    = 14;
-  const stepDepth   = (stairEndZ - stairStartZ) / numSteps;
-  const stepHeight  = (stairTopY - stairBaseY) / numSteps;
-  const stepWidth   = 0.8;
-  const stairX      = -BAY_W/2 - 0.2; // against left interior wall
 
-  // Stringers (side rails)
-  const sDX = stairEndZ - stairStartZ;
-  const sDY = stairTopY - stairBaseY;
-  const sLen = Math.sqrt(sDX * sDX + sDY * sDY);
-  const sAngle = Math.atan2(sDY, sDX);
-  for (const sx of [-stepWidth/2, stepWidth/2]) {
-    const stringer = box(0.06, 0.08, sLen + 0.2, MATS.woodDark);
-    stringer.position.set(stairX + sx, (stairTopY + stairBaseY)/2, (stairStartZ + stairEndZ)/2);
-    stringer.rotation.x = -sAngle;
-    addTo('stairs', stringer); stairGrp.add(stringer);
-  }
+  const sBaseY  = FLOOR_H;      // 0.2
+  const sTopY   = BAND_Y;       // 3.0
+  const sTotalRise = sTopY - sBaseY; // 2.8m
+  const stepH   = sTotalRise / 16;   // ~0.175m per step
+  const stepD   = 0.28;              // tread depth
+  const stepW   = 0.8;               // stair width
 
-  // Steps
-  for (let i = 0; i < numSteps; i++) {
-    const step = box(stepWidth - 0.08, 0.04, stepDepth * 0.9, MATS.woodLight);
-    const z = stairStartZ + (i + 0.5) * stepDepth;
-    const y = stairBaseY + i * stepHeight;
-    step.position.set(stairX, y, z);
+  // Segment 1: along back wall, going +X (right), 8 steps, inside back
+  const seg1StartX = -1.8;
+  const seg1StartZ = -HD2 + 0.5;  // near back wall, inside
+  const seg1Steps  = 8;
+
+  // Segment 2: going +Z (forward), 8 steps, turns at corner
+  const seg2StartX = seg1StartX + seg1Steps * stepD;
+  const seg2StartZ = seg1StartZ;
+  const seg2Steps  = 8;
+
+  // --- Segment 1: steps going +X ---
+  for (let i = 0; i < seg1Steps; i++) {
+    const step = box(stepW - 0.06, 0.04, stepD, MATS.woodLight);
+    const x = seg1StartX + i * stepD + stepD/2;
+    const y = sBaseY + i * stepH;
+    step.position.set(x, y, seg1StartZ);
     addTo('stairs', step); stairGrp.add(step);
   }
 
-  // Handrail posts
-  for (let i = 0; i <= 4; i++) {
-    const postGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.7, 8);
+  // --- Landing (square platform at the turn) ---
+  const landing = box(stepW - 0.04, 0.05, stepW + 0.1, MATS.woodLight);
+  landing.position.set(seg2StartX, sBaseY + seg1Steps * stepH, seg2StartZ + stepW/2);
+  addTo('stairs', landing); stairGrp.add(landing);
+
+  // --- Segment 2: steps going +Z ---
+  for (let i = 0; i < seg2Steps; i++) {
+    const step = box(stepW - 0.06, 0.04, stepD, MATS.woodLight);
+    const z = seg2StartZ + stepW + i * stepD + stepD/2;
+    const y = sBaseY + (seg1Steps + i) * stepH;
+    step.position.set(seg2StartX + stepW/2, y, z);
+    step.rotation.y = Math.PI/2; // rotate to face +Z
+    addTo('stairs', step); stairGrp.add(step);
+  }
+
+  // --- Support posts at corners ---
+  const posts = [
+    [seg1StartX, seg1StartZ - stepW/2],
+    [seg2StartX, seg1StartZ - stepW/2],
+    [seg2StartX + stepW, seg1StartZ - stepW/2],
+    [seg2StartX + stepW, seg2StartZ + stepW + seg2Steps * stepD],
+  ];
+  for (const [px, pz] of posts) {
+    const postGeo = new THREE.CylinderGeometry(0.04, 0.04, sTotalRise + 0.3, 8);
     const post = new THREE.Mesh(postGeo, MATS.woodDark);
-    const t = i / 4;
-    const z = stairStartZ + t * sDX;
-    const y = stairBaseY + t * sDY;
-    post.position.set(stairX + stepWidth/2 - 0.05, y + 0.35, z);
+    post.position.set(px, (sBaseY + sTopY)/2, pz);
     addTo('stairs', post); stairGrp.add(post);
   }
-  // Handrail top bar
-  const rail = box(0.04, 0.04, sLen + 0.3, MATS.woodDark);
-  rail.position.set(stairX + stepWidth/2 - 0.05, stairBaseY + sDY * 0.5 + 0.7, (stairStartZ + stairEndZ)/2);
-  rail.rotation.x = -sAngle;
-  addTo('stairs', rail); stairGrp.add(rail);
+
+  // --- Handrail (3 sides) ---
+  // Inner handrail along segment 1 (+X direction)
+  const rail1 = box(0.04, 0.04, seg1Steps * stepD + 0.3, MATS.woodDark);
+  rail1.position.set(seg1StartX + seg1Steps*stepD/2, sBaseY + seg1Steps*stepH/2 + 0.75, seg1StartZ - stepW/2 + 0.04);
+  addTo('stairs', rail1); stairGrp.add(rail1);
+  // Inner handrail along segment 2 (+Z direction)
+  const rail2 = box(0.04, 0.04, seg2Steps * stepD + 0.3, MATS.woodDark);
+  rail2.position.set(seg2StartX + stepW - 0.04, sBaseY + (seg1Steps+seg2Steps/2)*stepH + 0.75, seg2StartZ + stepW + seg2Steps*stepD/2);
+  addTo('stairs', rail2); stairGrp.add(rail2);
+  // Outer wall-side rail (along back wall)
+  const rail3 = box(0.04, 0.04, seg1Steps * stepD + 0.3, MATS.woodDark);
+  rail3.position.set(seg1StartX + seg1Steps*stepD/2, sBaseY + seg1Steps*stepH/2 + 0.75, seg1StartZ + stepW/2 - 0.04);
+  addTo('stairs', rail3); stairGrp.add(rail3);
 }
