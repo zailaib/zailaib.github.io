@@ -51,16 +51,6 @@ const ALLOWED_OVERLAPS = [
   ['upperWallLeft', 'floor2'],
   ['upperWallRight', 'floor2'],
 ];
-  // Columns pass through floor platform
-  ['columns', 'floor'],
-  // Pipelines around base
-  ['pipelines', 'base'],
-  // Upper walls sit on floor2
-  ['upperWallFront', 'floor2'],
-  ['upperWallBack', 'floor2'],
-  ['upperWallLeft', 'floor2'],
-  ['upperWallRight', 'floor2'],
-];
 
 function isAllowedOverlap(partA, partB) {
   // Universal hosts overlap with everything (they're ground/platform)
