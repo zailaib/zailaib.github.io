@@ -2,7 +2,7 @@
 import { getWorldAABB, volumeRatio } from '../helpers.js';
 
 // Universal hosts: structural platforms that everything naturally touches
-const UNIVERSAL_HOSTS = new Set(['floor', 'floor2', 'base']);
+const UNIVERSAL_HOSTS = new Set(['floor', 'floor2', 'base', 'studyFloor']);
 
 // Specific overlap whitelist: [partA, partB] — these pairs intentionally overlap
 const ALLOWED_OVERLAPS = [
@@ -50,6 +50,12 @@ const ALLOWED_OVERLAPS = [
   ['upperWallBack', 'floor2'],
   ['upperWallLeft', 'floor2'],
   ['upperWallRight', 'floor2'],
+  // Study room door embedded in right wall
+  ['studyDoor', 'wallRight'],
+  // Study walls cross with existing right wall
+  ['studyWalls', 'wallRight'],
+  // Study roof sits on study walls (like main roof on main walls)
+  ['studyRoof', 'studyWalls'],
 ];
 
 function isAllowedOverlap(partA, partB) {

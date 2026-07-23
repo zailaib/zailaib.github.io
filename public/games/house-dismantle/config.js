@@ -122,18 +122,19 @@ export const PART_DEFS = [
   { name: 'studyDesk',   label: '书桌',      color: '#8b6914', deps: [], cat: 'interior' },
   { name: 'studyBookshelf', label: '书架',   color: '#6b4a20', deps: [], cat: 'interior' },
   { name: 'studyDoor',   label: '书房门',    color: '#4a2818', deps: [], cat: 'openings' },
+  { name: 'studyRoof',  label: '书房披檐',  color: '#5a4a3a', deps: ['studyWalls'], cat: 'roof' },
   { name: 'studyWalls',  label: '书房屋墙',  color: '#e8dcc8', deps: ['studyDesk','studyBookshelf','studyDoor'], cat: 'structure' },
   { name: 'studyFloor',  label: '书房地板',  color: '#a09078', deps: ['studyWalls'], cat: 'base' },
 ];
 
 // ── Categories (for filter UI) ────────────────────────────────────
 export const CATEGORIES = {
-  roof:      { label: '屋顶',  parts: ['roofTiles','roofFrame'],                              color: '#4a4a5a' },
+  roof:      { label: '屋顶',  parts: ['roofTiles','roofFrame','studyRoof'],                   color: '#4a4a5a' },
   structure: { label: '结构',  parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWall1','interiorWall2','crossWall','upperWallFront','upperWallBack','upperWallLeft','upperWallRight','columns'], color: '#d4c8b0' },
   base:      { label: '地基',  parts: ['base','floor','floor2'],                                color: '#6e6e6e' },
   openings:  { label: '门窗梯',parts: ['doors','windows','stairs','windScreen'],                color: '#8b6914' },
   interior:  { label: '家具',  parts: ['beds','tableChairs','stove','shrine'],                  color: '#7a4a20' },
-  study:     { label: '书房',  parts: ['studyWalls','studyFloor','studyDoor','studyDesk','studyBookshelf'], color: '#b8966a' },
+  study:     { label: '书房',  parts: ['studyRoof','studyWalls','studyFloor','studyDoor','studyDesk','studyBookshelf'], color: '#b8966a' },
   yard:      { label: '院子',  parts: ['chickens','well'],                                      color: '#80a050' },
   plumbing:  { label: '管道',  parts: ['pipelines'],                                           color: '#8b6b4a' },
 };
@@ -180,6 +181,7 @@ export function getDisassembleOffset(name) {
     // Plumbing
     pipelines:        [0, -1.0, 0],
     // Study
+    studyRoof:        [d * 1.3, d * 0.8, 0],
     studyWalls:       [d * 1.3, 0, 0],
     studyFloor:       [d * 1.3, -d * 0.3, 0],
     studyDoor:        [d * 1.3, 0, d * 0.5],

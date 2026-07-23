@@ -16,8 +16,13 @@ import { checkClearance } from './rules/clearance.js';
 import { checkOverlap } from './rules/overlap.js';
 import { checkZFighting } from './rules/z-fighting.js';
 import { checkStudyRoom } from './rules/study-room.js';
+import { checkHolisticConsistency } from './rules/holistic-consistency.js';
+import { analyzeSite } from './site-analyzer.js';
 
 export function validateHouse(parts) {
+  // Step -2: Site analysis — understand the existing space first
+  analyzeSite(parts, PART_DEFS);
+
   const allViolations = [
     ...checkDepTopology(PART_DEFS),
     ...checkRoomHeight(),
@@ -26,6 +31,7 @@ export function validateHouse(parts) {
     ...checkClearance(parts),
     ...checkOverlap(parts),
     ...checkZFighting(parts),
+    ...checkHolisticConsistency(parts, PART_DEFS),
     ...checkStudyRoom(parts),
   ];
 

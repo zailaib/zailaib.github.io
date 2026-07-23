@@ -49,7 +49,7 @@ export function buildStudy(houseGroup, parts, MATS) {
   // ═══════════════════════════════════════════════════════════════
   const wallsGrp = partGrp('studyWalls', '书房屋墙', '#e8dcc8',
     ['studyDoor', 'studyDesk', 'studyBookshelf']);
-  const wallMat = MATS.upperWall;
+  const wallMat = MATS.wall; // ← unified with first-floor wall material
 
   // Front wall (Z+)
   const wf = box(STUDY_W, STUDY_H, STUDY_WALL_T, wallMat);
@@ -66,10 +66,35 @@ export function buildStudy(houseGroup, parts, MATS) {
   wr.position.set(sx + hw, floorY + STUDY_H / 2, sz);
   addTo('studyWalls', wr); wallsGrp.add(wr);
 
-  // Ceiling
-  const ceil = box(STUDY_W - STUDY_WALL_T * 2, 0.06, STUDY_D - STUDY_WALL_T * 2, MATS.floor);
-  ceil.position.set(sx, ceilY - 0.03, sz);
-  addTo('studyWalls', ceil); wallsGrp.add(ceil);
+  // ═══════════════════════════════════════════════════════════════
+  // STUDY ROOF — lean-to (披檐) sloping down from house wall
+  // High side @ house eave (y=4.3m), low side @ study outer wall (y≈3.3m)
+  // Slope = atan(1.0/3.0) ≈ 18.4° ✓ (15°–35°)
+  // ═══════════════════════════════════════════════════════════════
+  const roofGrp = partGrp('studyRoof', '书房披檐', '#5a4a3a', ['studyWalls']);
+  const roofOverhang = 0.3;
+  const roofW = STUDY_D + roofOverhang * 2;  // Z direction
+  const highY = 4.3;   // at house eave height
+  const lowY = 3.2;    // at study outer wall top
+  const roofSpan = STUDY_W + roofOverhang;   // X direction (sloped)
+  const roofThick = 0.1;
+  const slopeLen = Math.sqrt(roofSpan ** 2 + (highY - lowY) ** 2);
+  const slopeAngle = -Math.atan2(highY - lowY, roofSpan); // negative = tilts down right
+
+  const roofGeo = new THREE.BoxGeometry(roofW, roofThick, slopeLen);
+  const roofMesh = new THREE.Mesh(roofGeo, MATS.roofTile);
+  roofMesh.position.set(
+    sx + roofSpan / 2 - STUDY_W / 2,
+    (highY + lowY) / 2,
+    sz,
+  );
+  roofMesh.rotation.z = slopeAngle;
+  addTo('studyRoof', roofMesh); roofGrp.add(roofMesh);
+
+  // Roof ridge cap at the high edge
+  const ridgeCap = box(roofW, 0.06, 0.12, MATS.ridge);
+  ridgeCap.position.set(sx - hw + 0.05, highY + 0.06, sz);
+  addTo('studyRoof', ridgeCap); roofGrp.add(ridgeCap);
 
   // ═══════════════════════════════════════════════════════════════
   // STUDY DOOR (in the left opening, connecting to main house)
