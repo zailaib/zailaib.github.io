@@ -11,7 +11,7 @@ Astro 7 静态站点，部署 GitHub Pages。双语 (zh/en) 内容驱动博客 +
 - **样式**: CSS Variables + 暗色主题，见 `src/styles/`
 - **内容**: Astro Content Collections (`posts`, `apps`)
 - **Markdown**: `@astrojs/markdown-remark`（v7 需显式安装才能用 remark 插件）
-- **配置**: remark 插件用 `unified()` 包裹（v7 新 API），`compressHTML: true`（保持中文空白兼容）
+- **配置**: remark 插件直接写在 `markdown: { remarkPlugins: [...] }` 对象中，`compressHTML: true`（保持中文空白兼容）
 - **i18n**: `src/i18n/` — 双语路由 `[lang]/...`，支持 zh/en
 
 ## 目录结构
@@ -36,12 +36,13 @@ public/
 │   ├── index.html               # 仅 HTML 结构
 │   ├── style.css                # 游戏样式
 │   └── game.js                  # 游戏逻辑
+├── docs/games/<name>-design.md  # 复杂游戏的设计审查/spec（构建后映射到 /docs/games/）
 └── scripts/                     # 全站交互脚本
 ```
 
 ## 新增 H5 小游戏流程
 
-每增加一个新游戏需完成以下 4 步：
+每增加一个新游戏需完成以下 5 步：
 
 ### 1. 创建静态游戏文件
 
@@ -86,6 +87,17 @@ npm run build   # 确保无报错
 ```
 
 首页会自动从 `apps` 集合拉取最新游戏，无需手动配置。
+
+### 5. （可选）设计文档
+
+复杂游戏（3D、多模块、物理交互等）应在 `public/docs/games/<name>-design-review.md` 放置设计审查/规范文档（构建后通过 `/docs/games/` 路径访问）。内容 `.md` 正文可引用该文档：
+
+```markdown
+## 设计笔记
+📐 [设计审查报告 →](/docs/games/<name>-design-review)
+```
+
+设计文档通常包含：空间布局分析、结构逻辑验证、视觉一致性检查、已知问题与修复优先级。
 
 ## 关键约定
 
