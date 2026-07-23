@@ -11,6 +11,7 @@ import { buildOpenings } from './house-openings.js';
 import { buildInterior } from './house-interior.js';
 import { buildYard }      from './house-yard.js';
 import { buildPlumbing }  from './house-plumbing.js';
+import { validateHouse }  from './validate/index.js';
 
 // ── State ─────────────────────────────────────────────────────────
 const houseGroup = new THREE.Group();
@@ -104,6 +105,9 @@ for (const def of PART_DEFS) {
     houseGroup.add(g);
   }
 }
+
+// ── Spatial validation ───────────────────────────────────────────
+validateHouse(parts);
 
 // ── Animation targets ─────────────────────────────────────────────
 const targetOff = new Map(); // partName → THREE.Vector3
