@@ -11,6 +11,7 @@ import { buildOpenings } from './house-openings.js';
 import { buildInterior } from './house-interior.js';
 import { buildYard }      from './house-yard.js';
 import { buildPlumbing }  from './house-plumbing.js';
+import { buildStudy }     from './house-study.js';
 import { validateHouse }  from './validate/index.js';
 
 // ── State ─────────────────────────────────────────────────────────
@@ -91,6 +92,7 @@ buildOpenings(houseGroup, parts, MATS);
 buildInterior(houseGroup, parts, MATS);
 buildYard(houseGroup, parts, MATS);
 buildPlumbing(houseGroup, parts, MATS);
+buildStudy(houseGroup, parts, MATS);  // ← constraint-first: see constraints/study-room.md
 
 // Verify all PART_DEFS were created (imported from config)
 import { PART_DEFS } from './config.js';

@@ -99,6 +99,34 @@ npm run build   # 确保无报错
 
 设计文档通常包含：空间布局分析、结构逻辑验证、视觉一致性检查、已知问题与修复优先级。
 
+## house-dismantle 空间修改：约束先行流水线
+
+对 house-dismantle 的**任何空间修改**（加房间、加家具、改布局、改尺寸），严格按三步执行：
+
+### Step 1: 约束文档
+
+在 `public/docs/games/house-dismantle/constraints/<feature>.md` 按 7 维度填写（模板：`_template.md`）：
+
+1. **空间定位** — 位置、尺寸、朝向、与已有部件关系
+2. **结构约束** — 墙厚、层高、净高 ≥ 1.8m、屋顶穿透
+3. **通道间隙** — 门洞 ≥ 0.6m、家具间通道 ≥ 0.5m
+4. **碰撞排除** — 白名单（可重叠）/ 黑名单（严禁重叠）
+5. **依赖拓扑** — 新增 PART_DEFS + deps 关系
+6. **材质视觉** — 复用 MATS、几何精度 max/min ≤ 3x
+7. **开口通风** — 门窗位置、尺寸、不冲突
+
+### Step 2: 约束规则
+
+在 `validate/rules/<feature>.js` 编写检测函数（模板：`_template.js`），在 `validate/index.js` 注册。
+
+### Step 3: 3D 模型
+
+在 `house-<feature>.js` 编写构建函数，`app.js` 中 import + 调用，同步更新 `config.js` 的 `PART_DEFS` / `CATEGORIES` / `getDisassembleOffset`。
+
+### Step 4: 验证
+
+打开游戏页面 → 检查 console.table → 无新增 violation → 构建通过。
+
 ## 关键约定
 
 - **静态资源**: 放 `public/`，构建后映射到根路径 `/`

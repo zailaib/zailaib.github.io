@@ -15,6 +15,7 @@ import { checkPolyConsistency } from './rules/poly-consistency.js';
 import { checkClearance } from './rules/clearance.js';
 import { checkOverlap } from './rules/overlap.js';
 import { checkZFighting } from './rules/z-fighting.js';
+import { checkStudyRoom } from './rules/study-room.js';
 
 export function validateHouse(parts) {
   const allViolations = [
@@ -25,6 +26,7 @@ export function validateHouse(parts) {
     ...checkClearance(parts),
     ...checkOverlap(parts),
     ...checkZFighting(parts),
+    ...checkStudyRoom(parts),
   ];
 
   const errors = allViolations.filter(v => v.severity === 'error');
