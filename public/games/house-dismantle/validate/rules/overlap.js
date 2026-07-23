@@ -1,27 +1,73 @@
 /* Rule: Overlap — detect unintended mesh intersections between different parts */
 import { getWorldAABB, volumeRatio } from '../helpers.js';
 
-// Host-guest whitelist: [guestPart, hostPart] — guest meshes may sit inside host
-const GUEST_HOST = [
+// Universal hosts: structural platforms that everything naturally touches
+const UNIVERSAL_HOSTS = new Set(['floor', 'floor2', 'base']);
+
+// Specific overlap whitelist: [partA, partB] — these pairs intentionally overlap
+const ALLOWED_OVERLAPS = [
+  // Wall stacking — lower wall tops meet upper wall bottoms at the band
+  ['wallFront', 'upperWallFront'],
+  ['wallBack', 'upperWallBack'],
+  ['wallLeft', 'upperWallLeft'],
+  ['wallRight', 'upperWallRight'],
+  // Roof frame sits inside roof tiles
+  ['roofFrame', 'roofTiles'],
+  // Interior walls sit on floor and touch exterior walls
+  ['interiorWall1', 'wallFront'],
+  ['interiorWall1', 'wallBack'],
+  ['interiorWall2', 'wallFront'],
+  ['interiorWall2', 'wallBack'],
+  ['crossWall', 'wallLeft'],
+  ['crossWall', 'wallRight'],
+  // Doors/windows are embedded in walls (frame sits in wall opening)
   ['doors', 'wallFront'],
   ['doors', 'wallBack'],
   ['windows', 'wallFront'],
   ['windows', 'wallBack'],
-  ['windScreen', 'wallBack'],
+  // Furniture against walls — intentional proximity
   ['beds', 'wallRight'],
   ['beds', 'interiorWall2'],
-  ['tableChairs', 'wallFront'],
-  ['tableChairs', 'wallBack'],
   ['tableChairs', 'interiorWall1'],
   ['tableChairs', 'interiorWall2'],
   ['stove', 'wallLeft'],
   ['stove', 'interiorWall1'],
   ['shrine', 'wallBack'],
+  ['windScreen', 'wallBack'],
+  // Gable walls (left/right) naturally penetrate roof — that's how gable roofs work
+  ['upperWallLeft', 'roofTiles'],
+  ['upperWallRight', 'roofTiles'],
+  // Stairs run along back wall — intentional
+  ['stairs', 'wallBack'],
+  // Stairs go through floor2 opening
+  ['stairs', 'floor2'],
+  // Columns pass through floor platform
+  ['columns', 'floor'],
+  // Pipelines around base
+  ['pipelines', 'base'],
+  // Upper walls sit on floor2
+  ['upperWallFront', 'floor2'],
+  ['upperWallBack', 'floor2'],
+  ['upperWallLeft', 'floor2'],
+  ['upperWallRight', 'floor2'],
+];
+  // Columns pass through floor platform
+  ['columns', 'floor'],
+  // Pipelines around base
+  ['pipelines', 'base'],
+  // Upper walls sit on floor2
+  ['upperWallFront', 'floor2'],
+  ['upperWallBack', 'floor2'],
+  ['upperWallLeft', 'floor2'],
+  ['upperWallRight', 'floor2'],
 ];
 
-function isHostGuest(partA, partB) {
-  return GUEST_HOST.some(([g, h]) =>
-    (g === partA && h === partB) || (g === partB && h === partA),
+function isAllowedOverlap(partA, partB) {
+  // Universal hosts overlap with everything (they're ground/platform)
+  if (UNIVERSAL_HOSTS.has(partA) || UNIVERSAL_HOSTS.has(partB)) return true;
+  // Check specific whitelist
+  return ALLOWED_OVERLAPS.some(([a, b]) =>
+    (a === partA && b === partB) || (a === partB && b === partA),
   );
 }
 
@@ -47,7 +93,7 @@ export function checkOverlap(parts) {
       const a = allMeshes[i];
       const b = allMeshes[j];
       if (a.partName === b.partName) continue;
-      if (isHostGuest(a.partName, b.partName)) continue;
+      if (isAllowedOverlap(a.partName, b.partName)) continue;
 
       const ratio = volumeRatio(a.box, b.box);
       if (ratio > 0.05) {

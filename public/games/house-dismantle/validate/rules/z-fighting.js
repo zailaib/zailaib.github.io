@@ -1,8 +1,9 @@
 /* Rule: Z-Fighting — detect co-planar overlapping meshes within the same part */
 import { getWorldAABB } from '../helpers.js';
 
-const DEPTH_EPSILON = 0.005; // meter — positions within this are co-planar
-const OVERLAP_MIN = 0.3;     // 30% area overlap triggers violation
+const DEPTH_EPSILON = 0.005;  // meter — positions within this are co-planar
+const OVERLAP_MIN = 0.5;      // 50% area overlap triggers violation
+const MIN_VOLUME = 0.001;     // m³ — skip meshes smaller than this (decorative details)
 
 export function checkZFighting(parts) {
   const violations = [];
@@ -17,6 +18,11 @@ export function checkZFighting(parts) {
       for (let j = i + 1; j < meshes.length; j++) {
         const boxA = getWorldAABB(meshes[i]);
         const boxB = getWorldAABB(meshes[j]);
+
+        // Skip tiny decorative details (stone grooves, chicken combs, etc.)
+        const volA = (boxA.max.x - boxA.min.x) * (boxA.max.y - boxA.min.y) * (boxA.max.z - boxA.min.z);
+        const volB = (boxB.max.x - boxB.min.x) * (boxB.max.y - boxB.min.y) * (boxB.max.z - boxB.min.z);
+        if (volA < MIN_VOLUME || volB < MIN_VOLUME) continue;
 
         const cxA = (boxA.min.x + boxA.max.x) / 2;
         const cyA = (boxA.min.y + boxA.max.y) / 2;
