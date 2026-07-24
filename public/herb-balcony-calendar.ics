@@ -10,7 +10,7 @@ X-WR-TIMEZONE:Asia/Shanghai
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260228
 DTEND;VALUE=DATE:20260229
-SUMMARY:🪴 购入三盆香草苗 — 罗勒·薄荷·迷迭香
+SUMMARY:🪴 购入三盆香草苗  罗勒·薄荷·迷迭香
 DESCRIPTION:罗勒：喜湿、喜光，一年生。薄荷：极耐寒耐湿，多年生，走茎繁殖力强。迷迭香：耐旱、怕涝，多年生木本。三盆分别贴上标签，在日历中建立对应的养护分类。
 LOCATION:阳台
 CATEGORIES:种植
@@ -49,7 +49,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260325
 DTEND;VALUE=DATE:20260326
-SUMMARY:✂️ 罗勒打顶日 — 摘除顶芽促进分枝
+SUMMARY:✂️ 罗勒打顶日  摘除顶芽促进分枝
 DESCRIPTION:当罗勒长出6片以上真叶时打顶。用干净剪刀剪掉顶端生长点。打顶后侧芽会迅速生长，株型更饱满。剪下的嫩叶可用于烹饪。
 LOCATION:阳台
 CATEGORIES:修剪
@@ -112,7 +112,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260501
 DTEND;VALUE=DATE:20260502
-SUMMARY:🪴 检查薄荷走茎 — 决定是否换盆或分株
+SUMMARY:🪴 检查薄荷走茎  决定是否换盆或分株
 DESCRIPTION:查看盆底排水孔是否有根须穿出。如有，换大一号盆或分株移栽。分株可赠送给邻居朋友。薄荷扩张速度快，需定期检查。
 LOCATION:阳台
 CATEGORIES:移栽
@@ -149,7 +149,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20261115
 DTEND;VALUE=DATE:20261116
-SUMMARY:❄️ 入冬前准备 — 三种香草越冬处理
+SUMMARY:❄️ 入冬前准备  三种香草越冬处理
 DESCRIPTION:罗勒（一年生）：采收剩余叶片，选取健壮花序留种。薄荷：修剪至地面以上5cm，覆盖稻草或干落叶防冻。迷迭香：移入室内朝南窗台，减少浇水至每10天一次。北方地区迷迭香需室内越冬，温度不低于5°C。
 LOCATION:阳台 / 室内
 CATEGORIES:越冬
@@ -158,7 +158,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20270301
 DTEND;VALUE=DATE:20270302
-SUMMARY:🌸 春回检查 — 查看薄荷是否返青发芽
+SUMMARY:🌸 春回检查  查看薄荷是否返青发芽
 DESCRIPTION:天气回暖至10°C以上时检查薄荷。拨开覆盖物观察是否有新芽冒出。如已发芽，恢复正常浇水。迷迭香可搬回室外，逐步增加光照适应。
 LOCATION:阳台
 CATEGORIES:观察

@@ -1,7 +1,7 @@
-/* Rule: Room Height — check habitable clearances */
+/* Rule: Room Height  check habitable clearances */
 import { WALL_H1, WALL_H2 } from '../../config.js';
 
-const MIN_HABITABLE = 2.4; // minimum usable room height — Dabie Mountain standard
+const MIN_HABITABLE = 2.4; // minimum usable room height  Dabie Mountain standard
 
 export function checkRoomHeight() {
   const violations = [];

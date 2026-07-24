@@ -1,4 +1,4 @@
-/* Periodic Table — 3D Electron Shell Visualization */
+/* Periodic Table  3D Electron Shell Visualization */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { hideLoading, setupThemeToggle, createStarfield } from '/games/shared/three-utils.js';
@@ -153,7 +153,7 @@ function buildTable() {
       cell.style.background = CATEGORY_COLORS[cat] + '22';
       cell.style.borderColor = CATEGORY_COLORS[cat] + '44';
       cell.innerHTML = `<span class="num">${z}</span><span class="sym">${sym}</span>`;
-      cell.title = `${z}. ${sym} — ${lang === 'zh' ? nameZh : nameEn}`;
+      cell.title = `${z}. ${sym}  ${lang === 'zh' ? nameZh : nameEn}`;
       cell.addEventListener('click', () => selectElement(z));
       grid.appendChild(cell);
     }

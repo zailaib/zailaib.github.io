@@ -1,4 +1,4 @@
-/* === Catch the Dot — Game Logic === */
+/* === Catch the Dot  Game Logic === */
 
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');

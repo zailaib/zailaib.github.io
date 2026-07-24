@@ -1,4 +1,4 @@
-/* Diffraction Lab — Three.js 3D Light Diffraction Demo */
+/* Diffraction Lab  Three.js 3D Light Diffraction Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { hideLoading, setupThemeToggle, setupResizeHandler } from '/games/shared/three-utils.js';
@@ -169,7 +169,7 @@ function buildBarrier() {
     barrierParts.push(botBlock);
   }
 
-  // Decorative border (hollow frame — four strips, not a solid box)
+  // Decorative border (hollow frame  four strips, not a solid box)
   const frameThick = 0.06;
   const frameDepth = wallDepth + 0.04;
   // Top strip

@@ -1,10 +1,10 @@
-/* Rule: Z-Fighting — detect co-planar overlapping meshes within the same part */
+/* Rule: Z-Fighting  detect co-planar overlapping meshes within the same part */
 import { getWorldAABB } from '../helpers.js';
 
-const DEPTH_EPSILON = 0.005;  // meter — positions within this are co-planar
+const DEPTH_EPSILON = 0.005;  // meter  positions within this are co-planar
 const OVERLAP_MIN = 0.5;      // 50% area overlap triggers violation
-const MIN_VOLUME = 0.001;     // m³ — skip meshes smaller than this (decorative details)
-const PERPENDICULAR_SEP = 0.05; // meter — if separated > this in perpendicular axis, skip (false positive)
+const MIN_VOLUME = 0.001;     // m³  skip meshes smaller than this (decorative details)
+const PERPENDICULAR_SEP = 0.05; // meter  if separated > this in perpendicular axis, skip (false positive)
 
 export function checkZFighting(parts) {
   const violations = [];
@@ -81,7 +81,7 @@ export function checkZFighting(parts) {
             rule: 'z-fighting',
             severity: 'error',
             parts: [name],
-            detail: `${name} 内 mesh#${i} 与 mesh#${j} 在 ${depthAxis} 轴共面重叠 ${(overlapArea * 100).toFixed(0)}% — Z-fighting`,
+            detail: `${name} 内 mesh#${i} 与 mesh#${j} 在 ${depthAxis} 轴共面重叠 ${(overlapArea * 100).toFixed(0)}%  Z-fighting`,
             metrics: {
               overlapArea: Math.round(overlapArea * 100) / 100,
               depthDiff: Math.round(dz * 1000) / 1000,

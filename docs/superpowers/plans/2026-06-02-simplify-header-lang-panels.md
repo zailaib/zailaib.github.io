@@ -16,13 +16,13 @@
 
 ## 文件结构
 
-- `src/layouts/BaseLayout.astro` — 删 header 块与 import；在 `.fixed-bottom-buttons` 顶部加语言按钮 `<a>`；frontmatter 加语言计算。
-- `src/components/LanguageSwitcher.astro` — **删除**（下拉式组件不再使用）。
-- `src/styles/tokens.css` — `--header-height: 4rem` → `0rem`；新增 `--panel-bg` / `--panel-border`。
-- `src/styles/base.css` — 删 header 相关样式；三块面板改用新 token、去 shadow/blur；`@supports not` 块去 `.site-header`。
-- `src/styles/responsive.css` — 删各断点下 `.header-content` / `.site-branding .site-title` 规则。
-- `src/styles/print.css` — `@media print` 隐藏列表里去掉 `.site-header`。
-- `src/styles/dark.css` — 在 dark `:root` 内补 `--panel-bg` / `--panel-border` 深色覆盖。
+- `src/layouts/BaseLayout.astro`  删 header 块与 import；在 `.fixed-bottom-buttons` 顶部加语言按钮 `<a>`；frontmatter 加语言计算。
+- `src/components/LanguageSwitcher.astro`  **删除**（下拉式组件不再使用）。
+- `src/styles/tokens.css`  `--header-height: 4rem` → `0rem`；新增 `--panel-bg` / `--panel-border`。
+- `src/styles/base.css`  删 header 相关样式；三块面板改用新 token、去 shadow/blur；`@supports not` 块去 `.site-header`。
+- `src/styles/responsive.css`  删各断点下 `.header-content` / `.site-branding .site-title` 规则。
+- `src/styles/print.css`  `@media print` 隐藏列表里去掉 `.site-header`。
+- `src/styles/dark.css`  在 dark `:root` 内补 `--panel-bg` / `--panel-border` 深色覆盖。
 
 ---
 

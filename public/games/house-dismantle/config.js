@@ -1,4 +1,4 @@
-/* House Dismantle — Configuration & Part Registry
+/* House Dismantle  Configuration & Part Registry
    Dabie Mountain 4-bay 2-story house */
 
 import * as THREE from 'three';
@@ -117,7 +117,7 @@ export const PART_DEFS = [
   { name: 'pipelines',   label: '排水系统',   color: '#8b6b4a', deps: [] },
 ];
 
-// ── Categories — 3 layers ─────────────────────────────────────────
+// ── Categories  3 layers ─────────────────────────────────────────
 export const CATEGORIES = {
   roof:   { label: '屋顶 ↗', parts: ['roofTiles','roofFrame'], color: '#4a4a5a' },
   floor2: { label: '二层 ↗', parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','upperInteriorWalls','floor2','windows2F','masterBed','secondBed2F','childRoom1','childRoom2','storage2F','living2F','bathroom2F'], color: '#5a8a5a' },

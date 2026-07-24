@@ -1,4 +1,4 @@
-/* 2F — floor platform with stairwell opening (kept within back zone) */
+/* 2F  floor platform with stairwell opening (kept within back zone) */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_T, HW2, HD2, BAND_Y, CROSS_Z_BACK } from '../config.js';
 
@@ -14,7 +14,7 @@ export function buildFloor2(houseGroup, parts, MATS) {
   const grp = pFloor2.group;
   const T = 0.12; // slab thickness
 
-  // Stairwell opening — entirely within back zone (z < CROSS_Z_BACK)
+  // Stairwell opening  entirely within back zone (z < CROSS_Z_BACK)
   // Stairs are in bay2 (x=-5..-0.5), back zone (z=-HD2..CROSS_Z_BACK)
   const sx0 = -4.5, sx1 = 0, sz0 = -HD2, sz1 = CROSS_Z_BACK;
 
@@ -39,7 +39,7 @@ export function buildFloor2(houseGroup, parts, MATS) {
     addTo('floor2', slab); grp.add(slab);
   }
 
-  // Concrete beams — skip over opening area
+  // Concrete beams  skip over opening area
   for (let jx = lx + 0.5; jx <= rx - 0.5; jx += 1.2) {
     if (jx > sx0 && jx < sx1) continue; // skip over opening
     const beam = box(0.10, 0.15, HOUSE_D - WALL_T * 2, MATS.concreteFloor);
@@ -47,13 +47,13 @@ export function buildFloor2(houseGroup, parts, MATS) {
     addTo('floor2', beam); grp.add(beam);
   }
 
-  // Stairwell railing — 3 sides (inner/room-facing side open for entry)
+  // Stairwell railing  3 sides (inner/room-facing side open for entry)
   const srX = (sx0 + sx1) / 2, srW = sx1 - sx0, srZ = (sz0 + sz1) / 2, srD = sz1 - sz0;
   for (const [rx, rz, rw, rd] of [
     [sx0, srZ, 0.04, srD],           // left railing
     [sx1, srZ, 0.04, srD],           // right railing
     [srX, sz0, srW + 0.08, 0.04],    // back railing
-    // Front side (toward corridor) — OPEN, no railing
+    // Front side (toward corridor)  OPEN, no railing
   ]) {
     const r = box(rw, 0.7, rd, MATS.woodDark);
     r.position.set(rx, BAND_Y + 0.43, rz);

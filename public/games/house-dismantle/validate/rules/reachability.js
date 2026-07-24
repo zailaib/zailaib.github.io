@@ -1,4 +1,4 @@
-/* Rule: Spatial Reachability — BFS through V2 unequal-bay layout */
+/* Rule: Spatial Reachability  BFS through V2 unequal-bay layout */
 import * as THREE from 'three';
 import { BAY_X, BAY_CX, HW2, HD2, FLOOR_H, BAND_Y, CROSS_Z_FRONT, CROSS_Z_BACK } from '../../config.js';
 
@@ -122,7 +122,7 @@ export function checkReachability(parts) {
   if (doorways.length === 0) {
     violations.push({
       rule: 'reachability', severity: 'error', parts: ['interiorWalls'],
-      detail: '未检测到任何门洞 — 隔墙可能无开口',
+      detail: '未检测到任何门洞  隔墙可能无开口',
       fix: { suggestion: '在横纵隔墙上添加门洞' },
     });
   }

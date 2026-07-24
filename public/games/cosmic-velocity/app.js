@@ -1,4 +1,4 @@
-/* Cosmic Velocity — Orbital Mechanics 3D Demo */
+/* Cosmic Velocity  Orbital Mechanics 3D Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
@@ -484,7 +484,7 @@ function animate(now) {
 
     const alive = updateRocketPosition(orbitParams, rocketAngle);
     if (!alive) {
-      // Rocket crashed — spawn explosion
+      // Rocket crashed  spawn explosion
       const crashPos = rocketGroup.position.clone();
       rocketFlying = false;
       spawnExplosion(crashPos);

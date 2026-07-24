@@ -1,4 +1,4 @@
-/* 1F — walls: corridor + unequal bays */
+/* 1F  walls: corridor + unequal bays */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_H1, WALL_T, INT_WALL_T, BAY_X, BAY_CX, BAY_WIDTHS, HW2, HD2, WY1, CROSS_Z_FRONT, CROSS_Z_BACK, DEPTH_CORRIDOR } from '../config.js';
 
@@ -58,7 +58,7 @@ export function buildFloor1Walls(houseGroup, parts, MATS) {
     }
   }
 
-  // Cross wall 2 (back corridor wall) at z=CROSS_Z_BACK — same pattern
+  // Cross wall 2 (back corridor wall) at z=CROSS_Z_BACK  same pattern
   for (let b = 0; b < BAY_WIDTHS.length; b++) {
     const cx = BAY_CX[b], bw = BAY_WIDTHS[b];
     if (bw < DW + 1.0) continue;

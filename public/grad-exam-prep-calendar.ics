@@ -80,28 +80,28 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20261010
 DTEND;VALUE=DATE:20261011
-SUMMARY:🖥️ 考研网上正式报名 — 截止日期前完成
+SUMMARY:🖥️ 考研网上正式报名  截止日期前完成
 DESCRIPTION:不可错过！登录研招网填写报名信息、上传照片（白底证件照，按规格裁剪）、选择报考点（注意户籍或工作地限制）、缴纳报名费、截图保存报名号和报名信息。尽早报名不要拖到最后一天，系统可能拥堵。
 LOCATION:线上（研招网）
 CATEGORIES:重要节点
 BEGIN:VALARM
 TRIGGER:-PT1440M
 ACTION:DISPLAY
-DESCRIPTION:提醒：🖥️ 考研网上正式报名 — 截止日期前完成
+DESCRIPTION:提醒：🖥️ 考研网上正式报名  截止日期前完成
 END:VALARM
 END:VEVENT
 
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20261105
 DTEND;VALUE=DATE:20261106
-SUMMARY:📸 现场（网上）确认 — 上传材料
+SUMMARY:📸 现场（网上）确认  上传材料
 DESCRIPTION:不可错过！上传身份证正反面、学历学位证书（应届生上传学生证）、手持身份证照片、确认报考信息无误。各省确认时间略有不同，关注报考点公告。确认通过后截屏保存确认凭证。
 LOCATION:线上（研招网）
 CATEGORIES:重要节点
 BEGIN:VALARM
 TRIGGER:-PT1440M
 ACTION:DISPLAY
-DESCRIPTION:提醒：📸 现场（网上）确认 — 上传材料
+DESCRIPTION:提醒：📸 现场（网上）确认  上传材料
 END:VALARM
 END:VEVENT
 
@@ -109,7 +109,7 @@ BEGIN:VEVENT
 DTSTART;VALUE=DATE:20261101
 DTEND;VALUE=DATE:20261220
 RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;UNTIL=20261219
-SUMMARY:🔥 上午：数学冲刺 — 真题+错题（第三轮）
+SUMMARY:🔥 上午：数学冲刺  真题+错题（第三轮）
 DESCRIPTION:第三轮·冲刺期（11-12月）。近15年真题（限时3小时模拟）。错题本反复刷，直到每道错题都能独立做对。重点攻克高频考点和自己常错的题型。真题做到3遍以上，你会看到命题规律。这个阶段不再学新知识，专注做对已经会的题。
 LOCATION:图书馆 / 自习室
 CATEGORIES:数学
@@ -129,7 +129,7 @@ BEGIN:VEVENT
 DTSTART;VALUE=DATE:20261101
 DTEND;VALUE=DATE:20261220
 RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;UNTIL=20261219
-SUMMARY:🔥 晚上：政治冲刺 — 肖八肖四+时政（第三轮）
+SUMMARY:🔥 晚上：政治冲刺  肖八肖四+时政（第三轮）
 DESCRIPTION:第三轮·冲刺期（11-12月）。肖八选择题（11月）+肖四全部（12月）。分析题背诵以肖四为核心。时政热点汇总。肖四分析题背到能默写框架的程度。考前最后两周政治背诵时间是性价比最高的投资。
 LOCATION:图书馆 / 自习室
 CATEGORIES:政治
@@ -181,7 +181,7 @@ BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260701
 DTEND;VALUE=DATE:20261221
 RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=20261215
-SUMMARY:🌿 每周休息日 — 轻复习+运动
+SUMMARY:🌿 每周休息日  轻复习+运动
 DESCRIPTION:周日只做轻量复习（回顾错题、背单词）。运动（每天30分钟）：跑步、跳绳或散步。运动可提升记忆力和抗压能力。吃一顿好的，补充营养。补觉，保证睡眠充足。休息不是偷懒，是长期作战的必需品。考研是马拉松不是短跑，每周一天的休息决定了你能跑多远。
 LOCATION:家 / 操场
 CATEGORIES:休息
@@ -191,7 +191,7 @@ BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260701
 DTEND;VALUE=DATE:20261221
 RRULE:FREQ=MONTHLY;BYMONTHDAY=1;UNTIL=20261201
-SUMMARY:📊 月度复盘日 — 调整下月计划
+SUMMARY:📊 月度复盘日  调整下月计划
 DESCRIPTION:每月1号回顾上月复习进度。复盘清单：1.各科完成了哪些内容？进度超前/落后？2.模考成绩趋势如何？3.哪些科目或章节需要加强？4.调整下月每日时间分配。月度复盘是防止跑偏的关键机制。
 LOCATION:图书馆
 CATEGORIES:复盘

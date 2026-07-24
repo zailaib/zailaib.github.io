@@ -1,4 +1,4 @@
-/* Rule: Dependency Topology — 4-bay 2-story house */
+/* Rule: Dependency Topology  4-bay 2-story house */
 const LEVELS = {
   roofTiles: 4, roofFrame: 4,
   upperWallFront: 3, upperWallBack: 3, upperWallLeft: 3, upperWallRight: 3,
@@ -28,7 +28,7 @@ export function checkDepTopology(PART_DEFS) {
           rule: 'dep-topology',
           severity: 'error',
           parts: [part.name, depName],
-          detail: `${part.label} (L${partLevel}) 依赖 ${dep?.label || depName} (L${depLevel}) — 下层不应依赖上层`,
+          detail: `${part.label} (L${partLevel}) 依赖 ${dep?.label || depName} (L${depLevel})  下层不应依赖上层`,
           metrics: { partLevel, depLevel },
           fix: { file: 'config.js', suggestion: `移除 ${part.name} → ${depName} 依赖` },
         });
@@ -40,7 +40,7 @@ export function checkDepTopology(PART_DEFS) {
           rule: 'dep-topology',
           severity: 'warning',
           parts: [part.name, depName],
-          detail: `${part.label} (L${partLevel}) 依赖 ${dep?.label || depName} (L${depLevel}) — 跨层依赖需确认`,
+          detail: `${part.label} (L${partLevel}) 依赖 ${dep?.label || depName} (L${depLevel})  跨层依赖需确认`,
           metrics: { partLevel, depLevel },
           fix: { file: 'config.js', suggestion: `确认 ${part.name} → ${depName} 是否合理` },
         });

@@ -1,4 +1,4 @@
-/* 1F — doors, windows, stairs, screen */
+/* 1F  doors, windows, stairs, screen */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_H1, WALL_T, FLOOR_H, BAY_CX, BAY_WIDTHS, HW2, HD2, BAND_Y, CROSS_Z_FRONT, CROSS_Z_BACK } from '../config.js';
 
@@ -24,7 +24,7 @@ export function buildFloor1Openings(houseGroup, parts, MATS) {
     wg.position.set(x,y,z); wg.rotation.y = ry; return wg;
   }
 
-  // Windows — 1 per bay front, 1 per bay back (skip door positions)
+  // Windows  1 per bay front, 1 per bay back (skip door positions)
   const win1 = parts.get('windows1F').group;
   const wy = 1.6 + F;
   for (let b = 0; b < BAY_WIDTHS.length; b++) {
@@ -59,7 +59,7 @@ export function buildFloor1Openings(houseGroup, parts, MATS) {
   const screenFrame = box(sw, sh, 0.06, MATS.woodDark); screenFrame.position.set(fdX, 1.1+F, -0.5); addTo('screen',screenFrame); screenGrp.add(screenFrame);
   for (let i = 0; i < 3; i++) { const panel = box(0.8, sh-0.2, 0.03, MATS.woodLight); panel.position.set(fdX+(i-1)*0.9, 1.1+F, -0.47); addTo('screen',panel); screenGrp.add(panel); }
 
-  // Stairs — bay2 back (x=-5..-0.5, z=-HD2..CROSS_Z_BACK). L-shape, entirely within back zone
+  // Stairs  bay2 back (x=-5..-0.5, z=-HD2..CROSS_Z_BACK). L-shape, entirely within back zone
   const stairGrp = parts.get('stairs').group;
   const sBase = F, sTop = BAND_Y;
   const s1Steps = 8, s2Steps = 7, stepCount = s1Steps + s2Steps;
@@ -72,12 +72,12 @@ export function buildFloor1Openings(houseGroup, parts, MATS) {
   // Second segment: going +Z (toward corridor), rotated
   const s2X = s1X + s1Steps*stepD, s2Z = s1Z;
   for (let i = 0; i < s2Steps; i++) { const step = box(stepW-0.06,0.04,stepD,MATS.woodLight); step.position.set(s2X+stepW/2,sBase+(s1Steps+i)*stepH,s2Z+stepW+i*stepD+stepD/2); step.rotation.y = Math.PI/2; addTo('stairs',step); stairGrp.add(step); }
-  // Railings — first segment (inner side, facing +Z)
+  // Railings  first segment (inner side, facing +Z)
   const rh = 0.9, rt = 0.06;
   const r1l = s1Steps*stepD+0.2, r1x = s1X + s1Steps*stepD/2, r1y = sBase + s1Steps*stepH/2 + rh, r1z = s1Z - stepW/2 + 0.04;
   const r1 = box(r1l, rt, rt, MATS.woodDark); r1.position.set(r1x, r1y, r1z); addTo('stairs', r1); stairGrp.add(r1);
   for (let i = 0; i <= s1Steps; i++) { const p = box(0.05, rh, 0.05, MATS.woodDark); p.position.set(s1X + i*stepD, sBase + i*stepH + rh/2, r1z); addTo('stairs', p); stairGrp.add(p); }
-  // Railings — second segment (outer side, facing -X)
+  // Railings  second segment (outer side, facing -X)
   const r2l = s2Steps*stepD+0.2, r2x = s2X + stepW - 0.04, r2y = sBase + (s1Steps + s2Steps/2)*stepH + rh, r2z = s2Z + stepW + s2Steps*stepD/2;
   const r2 = box(rt, rt, r2l, MATS.woodDark); r2.position.set(r2x, r2y, r2z); addTo('stairs', r2); stairGrp.add(r2);
   for (let i = 0; i <= s2Steps; i++) { const p = box(0.05, rh, 0.05, MATS.woodDark); p.position.set(r2x, sBase + (s1Steps + i)*stepH + rh/2, s2Z + stepW + i*stepD); addTo('stairs', p); stairGrp.add(p); }

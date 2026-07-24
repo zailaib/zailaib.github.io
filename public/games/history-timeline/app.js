@@ -1,4 +1,4 @@
-/* History Run — Time-travel road trip through 5500 years */
+/* History Run  Time-travel road trip through 5500 years */
 import * as THREE from 'three';
 import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
 
@@ -315,7 +315,7 @@ function updateHUD() {
   eraYear.textContent = prefix + ' 年';
   eraLabel.textContent = era.emoji + ' ' + era.name + '时代';
   eraLabel.style.color = '#' + era.color.toString(16).padStart(6, '0');
-  eraRange.textContent = (era.start < 0 ? '前' + (-era.start) : era.start) + ' — ' + era.end + '年';
+  eraRange.textContent = (era.start < 0 ? '前' + (-era.start) : era.start) + '  ' + era.end + '年';
 
   if (era.vehicle !== currentVehicle) {
     currentVehicle = era.vehicle;

@@ -1,4 +1,4 @@
-/* Cell Division — 3D Mitosis Animation */
+/* Cell Division  3D Mitosis Animation */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { hideLoading, setupThemeToggle, setupResizeHandler } from '/games/shared/three-utils.js';

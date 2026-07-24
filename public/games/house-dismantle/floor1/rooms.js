@@ -1,4 +1,4 @@
-/* 1F rooms — V2 layout with corridor */
+/* 1F rooms  V2 layout with corridor */
 import * as THREE from 'three';
 import { BAY_CX, BAY_X, FLOOR_H, HD2, HW2, DEPTH_FRONT, DEPTH_BACK, CROSS_Z_FRONT, CROSS_Z_BACK } from '../config.js';
 

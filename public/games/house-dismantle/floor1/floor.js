@@ -1,4 +1,4 @@
-/* 1F — floor platform + front step */
+/* 1F  floor platform + front step */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, BAY_CX, FLOOR_H, HW2, HD2 } from '../config.js';
 

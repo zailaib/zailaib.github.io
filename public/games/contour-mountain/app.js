@@ -1,4 +1,4 @@
-/* Contour Mountain — 3D Topographic Demo */
+/* Contour Mountain  3D Topographic Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { hideLoading, setupThemeToggle, setupResizeHandler } from '/games/shared/three-utils.js';
@@ -100,7 +100,7 @@ function terrainHeight(wx, wy) {
   const alongRidge = Math.abs(wx) < 3.5 ? 1 - Math.abs(wx) / 3.5 : 0;
   h += Math.max(0, alongRidge) * Math.max(0, 1 - saddleDist / 1.2) * 2.0;
 
-  // Small third peak (north) — makes interesting contour patterns
+  // Small third peak (north)  makes interesting contour patterns
   const dNorth = Math.sqrt((wx + 0.2) ** 2 + (wy - 2.8) ** 2);
   h += Math.max(0, 1 - dNorth / 1.6) * 2.8;
 
@@ -281,7 +281,7 @@ function buildMarkers() {
     dot.position.set(wx, h, wy);
     markerGroup.add(dot);
   }
-  // Peak markers — two flag poles on the summits
+  // Peak markers  two flag poles on the summits
   const peaks = [{ x: -2.2, z: 0.3, h: 5.4, label: '西峰' }, { x: 2.5, z: -0.1, h: 4.7, label: '东峰' }];
   peaks.forEach(p => {
     const flagPole = new THREE.Mesh(

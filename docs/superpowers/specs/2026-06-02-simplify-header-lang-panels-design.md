@@ -29,8 +29,8 @@
 - 删除 `src/styles/base.css` 中顶栏相关样式：`.site-header`、`.header-content`、`.site-branding .site-title`、`.site-title a`、`.site-title a:hover`、`.header-controls`。
 
 **布局连带处理：**
-- `.app-container` 当前 `min-height: calc(100vh - var(--header-height))` —— 改为 `min-height: 100vh`（不再扣减顶栏高度）。
-- `.sidebar-container` 与 `.minimap-container` 的 sticky 偏移当前为 `top: calc(var(--header-height) + var(--spacing-2xl))`，`max-height: calc(100vh - var(--header-height) - var(--spacing-4xl))` —— 去掉 `var(--header-height)` 项，sticky 改为贴近视口顶部（保留 `--spacing-2xl` 作为上间距）。
+- `.app-container` 当前 `min-height: calc(100vh - var(--header-height))` — 改为 `min-height: 100vh`（不再扣减顶栏高度）。
+- `.sidebar-container` 与 `.minimap-container` 的 sticky 偏移当前为 `top: calc(var(--header-height) + var(--spacing-2xl))`，`max-height: calc(100vh - var(--header-height) - var(--spacing-4xl))` — 去掉 `var(--header-height)` 项，sticky 改为贴近视口顶部（保留 `--spacing-2xl` 作为上间距）。
 - `.app-container` 顶部已有 `padding: var(--spacing-2xl)`，可保证内容不贴边；无需额外补丁。
 - `src/styles/base.css` 的 `@supports not (...)` 降级块（约 192 行）当前列了 `.site-header, .content-wrapper`，删除其中 `.site-header`。
 - `src/styles/print.css` 第 8 行 `.fixed-bottom-buttons, …` 中若包含 `.site-header` 选择器，一并清理（打印时本就隐藏顶栏，移除后该选择器失效，删去即可）。

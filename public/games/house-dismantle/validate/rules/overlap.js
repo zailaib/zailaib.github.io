@@ -1,4 +1,4 @@
-/* Rule: Overlap — V2 4-bay unequal-width house */
+/* Rule: Overlap  V2 4-bay unequal-width house */
 import { getWorldAABB, volumeRatio } from '../helpers.js';
 
 const UNIVERSAL_HOSTS = new Set(['floor', 'floor2', 'base']);

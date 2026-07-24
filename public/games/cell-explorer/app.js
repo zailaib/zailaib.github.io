@@ -1,4 +1,4 @@
-/* Cell Explorer — 3D Cell Structure Visualization */
+/* Cell Explorer  3D Cell Structure Visualization */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
@@ -105,7 +105,7 @@ function makeChloroplast() {
   // Outer envelope
   const outer = makeEllipsoid(0.5, 0.25, 0.3, '#2d8a4e', 0.85);
   group.add(outer);
-  // Thylakoid stacks (grana) — small green discs
+  // Thylakoid stacks (grana)  small green discs
   for (let i = 0; i < 5; i++) {
     const stack = new THREE.Group();
     const n = 3 + Math.floor(Math.random() * 3);

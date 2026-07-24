@@ -1,4 +1,4 @@
-# House Dismantle 3D — Design Spec
+# House Dismantle 3D  Design Spec
 
 > 2026-07-24 | V2 大别山 4 开间 2 层 | 水泥柱现代民居
 
@@ -100,7 +100,7 @@ dep-topology, room-height, column-placement, poly-consistency, clearance, overla
 
 ## 待处理
 
-- **材质纹理** — 纯色无贴图
-- **家具比例** — 凳深>桌深
-- **site-analyzer** — 硬编码窗数
-- **二层卫生间** — 暂缺地板划分
+- **材质纹理**  纯色无贴图
+- **家具比例**  凳深>桌深
+- **site-analyzer**  硬编码窗数
+- **二层卫生间**  暂缺地板划分

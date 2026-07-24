@@ -1,4 +1,4 @@
-/* House Dismantle — UI: legend, selection, events, buttons */
+/* House Dismantle  UI: legend, selection, events, buttons */
 import * as THREE from 'three';
 import { CATEGORIES, getDisassembleOffset } from './config.js';
 

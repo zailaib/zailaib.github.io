@@ -1,4 +1,4 @@
-/* 2F rooms — V2 layout mirror */
+/* 2F rooms  V2 layout mirror */
 import * as THREE from 'three';
 import { BAY_CX, BAY_X, BAND_Y, HD2, HW2, DEPTH_FRONT, DEPTH_BACK, CROSS_Z_FRONT, CROSS_Z_BACK } from '../config.js';
 

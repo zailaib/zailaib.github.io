@@ -10,7 +10,7 @@ X-WR-TIMEZONE:Asia/Shanghai
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260101
 DTEND;VALUE=DATE:20260215
-SUMMARY:🔍 选址调研 — 周末看铺+数据分析
+SUMMARY:🔍 选址调研  周末看铺+数据分析
 DESCRIPTION:每周末实地考察备选铺位，工作日晚做数据分析。\n📋 考察维度：\n- 人流量（工作日/周末，白天/晚上）\n- 周边竞品数量和类型\n- 租金和物业费\n- 交通便利度和停车\n- 目标客群匹配度（年轻白领/文艺青年）\n💡 精酿吧的理想选址：大学附近、文创园区、中产社区。
 LOCATION:城市各备选区域
 CATEGORIES:选址
@@ -33,7 +33,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260216
 DTEND;VALUE=DATE:20260401
-SUMMARY:🔨 装修期 — 45天倒计时
+SUMMARY:🔨 装修期  45天倒计时
 DESCRIPTION:免租装修期45天，每一天都不能浪费。\n📋 装修关键节点：\n- D1-3：拆旧+清理\n- D4-8：水电改造（冷库独立6平电线、酒管预埋）\n- D9-12：地面找平+防水（卫生间闭水试验24h）\n- D13-20：墙面批灰+油漆\n- D21-28：吧台和酒头墙定制\n- D29-35：灯光轨道+排气系统\n- D36-40：冷库安装调试（目标4°C）\n- D41-45：家具进场+软装+保洁
 LOCATION:店内
 CATEGORIES:装修
@@ -42,7 +42,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260216
 DTEND;VALUE=DATE:20260415
-SUMMARY:🍺 选酒 — 每周与一家精酿厂牌对接
+SUMMARY:🍺 选酒  每周与一家精酿厂牌对接
 DESCRIPTION:装修期间同步选酒。目标：16款生啤酒单。\n📋 酒单结构：\n- 清爽型（科隆/皮尔森/淡色艾尔）×3\n- IPA类（西海岸/浑浊/双倍）×4\n- 酸啤类（柏林酸小麦/古斯/水果酸）×3\n- 深色类（世涛/波特/棕色艾尔）×3\n- 特酿/限定 ×3\n💡 每个风味象限至少覆盖2款，满足不同客人。
 LOCATION:各精酿厂牌
 CATEGORIES:选酒
@@ -51,7 +51,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260320
 DTEND;VALUE=DATE:20260321
-SUMMARY:🔧 设备到位 — 冷库+酒头系统安装
+SUMMARY:🔧 设备到位  冷库+酒头系统安装
 DESCRIPTION:核心设备安装调试。\n📋 设备清单：\n- 冷库（4°C，至少容纳20只50L啤酒桶）\n- 16头酒柱+酒管系统（不锈钢管路）\n- CO₂气瓶（食品级，至少备2瓶）\n- 玻璃杯洗杯器\n- 制冰机\n💡 酒管长度越短越好，冷库到酒头的距离控制在5米以内。
 LOCATION:店内
 CATEGORIES:设备
@@ -161,7 +161,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20270518
 DTEND;VALUE=DATE:20270519
-SUMMARY:🎂 一周年庆 — 法华IPA复活酿造+老客回馈
+SUMMARY:🎂 一周年庆  法华IPA复活酿造+老客回馈
 DESCRIPTION:🍻 一周年了！\n📋 周年庆活动：\n- 重新酿造限量"法华IPA"\n- 邀请开业至今的老客人免费品鉴\n- 老客专属折扣（一周内有效）\n- 一周年限定杯垫或贴纸\n- 回顾这一年的高光时刻\n💡 一周年不只是庆祝，是感谢那些从第一天就支持你的人。\n\n翻回一年前的日历，看看你走了多远 🍺
 LOCATION:店内
 CATEGORIES:里程碑

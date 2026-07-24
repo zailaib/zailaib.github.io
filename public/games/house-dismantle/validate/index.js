@@ -1,4 +1,4 @@
-/* House Dismantle — Spatial Validation Engine
+/* House Dismantle  Spatial Validation Engine
  * Dabie Mountain 4-bay 2-story house */
 import { PART_DEFS } from '../config.js';
 import { checkDepTopology } from './rules/dep-topology.js';

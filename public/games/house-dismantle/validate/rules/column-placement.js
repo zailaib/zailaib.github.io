@@ -1,4 +1,4 @@
-/* Rule: Column Placement — columns should be at wall intersections (V2 unequal bays) */
+/* Rule: Column Placement  columns should be at wall intersections (V2 unequal bays) */
 import * as THREE from 'three';
 import { HW2, HD2, BAY_X, CROSS_Z_FRONT, CROSS_Z_BACK } from '../../config.js';
 
@@ -11,7 +11,7 @@ export function checkColumnPlacement(parts) {
   if (!colsPart) return violations;
 
   // Wall planes for V2 unequal-bay layout
-  // X: all structural wall planes — exterior side walls + interior longitudinal walls
+  // X: all structural wall planes  exterior side walls + interior longitudinal walls
   // BAY_X = [-8, -5, -0.5, 4.5, 8] → all 5 lines
   const xWallPlanes = [...BAY_X];
 
@@ -39,7 +39,7 @@ export function checkColumnPlacement(parts) {
         rule: 'column-placement',
         severity: 'error',
         parts: ['columns'],
-        detail: `柱子 (${pos.x.toFixed(1)}, ${pos.z.toFixed(1)}) 距最近X梁 ${minXDist.toFixed(1)}m、Z梁 ${minZDist.toFixed(1)}m — 悬浮`,
+        detail: `柱子 (${pos.x.toFixed(1)}, ${pos.z.toFixed(1)}) 距最近X梁 ${minXDist.toFixed(1)}m、Z梁 ${minZDist.toFixed(1)}m  悬浮`,
         metrics: { distToXWall: +minXDist.toFixed(2), distToZWall: +minZDist.toFixed(2) },
         fix: { file: 'base/index.js', suggestion: '将柱子移到梁的交叉点' },
       });

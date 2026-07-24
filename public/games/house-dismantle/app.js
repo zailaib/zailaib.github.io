@@ -1,4 +1,4 @@
-/* House Dismantle — Main Entry */
+/* House Dismantle  Main Entry */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
@@ -50,7 +50,7 @@ controls.target.set(0, 3.5, 0); controls.update();
 
 state.camera = camera; state.renderer = renderer; state.controls = controls;
 
-// ── Lighting — bright ambient + fills for translated parts ─────────
+// ── Lighting  bright ambient + fills for translated parts ─────────
 scene.add(new THREE.AmbientLight(0x667788, 4.0));
 scene.add(new THREE.HemisphereLight(0x8899cc, 0x443322, 1.5));
 const sun = new THREE.DirectionalLight(0xffeedd, 3.0);

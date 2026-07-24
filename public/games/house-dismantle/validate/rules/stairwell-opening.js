@@ -1,7 +1,7 @@
-/* Rule: Stairwell Opening — stairs must be within the 2F floor opening */
+/* Rule: Stairwell Opening  stairs must be within the 2F floor opening */
 import { getWorldAABB } from '../helpers.js';
 
-const MARGIN = 0.1; // meter — allow stairs to extend slightly past opening edge
+const MARGIN = 0.1; // meter  allow stairs to extend slightly past opening edge
 
 export function checkStairwellOpening(parts) {
   const violations = [];
@@ -15,7 +15,7 @@ export function checkStairwellOpening(parts) {
       rule: 'stairwell-opening',
       severity: 'warning',
       parts: ['floor2'],
-      detail: 'floor2 未导出 stairwellOpening 边界 — 无法验证楼梯是否在洞口内',
+      detail: 'floor2 未导出 stairwellOpening 边界  无法验证楼梯是否在洞口内',
       fix: { file: 'floor2/floor.js', suggestion: '添加 pFloor2.stairwellOpening = { xMin, xMax, zMin, zMax, yFloor }' },
     });
     return violations;

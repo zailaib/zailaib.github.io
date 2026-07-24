@@ -1,4 +1,4 @@
-/* 2F — walls: mirror 1F corridor + unequal bays */
+/* 2F  walls: mirror 1F corridor + unequal bays */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_H2, WALL_T, INT_WALL_T, BAY_X, BAY_CX, BAY_WIDTHS, HW2, HD2, WY2, BAND_Y, CROSS_Z_FRONT, CROSS_Z_BACK } from '../config.js';
 
@@ -17,7 +17,7 @@ export function buildUpperWalls(houseGroup, parts, MATS) {
   makeWall('upperWallLeft',  WALL_T, WALL_H2, HOUSE_D, -HW2, WY2, 0);
   makeWall('upperWallRight', WALL_T, WALL_H2, HOUSE_D,  HW2, WY2, 0);
 
-  // Upper vent windows — offset outside wall face (WALL_T/2 + 0.03) to avoid z-fighting
+  // Upper vent windows  offset outside wall face (WALL_T/2 + 0.03) to avoid z-fighting
   const ventOff = WALL_T / 2 + 0.04;
   for (const [side, sign] of [['upperWallFront', 1], ['upperWallBack', -1]]) {
     const zBase = sign * (HD2 + ventOff);
@@ -29,7 +29,7 @@ export function buildUpperWalls(houseGroup, parts, MATS) {
     }
   }
 
-  // Interior walls — same as 1F
+  // Interior walls  same as 1F
   const iwGrp = parts.get('upperInteriorWalls').group;
   const DW = 0.9, fz = HD2 - WALL_T, bz = -HD2 + WALL_T;
 

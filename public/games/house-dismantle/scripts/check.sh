@@ -1,5 +1,5 @@
 #!/bin/bash
-# House Dismantle — Static Model Check
+# House Dismantle  Static Model Check
 # Run before committing changes to house-*.js files.
 # Detects known anti-patterns that pass validation but produce wrong geometry.
 
@@ -7,7 +7,7 @@ set -e
 DIR="$(cd "$(dirname "$0")" && pwd)"
 MODEL_DIR="$DIR/.."
 
-echo "🔍 House Dismantle — Static Model Check"
+echo "🔍 House Dismantle  Static Model Check"
 echo ""
 
 FAIL=0
@@ -18,7 +18,7 @@ FAIL=0
 echo "  [1/3] Checking for .add().position.set() anti-pattern..."
 MATCHES=$(grep -rn '\.add(box.*)\.position\.set\|\.add(new.*)\.position\.set' "$MODEL_DIR" --include='*.js' || true)
 if [ -n "$MATCHES" ]; then
-  echo "  ❌ FAIL: Found .add().position.set() — moves group, not mesh:"
+  echo "  ❌ FAIL: Found .add().position.set()  moves group, not mesh:"
   echo "$MATCHES" | while read line; do
     echo "       $line"
   done

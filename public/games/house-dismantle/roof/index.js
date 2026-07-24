@@ -1,4 +1,4 @@
-/* Roof — tiles + frame */
+/* Roof  tiles + frame */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, ROOF_H, EAVE_H, ROOF_OH, ROOF_RISE, HW2, HD2 } from '../config.js';
 

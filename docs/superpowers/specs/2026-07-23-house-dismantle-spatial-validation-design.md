@@ -1,4 +1,4 @@
-# House Dismantle — 空间约束检测引擎
+# House Dismantle  空间约束检测引擎
 
 > 设计规范 | 2026-07-23
 >
@@ -107,7 +107,7 @@ interface ColumnEntry {
 
 ## 规则定义
 
-### R1: `overlap` — 几何重叠检测
+### R1: `overlap`  几何重叠检测
 
 **检测范围**: 所有不同 part 之间，排除宿主-子件关系（门框在墙内不算冲突）。
 
@@ -133,7 +133,7 @@ interface ColumnEntry {
 - 后门 mesh vs 右开间后窗 mesh（house-openings.js:131 vs 126）
 - 通风窗 frame/mullH/mullV 三者在同一 z（house-core.js:163-181，由 R6 处理）
 
-### R2: `clearance` — 最小通过宽度
+### R2: `clearance`  最小通过宽度
 
 **检测范围**: 隔墙段间门洞、房间间通道。
 
@@ -149,7 +149,7 @@ interface ColumnEntry {
 **预期检出**:
 - crossWall 段间缝隙 ≈ 0.19m（house-core.js:111, segW 导致）
 
-### R3: `column-placement` — 柱位合理性
+### R3: `column-placement`  柱位合理性
 
 **规则**: 木柱应靠近墙面（承重逻辑），离所有墙面 >1.5m 的柱子不合理。
 
@@ -161,7 +161,7 @@ interface ColumnEntry {
 **预期检出**:
 - z=0 轴线上两根柱子，距前后墙各约 4.5m，距隔墙 1.0m（house-core.js:69）
 
-### R4: `room-height` — 层高约束
+### R4: `room-height`  层高约束
 
 **规则**: 居住空间净高应 ≥ 1.8m。
 
@@ -173,7 +173,7 @@ interface ColumnEntry {
 **预期检出**:
 - WALL_H2 = 1.5m < 1.8m（config.js:9）
 
-### R5: `dep-topology` — 依赖拓扑
+### R5: `dep-topology`  依赖拓扑
 
 **规则**: 依赖关系应符合物理建造/拆除顺序。定义楼层层次：
 
@@ -204,7 +204,7 @@ Plumbing: pipelines (Level 0)
 - crossWall (L1) → interiorWall1, interiorWall2（config.js:89，同层但依赖方向存疑）
 - pipelines (L0) → base (L0)（config.js:118——应该反过来？水管先拆）
 
-### R6: `z-fighting` — 同深度重叠
+### R6: `z-fighting`  同深度重叠
 
 **规则**: 同一 group 内的 mesh，若中心点 z 差 < 0.005m 且 bbox 在 xy 平面重叠，会闪烁。
 
@@ -218,7 +218,7 @@ Plumbing: pipelines (Level 0)
 **预期检出**:
 - 通风窗 frame/mullH/mullV（house-core.js:168-180），三者 z 同为 `HD2 + WALL_T/2 + 0.03`
 
-### R7: `poly-consistency` — 多边形精度一致性
+### R7: `poly-consistency`  多边形精度一致性
 
 **规则**: 场景内几何体的径向分段数 max/min 比 > 3 时视觉不协调。
 
@@ -228,7 +228,7 @@ Plumbing: pipelines (Level 0)
 3. 若 ratio > 3 → warning，列出极端值 mesh 的来源 part
 
 **预期检出**:
-- 鸡冠 ConeGeometry(4) vs 木柱 CylinderGeometry(16) — ratio = 4
+- 鸡冠 ConeGeometry(4) vs 木柱 CylinderGeometry(16)  ratio = 4
 
 ## 实现顺序
 

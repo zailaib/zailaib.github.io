@@ -1,4 +1,4 @@
-# Glassmorphism UI Redesign — Design
+# Glassmorphism UI Redesign  Design
 
 **Date:** 2026-06-02
 **Status:** Approved
@@ -10,10 +10,10 @@ Make the bilingual blog's UI more beautiful by adopting a **glassmorphism** visu
 
 ## Approach
 
-**Approach A — token-driven.** Add a small set of `--glass-*` design tokens plus a `--gradient-bg` token to the existing token system (`tokens.css` for light, `dark.css` for dark). Then change the surface declarations in `base.css` (and the mobile-popup rules in `responsive.css`, and the `.article-card` in `Home.astro`) to consume those tokens.
+**Approach A  token-driven.** Add a small set of `--glass-*` design tokens plus a `--gradient-bg` token to the existing token system (`tokens.css` for light, `dark.css` for dark). Then change the surface declarations in `base.css` (and the mobile-popup rules in `responsive.css`, and the `.article-card` in `Home.astro`) to consume those tokens.
 
 Rejected alternatives:
-- **Approach B (override layer):** a separate glass stylesheet layered on top — creates two sources of truth and fights the existing token system.
+- **Approach B (override layer):** a separate glass stylesheet layered on top  creates two sources of truth and fights the existing token system.
 - **Approach C (full rewrite):** discards working CSS, high regression risk for no benefit.
 
 Changes stay localized to token definitions + surface declarations. Light/dark stays a single source of truth (surfaces read tokens; `dark.css` overrides the token values inside its media query).
@@ -61,7 +61,7 @@ Surface conversions (background → glass token, add blur + glass border + glass
 | `.site-header` | `--glass-bg-strong` | already has `blur(8px)`; bump to `var(--glass-blur)` |
 | `.sidebar-content` | `--glass-bg` | + `--glass-shadow` |
 | `.minimap-content` | `--glass-bg` | + `--glass-shadow` |
-| `.content-wrapper` | `--glass-bg-strong` | main reading surface — higher opacity for long-form legibility |
+| `.content-wrapper` | `--glass-bg-strong` | main reading surface  higher opacity for long-form legibility |
 | `.article-card` (Home.astro) | `--glass-bg` | hover keeps `translateY(-2px)`, shadow deepens to `--glass-shadow` |
 | `.bottom-btn` | `--glass-bg-strong` | already glassy on mobile; unify via token |
 | `.sidebar-container.mobile-visible` / `.minimap-container.mobile-visible` (responsive.css) | `--glass-bg-strong` | popup panels |
@@ -97,7 +97,7 @@ box-shadow: var(--glass-shadow);
 }
 ```
 
-Falls back to existing solid token colors — legible, just without blur.
+Falls back to existing solid token colors  legible, just without blur.
 
 **Reduced motion:**
 
@@ -110,7 +110,7 @@ Falls back to existing solid token colors — legible, just without blur.
 
 ## Cleanup
 
-Delete 3 dead component files (confirmed unreferenced — only self-references in their own comments):
+Delete 3 dead component files (confirmed unreferenced  only self-references in their own comments):
 - `src/components/ArticleCard.astro`
 - `src/components/PostList.astro`
 - `src/components/utils.ts`
@@ -119,11 +119,11 @@ Folded into this work since we're touching the component/style layer.
 
 ## Out of scope
 
-- The small game HTML page (subsystem B) — separate brainstorm/build cycle after this ships.
-- Content, routing, i18n, build pipeline — untouched.
+- The small game HTML page (subsystem B)  separate brainstorm/build cycle after this ships.
+- Content, routing, i18n, build pipeline  untouched.
 
 ## Verification
 
-- `bun run build` — clean build, same page count (13).
+- `bun run build`  clean build, same page count (13).
 - Browser check: three-column layout, dark mode toggle (OS preference), markdown reading legibility against gradient, language switcher, mobile popups.
 - Tech-debt scan stays CLEAN (3 dead files removed).

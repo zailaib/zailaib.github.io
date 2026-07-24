@@ -1,4 +1,4 @@
-/* House Dismantle — Validation Helpers */
+/* House Dismantle  Validation Helpers */
 import * as THREE from 'three';
 
 /** Compute world-space AABB for a single mesh */

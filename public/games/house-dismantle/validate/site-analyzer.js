@@ -1,4 +1,4 @@
-/* Site Analyzer — V2 Unequal-Bay 4-Bay House */
+/* Site Analyzer  V2 Unequal-Bay 4-Bay House */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_H1, WALL_H2, ROOF_H, EAVE_H, ROOF_PITCH, WALL_T, INT_WALL_T, BAY_WIDTHS, BAY_X, BAY_CX, BAY_COUNT, HW2, HD2, FLOOR_H, BAND_Y, BASE_H, CROSS_Z_FRONT, CROSS_Z_BACK, DEPTH_FRONT, DEPTH_CORRIDOR, DEPTH_BACK } from '../config.js';
 
@@ -38,7 +38,7 @@ export function analyzeSite(parts, PART_DEFS) {
       `纵墙 x=${BAY_X.slice(1, -1).join(', ')} (${BAY_COUNT - 1}道不等距)`,
       `前走廊墙 z=${CROSS_Z_FRONT.toFixed(1)}, 后走廊墙 z=${CROSS_Z_BACK.toFixed(1)}`,
     ],
-    columns: `10根 — 前${BAY_COUNT + 1}根 + 后${BAY_COUNT + 1}根 (不等距)`,
+    columns: `10根  前${BAY_COUNT + 1}根 + 后${BAY_COUNT + 1}根 (不等距)`,
   };
 
   report.zones = [
@@ -66,7 +66,7 @@ export function analyzeSite(parts, PART_DEFS) {
   report.climate = '大别山北亚热带，冬冷夏热，低层高保温+接地通风';
 
   const bayLabels = report.bays.map(b => `${b.name}(${b.xRange[0]}→${b.xRange[1]}, ${b.width}m)`).join(' | ');
-  console.group('%c📍 Site Analysis — V2 Unequal-Bay House', 'color:#4af; font-size:14px;');
+  console.group('%c📍 Site Analysis  V2 Unequal-Bay House', 'color:#4af; font-size:14px;');
   console.log('%cFootprint:%c %dm × %dm, 1F=%dm, 2F=%dm, Base=%dm, Roof=%.1fm (%.0f°)',
     'color:#aaa;', '', HOUSE_W, HOUSE_D, WALL_H1, WALL_H2, BASE_H, ROOF_H, ROOF_PITCH);
   console.log('%cDepth:%c %s', 'color:#aaa;', '', report.footprint.depthLayout);

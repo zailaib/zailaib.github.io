@@ -1,4 +1,4 @@
-/* Rule: Clearance — minimum passage width in V2 dual cross walls */
+/* Rule: Clearance  minimum passage width in V2 dual cross walls */
 import { getWorldAABB } from '../helpers.js';
 import { BAY_WIDTHS } from '../../config.js';
 

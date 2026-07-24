@@ -1,4 +1,4 @@
-/* Rule Template — copy and fill in for new spatial constraints
+/* Rule Template  copy and fill in for new spatial constraints
  *
  * Export: checkXxx(parts, PART_DEFS) → Violation[]
  * Import this in validate/index.js and add to the validateHouse() pipeline.

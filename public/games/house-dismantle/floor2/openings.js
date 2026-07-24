@@ -1,4 +1,4 @@
-/* 2F — windows only */
+/* 2F  windows only */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_H2, WALL_T, BAY_CX, BAY_COUNT, HW2, HD2, BAND_Y } from '../config.js';
 

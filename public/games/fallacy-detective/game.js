@@ -1,4 +1,4 @@
-/* Fallacy Detective — Game Logic */
+/* Fallacy Detective  Game Logic */
 
 // ---- Case data ----
 const cases = [
@@ -11,10 +11,10 @@ const cases = [
     fallacyEn: 'Gambler\'s Fallacy',
     tag: 'The Gambler\'s Fallacy',
     scene: '深夜的赌场，空气弥漫着雪茄和焦虑。你观察一位赌客——他已经连续抛出了 <em>6 次正面</em>。他深吸一口气，笃定地说："下一次<em>必定是反面</em>。正面已经太多了，反面该\'补偿\'了。"',
-    sceneEn: 'Late night at the casino. A gambler has just flipped <em>6 heads in a row</em>. He takes a deep breath and says with certainty: "The next one <em>must be tails</em>. There have been too many heads — tails is \'due.\'"',
+    sceneEn: 'Late night at the casino. A gambler has just flipped <em>6 heads in a row</em>. He takes a deep breath and says with certainty: "The next one <em>must be tails</em>. There have been too many heads  tails is \'due.\'"',
     type: 'interactive',
-    question: '硬币没有记忆。每一次抛掷都是独立事件，正面概率始终是 50%。赌徒的"补偿"直觉是一种认知偏误。\n\n下面你来试试 —— 看你自己会不会也掉进这个陷阱：',
-    questionEn: 'The coin has no memory. Each flip is independent — the probability of heads is always 50%. The gambler\'s "compensation" intuition is a cognitive bias.\n\nNow try it yourself — see if you fall into the same trap:',
+    question: '硬币没有记忆。每一次抛掷都是独立事件，正面概率始终是 50%。赌徒的"补偿"直觉是一种认知偏误。\n\n下面你来试试 — 看你自己会不会也掉进这个陷阱：',
+    questionEn: 'The coin has no memory. Each flip is independent  the probability of heads is always 50%. The gambler\'s "compensation" intuition is a cognitive bias.\n\nNow try it yourself  see if you fall into the same trap:',
     explanation: '硬币没有记忆。每次抛掷是独立事件，正面概率恒为 50%。连续 6 次正面后，第 7 次正面的概率……还是 50%。过去的结果不影响未来——这是概率论最基础的原理。赌徒谬误之所以强大，是因为我们的大脑进化出"模式识别"的本能，在随机序列中看到根本不存在的规律。',
   },
   {
@@ -26,7 +26,7 @@ const cases = [
     fallacyEn: 'False Dilemma',
     tag: 'False Dilemma',
     scene: '一位政客在演讲中宣称："公民们，你们只有两个选择——<em>要么无条件支持我们的安全政策，要么就是站在敌人那边</em>，危害国家安全。现在做出你的选择吧。"台下的人群陷入沉默，似乎真的只有两条路可走。',
-    sceneEn: 'A politician declares: "Citizens, you have only two choices — <em>either unconditionally support our security policy, or you stand with the enemy</em> and endanger national security. Make your choice now." The crowd falls silent, as if there truly are only two paths.',
+    sceneEn: 'A politician declares: "Citizens, you have only two choices  <em>either unconditionally support our security policy, or you stand with the enemy</em> and endanger national security. Make your choice now." The crowd falls silent, as if there truly are only two paths.',
     type: 'choice',
     question: '这段话犯了什么谬误？',
     questionEn: 'What fallacy does this argument commit?',

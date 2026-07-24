@@ -1,4 +1,4 @@
-/* Lisp Club — BiwaScheme REPL + Snippet Library */
+/* Lisp Club  BiwaScheme REPL + Snippet Library */
 
 // ---- BiwaScheme interpreter ----
 const biwas = new BiwaScheme.Interpreter();
@@ -100,14 +100,14 @@ const SNIPPETS = [
   { cat: '基础运算', code: '(sqrt 144)', title: '平方根', preview: '√144' },
   { cat: '基础运算', code: '(gcd 48 180)', title: '最大公约数', preview: 'gcd(48,180)' },
 
-  { cat: '列表操作', code: '(car (list 1 2 3 4 5))', title: 'car — 取首元素', preview: '→ 1' },
-  { cat: '列表操作', code: '(cdr (list 1 2 3 4 5))', title: 'cdr — 取剩余列表', preview: '→ (2 3 4 5)' },
-  { cat: '列表操作', code: '(cons 1 (list 2 3 4))', title: 'cons — 构造列表', preview: '→ (1 2 3 4)' },
-  { cat: '列表操作', code: '(length (list 1 2 3 4 5))', title: 'length — 列表长度', preview: '→ 5' },
-  { cat: '列表操作', code: '(reverse (list 1 2 3 4 5))', title: 'reverse — 反转', preview: '→ (5 4 3 2 1)' },
-  { cat: '列表操作', code: '(append (list 1 2) (list 3 4))', title: 'append — 拼接', preview: '→ (1 2 3 4)' },
-  { cat: '列表操作', code: '(map (lambda (x) (* x x)) (list 1 2 3 4 5))', title: 'map — 映射平方', preview: '→ (1 4 9 16 25)' },
-  { cat: '列表操作', code: '(filter (lambda (x) (> x 3)) (list 1 2 3 4 5 6))', title: 'filter — 筛选', preview: '→ (4 5 6)' },
+  { cat: '列表操作', code: '(car (list 1 2 3 4 5))', title: 'car  取首元素', preview: '→ 1' },
+  { cat: '列表操作', code: '(cdr (list 1 2 3 4 5))', title: 'cdr  取剩余列表', preview: '→ (2 3 4 5)' },
+  { cat: '列表操作', code: '(cons 1 (list 2 3 4))', title: 'cons  构造列表', preview: '→ (1 2 3 4)' },
+  { cat: '列表操作', code: '(length (list 1 2 3 4 5))', title: 'length  列表长度', preview: '→ 5' },
+  { cat: '列表操作', code: '(reverse (list 1 2 3 4 5))', title: 'reverse  反转', preview: '→ (5 4 3 2 1)' },
+  { cat: '列表操作', code: '(append (list 1 2) (list 3 4))', title: 'append  拼接', preview: '→ (1 2 3 4)' },
+  { cat: '列表操作', code: '(map (lambda (x) (* x x)) (list 1 2 3 4 5))', title: 'map  映射平方', preview: '→ (1 4 9 16 25)' },
+  { cat: '列表操作', code: '(filter (lambda (x) (> x 3)) (list 1 2 3 4 5 6))', title: 'filter  筛选', preview: '→ (4 5 6)' },
 
   { cat: '递归', code: '(define (fact n)\n  (if (<= n 1) 1 (* n (fact (- n 1)))))\n(fact 10)', title: '阶乘 (递归)', preview: '10! = 3628800' },
   { cat: '递归', code: '(define (fib n)\n  (if (<= n 1) n (+ (fib (- n 1)) (fib (- n 2)))))\n(fib 20)', title: '斐波那契 (递归)', preview: 'fib(20)' },
@@ -116,8 +116,8 @@ const SNIPPETS = [
   { cat: 'Lambda', code: '(define square (lambda (x) (* x x)))\n(square 12)', title: '命名 Lambda', preview: 'square(12)=144' },
   { cat: 'Lambda', code: '(define (compose f g)\n  (lambda (x) (f (g x))))\n((compose (lambda (x) (* x x)) (lambda (x) (+ x 1))) 5)', title: '函数组合', preview: '(x+1)², x=5' },
 
-  { cat: '条件', code: '(define (sign n)\n  (cond ((> n 0) "positive")\n        ((< n 0) "negative")\n        (else "zero")))\n(sign -7)', title: 'cond — 多分支', preview: '判断正负零' },
-  { cat: '条件', code: '(if (> 5 3) "yes" "no")', title: 'if — 二分支', preview: '5>3 → yes' },
+  { cat: '条件', code: '(define (sign n)\n  (cond ((> n 0) "positive")\n        ((< n 0) "negative")\n        (else "zero")))\n(sign -7)', title: 'cond  多分支', preview: '判断正负零' },
+  { cat: '条件', code: '(if (> 5 3) "yes" "no")', title: 'if  二分支', preview: '5>3 → yes' },
 
   { cat: '经典算法', code: '(define (fizzbuzz n)\n  (cond ((= (modulo n 15) 0) "FizzBuzz")\n        ((= (modulo n 3) 0) "Fizz")\n        ((= (modulo n 5) 0) "Buzz")\n        (else n)))\n(map fizzbuzz (iota 30 1))', title: 'FizzBuzz', preview: '1到30的FizzBuzz' },
   { cat: '经典算法', code: '(define (prime? n)\n  (define (try d)\n    (cond ((> (* d d) n) #t)\n          ((= (modulo n d) 0) #f)\n          (else (try (+ d 1)))))\n  (try 2))\n(filter prime? (iota 50 2))', title: '素数筛', preview: '2-50的素数' },
@@ -164,7 +164,7 @@ function renderSnippets() {
 function init() {
   appendOutput('welcome', `
 ╔══════════════════════════════════════╗
-║   λ Lisp Club — BiwaScheme REPL    ║
+║   λ Lisp Club  BiwaScheme REPL    ║
 ║   欢迎来到 Scheme 交互式编程环境      ║
 ║                                      ║
 ║   输入 Scheme 表达式，回车执行        ║

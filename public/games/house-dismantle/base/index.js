@@ -1,4 +1,4 @@
-/* Base — foundation, columns, plumbing */
+/* Base  foundation, columns, plumbing */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_H1, WALL_H2, BASE_H, WALL_T, FLOOR_H, EAVE_H, ROOF_OH, HW2, HD2 } from '../config.js';
 
@@ -45,7 +45,7 @@ export function buildBase(houseGroup, parts, MATS) {
     }
   }
 
-  // ── Columns (concrete) — new bay boundaries: -5, -0.5, +4.5 ──
+  // ── Columns (concrete)  new bay boundaries: -5, -0.5, +4.5 ──
   const colGrp = parts.get('columns').group;
   const colXs = [-7.5, -5, -0.5, 4.5, 7.5]; // near bay boundaries
   const frontZ = HD2 - 0.3, backZ = -HD2 + 0.3;
@@ -57,7 +57,7 @@ export function buildBase(houseGroup, parts, MATS) {
     }
   }
 
-  // ── Plumbing — perimeter stone ditch ──
+  // ── Plumbing  perimeter stone ditch ──
   const pipeGrp = parts.get('pipelines').group;
   const ditchY = -BASE_H - 0.02, ditchW = 0.35, ditchD = 0.06, ditchOff = 0.25;
   const stoneMat = new THREE.MeshStandardMaterial({ color: 0x6a6a6a, roughness: 0.8, metalness: 0.05 });

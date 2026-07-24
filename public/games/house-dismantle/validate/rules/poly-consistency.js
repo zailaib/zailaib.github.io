@@ -1,4 +1,4 @@
-/* Rule: Polygon Consistency — detect low-poly / high-poly mismatch */
+/* Rule: Polygon Consistency  detect low-poly / high-poly mismatch */
 const MAX_SEGMENT_RATIO = 3;
 
 export function checkPolyConsistency(parts) {

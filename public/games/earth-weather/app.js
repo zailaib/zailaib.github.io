@@ -1,4 +1,4 @@
-/* Earth Weather — 3D Climate & Front Systems Demo */
+/* Earth Weather  3D Climate & Front Systems Demo */
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { hideLoading, setupThemeToggle, setupResizeHandler, createStarfield } from '/games/shared/three-utils.js';
@@ -191,7 +191,7 @@ function buildWinds() {
   disposeGroupChildren(windGroup);
   windParticles.length = 0;
 
-  // Trade winds (easterlies) — surface winds toward equator
+  // Trade winds (easterlies)  surface winds toward equator
   const tradeWindLons = [-120, -60, 0, 60, 120, 180];
   tradeWindLons.forEach(lon => {
     // NE trades (northern hemisphere)
@@ -249,7 +249,7 @@ function buildFrontSystem() {
   // Position the front system over the North Atlantic (~45°N, -40°W)
   const center = latLonTo3D(45, -40, R + 0.15);
 
-  // Cold front (blue, west side) — dense cold air mass
+  // Cold front (blue, west side)  dense cold air mass
   const coldGeo = new THREE.SphereGeometry(0.4, 32, 24);
   const coldMesh = new THREE.Mesh(coldGeo, new THREE.MeshBasicMaterial({ color: 0x4488dd, transparent: true, opacity: 0.35, depthWrite: false }));
   coldMesh.position.copy(center).add(new THREE.Vector3(-0.3, 0.15, 0));
@@ -264,7 +264,7 @@ function buildFrontSystem() {
   coldArrow.rotation.z = -Math.PI / 2;
   frontGroup.add(coldArrow);
 
-  // Warm front (red, east side) — warm moist air mass
+  // Warm front (red, east side)  warm moist air mass
   const warmGeo = new THREE.SphereGeometry(0.4, 32, 24);
   const warmMesh = new THREE.Mesh(warmGeo, new THREE.MeshBasicMaterial({ color: 0xdd4433, transparent: true, opacity: 0.35, depthWrite: false }));
   warmMesh.position.copy(center).add(new THREE.Vector3(0.3, 0.05, 0));
@@ -278,7 +278,7 @@ function buildFrontSystem() {
   warmArc.position.copy(center).add(new THREE.Vector3(0.5, 0.3, 0));
   frontGroup.add(warmArc);
 
-  // Convergence zone — where they meet = rain
+  // Convergence zone  where they meet = rain
   const rainZoneGeo = new THREE.CylinderGeometry(0.25, 0.35, 0.8, 16, 8);
   const rainZone = new THREE.Mesh(rainZoneGeo, new THREE.MeshBasicMaterial({ color: 0x889999, transparent: true, opacity: 0.25, depthWrite: false }));
   rainZone.position.copy(center).add(new THREE.Vector3(0, -0.1, 0));

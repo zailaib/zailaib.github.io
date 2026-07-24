@@ -1,4 +1,4 @@
-/* House Dismantle — Translate / Dismantle Logic */
+/* House Dismantle  Translate / Dismantle Logic */
 
 import { getDisassembleOffset } from './config.js';
 

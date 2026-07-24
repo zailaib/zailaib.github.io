@@ -82,7 +82,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260615
 DTEND;VALUE=DATE:20260831
-SUMMARY:🦷 换牙期 — 准备磨牙玩具
+SUMMARY:🦷 换牙期  准备磨牙玩具
 DESCRIPTION:约3.5-6月龄开始换牙。乳牙脱落、恒牙萌出。收好鞋子、电线等危险物品。提供充足磨牙玩具：Kong漏食球、牛筋棒、鹿角。每周检查牙齿，确认乳牙按时脱落。如乳犬齿滞留（双排牙）需就医拔除。
 LOCATION:家中
 CATEGORIES:健康
@@ -115,7 +115,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260701
 DTEND;VALUE=DATE:20260702
-SUMMARY:🍖 换粮过渡 — 幼犬粮更换
+SUMMARY:🍖 换粮过渡  幼犬粮更换
 DESCRIPTION:从过渡粮逐步换为选定品牌幼犬粮。7日换粮法：第1-2天 25%新+75%旧，第3-4天 50%+50%，第5-6天 75%+25%，第7天 100%新。观察粪便情况，软便则放慢过渡速度。金毛幼犬建议选择大型犬幼犬粮。
 LOCATION:家中
 CATEGORIES:营养
@@ -157,7 +157,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20270101
 DTEND;VALUE=DATE:20270102
-SUMMARY:🍖 换粮过渡 — 幼犬粮转成犬粮
+SUMMARY:🍖 换粮过渡  幼犬粮转成犬粮
 DESCRIPTION:金毛大型犬约10-12月龄换为成犬粮。使用7日换粮法逐步过渡。大型犬成犬粮注意关节保健配方（含葡萄糖胺和软骨素）。每日喂食量根据体重和运动量调整，分早晚两餐。
 LOCATION:家中
 CATEGORIES:营养

@@ -31,7 +31,7 @@ BEGIN:VEVENT
 DTSTART;TZID=Asia/Shanghai:20260701T140000
 DTEND;TZID=Asia/Shanghai:20260701T170000
 RRULE:FREQ=WEEKLY;BYDAY=TU,TH;UNTIL=20260930T170000
-SUMMARY:🤝 会议日 — 客户会议集中时段
+SUMMARY:🤝 会议日  客户会议集中时段
 DESCRIPTION:周二和周四下午为会议日。所有线上提案、进度同步、需求变更讨论集中安排。每个会议控制在30-45分钟。会前10分钟发Agenda，会后即时整理Action Items。其他工作日不接受会议请求（紧急情况除外）。
 LOCATION:线上会议 / 客户办公室
 CATEGORIES:沟通
@@ -82,14 +82,14 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260901
 DTEND;VALUE=DATE:20260902
-SUMMARY:💰 月度财务日 — 整理收支+开具发票+核对社保
+SUMMARY:💰 月度财务日  整理收支+开具发票+核对社保
 DESCRIPTION:每月1号财务例行。任务清单：1.整理上月所有收入和支出记录 2.给已完成项目的客户开具电子发票 3.核算个税和社保缴纳金额 4.更新月度收支报表 5.检查是否有未收回的应收账款。使用记账App扫描发票，即时归档。
 LOCATION:家庭办公室
 CATEGORIES:财务
 BEGIN:VALARM
 TRIGGER:-PT1440M
 ACTION:DISPLAY
-DESCRIPTION:财务日提醒：💰 月度财务日 — 整理收支+开具发票+核对社保
+DESCRIPTION:财务日提醒：💰 月度财务日  整理收支+开具发票+核对社保
 END:VALARM
 END:VEVENT
 
@@ -107,7 +107,7 @@ BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260707
 DTEND;VALUE=DATE:20260708
 RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=20260929
-SUMMARY:🌿 休息日 — 不回工作消息
+SUMMARY:🌿 休息日  不回工作消息
 DESCRIPTION:周日全天不处理任何工作事务。关闭工作微信通知。建议活动：读一本和工作无关的书、出门散步或骑行、和亲友吃一顿不赶时间的饭。这一天的边界保护好，其他六天才能高效运转。
 LOCATION:任何不是办公室的地方
 CATEGORIES:休息
@@ -117,7 +117,7 @@ BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260706
 DTEND;VALUE=DATE:20260707
 RRULE:FREQ=WEEKLY;BYDAY=SA;UNTIL=20260928
-SUMMARY:📚 技能学习日 — 周六上午自我提升
+SUMMARY:📚 技能学习日  周六上午自我提升
 DESCRIPTION:周六上午9-12点为固定学习时间。技能路线（按月轮换）：7月学习Blender 3D基础、8月TypeScript进阶、9月用户研究方法论。自由职业者的技能就是护城河，持续学习是最好的客户开发策略。
 LOCATION:家庭办公室 / 咖啡馆
 CATEGORIES:学习
@@ -126,7 +126,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260925
 DTEND;VALUE=DATE:20260926
-SUMMARY:🗺️ 季度规划日 — 回顾Q3 + 规划Q4
+SUMMARY:🗺️ 季度规划日  回顾Q3 + 规划Q4
 DESCRIPTION:每季度最后一周的周三为规划日。回顾清单：1.Q3总收入与项目类型分析 2.哪些项目利润最高？哪些客户最契合？3.Q4目标设定（收入、项目类型、技能提升）4.是否需要调整费率？5.更新作品集和个人网站。把自己当成一个产品来迭代。
 LOCATION:家庭办公室
 CATEGORIES:规划
@@ -144,7 +144,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTSTART;VALUE=DATE:20260930
 DTEND;VALUE=DATE:20261001
-SUMMARY:🔍 季度项目回顾 — 所有项目复盘
+SUMMARY:🔍 季度项目回顾  所有项目复盘
 DESCRIPTION:Q3结束，对所有完成项目进行复盘。复盘维度：预估工时 vs 实际工时、项目利润率和ROI、客户满意度、可复用的经验和踩过的坑、是否值得和该客户长期合作。每年淘汰20%低价值项目，把时间留给更好的机会。
 LOCATION:家庭办公室
 CATEGORIES:复盘

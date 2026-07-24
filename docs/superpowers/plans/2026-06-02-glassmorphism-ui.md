@@ -126,7 +126,7 @@ git commit -m "feat(ui): apply fixed gradient background to body"
 ### Task 3: Convert layout surfaces to glass (base.css)
 
 **Files:**
-- Modify: `src/styles/base.css` — `.site-header` (27-35), `.sidebar-content` (92-100), `.content-wrapper` (125-131), `.minimap-content` (153-161)
+- Modify: `src/styles/base.css`  `.site-header` (27-35), `.sidebar-content` (92-100), `.content-wrapper` (125-131), `.minimap-content` (153-161)
 
 - [ ] **Step 1: Convert `.site-header`**
 
@@ -269,7 +269,7 @@ git commit -m "feat(ui): convert header/sidebar/minimap/content surfaces to glas
 ### Task 4: Convert article cards to glass (Home.astro)
 
 **Files:**
-- Modify: `src/components/Home.astro` — `.article-card` (87-94) and `.article-card:hover` (96-100)
+- Modify: `src/components/Home.astro`  `.article-card` (87-94) and `.article-card:hover` (96-100)
 
 - [ ] **Step 1: Convert `.article-card`**
 
@@ -340,7 +340,7 @@ git commit -m "feat(ui): convert home article cards to glass"
 ### Task 5: Tokenize bottom buttons + mobile popups (responsive.css)
 
 **Files:**
-- Modify: `src/styles/responsive.css` — `.bottom-btn` (121), nested `.bottom-btn` (266), `.sidebar-container.mobile-visible, .minimap-container.mobile-visible` (293)
+- Modify: `src/styles/responsive.css`  `.bottom-btn` (121), nested `.bottom-btn` (266), `.sidebar-container.mobile-visible, .minimap-container.mobile-visible` (293)
 
 **Note:** `.bottom-btn` and the mobile popups currently hardcode `rgba(255,255,255,...)` / `var(--color-bg-accent)`. Swapping to `--glass-bg-strong` makes them theme-aware (dark glass in dark mode) without restructuring the existing media-query nesting. The `.home-btn` accent gradient stays as-is (it's the primary CTA).
 
@@ -418,7 +418,7 @@ git commit -m "feat(ui): tokenize bottom buttons and mobile popups to glass"
 
 ---
 
-### Task 6: Robustness — fallback, reduced-motion, focus ring
+### Task 6: Robustness  fallback, reduced-motion, focus ring
 
 **Files:**
 - Modify: `src/styles/base.css` (append at end of file)
@@ -483,7 +483,7 @@ git commit -m "feat(ui): add backdrop-filter fallback, focus ring, reduced-motio
 - Delete: `src/components/PostList.astro`
 - Delete: `src/components/utils.ts`
 
-**Note:** Confirmed unreferenced — `grep -rn` finds only self-references in their own header comments. Folded into this work since we're in the component/style layer.
+**Note:** Confirmed unreferenced  `grep -rn` finds only self-references in their own header comments. Folded into this work since we're in the component/style layer.
 
 - [ ] **Step 1: Re-confirm no references**
 
@@ -527,7 +527,7 @@ Expected: server on `localhost:4321`.
 
 Verify in the browser (golden path + edge cases):
 - Home page: gradient background visible, article cards read as frosted glass.
-- A post page: three-column layout — sidebar/minimap/content all glass; long-form Markdown stays legible against the gradient (content-wrapper uses the stronger opacity).
+- A post page: three-column layout  sidebar/minimap/content all glass; long-form Markdown stays legible against the gradient (content-wrapper uses the stronger opacity).
 - Dark mode (toggle OS appearance): gradient + glass switch to dark variants; text legible.
 - Language switcher: zh ↔ en still works.
 - Bottom buttons: glassy, hover lift works.

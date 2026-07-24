@@ -1,4 +1,4 @@
-# House Dismantle Spatial Validation Engine — Implementation Plan
+# House Dismantle Spatial Validation Engine  Implementation Plan
 
 > **For agentic workers:** Use superpowers:subagent-driven-development to implement task-by-task.
 
@@ -29,7 +29,7 @@
 - [ ] **Step 1: Write helpers.js**
 
 ```js
-/* House Dismantle — Validation Helpers */
+/* House Dismantle  Validation Helpers */
 import * as THREE from 'three';
 
 /** Compute world-space AABB for a single mesh */
@@ -110,7 +110,7 @@ git commit -m "feat(validate): add geometry helper utilities"
 - [ ] **Step 1: Write dep-topology.js**
 
 ```js
-/* Rule: Dependency Topology — detect counter-intuitive dependencies */
+/* Rule: Dependency Topology  detect counter-intuitive dependencies */
 import { CATEGORIES } from '../../config.js';
 
 // Physical construction levels (higher = upper floor)
@@ -158,7 +158,7 @@ export function checkDepTopology(PART_DEFS) {
         });
       }
 
-      // Structure depends on furniture/interior — physically wrong
+      // Structure depends on furniture/interior  physically wrong
       if (partCatOrder >= 4 && depCatOrder <= 2 && depCatOrder > 0) {
         violations.push({
           rule: 'dep-topology',
@@ -209,7 +209,7 @@ git commit -m "feat(validate): add dependency topology rule (R5)"
 - [ ] **Step 1: Write room-height.js**
 
 ```js
-/* Rule: Room Height — check habitable clearances */
+/* Rule: Room Height  check habitable clearances */
 import { WALL_H1, WALL_H2, FLOOR_H } from '../../config.js';
 
 const MIN_HABITABLE = 1.8; // minimum usable room height in meters
@@ -267,10 +267,10 @@ git commit -m "feat(validate): add room height check (R4)"
 - [ ] **Step 1: Write column-placement.js**
 
 ```js
-/* Rule: Column Placement — columns should be near wall planes */
+/* Rule: Column Placement  columns should be near wall planes */
 import { HW2, HD2, BAY_W, WALL_T } from '../../config.js';
 
-const MAX_DIST_TO_WALL = 1.5; // meter — column further than this from any wall is suspect
+const MAX_DIST_TO_WALL = 1.5; // meter  column further than this from any wall is suspect
 
 export function checkColumnPlacement(parts) {
   const violations = [];
@@ -314,7 +314,7 @@ export function checkColumnPlacement(parts) {
 }
 ```
 
-Wait, this imports THREE but doesn't import it. Let me fix that — it needs `import * as THREE from 'three';`.
+Wait, this imports THREE but doesn't import it. Let me fix that  it needs `import * as THREE from 'three';`.
 
 - [ ] **Step 2: Commit**
 
@@ -337,7 +337,7 @@ git commit -m "feat(validate): add column placement check (R3)"
 - [ ] **Step 1: Write poly-consistency.js**
 
 ```js
-/* Rule: Polygon Consistency — detect low-poly / high-poly mismatch */
+/* Rule: Polygon Consistency  detect low-poly / high-poly mismatch */
 const MAX_SEGMENT_RATIO = 3;
 
 export function checkPolyConsistency(parts) {
@@ -404,7 +404,7 @@ git commit -m "feat(validate): add polygon consistency check (R7)"
 - [ ] **Step 1: Write clearance.js**
 
 ```js
-/* Rule: Clearance — minimum passage width */
+/* Rule: Clearance  minimum passage width */
 import { getWorldAABB } from '../helpers.js';
 import { BAY_W, WALL_T } from '../../config.js';
 
@@ -475,7 +475,7 @@ git commit -m "feat(validate): add clearance check (R2)"
 - [ ] **Step 1: Write overlap.js**
 
 ```js
-/* Rule: Overlap — detect unintended mesh intersections */
+/* Rule: Overlap  detect unintended mesh intersections */
 import { getWorldAABB, volumeRatio } from '../helpers.js';
 
 // Host-guest whitelist: [guestPart, hostPart]
@@ -569,10 +569,10 @@ git commit -m "feat(validate): add overlap detection (R1)"
 - [ ] **Step 1: Write z-fighting.js**
 
 ```js
-/* Rule: Z-Fighting — detect co-planar overlapping meshes within same part */
+/* Rule: Z-Fighting  detect co-planar overlapping meshes within same part */
 import { getWorldAABB } from '../helpers.js';
 
-const DEPTH_EPSILON = 0.005; // meter — positions within this are considered co-planar
+const DEPTH_EPSILON = 0.005; // meter  positions within this are considered co-planar
 const XY_OVERLAP_MIN = 0.3;  // 30% XY overlap to qualify
 
 export function checkZFighting(parts) {
@@ -669,7 +669,7 @@ git commit -m "feat(validate): add z-fighting detection (R6)"
 - [ ] **Step 1: Write index.js**
 
 ```js
-/* House Dismantle — Spatial Validation Engine
+/* House Dismantle  Spatial Validation Engine
    Usage: import { validateHouse } from './validate/index.js';
           const violations = validateHouse(parts);
 */
@@ -683,7 +683,7 @@ import { checkOverlap } from './rules/overlap.js';
 import { checkZFighting } from './rules/z-fighting.js';
 
 /**
- * @param {Map} parts — the parts Map from app.js
+ * @param {Map} parts  the parts Map from app.js
  * @returns {Array<{rule:string, severity:'error'|'warning', parts:string[], detail:string, metrics:object, fix:{file:string, line?:number, suggestion:string}}>}
  */
 export function validateHouse(parts) {
@@ -704,7 +704,7 @@ export function validateHouse(parts) {
   const warnings = allViolations.filter(v => v.severity === 'warning');
 
   if (allViolations.length > 0) {
-    console.group(`🏠 House Spatial Validation — ${errors.length} errors, ${warnings.length} warnings`);
+    console.group(`🏠 House Spatial Validation  ${errors.length} errors, ${warnings.length} warnings`);
     console.table(allViolations.map(v => ({
       rule: v.rule,
       sev: v.severity,
@@ -713,7 +713,7 @@ export function validateHouse(parts) {
     })));
     console.groupEnd();
   } else {
-    console.log('🏠 House Spatial Validation — ✅ all clear');
+    console.log('🏠 House Spatial Validation  ✅ all clear');
   }
 
   return allViolations;

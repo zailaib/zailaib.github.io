@@ -22,25 +22,25 @@
 ## 文件结构总览
 
 **创建：**
-- `src/content.config.ts`（根，替代空文件 + 旧 `content/config.ts`）— posts + apps 集合定义
-- `src/lib/content.ts` — 侧边栏/文章数据派生函数（取代 generate-sidebar.mjs）
-- `src/styles/tokens.css` — `:root` 设计变量
-- `src/styles/base.css` — 重置 + body + header + 布局栅格 + 容器 + 底部按钮
-- `src/styles/content.css` — `.post-content` Markdown 排版
-- `src/styles/responsive.css` — 媒体查询 + 移动端
-- `src/styles/print.css` — 打印样式
-- `src/styles/dark.css` — 深色模式变量覆盖
-- `src/pages/[lang]/index.astro` — 双语首页（一份源）
-- `src/pages/[lang]/about.astro` — 双语关于页（一份源）
-- `src/pages/[lang]/posts/[...slug].astro` — 双语文章页（一份源）
-- `src/pages/[lang]/apps/README.md` — 游戏路由扩展点占位
+- `src/content.config.ts`（根，替代空文件 + 旧 `content/config.ts`） posts + apps 集合定义
+- `src/lib/content.ts`  侧边栏/文章数据派生函数（取代 generate-sidebar.mjs）
+- `src/styles/tokens.css`  `:root` 设计变量
+- `src/styles/base.css`  重置 + body + header + 布局栅格 + 容器 + 底部按钮
+- `src/styles/content.css`  `.post-content` Markdown 排版
+- `src/styles/responsive.css`  媒体查询 + 移动端
+- `src/styles/print.css`  打印样式
+- `src/styles/dark.css`  深色模式变量覆盖
+- `src/pages/[lang]/index.astro`  双语首页（一份源）
+- `src/pages/[lang]/about.astro`  双语关于页（一份源）
+- `src/pages/[lang]/posts/[...slug].astro`  双语文章页（一份源）
+- `src/pages/[lang]/apps/README.md`  游戏路由扩展点占位
 
 **修改：**
-- `src/layouts/BaseLayout.astro` — 移出全部 CSS，改为 import 样式文件
-- `src/i18n/utils.ts` — `getLocalizedPath` 适配 `[lang]` 路由
-- `src/components/Home.astro`、`Sidebar.astro` — 改用 `lib/content.ts`，去 `as any`
-- `.github/workflows/deploy.yml` — 切 bun
-- `package.json` — 确认 scripts（bun 兼容，无需改 script 内容）
+- `src/layouts/BaseLayout.astro`  移出全部 CSS，改为 import 样式文件
+- `src/i18n/utils.ts`  `getLocalizedPath` 适配 `[lang]` 路由
+- `src/components/Home.astro`、`Sidebar.astro`  改用 `lib/content.ts`，去 `as any`
+- `.github/workflows/deploy.yml`  切 bun
+- `package.json`  确认 scripts（bun 兼容，无需改 script 内容）
 
 **删除：**
 - `src/content.config.ts` 的旧空文件内容（被新内容替代）
@@ -662,7 +662,7 @@ git commit -m "refactor: collapse zh/en routes into [lang] dynamic segments"
 
 ---
 
-## Task 7: 迁移 sidebar 数据来源（BaseLayout + Sidebar + 404）— 迁移窗口收口
+## Task 7: 迁移 sidebar 数据来源（BaseLayout + Sidebar + 404） 迁移窗口收口
 
 **Files:**
 - Modify: `src/components/Sidebar.astro`

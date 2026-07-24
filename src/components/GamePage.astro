@@ -1,14 +1,14 @@
 ---
-// GamePage.astro — Reusable app entry page for all games
+// GamePage.astro  Reusable app entry page for all games
 // Props:
-//   game: string — game directory name
+//   game: string  game directory name
 //   accentColor, accentBg, accentBorder, accentBgHover, accentBorderHover: CSS color values
-//   frameBg: string — iframe wrapper background
-//   frameMaxWidth?: number — default 1000
-//   frameHeight: number — desktop iframe height in px
-//   frameHeightMobile: number — mobile iframe height in px
-//   content: { zh: {...}, en: {...} } — bilingual content
-//   paper?: { zh: {...}, en: {...} } — optional further reading reference
+//   frameBg: string  iframe wrapper background
+//   frameMaxWidth?: number  default 1000
+//   frameHeight: number  desktop iframe height in px
+//   frameHeightMobile: number  mobile iframe height in px
+//   content: { zh: {...}, en: {...} }  bilingual content
+//   paper?: { zh: {...}, en: {...} }  optional further reading reference
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 interface Paper {

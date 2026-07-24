@@ -1,4 +1,4 @@
-/* Periodic Table — 118 elements with electron shell configurations (Bohr model) */
+/* Periodic Table  118 elements with electron shell configurations (Bohr model) */
 /* Each entry: [symbol, name_zh, name_en, category, shells=[K,L,M,N,O,P,Q]] */
 /* Categories: 0=alkali 1=alkaline 2=transition 3=post-trans 4=metalloid 5=nonmetal 6=halogen 7=noble 8=lanthanide 9=actinide */
 
@@ -130,7 +130,7 @@ const SHELL_NAMES = ['K','L','M','N','O','P','Q'];
 const SHELL_COLORS = ['#ff6b6b','#4ecdc4','#ffe66d','#a37eba','#ff8c42','#6bc5d9','#95e1d3'];
 const SHELL_MAX = [2,8,18,32,32,18,8];
 
-// Periodic table grid positions [row, col] — standard 18-column layout, 1-indexed
+// Periodic table grid positions [row, col]  standard 18-column layout, 1-indexed
 const GRID_POS = {};
 [
   /* Row 1 */ [1,1,1],[1,18,2],

@@ -1,4 +1,4 @@
-/* Tractatus — The World Is All That Is The Case */
+/* Tractatus  The World Is All That Is The Case */
 
 const canvas = document.getElementById('c');
 const ctx = canvas.getContext('2d');
@@ -16,7 +16,7 @@ resize();
 const propositions = [
   { num: '1',    en: 'The world is everything that is the case.', zh: '世界是一切发生的事情。' },
   { num: '1.1',  en: 'The world is the totality of facts, not of things.', zh: '世界是事实的总和，而非事物的总和。' },
-  { num: '2',    en: 'What is the case — a fact — is the existence of states of affairs.', zh: '发生的事情——事实——是事态的存在。' },
+  { num: '2',    en: 'What is the case  a fact  is the existence of states of affairs.', zh: '发生的事情——事实——是事态的存在。' },
   { num: '2.01', en: 'A state of affairs is a combination of objects.', zh: '事态是诸对象的结合。' },
   { num: '2.01231', en: 'If I know an object, I also know all its possible occurrences in states of affairs.', zh: '如果我知道一个对象，我也知道它在事态中的所有可能的出现。' },
   { num: '7',    en: 'Whereof one cannot speak, thereof one must be silent.', zh: '对于不可言说的，必须保持沉默。' },
