@@ -11,7 +11,6 @@ import { buildOpenings } from './house-openings.js';
 import { buildInterior } from './house-interior.js';
 import { buildYard }      from './house-yard.js';
 import { buildPlumbing }  from './house-plumbing.js';
-import { buildStudy }     from './house-study.js';
 import { validateHouse }  from './validate/index.js';
 
 // ── State ─────────────────────────────────────────────────────────
@@ -31,8 +30,8 @@ scene.background = new THREE.Color(0x0a0a14);
 scene.fog = new THREE.Fog(0x0a0a14, 12, 45);
 
 const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.5, 70);
-camera.position.set(10, 7, 16);
-camera.lookAt(0, 2.2, 0);
+camera.position.set(14, 8, 20);
+camera.lookAt(0, 3.5, 0);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(container.clientWidth, container.clientHeight);
@@ -46,10 +45,10 @@ container.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
-controls.minDistance = 4;
-controls.maxDistance = 35;
+controls.minDistance = 5;
+controls.maxDistance = 45;
 controls.maxPolarAngle = Math.PI * 0.7;
-controls.target.set(0, 2.2, 0);
+controls.target.set(0, 3.5, 0);
 controls.update();
 
 // ── Lighting ──────────────────────────────────────────────────────
@@ -59,8 +58,8 @@ sun.position.set(15, 20, 10);
 sun.castShadow = true;
 sun.shadow.mapSize.width = 2048; sun.shadow.mapSize.height = 2048;
 sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 80;
-sun.shadow.camera.left = -25; sun.shadow.camera.right = 25;
-sun.shadow.camera.top = 25; sun.shadow.camera.bottom = -25;
+sun.shadow.camera.left = -30; sun.shadow.camera.right = 30;
+sun.shadow.camera.top = 30; sun.shadow.camera.bottom = -30;
 sun.shadow.bias = -0.0001;
 scene.add(sun);
 
@@ -80,7 +79,7 @@ const ground = new THREE.Mesh(groundGeo, new THREE.MeshStandardMaterial({ color:
 ground.rotation.x = -Math.PI / 2; ground.position.y = -0.05; ground.receiveShadow = true;
 scene.add(ground);
 
-const grid = new THREE.PolarGridHelper(14, 32, 28, 128, 0x222233, 0x161622);
+const grid = new THREE.PolarGridHelper(18, 32, 36, 128, 0x222233, 0x161622);
 grid.position.y = -0.04;
 scene.add(grid);
 
@@ -92,7 +91,6 @@ buildOpenings(houseGroup, parts, MATS);
 buildInterior(houseGroup, parts, MATS);
 buildYard(houseGroup, parts, MATS);
 buildPlumbing(houseGroup, parts, MATS);
-buildStudy(houseGroup, parts, MATS);  // ← constraint-first: see constraints/study-room.md
 
 // Verify all PART_DEFS were created (imported from config)
 import { PART_DEFS } from './config.js';
@@ -400,22 +398,22 @@ window.addEventListener('keydown', (event) => {
   }
   if (event.key === 'Escape') clearSelection();
   if (event.key === '0') {
-    camera.position.set(10, 7, 16);
-    controls.target.set(0, 2.2, 0);
+    camera.position.set(14, 8, 20);
+    controls.target.set(0, 3.5, 0);
     controls.update();
   }
 });
 
 // ── Camera Tour ──────────────────────────────────────────────────
 const tourKeyframes = [
-  { pos: [4,1.5,6],   tgt: [4,1.5,4.3], dur: 1.5 }, // 0: outside front door
-  { pos: [4,1.5,3.5], tgt: [0,1.5,2],   dur: 2.5 }, // 1: enter → front-center room
-  { pos: [0,1.8,2],   tgt: [0,1.5,-3.5],dur: 2.5 }, // 2: front room → shrine (back)
-  { pos: [-4,1.5,-2], tgt: [-4,1.2,-3.5],dur: 2.5 }, // 3: left bay → stove (back room)
-  { pos: [4,1.5,-2],  tgt: [4,1.2,-3.5], dur: 2.5 }, // 4: right bay → beds (back room)
-  { pos: [0,3.2,-1],  tgt: [0,3.0,0.5],  dur: 2.0 }, // 5: upstairs via L-stairs
-  { pos: [0,3.5,1],   tgt: [0,3.5,2],    dur: 2.0 }, // 6: look around upper floor
-  { pos: [10,7,16],   tgt: [0,2.2,0],    dur: 2.0 }, // 7: return
+  { pos: [6,2.5,8],    tgt: [6,2.0,4.3],  dur: 1.5 }, // 0: outside front door (bay4)
+  { pos: [2,2.5,3.5],  tgt: [2,2.0,2.0],   dur: 2.5 }, // 1: enter → living room
+  { pos: [0,2.5,2],    tgt: [0,2.0,-3.5],  dur: 2.5 }, // 2: living → shrine (back)
+  { pos: [-6,2.5,-2],  tgt: [-6,2.0,-3.5], dur: 2.5 }, // 3: left bay → kitchen area
+  { pos: [6,2.5,-2],   tgt: [6,2.0,-3.5],  dur: 2.5 }, // 4: right bay → dining
+  { pos: [0,5.5,-1],   tgt: [0,5.0,0.5],   dur: 2.0 }, // 5: upstairs via stairs
+  { pos: [0,6.0,1],    tgt: [0,5.5,2],     dur: 2.0 }, // 6: look around upper floor
+  { pos: [14,8,20],    tgt: [0,3.5,0],     dur: 2.0 }, // 7: return
 ];
 let tourActive = false;
 let tourIndex = 0;

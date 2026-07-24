@@ -1,21 +1,13 @@
-/* House Dismantle — Doors, Windows, Stairs */
-
+/* Dabie Mountain 4-Bay 2-Story — Doors, Windows, Stairs */
 import * as THREE from 'three';
-import { HOUSE_W, HOUSE_D, WALL_H1, WALL_H2, WALL_T, FLOOR_H, BAY_W, HW2, HD2, WY1, BAND_Y } from './config.js';
+import { HOUSE_W, HOUSE_D, WALL_H1, WALL_H2, WALL_T, INT_WALL_T, FLOOR_H, BAY_W, BAY_COUNT, HW2, HD2, WY1, WY2, BAND_Y } from './config.js';
 
-function box(w, h, d, material) {
-  return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
-}
+function box(w, h, d, m) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); }
 
 export function buildOpenings(houseGroup, parts, MATS) {
-
   function partGrp(name, label, color, deps = []) {
     const g = new THREE.Group(); g.name = name;
-    // Find existing entry (created in another module) or create new
-    if (!parts.has(name)) {
-      parts.set(name, { group: g, label, color, deps, assembled: true, meshArr: [] });
-      houseGroup.add(g);
-    }
+    if (!parts.has(name)) { parts.set(name, { group: g, label, color, deps, assembled: true, meshArr: [] }); houseGroup.add(g); }
     return parts.get(name).group;
   }
   function addTo(name, mesh) {
@@ -23,217 +15,143 @@ export function buildOpenings(houseGroup, parts, MATS) {
     if (p) { p.meshArr.push(mesh); mesh.userData.partName = name; mesh.castShadow = true; mesh.receiveShadow = true; }
   }
 
-  // ═══════════════════════════════════════════════════════════════
-  // FRONT DOOR (left bay, at x = -BAY_W)
-  // ═══════════════════════════════════════════════════════════════
-  const doorGrp = partGrp('doors', '门', '#4a2818', ['wallFront']);
-  const doorX = BAY_W; // right bay center
+  const GLASS_MAT = new THREE.MeshStandardMaterial({ color: 0xaaccff, roughness: 0.1, metalness: 0.1, transparent: true, opacity: 0.35 });
+  const F = FLOOR_H, B = BAND_Y;
 
-  // Door frame
-  const frameL = box(0.1, 2.3, 0.08, MATS.door);
-  frameL.position.set(doorX - 0.75, 1.3 + FLOOR_H, HD2 + WALL_T/2 + 0.04);
-  addTo('doors', frameL); doorGrp.add(frameL);
-
-  const frameR = box(0.1, 2.3, 0.08, MATS.door);
-  frameR.position.set(doorX + 0.75, 1.3 + FLOOR_H, HD2 + WALL_T/2 + 0.04);
-  addTo('doors', frameR); doorGrp.add(frameR);
-
-  const frameT = box(1.6, 0.1, 0.08, MATS.door);
-  frameT.position.set(doorX, 2.4 + FLOOR_H, HD2 + WALL_T/2 + 0.04);
-  addTo('doors', frameT); doorGrp.add(frameT);
-
-  // Door panels (two leaves)
-  for (const xo of [-0.35, 0.35]) {
-    const panel = box(0.7, 2.0, 0.05, MATS.doorPanel);
-    panel.position.set(doorX + xo, 1.15 + FLOOR_H, HD2 + WALL_T/2 + 0.06);
-    addTo('doors', panel); doorGrp.add(panel);
-  }
-
-  // Doorstep
-  const doorstep = box(1.8, 0.08, 0.25, MATS.floor);
-  doorstep.position.set(doorX, FLOOR_H + 0.04, HD2 + WALL_T/2 + 0.1);
-  addTo('doors', doorstep); doorGrp.add(doorstep);
-
-  // Interior door panels in partition walls (back side)
-  for (const [x, name] of [[-BAY_W/2, 'interiorWall1'], [BAY_W/2, 'interiorWall2']]) {
-    const intDoor = box(0.9, 2.1, 0.06, MATS.interiorDoor);
-    intDoor.position.set(x, FLOOR_H + 1.05, -HD2 + 0.8);
-    // These belong to the interior wall part for selection
-    const iwPart = parts.get(name);
-    if (iwPart) {
-      iwPart.meshArr.push(intDoor);
-      intDoor.userData.partName = name;
-      intDoor.castShadow = true; intDoor.receiveShadow = true;
-      iwPart.group.add(intDoor);
-    }
-  }
-
-  // ═══════════════════════════════════════════════════════════════
-  // WINDOWS
-  // ═══════════════════════════════════════════════════════════════
-  const winGrp = partGrp('windows', '窗户', '#5a3828', ['wallFront', 'wallBack']);
-  const winY = 1.6 + FLOOR_H;
-  const winZf = HD2 + WALL_T/2 + 0.05;
-  const winZb = -HD2 - WALL_T/2 - 0.05;
-
-  const GLASS_MAT = new THREE.MeshStandardMaterial({
-    color: 0xaaccff, roughness: 0.1, metalness: 0.1,
-    transparent: true, opacity: 0.35,
-  });
-
+  // ── Helper: makeWindow(x, y, z, ry) ──────────────────────────
   function makeWindow(x, y, z, ry = 0) {
     const wg = new THREE.Group();
     const fw = 1.1, fh = 1.4, ft = 0.06;
-    // Glass panels (4 panes in a 2×2 grid)
-    const paneW = (fw - ft*3) / 2, paneH = (fh - ft*3) / 2;
+    const paneW = (fw - ft * 3) / 2, paneH = (fh - ft * 3) / 2;
     for (const px of [-1, 1]) {
       for (const py of [-1, 1]) {
         const glass = box(paneW - 0.02, paneH - 0.02, ft * 0.3, GLASS_MAT);
-        glass.position.set(px * (paneW/2 + ft/2), py * (paneH/2 + ft/2), 0);
-        addTo('windows', glass); wg.add(glass);
+        glass.position.set(px * (paneW / 2 + ft / 2), py * (paneH / 2 + ft / 2), 0);
+        wg.add(glass);
       }
     }
-    // Frame
-    for (const xo of [-fw/2, fw/2]) {
-      const f = box(ft, fh, ft, MATS.window);
-      f.position.set(xo, 0, 0); addTo('windows', f); wg.add(f);
-    }
-    for (const yo of [-fh/2, fh/2]) {
-      const f = box(fw, ft, ft, MATS.window);
-      f.position.set(0, yo, 0); addTo('windows', f); wg.add(f);
-    }
-    // Cross mullions
-    const mv = box(ft*0.7, fh*0.85, ft*0.7, MATS.window);
-    addTo('windows', mv); wg.add(mv);
-    const mh = box(fw*0.85, ft*0.7, ft*0.7, MATS.window);
-    addTo('windows', mh); wg.add(mh);
-    // Lintel/head above window (decorative beam)
-    const lintel = box(fw + 0.2, 0.06, ft + 0.04, MATS.woodDark);
-    lintel.position.set(0, fh/2 + 0.04, 0);
-    addTo('windows', lintel); wg.add(lintel);
-    // Window sill (bottom ledge)
-    const sill = box(fw + 0.15, 0.05, ft + 0.06, MATS.woodDark);
-    sill.position.set(0, -fh/2 - 0.03, 0);
-    addTo('windows', sill); wg.add(sill);
-
-    wg.position.set(x, y, z); wg.rotation.y = ry;
-    return wg;
-  }
-
-  // Front windows: left + center bay (right bay has the door)
-  [-BAY_W, 0].forEach(x => { winGrp.add(makeWindow(x, winY, winZf)); });
-  // Back windows: all three bays
-  [-BAY_W, 0, BAY_W].forEach(x => { winGrp.add(makeWindow(x, winY, winZb, Math.PI)); });
-
-  // ═══════════════════════════════════════════════════════════════
-  // BACK DOOR (single-leaf, left bay, back wall)
-  // ═══════════════════════════════════════════════════════════════
-  const backDoorX = BAY_W; // same bay as front door (right bay)
-  const backDoorZ = -HD2 - WALL_T/2 - 0.05;
-
-  // Simple single door frame
-  const bdFrameL = box(0.08, 2.2, 0.06, MATS.door);
-  bdFrameL.position.set(backDoorX - 0.45, 1.2 + FLOOR_H, backDoorZ);
-  addTo('doors', bdFrameL); doorGrp.add(bdFrameL);
-
-  const bdFrameR = box(0.08, 2.2, 0.06, MATS.door);
-  bdFrameR.position.set(backDoorX + 0.45, 1.2 + FLOOR_H, backDoorZ);
-  addTo('doors', bdFrameR); doorGrp.add(bdFrameR);
-
-  const bdFrameT = box(1.0, 0.08, 0.06, MATS.door);
-  bdFrameT.position.set(backDoorX, 2.3 + FLOOR_H, backDoorZ);
-  addTo('doors', bdFrameT); doorGrp.add(bdFrameT);
-
-  // Single door panel
-  const bdPanel = box(0.82, 2.0, 0.04, MATS.doorPanel);
-  bdPanel.position.set(backDoorX, 1.1 + FLOOR_H, backDoorZ);
-  addTo('doors', bdPanel); doorGrp.add(bdPanel);
-
-  // Wind screen (small wooden panel just inside back door)
-  const wsGrp = partGrp('windScreen', '后门风挡', '#8b6914', ['doors']);
-  const wsPanel = box(1.2, 1.8, 0.04, MATS.woodLight);
-  wsPanel.position.set(backDoorX, 1.0 + FLOOR_H, backDoorZ + 0.6);
-  addTo('windScreen', wsPanel); wsGrp.add(wsPanel);
-  // Screen frame posts
-  for (const sx of [-0.5, 0.5]) {
-    const post = box(0.04, 0.04, 1.8, MATS.woodDark);
-    post.position.set(backDoorX + sx, 1.0 + FLOOR_H, backDoorZ + 0.6);
-    addTo('windScreen', post); wsGrp.add(post);
+    for (const xo of [-fw / 2, fw / 2]) { const f = box(ft, fh, ft, MATS.window); f.position.set(xo, 0, 0); wg.add(f); }
+    for (const yo of [-fh / 2, fh / 2]) { const f = box(fw, ft, ft, MATS.window); f.position.set(0, yo, 0); wg.add(f); }
+    const mv = box(ft * 0.7, fh * 0.85, ft * 0.7, MATS.window); mv.position.z = 0.01; wg.add(mv);
+    const mh = box(fw * 0.85, ft * 0.7, ft * 0.7, MATS.window); mh.position.z = -0.01; wg.add(mh);
+    const lintel = box(fw + 0.2, 0.06, ft + 0.04, MATS.woodDark); lintel.position.set(0, fh / 2 + 0.04, 0); wg.add(lintel);
+    const sill = box(fw + 0.15, 0.05, ft + 0.06, MATS.woodDark); sill.position.set(0, -fh / 2 - 0.03, 0); wg.add(sill);
+    wg.position.set(x, y, z); wg.rotation.y = ry; return wg;
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // STAIRS (L-shaped wooden staircase to second floor)
-  // Fits entirely inside the center bay, hugging the back wall
-  // and left interior wall — does NOT break through any wall
+  // 1F WINDOWS — 4 front + 4 back
   // ═══════════════════════════════════════════════════════════════
-  const stairGrp = partGrp('stairs', '楼梯', '#8b6914', ['upperWallFront', 'upperWallBack']);
+  const win1 = partGrp('windows1F', '一层窗户', '#5a3828', ['wallFront', 'wallBack']);
+  const wy1 = 1.6 + F;
+  const zf = HD2 + WALL_T / 2 + 0.05, zb = -HD2 - WALL_T / 2 - 0.05;
+  for (let b = 0; b < BAY_COUNT; b++) {
+    const bx = -HW2 + b * BAY_W + BAY_W / 2;
+    win1.add(makeWindow(bx, wy1, zf));
+    win1.add(makeWindow(bx, wy1, zb, Math.PI));
+  }
 
-  const sBaseY  = FLOOR_H;      // 0.2
-  const sTopY   = BAND_Y;       // 3.0
-  const sTotalRise = sTopY - sBaseY; // 2.8m
-  const stepH   = sTotalRise / 16;   // ~0.175m per step
-  const stepD   = 0.28;              // tread depth
-  const stepW   = 0.8;               // stair width
+  // ═══════════════════════════════════════════════════════════════
+  // 2F WINDOWS — 4 front + 4 back
+  // ═══════════════════════════════════════════════════════════════
+  const win2 = partGrp('windows2F', '二层窗户', '#5a3828', ['upperWallFront', 'upperWallBack']);
+  const wy2 = 1.6 + B;
+  for (let b = 0; b < BAY_COUNT; b++) {
+    const bx = -HW2 + b * BAY_W + BAY_W / 2;
+    win2.add(makeWindow(bx, wy2, zf));
+    win2.add(makeWindow(bx, wy2, zb, Math.PI));
+  }
 
-  // Segment 1: along back wall, going +X (right), 8 steps, inside back
-  const seg1StartX = -1.8;
-  const seg1StartZ = -HD2 + 0.5;  // near back wall, inside
-  const seg1Steps  = 8;
+  // ═══════════════════════════════════════════════════════════════
+  // FRONT DOOR — Bay3 (x=2), double leaf
+  // ═══════════════════════════════════════════════════════════════
+  const door1 = partGrp('doors1F', '一层门', '#4a2818', ['wallFront', 'wallBack']);
+  const fdX = 2, fdZ = zf;
+  const frameL = box(0.1, 2.3, 0.08, MATS.door); frameL.position.set(fdX - 0.75, 1.3 + F, fdZ); addTo('doors1F', frameL); door1.add(frameL);
+  const frameR = box(0.1, 2.3, 0.08, MATS.door); frameR.position.set(fdX + 0.75, 1.3 + F, fdZ); addTo('doors1F', frameR); door1.add(frameR);
+  const frameT = box(1.6, 0.1, 0.08, MATS.door); frameT.position.set(fdX, 2.4 + F, fdZ); addTo('doors1F', frameT); door1.add(frameT);
+  for (const xo of [-0.35, 0.35]) {
+    const panel = box(0.7, 2.0, 0.05, MATS.doorPanel); panel.position.set(fdX + xo, 1.15 + F, fdZ + 0.02); addTo('doors1F', panel); door1.add(panel);
+  }
+  const doorstep = box(1.8, 0.08, 0.25, MATS.floor); doorstep.position.set(fdX, F + 0.04, fdZ + 0.1); addTo('doors1F', doorstep); door1.add(doorstep);
 
-  // Segment 2: going +Z (forward), 8 steps, turns at corner
-  const seg2StartX = seg1StartX + seg1Steps * stepD;
-  const seg2StartZ = seg1StartZ;
-  const seg2Steps  = 8;
+  // BACK DOOR — Bay4 (x=6), single leaf
+  const bdX = 6, bdZ = zb;
+  for (const dx of [-0.45, 0.45]) { const f = box(0.08, 2.2, 0.06, MATS.door); f.position.set(bdX + dx, 1.2 + F, bdZ); addTo('doors1F', f); door1.add(f); }
+  const bdTop = box(1.0, 0.08, 0.06, MATS.door); bdTop.position.set(bdX, 2.3 + F, bdZ); addTo('doors1F', bdTop); door1.add(bdTop);
+  const bdPanel = box(0.82, 2.0, 0.04, MATS.doorPanel); bdPanel.position.set(bdX, 1.1 + F, bdZ + 0.02); addTo('doors1F', bdPanel); door1.add(bdPanel);
 
-  // --- Segment 1: steps going +X ---
-  for (let i = 0; i < seg1Steps; i++) {
+  // ═══════════════════════════════════════════════════════════════
+  // INTERIOR DOORS (1F) — attached to interiorWalls
+  // ═══════════════════════════════════════════════════════════════
+  const iwPart = parts.get('interiorWalls');
+  function addInteriorDoor(x, z, ry = 0) {
+    if (!iwPart) return;
+    const dg = new THREE.Group();
+    for (const dx of [-0.42, 0.42]) { const f = box(0.06, 2.1, 0.04, MATS.interiorDoor); f.position.set(dx, 1.05 + F, 0); dg.add(f); }
+    const ft2 = box(0.9, 0.06, 0.04, MATS.interiorDoor); ft2.position.set(0, 2.1 + F, 0); dg.add(ft2);
+    const pn = box(0.78, 2.0, 0.03, MATS.interiorDoor); pn.position.set(0, 1.0 + F, 0.02); dg.add(pn);
+    dg.position.set(x, 0, z); dg.rotation.y = ry;
+    iwPart.group.add(dg);
+    iwPart.meshArr.push(...dg.children);
+    dg.children.forEach(c => { c.userData.partName = 'interiorWalls'; c.castShadow = true; c.receiveShadow = true; });
+  }
+  // Front room doors in crossWall at z=0
+  for (const bx of [-6, -2]) addInteriorDoor(bx, 0.01);     // 老人房1,2
+  addInteriorDoor(2, 0.01);                                   // 客厅 (wider - skip, use regular)
+  addInteriorDoor(6, 0.01);                                   // 厨房
+  // Back room doors
+  addInteriorDoor(-6, -4.2, Math.PI);                         // 餐厅→后部
+
+  // ═══════════════════════════════════════════════════════════════
+  // 2F INTERIOR DOORS
+  // ═══════════════════════════════════════════════════════════════
+  const door2 = partGrp('doors2F', '二层门', '#4a2818', ['upperWallFront', 'upperWallBack']);
+  // Simple door panels in upper floor cross-wall positions — add as freestanding
+  function addUpperDoor(x, z, ry = 0) {
+    const fz = z + (ry === 0 ? 0.03 : -0.03);
+    for (const dx of [-0.42, 0.42]) { const f = box(0.06, 2.1, 0.04, MATS.interiorDoor); f.position.set(x + dx, 1.05 + B, fz); addTo('doors2F', f); door2.add(f); }
+    const ft3 = box(0.9, 0.06, 0.04, MATS.interiorDoor); ft3.position.set(x, 2.1 + B, fz); addTo('doors2F', ft3); door2.add(ft3);
+    const pn = box(0.78, 2.0, 0.03, MATS.interiorDoor); pn.position.set(x, 1.0 + B, fz + 0.01); addTo('doors2F', pn); door2.add(pn);
+  }
+  for (const bx of [-6, -2, 2, 6]) addUpperDoor(bx, 0.01);
+
+  // ═══════════════════════════════════════════════════════════════
+  // STAIRS — L-shaped, bay2-3 rear area (x≈-1 to 1, z=-3 to -1)
+  // ═══════════════════════════════════════════════════════════════
+  const stairGrp = partGrp('stairs', '楼梯', '#8b6914', []);
+  const sBase = F, sTop = B;
+  const totalRise = sTop - sBase; // 2.6m
+  const stepCount = 16, stepH = totalRise / stepCount;
+  const stepD = 0.28, stepW = 0.9;
+
+  // Segment 1: along back wall going +X, 8 steps
+  const s1X = -1.8, s1Z = -3.5, s1Steps = 8;
+  for (let i = 0; i < s1Steps; i++) {
     const step = box(stepW - 0.06, 0.04, stepD, MATS.woodLight);
-    const x = seg1StartX + i * stepD + stepD/2;
-    const y = sBaseY + i * stepH;
-    step.position.set(x, y, seg1StartZ);
+    step.position.set(s1X + i * stepD + stepD / 2, sBase + i * stepH, s1Z);
     addTo('stairs', step); stairGrp.add(step);
   }
 
-  // --- Landing (square platform at the turn) ---
+  // Landing
   const landing = box(stepW - 0.04, 0.05, stepW + 0.1, MATS.woodLight);
-  landing.position.set(seg2StartX, sBaseY + seg1Steps * stepH, seg2StartZ + stepW/2);
+  landing.position.set(s1X + s1Steps * stepD, sBase + s1Steps * stepH, s1Z + stepW / 2);
   addTo('stairs', landing); stairGrp.add(landing);
 
-  // --- Segment 2: steps going +Z ---
-  for (let i = 0; i < seg2Steps; i++) {
+  // Segment 2: going +Z, 8 steps
+  const s2X = s1X + s1Steps * stepD, s2Z = s1Z;
+  for (let i = 0; i < 8; i++) {
     const step = box(stepW - 0.06, 0.04, stepD, MATS.woodLight);
-    const z = seg2StartZ + stepW + i * stepD + stepD/2;
-    const y = sBaseY + (seg1Steps + i) * stepH;
-    step.position.set(seg2StartX + stepW/2, y, z);
-    step.rotation.y = Math.PI/2; // rotate to face +Z
+    step.position.set(s2X + stepW / 2, sBase + (s1Steps + i) * stepH, s2Z + stepW + i * stepD + stepD / 2);
+    step.rotation.y = Math.PI / 2;
     addTo('stairs', step); stairGrp.add(step);
   }
 
-  // --- Support posts at corners ---
-  const posts = [
-    [seg1StartX, seg1StartZ - stepW/2],
-    [seg2StartX, seg1StartZ - stepW/2],
-    [seg2StartX + stepW, seg1StartZ - stepW/2],
-    [seg2StartX + stepW, seg2StartZ + stepW + seg2Steps * stepD],
-  ];
-  for (const [px, pz] of posts) {
-    const postGeo = new THREE.CylinderGeometry(0.04, 0.04, sTotalRise + 0.3, 8);
-    const post = new THREE.Mesh(postGeo, MATS.woodDark);
-    post.position.set(px, (sBaseY + sTopY)/2, pz);
-    addTo('stairs', post); stairGrp.add(post);
-  }
-
-  // --- Handrail (3 sides) ---
-  // Inner handrail along segment 1 (+X direction)
-  const rail1 = box(0.04, 0.04, seg1Steps * stepD + 0.3, MATS.woodDark);
-  rail1.position.set(seg1StartX + seg1Steps*stepD/2, sBaseY + seg1Steps*stepH/2 + 0.75, seg1StartZ - stepW/2 + 0.04);
+  // Handrails
+  const rail1 = box(0.04, 0.04, s1Steps * stepD + 0.3, MATS.woodDark);
+  rail1.position.set(s1X + s1Steps * stepD / 2, sBase + s1Steps * stepH / 2 + 0.75, s1Z - stepW / 2 + 0.04);
   addTo('stairs', rail1); stairGrp.add(rail1);
-  // Inner handrail along segment 2 (+Z direction)
-  const rail2 = box(0.04, 0.04, seg2Steps * stepD + 0.3, MATS.woodDark);
-  rail2.position.set(seg2StartX + stepW - 0.04, sBaseY + (seg1Steps+seg2Steps/2)*stepH + 0.75, seg2StartZ + stepW + seg2Steps*stepD/2);
+  const rail2 = box(0.04, 0.04, 8 * stepD + 0.3, MATS.woodDark);
+  rail2.position.set(s2X + stepW - 0.04, sBase + 12 * stepH + 0.75, s2Z + stepW + 8 * stepD / 2);
   addTo('stairs', rail2); stairGrp.add(rail2);
-  // Outer wall-side rail (along back wall)
-  const rail3 = box(0.04, 0.04, seg1Steps * stepD + 0.3, MATS.woodDark);
-  rail3.position.set(seg1StartX + seg1Steps*stepD/2, sBaseY + seg1Steps*stepH/2 + 0.75, seg1StartZ + stepW/2 - 0.04);
-  addTo('stairs', rail3); stairGrp.add(rail3);
 }

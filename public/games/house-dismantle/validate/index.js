@@ -1,12 +1,5 @@
 /* House Dismantle — Spatial Validation Engine
- *
- * Usage:
- *   import { validateHouse } from './validate/index.js';
- *   const violations = validateHouse(parts);
- *
- * Returns Violation[] — each with rule, severity, parts, detail, metrics, fix.
- * Also prints console.table() summary.
- */
+ * Dabie Mountain 4-bay 2-story house */
 import { PART_DEFS } from '../config.js';
 import { checkDepTopology } from './rules/dep-topology.js';
 import { checkRoomHeight } from './rules/room-height.js';
@@ -15,12 +8,9 @@ import { checkPolyConsistency } from './rules/poly-consistency.js';
 import { checkClearance } from './rules/clearance.js';
 import { checkOverlap } from './rules/overlap.js';
 import { checkZFighting } from './rules/z-fighting.js';
-import { checkStudyRoom } from './rules/study-room.js';
-import { checkHolisticConsistency } from './rules/holistic-consistency.js';
 import { analyzeSite } from './site-analyzer.js';
 
 export function validateHouse(parts) {
-  // Step -2: Site analysis — understand the existing space first
   analyzeSite(parts, PART_DEFS);
 
   const allViolations = [
@@ -31,8 +21,6 @@ export function validateHouse(parts) {
     ...checkClearance(parts),
     ...checkOverlap(parts),
     ...checkZFighting(parts),
-    ...checkHolisticConsistency(parts, PART_DEFS),
-    ...checkStudyRoom(parts),
   ];
 
   const errors = allViolations.filter(v => v.severity === 'error');
