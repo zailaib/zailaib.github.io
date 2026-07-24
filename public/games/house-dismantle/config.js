@@ -86,6 +86,7 @@ export const PART_DEFS = [
   { name: 'upperWallBack',  label: '后墙(二层)', color: '#f2ece0', deps: ['roofFrame'], cat: 'structure' },
   { name: 'upperWallLeft',  label: '山墙(左)',   color: '#f2ece0', deps: ['roofFrame'], cat: 'structure' },
   { name: 'upperWallRight', label: '山墙(右)',   color: '#f2ece0', deps: ['roofFrame'], cat: 'structure' },
+  { name: 'upperInteriorWalls', label: '二层内隔墙', color: '#ede6d8', deps: ['upperWallFront','upperWallBack'], cat: 'structure' },
 
   // ── Roof ──
   { name: 'roofTiles',   label: '青瓦屋顶',   color: '#4a4a5a', deps: [], cat: 'roof' },
@@ -119,7 +120,7 @@ export const PART_DEFS = [
 // ── Categories — 3 layers, click to translate ─────────────────────
 export const CATEGORIES = {
   roof:   { label: '屋顶 ↗', parts: ['roofTiles','roofFrame'], color: '#4a4a5a' },
-  floor2: { label: '二层 ↗', parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','floor2','doors2F','windows2F','masterBed','secondBed','study','childRoom1','childRoom2'], color: '#5a8a5a' },
+  floor2: { label: '二层 ↗', parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','upperInteriorWalls','floor2','doors2F','windows2F','masterBed','secondBed','study','childRoom1','childRoom2'], color: '#5a8a5a' },
   floor1: { label: '一层 ↗', parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls','floor','doors1F','windows1F','elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','stairs','columns','base','ventDucts','pipelines'], color: '#d4c8b0' },
 };
 

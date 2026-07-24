@@ -1,6 +1,6 @@
-/* 2F — upper walls + floor band */
+/* 2F — upper walls + interior walls + floor band */
 import * as THREE from 'three';
-import { HOUSE_W, HOUSE_D, WALL_H2, WALL_T, HW2, HD2, WY2, BAND_Y } from '../config.js';
+import { HOUSE_W, HOUSE_D, WALL_H2, WALL_T, INT_WALL_T, BAY_W, BAY_COUNT, HW2, HD2, WY2, BAND_Y } from '../config.js';
 
 function box(w, h, d, m) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); }
 
@@ -35,6 +35,24 @@ export function buildUpperWalls(houseGroup, parts, MATS) {
       const mv = box(0.04, 0.4, 0.09, MATS.window);
       mv.position.set(bx, WY2, z - 0.01);
       addTo(side, mv); up.group.add(mv);
+    }
+  }
+
+  // ── 2F Interior walls (same layout as 1F) ──
+  const iwGrp = parts.get('upperInteriorWalls').group;
+  for (const ix of [-BAY_W, 0, BAY_W]) {
+    const iw = box(INT_WALL_T, WALL_H2, HOUSE_D - WALL_T * 2, MATS.interior);
+    iw.position.set(ix, WY2, 0);
+    addTo('upperInteriorWalls', iw); iwGrp.add(iw);
+  }
+  const dw = 0.9;
+  for (let b = 0; b < BAY_COUNT; b++) {
+    const bx = -HW2 + b * BAY_W + BAY_W / 2;
+    const hs = (BAY_W - INT_WALL_T * 2 - dw) / 2;
+    for (const side of [-1, 1]) {
+      const seg = box(hs, WALL_H2, INT_WALL_T, MATS.interior);
+      seg.position.set(bx + side * (hs / 2 + dw / 2), WY2, 0);
+      addTo('upperInteriorWalls', seg); iwGrp.add(seg);
     }
   }
 

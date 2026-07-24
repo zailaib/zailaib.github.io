@@ -60,7 +60,7 @@ export function buildFloor1Rooms(houseGroup, parts, MATS) {
   for (const [lx, lz] of [[-0.95, -0.65], [0.95, -0.65], [-0.95, 0.65], [0.95, 0.65]]) {
     const leg = box(0.08, 0.8, 0.08, MATS.woodDark); leg.position.set(2 + lx, 0.4 + F, lz + 2.5); addTo('livingRoom', leg); lr.add(leg);
   }
-  const tc = box(1.4, 1.5, 0.4, MATS.woodDark); tc.position.set(2, 0.75 + F, 0.3); addTo('livingRoom', tc); lr.add(tc);
+  const tc = box(1.4, 1.5, 0.4, MATS.woodDark); tc.position.set(2, 0.75 + F, 3.0); addTo('livingRoom', tc); lr.add(tc);
   for (const [sx, sz] of [[2, 1.3], [2, 3.7], [0.7, 2.5], [3.3, 2.5]]) { lr.add(makeChair(sx, sz, F)); }
 
   // Kitchen (x=6, z=2.2)

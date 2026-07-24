@@ -45,9 +45,9 @@ export function buildFloor1Openings(houseGroup, parts, MATS) {
   function addInteriorDoor(x, z, ry = 0) {
     if (!iwPart) return;
     const dg = new THREE.Group();
-    for (const dx of [-0.42, 0.42]) { const f = box(0.06, 2.1, 0.04, MATS.interiorDoor); f.position.set(dx, 1.05 + F, 0); dg.add(f); }
-    const ft2 = box(0.9, 0.06, 0.04, MATS.interiorDoor); ft2.position.set(0, 2.1 + F, 0); dg.add(ft2);
-    const pn = box(0.78, 2.0, 0.03, MATS.interiorDoor); pn.position.set(0, 1.0 + F, 0.02); dg.add(pn);
+    // Just a thin frame marking the doorway — no door panel
+    for (const dx of [-0.42, 0.42]) { const f = box(0.05, 2.1, 0.03, MATS.interiorDoor); f.position.set(dx, 1.05 + F, 0); dg.add(f); }
+    const ft2 = box(0.9, 0.05, 0.03, MATS.interiorDoor); ft2.position.set(0, 2.1 + F, 0); dg.add(ft2);
     dg.position.set(x, 0, z); dg.rotation.y = ry;
     iwPart.group.add(dg);
     iwPart.meshArr.push(...dg.children);
