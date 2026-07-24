@@ -1,6 +1,6 @@
 /* Base — foundation, columns, plumbing */
 import * as THREE from 'three';
-import { HOUSE_W, HOUSE_D, BASE_H, WALL_T, FLOOR_H, EAVE_H, ROOF_OH, HW2, HD2 } from '../config.js';
+import { HOUSE_W, HOUSE_D, WALL_H1, WALL_H2, BASE_H, WALL_T, FLOOR_H, EAVE_H, ROOF_OH, HW2, HD2 } from '../config.js';
 
 function box(w, h, d, m) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); }
 function cyl(r, h, m, s = 10) { return new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, s), m); }
