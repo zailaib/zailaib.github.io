@@ -59,14 +59,6 @@ export const MATS = {
   stoveBrick:  new THREE.MeshStandardMaterial({ color: 0x8b5a3a, roughness: 0.85, metalness: 0.0 }),
   stoveDark:   new THREE.MeshStandardMaterial({ color: 0x5a3a28, roughness: 0.8, metalness: 0.0 }),
   wokMetal:    new THREE.MeshStandardMaterial({ color: 0x3a3a3a, roughness: 0.3, metalness: 0.8 }),
-  shrineMat:   new THREE.MeshStandardMaterial({ color: 0x4a2010, roughness: 0.4, metalness: 0.1 }),
-  // Yard
-  chickenBody: new THREE.MeshStandardMaterial({ color: 0xd4a030, roughness: 0.7, metalness: 0.0 }),
-  chickenComb: new THREE.MeshStandardMaterial({ color: 0xcc2200, roughness: 0.5, metalness: 0.0 }),
-  chickenBeak: new THREE.MeshStandardMaterial({ color: 0xcc8800, roughness: 0.5, metalness: 0 }),
-  wellStone:   new THREE.MeshStandardMaterial({ color: 0x7a7a7a, roughness: 0.7, metalness: 0.05 }),
-  wellRoof:    new THREE.MeshStandardMaterial({ color: 0x5a4a3a, roughness: 0.6, metalness: 0.0 }),
-  hayMat:      new THREE.MeshStandardMaterial({ color: 0xb8a040, roughness: 0.9, metalness: 0.0 }),
   // Plumbing
   pipe:        new THREE.MeshStandardMaterial({ color: 0x8b6b4a, roughness: 0.4, metalness: 0.6 }),
   pipeJoint:   new THREE.MeshStandardMaterial({ color: 0x7a5c3e, roughness: 0.35, metalness: 0.7 }),
