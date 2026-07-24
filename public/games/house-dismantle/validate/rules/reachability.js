@@ -1,83 +1,131 @@
-/* Rule: Spatial Reachability — can you walk to every room? */
+/* Rule: Spatial Reachability — BFS through actual doorway positions */
+import * as THREE from 'three';
+import { BAY_W, BAY_COUNT, HW2, HD2 } from '../../config.js';
 
-// Room graph nodes: bay-section cells. Each cell = one bay, front/back half, floor
-// Doorways define edges. Check connectivity from entrance.
-
-export function checkReachability() {
+export function checkReachability(parts) {
   const violations = [];
-  const BAYS = 4;
-  const FLOORS = 2;
 
-  // Build adjacency graph
-  // Node ID: "F{bay}-{fb}" where bay=0..3, fb=front|back
-  // Actually use numeric: floor * 8 + bay * 2 + (front?0:1)
-  const N = FLOORS * BAYS * 2; // 16 nodes
-  const adj = Array.from({ length: N }, () => []);
+  // ── Define rooms as 3D cells ─────────────────────────────────────
+  // Cell: [floor, bay, front?] — 16 cells total
+  const BAYS = BAY_COUNT; // 4
+  const cell = (f, b, front) => `${f}:${b}:${front ? 'F' : 'B'}`;
 
-  function nodeId(floor, bay, front) {
-    return floor * BAYS * 2 + bay * 2 + (front ? 0 : 1);
+  // Room bounds for each cell
+  function cellBounds(f, b, front) {
+    const x0 = -HW2 + b * BAY_W;
+    const x1 = x0 + BAY_W;
+    const z0 = front ? 0 : -HD2;
+    const z1 = front ? HD2 : 0;
+    const y0 = f === 0 ? FLOOR_H : BAND_Y;
+    return { x0, x1, z0, z1, y0 };
   }
 
-  function connect(a, b) {
-    adj[a].push(b);
-    adj[b].push(a);
+  // ── Find doorways from interior wall geometry ────────────────────
+  // A doorway exists where there's a gap between wall segments
+  const doorways = []; // { from, to, x, z, floor }
+
+  function addDoorway(f1, b1, front1, f2, b2, front2, x, z) {
+    if (f1 < 0 || f1 > 1 || b1 < 0 || b1 >= BAYS) return;
+    if (f2 < 0 || f2 > 1 || b2 < 0 || b2 >= BAYS) return;
+    doorways.push({ from: cell(f1, b1, front1), to: cell(f2, b2, front2), x: +x.toFixed(1), z: +z.toFixed(1), floor: f1 });
   }
 
-  // Doorways in cross wall z=0: front↔back within each bay, both floors
-  for (let f = 0; f < FLOORS; f++) {
-    for (let b = 0; b < BAYS; b++) {
-      connect(nodeId(f, b, true), nodeId(f, b, false));
-    }
-  }
-
-  // Corridor doorways in longitudinal walls at z≈-2: bay↔bay+1 (back side), both floors
-  for (let f = 0; f < FLOORS; f++) {
-    for (let b = 0; b < BAYS - 1; b++) {
-      connect(nodeId(f, b, false), nodeId(f, b + 1, false));
-    }
-  }
-
-  // Stairs connect 1F bay2-back ↔ 2F bay2-back (stairwell area)
-  connect(nodeId(0, 1, false), nodeId(1, 1, false)); // bay1 = index 1 (x=-4..0)
-
-  // Entrances: front door at 1F bay2-front (index 2), back door at 1F bay3-back (index 3)
-  const entrances = [nodeId(0, 2, true), nodeId(0, 3, false)];
-
-  // BFS from entrances
-  const visited = new Set();
-  const queue = [...entrances];
-  for (const e of entrances) visited.add(e);
-  while (queue.length > 0) {
-    const cur = queue.shift();
-    for (const next of adj[cur]) {
-      if (!visited.has(next)) {
-        visited.add(next);
-        queue.push(next);
+  // Check interiorWalls for actual corridor gaps at z≈-2
+  const iwPart = parts.get('interiorWalls');
+  if (iwPart && iwPart.meshArr) {
+    const segments = [];
+    for (const m of iwPart.meshArr) {
+      if (!m.geometry || !m.geometry.boundingBox) continue;
+      const bbox = new THREE.Box3().setFromObject(m);
+      const sx = bbox.max.x - bbox.min.x, sz = bbox.max.z - bbox.min.z;
+      // Longitudinal wall segments: thin in X, long in Z
+      if (sx < 0.3 && sz > 1) {
+        segments.push({ x: (bbox.min.x + bbox.max.x) / 2, z0: bbox.min.z, z1: bbox.max.z });
       }
     }
-  }
 
-  // Check unreachable
-  const labels = [];
-  for (let f = 0; f < FLOORS; f++) {
-    for (let b = 0; b < BAYS; b++) {
-      for (const fb of [true, false]) {
-        const id = nodeId(f, b, fb);
-        if (!visited.has(id)) {
-          const roomName = `${f === 0 ? '1F' : '2F'} 开间${b + 1}${fb ? '前' : '后'}`;
-          labels.push(roomName);
+    // For each longitudinal wall (x≈-4, 0, 4), find gaps between segments
+    for (const wallX of [-4, 0, 4]) {
+      const wallSegs = segments.filter(s => Math.abs(s.x - wallX) < 1);
+      wallSegs.sort((a, b) => a.z0 - b.z0);
+      // Find gaps between consecutive segments > 0.8m
+      for (let i = 0; i < wallSegs.length - 1; i++) {
+        const gap = wallSegs[i + 1].z0 - wallSegs[i].z1;
+        if (gap > 0.8) {
+          const gapZ = (wallSegs[i].z1 + wallSegs[i + 1].z0) / 2;
+          const bayLeft = Math.floor((wallX + HW2) / BAY_W);
+          const bayRight = bayLeft + 1;
+          // Corridor doorway connecting adjacent bays (back side)
+          addDoorway(0, bayLeft, false, 0, bayRight, false, wallX, gapZ);
         }
       }
     }
   }
 
-  if (labels.length > 0) {
+  // Cross wall doorways at z=0 (front↔back in each bay)
+  for (let b = 0; b < BAYS; b++) {
+    const bx = -HW2 + b * BAY_W + BAY_W / 2;
+    addDoorway(0, b, true, 0, b, false, bx, 0);
+    addDoorway(1, b, true, 1, b, false, bx, 0);
+  }
+
+  // Corridor doorways (from wall analysis or fallback)
+  if (doorways.filter(d => Math.abs(d.z + 2) < 1 && d.floor === 0).length === 0) {
+    // Fallback: assume corridor gaps at z=-2
+    for (let b = 0; b < BAYS - 1; b++) {
+      const wx = -HW2 + (b + 1) * BAY_W;
+      addDoorway(0, b, false, 0, b + 1, false, wx, -2);
+      addDoorway(1, b, false, 1, b + 1, false, wx, -2);
+    }
+  }
+
+  // Stairs connect 1F bay2-back ↔ 2F bay2-back
+  addDoorway(0, 1, false, 1, 1, false, -1, -2);
+
+  // ── BFS from entrances ──────────────────────────────────────────
+  const entrances = [cell(0, 2, true), cell(0, 3, false)]; // front door bay3, back door bay4
+  const visited = new Set(entrances);
+  const queue = [...entrances];
+
+  while (queue.length > 0) {
+    const cur = queue.shift();
+    for (const dw of doorways) {
+      if (dw.from === cur && !visited.has(dw.to)) {
+        visited.add(dw.to); queue.push(dw.to);
+      }
+      if (dw.to === cur && !visited.has(dw.from)) {
+        visited.add(dw.from); queue.push(dw.from);
+      }
+    }
+  }
+
+  // ── Report ──────────────────────────────────────────────────────
+  const unreachable = [];
+  for (let f = 0; f < 2; f++) {
+    for (let b = 0; b < BAYS; b++) {
+      for (const front of [true, false]) {
+        const c = cell(f, b, front);
+        if (!visited.has(c)) {
+          unreachable.push(`${f === 0 ? '1F' : '2F'}开间${b + 1}${front ? '前' : '后'}`);
+        }
+      }
+    }
+  }
+
+  if (unreachable.length > 0) {
     violations.push({
-      rule: 'reachability',
-      severity: 'error',
-      parts: [],
-      detail: `${labels.length} 个房间无法到达: ${labels.join(', ')}`,
-      fix: { suggestion: '添加门洞或走廊连接这些房间' },
+      rule: 'reachability', severity: 'error', parts: [],
+      detail: `${unreachable.length} 个房间无法到达: ${unreachable.join(', ')}`,
+      fix: { suggestion: '检查门洞位置是否与走廊对齐，楼梯出口是否有通道到各房间' },
+    });
+  }
+
+  // Also check doorway count
+  if (doorways.length === 0) {
+    violations.push({
+      rule: 'reachability', severity: 'error', parts: ['interiorWalls'],
+      detail: '未检测到任何门洞 — 隔墙可能无开口',
+      fix: { suggestion: '在横纵隔墙上添加门洞' },
     });
   }
 

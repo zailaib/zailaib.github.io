@@ -22,7 +22,7 @@ export function validateHouse(parts) {
     ...checkClearance(parts),
     ...checkOverlap(parts),
     ...checkZFighting(parts),
-    ...checkReachability(),
+    ...checkReachability(parts),
   ];
 
   const errors = allViolations.filter(v => v.severity === 'error');
