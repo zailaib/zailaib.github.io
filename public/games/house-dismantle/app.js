@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {
   hideLoading, showError, setupThemeToggle, setupResizeHandler, createStarfield,
 } from '/games/shared/three-utils.js';
-import { MATS, CATEGORIES, getDisassembleOffset } from './config.js';
+import { MATS, CATEGORIES, getDisassembleOffset, FLOOR_H, BAND_Y } from './config.js';
 import { buildStructure } from './house-core.js';
 import { buildOpenings } from './house-openings.js';
 import { buildInterior } from './house-interior.js';
@@ -404,61 +404,106 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
-// ── Camera Tour ──────────────────────────────────────────────────
-const tourKeyframes = [
-  { pos: [6,2.5,8],    tgt: [6,2.0,4.3],  dur: 1.5 }, // 0: outside front door (bay4)
-  { pos: [2,2.5,3.5],  tgt: [2,2.0,2.0],   dur: 2.5 }, // 1: enter → living room
-  { pos: [0,2.5,2],    tgt: [0,2.0,-3.5],  dur: 2.5 }, // 2: living → shrine (back)
-  { pos: [-6,2.5,-2],  tgt: [-6,2.0,-3.5], dur: 2.5 }, // 3: left bay → kitchen area
-  { pos: [6,2.5,-2],   tgt: [6,2.0,-3.5],  dur: 2.5 }, // 4: right bay → dining
-  { pos: [0,5.5,-1],   tgt: [0,5.0,0.5],   dur: 2.0 }, // 5: upstairs via stairs
-  { pos: [0,6.0,1],    tgt: [0,5.5,2],     dur: 2.0 }, // 6: look around upper floor
-  { pos: [14,8,20],    tgt: [0,3.5,0],     dur: 2.0 }, // 7: return
+// ── Room Tour System ───────────────────────────────────────────────
+const F = FLOOR_H, B = BAND_Y;
+const eyeH1 = F + 1.6;  // 1F eye height
+const eyeH2 = B + 1.6;  // 2F eye height
+
+// { pos, tgt, label, floor }
+const ROOM_VIEWS = [
+  // 1F
+  { pos: [0, 2.8, 8.5],     tgt: [0, 2.2, 0],       label: '🏡 屋前全景',   floor: 'outside' },
+  { pos: [-6, eyeH1, 3.8],   tgt: [-6, 1.5, 2.0],    label: '🛏 老人房1',    floor: '1f' },
+  { pos: [-2, eyeH1, 2.6],   tgt: [-2, 1.5, 0.5],    label: '🛏 老人房2',    floor: '1f' },
+  { pos: [2, eyeH1, 3.2],    tgt: [2, 1.5, 0.8],     label: '🛋 客厅',       floor: '1f' },
+  { pos: [6, eyeH1, 3.8],    tgt: [6, 1.5, 2.0],     label: '🍳 厨房',       floor: '1f' },
+  { pos: [-6, eyeH1, -0.8],  tgt: [-6, 1.5, -2.5],   label: '🍽 餐厅',       floor: '1f' },
+  { pos: [0, 1.8, -2.8],     tgt: [0, 1.8, -4.0],    label: '🙏 神龛',       floor: '1f' },
+  // 2F
+  { pos: [-6, eyeH2, 3.5],   tgt: [-6, eyeH2-0.5, 1.5], label: '🛏 主卧',     floor: '2f' },
+  { pos: [-2, eyeH2, 3.0],   tgt: [-2, eyeH2-0.5, 1.0], label: '🛏 次卧',     floor: '2f' },
+  { pos: [2, eyeH2, 3.5],    tgt: [2, eyeH2-0.5, 1.5],  label: '📚 书房',     floor: '2f' },
+  { pos: [6, eyeH2, 3.5],    tgt: [6, eyeH2-0.5, 1.5],  label: '🧸 儿童房1',  floor: '2f' },
+  { pos: [-6, eyeH2, -0.8],  tgt: [-6, eyeH2-0.5, -2.2], label: '🧸 儿童房2', floor: '2f' },
+  { pos: [-0.5, eyeH1+0.5, 0], tgt: [-0.5, eyeH1, -4],  label: '🪜 楼梯间',   floor: '1f' },
+  // Outside
+  { pos: [0, 4, -9],         tgt: [0, 3, -4.3],       label: '🌳 后院',       floor: 'outside' },
+  { pos: [12, 5, 0],         tgt: [0, 3, 0],          label: '🔭 全景俯瞰',  floor: 'outside' },
 ];
-let tourActive = false;
-let tourIndex = 0;
+
+let tourTarget = null; // { pos: Vector3, tgt: Vector3 }
+let tourStartPos = new THREE.Vector3();
+let tourStartTgt = new THREE.Vector3();
+let tourEndPos = new THREE.Vector3();
+let tourEndTgt = new THREE.Vector3();
 let tourT = 0;
-const tourStartPos = new THREE.Vector3();
-const tourStartTgt = new THREE.Vector3();
-const tourEndPos = new THREE.Vector3();
-const tourEndTgt = new THREE.Vector3();
+const TOUR_DUR = 2.0; // seconds per transition
 
-function startTour() {
-  if (tourActive) { stopTour(); return; }
-  if (isDisassembled) doReassembleAll();
-  clearSelection();
-  tourActive = true;
-  tourIndex = 0;
-  startKeyframe(0);
+let tourPanelVisible = false;
+
+function buildTourPanel() {
+  const floors = { '1f': 'tour-1f', '2f': 'tour-2f', 'outside': 'tour-outside' };
+  for (const [floor, containerId] of Object.entries(floors)) {
+    const container = document.getElementById(containerId);
+    ROOM_VIEWS.forEach((rv, i) => {
+      if (rv.floor !== floor) return;
+      const btn = document.createElement('button');
+      btn.className = 'tour-room-btn';
+      btn.textContent = rv.label;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        flyToRoom(i);
+        hideTourPanel();
+      });
+      container.appendChild(btn);
+    });
+  }
+}
+
+function showTourPanel() {
+  if (!document.getElementById('tour-1f').children.length) buildTourPanel();
+  document.getElementById('tour-panel').classList.remove('hidden');
+  tourPanelVisible = true;
+  document.getElementById('btn-tour').textContent = '⏹ 关闭';
   document.getElementById('btn-tour').classList.add('active');
-  document.getElementById('btn-tour').textContent = '⏹ 停止';
-  controls.enabled = false;
 }
 
-function stopTour() {
-  tourActive = false;
-  document.getElementById('btn-tour').classList.remove('active');
+function hideTourPanel() {
+  document.getElementById('tour-panel').classList.add('hidden');
+  tourPanelVisible = false;
   document.getElementById('btn-tour').textContent = '🎥 参观';
-  controls.enabled = true;
+  document.getElementById('btn-tour').classList.remove('active');
+  if (tourTarget) { tourTarget = null; controls.enabled = true; }
 }
 
-function startKeyframe(idx) {
-  if (idx >= tourKeyframes.length) { stopTour(); return; }
-  tourIndex = idx;
-  tourT = 0;
-  const kf = tourKeyframes[idx];
+function flyToRoom(idx) {
+  const rv = ROOM_VIEWS[idx];
   tourStartPos.copy(camera.position);
   tourStartTgt.copy(controls.target);
-  tourEndPos.set(kf.pos[0], kf.pos[1], kf.pos[2]);
-  tourEndTgt.set(kf.tgt[0], kf.tgt[1], kf.tgt[2]);
+  tourEndPos.set(rv.pos[0], rv.pos[1], rv.pos[2]);
+  tourEndTgt.set(rv.tgt[0], rv.tgt[1], rv.tgt[2]);
+  tourT = 0;
+  tourTarget = { pos: tourEndPos.clone(), tgt: tourEndTgt.clone() };
+  controls.enabled = false;
+  if (isDisassembled) doReassembleAll();
+  clearSelection();
 }
 
 // ── Buttons ───────────────────────────────────────────────────────
 document.getElementById('btn-dismantle').addEventListener('click',
   () => isDisassembled ? doReassembleAll() : doDisassemble());
-document.getElementById('btn-tour').addEventListener('click', startTour);
+document.getElementById('btn-tour').addEventListener('click', () => {
+  if (tourTarget) { tourTarget = null; controls.enabled = true; hideTourPanel(); }
+  else if (tourPanelVisible) { hideTourPanel(); }
+  else { showTourPanel(); }
+});
+document.getElementById('btn-tour-close').addEventListener('click', hideTourPanel);
+document.getElementById('tour-panel').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) hideTourPanel();
+});
 document.getElementById('btn-reset').addEventListener('click', () => {
-  stopTour();
+  tourTarget = null; controls.enabled = true;
+  hideTourPanel();
   clearSelection(); doReassembleAll();
   camera.position.set(10, 7, 16);
   controls.target.set(0, 2.2, 0); controls.update();
@@ -475,17 +520,16 @@ function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.1);
 
-  // Camera tour
-  if (tourActive) {
-    const kf = tourKeyframes[tourIndex];
-    tourT += dt / kf.dur;
+  // Room tour — smooth fly-to animation
+  if (tourTarget) {
+    tourT += dt / TOUR_DUR;
     if (tourT >= 1.0) {
       tourT = 1.0;
       camera.position.copy(tourEndPos);
       controls.target.copy(tourEndTgt);
-      startKeyframe(tourIndex + 1);
+      tourTarget = null;
+      controls.enabled = true;
     } else {
-      // Smooth ease-in-out
       const t = tourT < 0.5 ? 2*tourT*tourT : 1 - Math.pow(-2*tourT + 2, 2)/2;
       camera.position.lerpVectors(tourStartPos, tourEndPos, t);
       controls.target.lerpVectors(tourStartTgt, tourEndTgt, t);
