@@ -84,30 +84,6 @@ export function buildPlumbing(houseGroup, parts, MATS) {
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // DRAINAGE EXIT — back-right corner, where water flows out
-  // A short open channel sloping away from the house
-  // ═══════════════════════════════════════════════════════════════
-  const exitX = HW2 - 0.3, exitZ = -HD2 - WALL_T / 2 - ditchOff - ditchW / 2;
-
-  // Exit channel — shallow open trough, extends just past the ditch
-  const exitLen = 0.8, exitW = 0.22;
-  const exitBottom = box(exitW, 0.03, exitLen, MATS.baseDark);
-  exitBottom.position.set(exitX, ditchY - 0.03, exitZ - exitLen / 2);
-  addTo('pipelines', exitBottom); pipeGrp.add(exitBottom);
-
-  // Side guides
-  for (const sx of [-1, 1]) {
-    const guide = box(0.04, 0.06, exitLen, stoneMat);
-    guide.position.set(exitX + sx * exitW / 2, ditchY + 0.01, exitZ - exitLen / 2);
-    addTo('pipelines', guide); pipeGrp.add(guide);
-  }
-
-  // Small gravel catch basin at the exit end
-  const basin = box(exitW + 0.15, 0.02, 0.3, MATS.baseDark);
-  basin.position.set(exitX, ditchY - 0.06, exitZ - exitLen);
-  addTo('pipelines', basin); pipeGrp.add(basin);
-
-  // ═══════════════════════════════════════════════════════════════
   // RAIN BARREL — at back-left corner, under eave drip line
   // Collects water for garden use
   // ═══════════════════════════════════════════════════════════════
