@@ -128,18 +128,45 @@ for (const [catKey, cat] of Object.entries(CATEGORIES)) {
   btn.style.setProperty('--cat-color', cat.color);
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    if (activeCat === catKey) {
-      activeCat = null;
+    // Toggle: click to translate away, click again to bring back
+    const catParts = cat.parts.filter(n => parts.has(n));
+    const allOut = catParts.every(n => {
+      const tgt = targetOff.get(n);
+      const off = getDisassembleOffset(n);
+      return tgt && Math.abs(tgt.x - off[0]) < 0.01 && Math.abs(tgt.y - off[1]) < 0.01 && Math.abs(tgt.z - off[2]) < 0.01;
+    });
+    if (allOut) {
       btn.classList.remove('active');
-      clearSelection();
+      if (activeCat === catKey) activeCat = null;
+      for (const n of catParts) { targetOff.get(n).set(0, 0, 0); const p = parts.get(n); if (p) p.assembled = true; }
     } else {
       document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeCat = catKey;
-      selected.clear();
-      cat.parts.forEach(n => { if (parts.has(n)) selected.add(n); });
-      refreshUI();
+      const toMove = getRequiredParts(new Set(catParts));
+      const offsets = new Map();
+      for (const name of toMove) offsets.set(name, [...getDisassembleOffset(name)]);
+      for (const name of toMove) {
+        const p = parts.get(name);
+        if (!p) continue;
+        for (const dep of p.deps) {
+          if (toMove.has(dep) && offsets.has(dep)) {
+            const po = offsets.get(dep), mo = offsets.get(name);
+            mo[0] += po[0]; mo[1] += po[1]; mo[2] += po[2];
+          }
+        }
+      }
+      for (const name of toMove) {
+        const off = offsets.get(name);
+        targetOff.get(name).set(off[0], off[1], off[2]);
+        const p = parts.get(name);
+        if (p) p.assembled = false;
+      }
     }
+    isDisassembled = catParts.some(n => { const t = targetOff.get(n); return t && (t.x !== 0 || t.y !== 0 || t.z !== 0); });
+    tweenActive = true;
+    updateLegendUI();
+    updateDismantleBtn();
   });
   catBar.appendChild(btn);
 }
