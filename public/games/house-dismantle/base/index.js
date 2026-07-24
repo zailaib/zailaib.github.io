@@ -63,20 +63,21 @@ export function buildBase(houseGroup, parts, MATS) {
   const stoneMat = new THREE.MeshStandardMaterial({ color: 0x6a6a6a, roughness: 0.8, metalness: 0.05 });
 
   function makeDitch(len, x, z, ry = 0) {
+    const yOff = (ry > 0 ? 0.002 : 0);
     const bottom = box(len, ditchD, ditchW * 0.85, MATS.baseDark);
-    bottom.position.set(x, ditchY, z); bottom.rotation.y = ry;
+    bottom.position.set(x, ditchY + yOff, z); bottom.rotation.y = ry;
     addTo('pipelines', bottom); pipeGrp.add(bottom);
     for (const so of [-1, 1]) {
       const lip = box(len, ditchD + 0.02, 0.05, stoneMat);
-      lip.position.set(x, ditchY + 0.01, z + so * ditchW / 2); lip.rotation.y = ry;
+      lip.position.set(x, ditchY + 0.01 + yOff, z + so * ditchW / 2); lip.rotation.y = ry;
       addTo('pipelines', lip); pipeGrp.add(lip);
     }
   }
 
-  makeDitch(HOUSE_W + ROOF_OH * 2 - 0.6, 0, HD2 + WALL_T / 2 + ditchOff);
-  makeDitch(HOUSE_W + ROOF_OH * 2 - 0.6, 0, -HD2 - WALL_T / 2 - ditchOff);
-  makeDitch(HOUSE_D + ROOF_OH * 2 - 0.6, -HW2 - WALL_T / 2 - ditchOff, 0, Math.PI / 2);
-  makeDitch(HOUSE_D + ROOF_OH * 2 - 0.6, HW2 + WALL_T / 2 + ditchOff, 0, Math.PI / 2);
+  makeDitch(HOUSE_W + ROOF_OH*2 - 0.6, 0, HD2+WALL_T/2+ditchOff, 0);
+  makeDitch(HOUSE_W + ROOF_OH*2 - 0.6, 0, -HD2-WALL_T/2-ditchOff, 0);
+  makeDitch(HOUSE_D + ROOF_OH*2 - 0.6, -HW2-WALL_T/2-ditchOff, 0, Math.PI/2);
+  makeDitch(HOUSE_D + ROOF_OH*2 - 0.6, HW2+WALL_T/2+ditchOff, 0, Math.PI/2);
 
   // Corner splash blocks
   const corners = [[-HW2 + 0.3, -HD2 + 0.3], [HW2 - 0.3, -HD2 + 0.3], [-HW2 + 0.3, HD2 - 0.3], [HW2 - 0.3, HD2 - 0.3]];

@@ -21,9 +21,9 @@ export function buildUpperWalls(houseGroup, parts, MATS) {
   for (const [side, z] of [['upperWallFront', HD2+0.03], ['upperWallBack', -HD2-0.03]]) {
     const up = parts.get(side); if (!up) continue;
     for (const bx of [-6, -2, 2, 6]) {
-      const f = box(0.5, 0.5, 0.08, MATS.window); f.position.set(bx, WY2, z); addTo(side, f); up.group.add(f);
-      const mh = box(0.4, 0.04, 0.09, MATS.window); mh.position.set(bx, WY2, z+0.01); addTo(side, mh); up.group.add(mh);
-      const mv = box(0.04, 0.4, 0.09, MATS.window); mv.position.set(bx, WY2, z-0.01); addTo(side, mv); up.group.add(mv);
+      const f = box(0.5, 0.5, 0.08, MATS.window); f.position.set(bx, WY2+0.01, z); addTo(side, f); up.group.add(f);
+      const mh = box(0.4, 0.04, 0.09, MATS.window); mh.position.set(bx, WY2, z+0.02); addTo(side, mh); up.group.add(mh);
+      const mv = box(0.04, 0.4, 0.09, MATS.window); mv.position.set(bx, WY2-0.01, z-0.02); addTo(side, mv); up.group.add(mv);
     }
   }
 

@@ -54,7 +54,7 @@ export function buildRoof(houseGroup, parts, MATS) {
     for (const side of [-1, 1]) {
       const halfSpan = HD2 + ROOF_OH;
       const rafter = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.06, halfSpan), MATS.roofFrame);
-      rafter.position.set(x, (ROOF_H + EAVE_H) / 2, side * (halfSpan / 2 - ROOF_OH / 2));
+      rafter.position.set(x, (ROOF_H + EAVE_H) / 2 + (i % 3) * 0.003, side * (halfSpan / 2 - ROOF_OH / 2));
       rafter.rotation.x = side * Math.atan2(ROOF_H - EAVE_H, halfSpan);
       addTo('roofFrame', rafter); rfGrp.add(rafter);
     }
