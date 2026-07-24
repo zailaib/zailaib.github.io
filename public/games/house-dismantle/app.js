@@ -152,6 +152,7 @@ for (const [catKey, cat] of Object.entries(CATEGORIES)) {
           if (toMove.has(dep) && offsets.has(dep)) {
             const po = offsets.get(dep), mo = offsets.get(name);
             mo[0] += po[0]; mo[1] += po[1]; mo[2] += po[2];
+            break; // only inherit from first matching parent
           }
         }
       }
@@ -344,6 +345,7 @@ function doDisassemble() {
         myOff[0] += parentOff[0];
         myOff[1] += parentOff[1];
         myOff[2] += parentOff[2];
+        break; // only first matching parent
       }
     }
   }

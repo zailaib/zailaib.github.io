@@ -127,13 +127,15 @@ export const PART_DEFS = [
 
 // ── Categories ────────────────────────────────────────────────────
 export const CATEGORIES = {
-  roof:      { label: '屋顶',   parts: ['roofTiles','roofFrame'], color: '#4a4a5a' },
-  structure: { label: '结构',   parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls','upperWallFront','upperWallBack','upperWallLeft','upperWallRight','columns'], color: '#d4c8b0' },
-  base:      { label: '地基',   parts: ['base','ventDucts','floor','floor2'], color: '#6e6e6e' },
-  openings:  { label: '门窗梯', parts: ['doors1F','doors2F','windows1F','windows2F','stairs'], color: '#8b6914' },
-  interior1F:{ label: '一层家具', parts: ['elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','shrine'], color: '#7a4a20' },
-  interior2F:{ label: '二层家具', parts: ['masterBed','secondBed','study','childRoom1','childRoom2'], color: '#7a4a20' },
-  plumbing:  { label: '管道',   parts: ['pipelines'], color: '#8b6b4a' },
+  roof:      { label: '屋顶 →',    parts: ['roofTiles','roofFrame'], color: '#4a4a5a' },
+  floor2:    { label: '二层 →',    parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','floor2','doors2F','windows2F','masterBed','secondBed','study','childRoom1','childRoom2','columns'], color: '#5a8a5a' },
+  wallFront: { label: '前墙 ↑',    parts: ['wallFront'], color: '#d4c8b0' },
+  wallBack:  { label: '后墙 ↓',    parts: ['wallBack'], color: '#d4c8b0' },
+  wallLeft:  { label: '左墙 ←',    parts: ['wallLeft'], color: '#d4c8b0' },
+  wallRight: { label: '右墙 →',    parts: ['wallRight'], color: '#d4c8b0' },
+  openings:  { label: '门窗',      parts: ['doors1F','windows1F'], color: '#8b6914' },
+  interior1F:{ label: '一层家具',  parts: ['elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','shrine','stairs'], color: '#7a4a20' },
+  base:      { label: '地基',      parts: ['base','ventDucts','floor','interiorWalls','pipelines'], color: '#6e6e6e' },
 };
 
 // ── Translate offsets — each category moves AS A GROUP ────────────
