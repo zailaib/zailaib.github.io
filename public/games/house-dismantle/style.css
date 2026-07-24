@@ -173,57 +173,6 @@ body.light #hint { color: rgba(0,0,0,0.2); }
   font-size: 16px; gap: 8px; text-align: center; padding: 20px;
 }
 
-/* ---- Room Tour Panel ---- */
-#tour-panel {
-  position: fixed; left: 16px; bottom: 120px;
-  width: 220px; max-height: calc(100vh - 260px);
-  background: var(--panel-bg);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--panel-border);
-  border-radius: 12px; padding: 16px;
-  z-index: 25; overflow-y: auto;
-  transition: opacity 0.3s, transform 0.3s;
-}
-#tour-panel.hidden {
-  opacity: 0; pointer-events: none;
-  transform: translateY(10px);
-}
-#tour-panel::-webkit-scrollbar { width: 3px; }
-#tour-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
-.tour-title {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 12px; padding-bottom: 10px;
-  border-bottom: 1px solid var(--panel-border);
-  font-size: 13px; font-weight: 700; color: var(--text);
-}
-.tour-close-btn {
-  background: none; border: none; color: var(--text-secondary);
-  font-size: 16px; cursor: pointer; padding: 2px 6px;
-  border-radius: 4px; line-height: 1;
-}
-.tour-close-btn:hover { color: var(--text); background: rgba(255,255,255,0.08); }
-.tour-section { margin-bottom: 12px; }
-.tour-floor-label {
-  font-size: 10px; font-weight: 700; color: var(--text-secondary);
-  text-transform: uppercase; letter-spacing: 1.5px;
-  margin-bottom: 6px; opacity: 0.5;
-}
-.tour-grid { display: flex; flex-direction: column; gap: 4px; }
-.tour-room-btn {
-  display: block; width: 100%; text-align: left;
-  padding: 8px 12px; border-radius: 8px;
-  border: 1px solid var(--panel-border);
-  background: rgba(255,255,255,0.03);
-  color: var(--text-secondary);
-  font-size: 12px; font-family: inherit;
-  cursor: pointer; transition: all 0.25s;
-}
-.tour-room-btn:hover {
-  border-color: rgba(100,180,255,0.4);
-  background: rgba(100,150,220,0.1);
-  color: var(--text);
-}
-
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
   #legend { left: 4px; top: 70px; max-width: 130px; max-height: calc(100vh - 180px); }

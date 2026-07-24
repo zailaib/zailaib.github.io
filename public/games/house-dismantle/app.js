@@ -5,11 +5,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {
   hideLoading, showError, setupThemeToggle, setupResizeHandler, createStarfield,
 } from '/games/shared/three-utils.js';
-import { MATS, CATEGORIES, getDisassembleOffset, FLOOR_H, BAND_Y } from './config.js';
+import { MATS, CATEGORIES, getDisassembleOffset } from './config.js';
 import { buildStructure } from './house-core.js';
 import { buildOpenings } from './house-openings.js';
 import { buildInterior } from './house-interior.js';
-import { buildYard }      from './house-yard.js';
 import { buildPlumbing }  from './house-plumbing.js';
 import { validateHouse }  from './validate/index.js';
 
@@ -89,7 +88,6 @@ scene.add(houseGroup);
 buildStructure(houseGroup, parts, MATS);
 buildOpenings(houseGroup, parts, MATS);
 buildInterior(houseGroup, parts, MATS);
-buildYard(houseGroup, parts, MATS);
 buildPlumbing(houseGroup, parts, MATS);
 
 // Verify all PART_DEFS were created (imported from config)
@@ -404,101 +402,10 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
-// ── Room Camera (PiP) System ────────────────────────────────────────
-const F = FLOOR_H, B = BAND_Y;
-const eyeH1 = F + 1.6;  // 1F eye height
-const eyeH2 = B + 1.6;  // 2F eye height
-
-const ROOM_VIEWS = [
-  // 1F — camera INSIDE the room
-  { pos: [-6, eyeH1, 3.2],   tgt: [-6, 1.5, 1.5],  label: '🛏 老人房1',    floor: '1f' },
-  { pos: [-2, eyeH1, 3.0],   tgt: [-2, 1.5, 1.0],  label: '🛏 老人房2',    floor: '1f' },
-  { pos: [2, eyeH1, 3.0],    tgt: [2, 1.5, 0.8],   label: '🛋 客厅',       floor: '1f' },
-  { pos: [6, eyeH1, 3.2],    tgt: [6, 1.5, 1.5],   label: '🍳 厨房',       floor: '1f' },
-  { pos: [-6, eyeH1, -1.0],  tgt: [-6, 1.5, -2.5], label: '🍽 餐厅',       floor: '1f' },
-  { pos: [-0.5, 2.5, -0.5],  tgt: [-0.5, 2.5, -3.5], label: '🪜 楼梯间',   floor: '1f' },
-  // 2F
-  { pos: [-6, eyeH2, 3.0],   tgt: [-6, eyeH2-0.3, 1.5], label: '🛏 主卧',     floor: '2f' },
-  { pos: [-2, eyeH2, 2.8],   tgt: [-2, eyeH2-0.3, 1.0], label: '🛏 次卧',     floor: '2f' },
-  { pos: [2, eyeH2, 3.0],    tgt: [2, eyeH2-0.3, 1.5],  label: '📚 书房',     floor: '2f' },
-  { pos: [6, eyeH2, 3.0],    tgt: [6, eyeH2-0.3, 1.5],  label: '🧸 儿童房1',  floor: '2f' },
-  { pos: [-6, eyeH2, -1.0],  tgt: [-6, eyeH2-0.3, -2.2], label: '🧸 儿童房2', floor: '2f' },
-];
-
-let tourPanelVisible = false;
-
-function buildTourPanel() {
-  const floors = { '1f': 'tour-1f', '2f': 'tour-2f' };
-  for (const [floor, containerId] of Object.entries(floors)) {
-    const container = document.getElementById(containerId);
-    ROOM_VIEWS.forEach((rv, i) => {
-      if (rv.floor !== floor) return;
-      const btn = document.createElement('button');
-      btn.className = 'tour-room-btn';
-      btn.textContent = rv.label;
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Dismantle everything to reveal room layout
-        if (!isDisassembled) doDisassemble();
-        // Fly camera to view the room's layer
-        const targetY = rv.floor === '2f' ? BAND_Y + 5 : FLOOR_H + 3;
-        flyCameraTo(rv.pos[0], targetY, rv.tgt[2]);
-        hideTourPanel();
-      });
-      container.appendChild(btn);
-    });
-  }
-}
-
-function showTourPanel() {
-  if (!document.getElementById('tour-1f').children.length) buildTourPanel();
-  document.getElementById('tour-panel').classList.remove('hidden');
-  tourPanelVisible = true;
-  document.getElementById('btn-tour').textContent = '⏹ 关闭';
-  document.getElementById('btn-tour').classList.add('active');
-}
-
-function hideTourPanel() {
-  document.getElementById('tour-panel').classList.add('hidden');
-  tourPanelVisible = false;
-  document.getElementById('btn-tour').textContent = '🎥 参观';
-  document.getElementById('btn-tour').classList.remove('active');
-}
-
-// Simple camera fly helper
-function flyCameraTo(tx, ty, tz) {
-  const start = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
-  const end = { x: tx, y: ty, z: tz };
-  const startTgt = controls.target.clone();
-  const endTgt = new THREE.Vector3(tx, ty - 1, tz);
-  const dur = 1.2;
-  let elapsed = 0;
-
-  function step(dt) {
-    elapsed += dt;
-    const t = Math.min(elapsed / dur, 1.0);
-    const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
-    camera.position.set(
-      start.x + (end.x - start.x) * ease,
-      start.y + (end.y - start.y) * ease,
-      start.z + (end.z - start.z) * ease
-    );
-    controls.target.lerpVectors(startTgt, endTgt, ease);
-    if (t < 1.0) requestAnimationFrame(() => step(0.016));
-  }
-  requestAnimationFrame(() => step(0.016));
-}
-
 // ── Buttons ───────────────────────────────────────────────────────
 document.getElementById('btn-dismantle').addEventListener('click',
   () => isDisassembled ? doReassembleAll() : doDisassemble());
-document.getElementById('btn-tour').addEventListener('click', () => {
-  if (tourPanelVisible) { hideTourPanel(); }
-  else { showTourPanel(); }
-});
-document.getElementById('btn-tour-close').addEventListener('click', hideTourPanel);
 document.getElementById('btn-reset').addEventListener('click', () => {
-  hideTourPanel();
   clearSelection(); doReassembleAll();
   camera.position.set(10, 7, 16);
   controls.target.set(0, 2.2, 0); controls.update();
