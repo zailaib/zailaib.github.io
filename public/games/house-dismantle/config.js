@@ -135,6 +135,7 @@ export function getDisassembleOffset(name) {
     upperWallBack:  [LL, 0, 0],
     upperWallLeft:  [LL, 0, 0],
     upperWallRight: [LL, 0, 0],
+    upperInteriorWalls: [LL, 0, 0],
     floor2:         [LL, 0, 0],
     doors2F:        [LL, 0, 0],
     windows2F:      [LL, 0, 0],
