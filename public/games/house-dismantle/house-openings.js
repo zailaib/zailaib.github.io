@@ -47,8 +47,9 @@ export function buildOpenings(houseGroup, parts, MATS) {
   const zf = HD2 + WALL_T / 2 + 0.05, zb = -HD2 - WALL_T / 2 - 0.05;
   for (let b = 0; b < BAY_COUNT; b++) {
     const bx = -HW2 + b * BAY_W + BAY_W / 2;
-    win1.add(makeWindow(bx, wy1, zf));
-    win1.add(makeWindow(bx, wy1, zb, Math.PI));
+    // 前门在第 3 开间(bx=2)，后门在第 4 开间(bx=6)，对应位置不放置窗户
+    if (bx !== 2) win1.add(makeWindow(bx, wy1, zf));
+    if (bx !== 6) win1.add(makeWindow(bx, wy1, zb, Math.PI));
   }
 
   // ═══════════════════════════════════════════════════════════════
