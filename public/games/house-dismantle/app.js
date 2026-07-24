@@ -132,8 +132,7 @@ for (const [catKey, cat] of Object.entries(CATEGORIES)) {
     const catParts = cat.parts.filter(n => parts.has(n));
     const allOut = catParts.every(n => {
       const tgt = targetOff.get(n);
-      const off = getDisassembleOffset(n);
-      return tgt && Math.abs(tgt.x - off[0]) < 0.01 && Math.abs(tgt.y - off[1]) < 0.01 && Math.abs(tgt.z - off[2]) < 0.01;
+      return tgt && (tgt.x !== 0 || tgt.y !== 0 || tgt.z !== 0);
     });
     if (allOut) {
       btn.classList.remove('active');

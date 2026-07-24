@@ -136,34 +136,30 @@ export const CATEGORIES = {
   plumbing:  { label: '管道',   parts: ['pipelines'], color: '#8b6b4a' },
 };
 
-// ── Translate offsets — all HORIZONTAL ────────────────────────────
-// Roof → right · 2F → right · 1F walls → outward · cascade handles dependents
+// ── Translate offsets — each category moves AS A GROUP ────────────
 export function getDisassembleOffset(name) {
-  const R = 8;   // roof slides right
-  const F2 = 5;  // 2F slides right (less than roof)
-  const W = 5;   // walls slide outward
+  const R = 8;  // right (roof, 2F)
+  const W = 5;  // outward (walls)
   const map = {
-    // ── Roof (slide right) ──
+    // Roof group → right
     roofTiles:      [R, 0, 0],
     roofFrame:      [R, 0, 0],
 
-    // ── 2F structure (slide right) ──
-    upperWallFront: [F2, 0, 0],
-    upperWallBack:  [F2, 0, 0],
-    upperWallLeft:  [F2, 0, 0],
-    upperWallRight: [F2, 0, 0],
-    floor2:         [F2, 0, 0],
-    doors2F:        [F2, 0, 0],
-    windows2F:      [F2, 0, 0],
+    // 2F group → right
+    upperWallFront: [R, 0, 0],
+    upperWallBack:  [R, 0, 0],
+    upperWallLeft:  [R, 0, 0],
+    upperWallRight: [R, 0, 0],
+    floor2:         [R, 0, 0],
+    doors2F:        [R, 0, 0],
+    windows2F:      [R, 0, 0],
+    masterBed:      [R, 0, 0],
+    secondBed:      [R, 0, 0],
+    study:          [R, 0, 0],
+    childRoom1:     [R, 0, 0],
+    childRoom2:     [R, 0, 0],
 
-    // ── 2F furniture (cascade adds F2 offset, no own offset needed) ──
-    masterBed:      [0, 0, 0],
-    secondBed:      [0, 0, 0],
-    study:          [0, 0, 0],
-    childRoom1:     [0, 0, 0],
-    childRoom2:     [0, 0, 0],
-
-    // ── 1F walls (slide outward) ──
+    // 1F walls → each direction
     wallFront:      [0, 0, W],
     wallBack:       [0, 0, -W],
     wallLeft:       [-W, 0, 0],
@@ -173,7 +169,7 @@ export function getDisassembleOffset(name) {
     windows1F:      [0, 0, 0],
     floor:          [0, 0, 0],
 
-    // ── 1F furniture (cascade adds wall offset) ──
+    // 1F furniture → follows walls via cascade
     elderRoom1:     [0, 0, 0],
     elderRoom2:     [0, 0, 0],
     livingRoom:     [0, 0, 0],
@@ -181,10 +177,10 @@ export function getDisassembleOffset(name) {
     diningRoom:     [0, 0, 0],
     shrine:         [0, 0, 0],
 
-    // ── Foundation + other (stay or slight shift) ──
+    // Other (stay)
     base:           [0, 0, 0],
     ventDucts:      [0, 0, 0],
-    columns:        [F2, 0, 0],
+    columns:        [R, 0, 0],
     stairs:         [0, 0, 0],
     pipelines:      [0, 0, 0],
   };
