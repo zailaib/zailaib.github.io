@@ -144,6 +144,28 @@ export function getDisassembleOffset(name) {
     study:          [LL, 0, 0],
     childRoom1:     [LL, 0, 0],
     childRoom2:     [LL, 0, 0],
+
+    // 1F + base — stay
+    wallFront:      [0, 0, 0],
+    wallBack:       [0, 0, 0],
+    wallLeft:       [0, 0, 0],
+    wallRight:      [0, 0, 0],
+    interiorWalls:  [0, 0, 0],
+    floor:          [0, 0, 0],
+    doors1F:        [0, 0, 0],
+    windows1F:      [0, 0, 0],
+    elderRoom1:     [0, 0, 0],
+    elderRoom2:     [0, 0, 0],
+    livingRoom:     [0, 0, 0],
+    kitchen:        [0, 0, 0],
+    diningRoom:     [0, 0, 0],
+    stairs:         [0, 0, 0],
+    columns:        [0, 0, 0],
+    base:           [0, 0, 0],
+    ventDucts:      [0, 0, 0],
+    pipelines:      [0, 0, 0],
   };
+  // Warn if part has no entry (shouldn't happen)
+  if (!map[name]) console.warn('Missing offset for:', name);
   return map[name] || [0, 0, 0];
 }

@@ -8,6 +8,7 @@ import { checkPolyConsistency } from './rules/poly-consistency.js';
 import { checkClearance } from './rules/clearance.js';
 import { checkOverlap } from './rules/overlap.js';
 import { checkZFighting } from './rules/z-fighting.js';
+import { checkReachability } from './rules/reachability.js';
 import { analyzeSite } from './site-analyzer.js';
 
 export function validateHouse(parts) {
@@ -21,6 +22,7 @@ export function validateHouse(parts) {
     ...checkClearance(parts),
     ...checkOverlap(parts),
     ...checkZFighting(parts),
+    ...checkReachability(),
   ];
 
   const errors = allViolations.filter(v => v.severity === 'error');

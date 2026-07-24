@@ -1,4 +1,4 @@
-/* 1F — exterior + interior walls */
+/* 1F — exterior + interior walls (with corridor doorways) */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_H1, WALL_T, INT_WALL_T, BAY_W, BAY_COUNT, HW2, HD2, WY1 } from '../config.js';
 
@@ -10,14 +10,12 @@ export function buildFloor1Walls(houseGroup, parts, MATS) {
     if (p) { p.meshArr.push(mesh); mesh.userData.partName = name; mesh.castShadow = true; mesh.receiveShadow = true; }
   }
 
+  // Exterior walls
   function makeWall(name, w, h, d, px, py, pz) {
-    const grp = parts.get(name).group;
     const m = box(w, h, d, MATS.wall);
     m.position.set(px, py, pz);
-    addTo(name, m); grp.add(m);
+    addTo(name, m); parts.get(name).group.add(m);
   }
-
-  // Exterior walls
   makeWall('wallFront', HOUSE_W, WALL_H1, WALL_T, 0, WY1, HD2);
   makeWall('wallBack', HOUSE_W, WALL_H1, WALL_T, 0, WY1, -HD2);
   makeWall('wallLeft', WALL_T, WALL_H1, HOUSE_D, -HW2, WY1, 0);
@@ -25,15 +23,32 @@ export function buildFloor1Walls(houseGroup, parts, MATS) {
 
   // Interior walls
   const iwGrp = parts.get('interiorWalls').group;
+  const innerD = HOUSE_D - WALL_T * 2; // full interior depth
+  const fz = HD2 - WALL_T; // front inner face
+  const bz = -HD2 + WALL_T; // back inner face
+  const corridorZ = -2; // corridor center
+  const gap = 1.0; // doorway width
+  const g0 = corridorZ - gap/2, g1 = corridorZ + gap/2;
 
-  // 3 longitudinal walls at x = -BAY_W, 0, BAY_W
+  // 3 longitudinal walls at x = -4, 0, 4 — each split into front+back with corridor gap
   for (const ix of [-BAY_W, 0, BAY_W]) {
-    const iw = box(INT_WALL_T, WALL_H1, HOUSE_D - WALL_T * 2, MATS.interior);
-    iw.position.set(ix, WY1, 0);
-    addTo('interiorWalls', iw); iwGrp.add(iw);
+    // Back piece: bz to g0
+    const backLen = g0 - bz;
+    if (backLen > 0.1) {
+      const bw = box(INT_WALL_T, WALL_H1, backLen, MATS.interior);
+      bw.position.set(ix, WY1, (bz + g0) / 2);
+      addTo('interiorWalls', bw); iwGrp.add(bw);
+    }
+    // Front piece: g1 to fz
+    const frontLen = fz - g1;
+    if (frontLen > 0.1) {
+      const fw = box(INT_WALL_T, WALL_H1, frontLen, MATS.interior);
+      fw.position.set(ix, WY1, (g1 + fz) / 2);
+      addTo('interiorWalls', fw); iwGrp.add(fw);
+    }
   }
 
-  // Cross wall at z=0 — 4 segments with doorways
+  // Cross wall at z=0 — 4 segments with doorways (front-back passage)
   const doorWidth = 0.9;
   for (let b = 0; b < BAY_COUNT; b++) {
     const bx = -HW2 + b * BAY_W + BAY_W / 2;
