@@ -138,15 +138,15 @@ export function buildStructure(houseGroup, parts, MATS) {
   // SECOND FLOOR PLATFORM
   // ═══════════════════════════════════════════════════════════════
   const f2Grp = partGrp('floor2', '二层地板', '#a08060', ['upperWallFront', 'upperWallBack', 'upperWallLeft', 'upperWallRight']);
-  const f2Slab = box(HOUSE_W - WALL_T * 2, 0.08, HOUSE_D - WALL_T * 2, MATS.woodLight);
-  f2Slab.position.set(0, BAND_Y + 0.04, 0);
+  const f2Slab = box(HOUSE_W - WALL_T * 2, 0.12, HOUSE_D - WALL_T * 2, MATS.concreteFloor);
+  f2Slab.position.set(0, BAND_Y + 0.06, 0);
   addTo('floor2', f2Slab); f2Grp.add(f2Slab);
 
-  // Joists
+  // Concrete beams (replacing wooden joists)
   for (let jx = -HW2 + WALL_T + 0.5; jx <= HW2 - WALL_T - 0.5; jx += 1.2) {
-    const joist = box(0.08, 0.12, HOUSE_D - WALL_T * 2, MATS.woodDark);
-    joist.position.set(jx, BAND_Y - 0.02, 0);
-    addTo('floor2', joist); f2Grp.add(joist);
+    const beam = box(0.10, 0.15, HOUSE_D - WALL_T * 2, MATS.concreteFloor);
+    beam.position.set(jx, BAND_Y - 0.04, 0);
+    addTo('floor2', beam); f2Grp.add(beam);
   }
 
   // Stairwell railing (around opening at bay2-3 rear area)

@@ -288,8 +288,30 @@ function doDisassemble() {
     return;
   }
   const toMove = getRequiredParts(selected);
+
+  // First pass: assign each part its own offset
+  const offsets = new Map(); // name → [dx, dy, dz]
   for (const name of toMove) {
-    const off = getDisassembleOffset(name);
+    offsets.set(name, [...getDisassembleOffset(name)]);
+  }
+
+  // Second pass: child inherits parent's offset — furniture rides along with walls/floor
+  for (const name of toMove) {
+    const p = parts.get(name);
+    if (!p) continue;
+    const myOff = offsets.get(name);
+    for (const dep of p.deps) {
+      if (toMove.has(dep) && offsets.has(dep)) {
+        const parentOff = offsets.get(dep);
+        myOff[0] += parentOff[0];
+        myOff[1] += parentOff[1];
+        myOff[2] += parentOff[2];
+      }
+    }
+  }
+
+  for (const name of toMove) {
+    const off = offsets.get(name);
     targetOff.get(name).set(off[0], off[1], off[2]);
     const p = parts.get(name);
     if (p) p.assembled = false;

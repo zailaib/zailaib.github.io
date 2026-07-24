@@ -37,7 +37,8 @@ export const MATS = {
   upperWall:   new THREE.MeshStandardMaterial({ color: 0xf2ece0, roughness: 0.8, metalness: 0.0 }), // unified with wall
   interior:    new THREE.MeshStandardMaterial({ color: 0xede6d8, roughness: 0.8, metalness: 0.0 }),
   floor:       new THREE.MeshStandardMaterial({ color: 0x908878, roughness: 0.7, metalness: 0.05 }),
-  column:      new THREE.MeshStandardMaterial({ color: 0x6b3a20, roughness: 0.5, metalness: 0.0 }),
+  column:      new THREE.MeshStandardMaterial({ color: 0xb8b8b8, roughness: 0.35, metalness: 0.05 }),
+  concreteFloor: new THREE.MeshStandardMaterial({ color: 0xc8c0b8, roughness: 0.5, metalness: 0.05 }),
   ridge:       new THREE.MeshStandardMaterial({ color: 0x3a3a48, roughness: 0.6, metalness: 0.05 }),
   band:        new THREE.MeshStandardMaterial({ color: 0x5a4a38, roughness: 0.5, metalness: 0.05 }),
   base:        new THREE.MeshStandardMaterial({ color: 0x6e6e6e, roughness: 0.75, metalness: 0.05 }),
@@ -80,10 +81,10 @@ export const PART_DEFS = [
   { name: 'base',        label: '石基平台',   color: '#6e6e6e', deps: ['floor','floor2','columns'], cat: 'base' },
   { name: 'ventDucts',   label: '接地通风道', color: '#555555', deps: ['base'], cat: 'plumbing' },
   { name: 'floor',       label: '一层地板',   color: '#908878', deps: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls'], cat: 'base' },
-  { name: 'floor2',      label: '二层地板',   color: '#a08060', deps: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight'], cat: 'base' },
+  { name: 'floor2',      label: '二层楼板',   color: '#c0b8a8', deps: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight'], cat: 'base' },
 
   // ── Structure ──
-  { name: 'columns',     label: '木柱',       color: '#6b3a20', deps: ['roofFrame'], cat: 'structure' },
+  { name: 'columns',     label: '水泥柱',     color: '#b0b0b0', deps: ['roofFrame'], cat: 'structure' },
   { name: 'wallFront',   label: '前墙(一层)', color: '#f2ece0', deps: ['upperWallFront'], cat: 'structure' },
   { name: 'wallBack',    label: '后墙(一层)', color: '#f2ece0', deps: ['upperWallBack'], cat: 'structure' },
   { name: 'wallLeft',    label: '左墙(一层)', color: '#f2ece0', deps: ['upperWallLeft'], cat: 'structure' },
