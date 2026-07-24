@@ -112,7 +112,6 @@ export const PART_DEFS = [
   { name: 'livingRoom',  label: '客厅',       color: '#8b6914', deps: ['interiorWalls'], cat: 'interior' },
   { name: 'kitchen',     label: '厨房',       color: '#8b5a3a', deps: ['wallRight','interiorWalls'], cat: 'interior' },
   { name: 'diningRoom',  label: '餐厅',       color: '#8b6914', deps: ['wallLeft','interiorWalls'], cat: 'interior' },
-  { name: 'shrine',      label: '神龛',       color: '#4a2010', deps: ['wallBack'], cat: 'interior' },
 
   // ── Interior 2F ──
   { name: 'masterBed',   label: '主卧',       color: '#7a4a20', deps: ['upperWallLeft','interiorWalls'], cat: 'interior' },
@@ -129,7 +128,7 @@ export const PART_DEFS = [
 export const CATEGORIES = {
   roof:   { label: '屋顶 ↗', parts: ['roofTiles','roofFrame'], color: '#4a4a5a' },
   floor2: { label: '二层 ↗', parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','floor2','doors2F','windows2F','masterBed','secondBed','study','childRoom1','childRoom2'], color: '#5a8a5a' },
-  floor1: { label: '一层 ↗', parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls','floor','doors1F','windows1F','elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','shrine','stairs','columns','base','ventDucts','pipelines'], color: '#d4c8b0' },
+  floor1: { label: '一层 ↗', parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls','floor','doors1F','windows1F','elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','stairs','columns','base','ventDucts','pipelines'], color: '#d4c8b0' },
 };
 
 // ── Translate offsets — roof →, 2F ←, 1F stays ─────────────────

@@ -1,4 +1,4 @@
-/* 1F — rooms (elderRoom1/2, livingRoom, kitchen, diningRoom, shrine) */
+/* 1F — rooms (elderRoom1/2, livingRoom, kitchen, diningRoom) */
 import * as THREE from 'three';
 import { HOUSE_W, HOUSE_D, WALL_T, INT_WALL_T, BAY_W, HW2, HD2, FLOOR_H } from '../config.js';
 
@@ -84,15 +84,8 @@ export function buildFloor1Rooms(houseGroup, parts, MATS) {
   for (const [sx, sz] of [[-6.5, -2.2], [-5.5, -2.2], [-6, -2.7], [-6, -1.7]]) { dr.add(makeChair(sx, sz, F)); }
   const sb = box(1.6, 1.0, 0.4, MATS.woodDark); sb.position.set(-6, 0.5 + F, -4.0); addTo('diningRoom', sb); dr.add(sb);
 
-  // Shrine (x=0, z=-4.0)
-  const sh = parts.get('shrine').group;
-  const st = box(2.4, 0.06, 0.6, MATS.shrineMat); st.position.set(0, 1.2 + F, -4.0); addTo('shrine', st); sh.add(st);
-  for (const sx of [-1.05, 1.05]) { const leg = box(0.06, 1.1, 0.06, MATS.shrineMat); leg.position.set(sx, 0.55 + F, -4.0); addTo('shrine', leg); sh.add(leg); }
-  for (let i = -1; i <= 1; i++) { const tab = box(0.25, 0.5, 0.04, MATS.woodDark); tab.position.set(i * 0.4, 1.55 + F, -4.0); addTo('shrine', tab); sh.add(tab); }
-  const burner = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 0.15, 8), MATS.wokMetal); burner.position.set(0, 1.3 + F, -4.0); addTo('shrine', burner); sh.add(burner);
-
   // Register all child meshes
-  for (const name of ['elderRoom1', 'elderRoom2', 'livingRoom', 'kitchen', 'diningRoom', 'shrine']) {
+  for (const name of ['elderRoom1', 'elderRoom2', 'livingRoom', 'kitchen', 'diningRoom']) {
     const p = parts.get(name);
     if (!p) continue;
     p.group.traverse(c => { if (c.isMesh && !p.meshArr.includes(c)) { p.meshArr.push(c); c.userData.partName = name; c.castShadow = true; c.receiveShadow = true; } });
