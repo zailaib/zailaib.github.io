@@ -270,6 +270,8 @@ function selectInRect(x1, y1, x2, y2) {
 function getRequiredParts(forParts) {
   const required = new Set(forParts);
   const queue = [...forParts];
+
+  // Traverse UP: add dependency ancestors
   while (queue.length > 0) {
     const name = queue.shift();
     const p = parts.get(name);
@@ -278,6 +280,16 @@ function getRequiredParts(forParts) {
       if (!required.has(dep)) { required.add(dep); queue.push(dep); }
     }
   }
+
+  // Traverse DOWN: add dependents (windows follow walls, furniture follows floor, etc.)
+  for (const [name, p] of parts) {
+    if (required.has(name)) continue;
+    // If this part depends on any part in the required set, add it
+    for (const dep of p.deps) {
+      if (required.has(dep)) { required.add(name); break; }
+    }
+  }
+
   return required;
 }
 
