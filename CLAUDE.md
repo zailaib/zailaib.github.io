@@ -19,8 +19,8 @@ Astro 7 静态站点，部署 GitHub Pages。双语 (zh/en) 内容驱动博客 +
 ## 命令
 
 ```bash
-bun run dev       # 开发服务器
-bun run build     # 生产构建
+bun run dev       # 开发服务器 → localhost:4321
+bun run build     # 生产构建 → ./dist/
 bun run preview   # 预览构建产物
 ```
 
@@ -281,4 +281,4 @@ Step 3:  3D 模型   ← 写 house-*.js + 注册
 - **翻译**: 新增文案 key 需同时写入 `src/i18n/translations.ts`（类型 `Translations` 接口 + zh/en 两个对象）
 - **首页数据**: `getLatestPosts()` 和 `getLatestApps()` 在 `src/lib/content.ts`
 - **游戏质量**: 所有新游戏必须通过 `src/content/apps/_SPEC.md` 中的 10 项审核清单
-- **Bun 锁文件**: CI 使用 `--frozen-lockfile`，本地安装后需提交 `bun.lockb`
+- **Bun 锁文件**: CI 使用 `--frozen-lockfile`，本地安装后需提交 `bun.lock`
