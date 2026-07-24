@@ -418,7 +418,6 @@ const ROOM_VIEWS = [
   { pos: [2, eyeH1, 3.2],    tgt: [2, 1.5, 0.8],     label: '🛋 客厅',       floor: '1f' },
   { pos: [6, eyeH1, 3.8],    tgt: [6, 1.5, 2.0],     label: '🍳 厨房',       floor: '1f' },
   { pos: [-6, eyeH1, -0.8],  tgt: [-6, 1.5, -2.5],   label: '🍽 餐厅',       floor: '1f' },
-  { pos: [0, 1.8, -2.8],     tgt: [0, 1.8, -4.0],    label: '🙏 神龛',       floor: '1f' },
   // 2F
   { pos: [-6, eyeH2, 3.5],   tgt: [-6, eyeH2-0.5, 1.5], label: '🛏 主卧',     floor: '2f' },
   { pos: [-2, eyeH2, 3.0],   tgt: [-2, eyeH2-0.5, 1.0], label: '🛏 次卧',     floor: '2f' },
@@ -483,10 +482,13 @@ function flyToRoom(idx) {
   tourEndPos.set(rv.pos[0], rv.pos[1], rv.pos[2]);
   tourEndTgt.set(rv.tgt[0], rv.tgt[1], rv.tgt[2]);
   tourT = 0;
-  tourTarget = { pos: tourEndPos.clone(), tgt: tourEndTgt.clone() };
+  tourTarget = { pos: tourEndPos.clone(), tgt: tourEndTgt.clone(), label: rv.label };
   controls.enabled = false;
   if (isDisassembled) doReassembleAll();
   clearSelection();
+  // Show destination in info panel
+  document.getElementById('part-name').textContent = '📍 ' + rv.label;
+  document.getElementById('part-hint').textContent = '正在前往...';
 }
 
 // ── Buttons ───────────────────────────────────────────────────────
@@ -527,6 +529,8 @@ function animate() {
       tourT = 1.0;
       camera.position.copy(tourEndPos);
       controls.target.copy(tourEndTgt);
+      document.getElementById('part-name').textContent = tourTarget.label || '参观完成';
+      document.getElementById('part-hint').textContent = '拖拽旋转查看房间';
       tourTarget = null;
       controls.enabled = true;
     } else {
