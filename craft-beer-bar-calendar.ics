@@ -1,0 +1,170 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//Craft Beer Bar Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:精酿啤酒吧创业日历
+X-WR-CALDESC:从选址到一周年庆的精酿啤酒吧创业全流程日历，涵盖选址、装修、选酒、酿造、开业。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260101
+DTEND;VALUE=DATE:20260215
+SUMMARY:🔍 选址调研  周末看铺+数据分析
+DESCRIPTION:每周末实地考察备选铺位，工作日晚做数据分析。\n📋 考察维度：\n- 人流量（工作日/周末，白天/晚上）\n- 周边竞品数量和类型\n- 租金和物业费\n- 交通便利度和停车\n- 目标客群匹配度（年轻白领/文艺青年）\n💡 精酿吧的理想选址：大学附近、文创园区、中产社区。
+LOCATION:城市各备选区域
+CATEGORIES:选址
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260215
+DTEND;VALUE=DATE:20260216
+SUMMARY:📍 最终选址确认 + 签租赁合同
+DESCRIPTION:确认选址：梧桐区法华镇路临街铺面 85㎡。\n📋 合同要点：\n- 押三付一\n- 免租装修期45天\n- 确认可办理餐饮和酒类经营许可\n- 确认上下水和排烟条件\n- 确认电容量（冷库+空调+设备用电约需20kW）\n⚠ 签约前请律师审核合同条款。
+LOCATION:目标铺位
+CATEGORIES:选址
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：📍 最终选址确认 + 签租赁合同
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260216
+DTEND;VALUE=DATE:20260401
+SUMMARY:🔨 装修期  45天倒计时
+DESCRIPTION:免租装修期45天，每一天都不能浪费。\n📋 装修关键节点：\n- D1-3：拆旧+清理\n- D4-8：水电改造（冷库独立6平电线、酒管预埋）\n- D9-12：地面找平+防水（卫生间闭水试验24h）\n- D13-20：墙面批灰+油漆\n- D21-28：吧台和酒头墙定制\n- D29-35：灯光轨道+排气系统\n- D36-40：冷库安装调试（目标4°C）\n- D41-45：家具进场+软装+保洁
+LOCATION:店内
+CATEGORIES:装修
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260216
+DTEND;VALUE=DATE:20260415
+SUMMARY:🍺 选酒  每周与一家精酿厂牌对接
+DESCRIPTION:装修期间同步选酒。目标：16款生啤酒单。\n📋 酒单结构：\n- 清爽型（科隆/皮尔森/淡色艾尔）×3\n- IPA类（西海岸/浑浊/双倍）×4\n- 酸啤类（柏林酸小麦/古斯/水果酸）×3\n- 深色类（世涛/波特/棕色艾尔）×3\n- 特酿/限定 ×3\n💡 每个风味象限至少覆盖2款，满足不同客人。
+LOCATION:各精酿厂牌
+CATEGORIES:选酒
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260320
+DTEND;VALUE=DATE:20260321
+SUMMARY:🔧 设备到位  冷库+酒头系统安装
+DESCRIPTION:核心设备安装调试。\n📋 设备清单：\n- 冷库（4°C，至少容纳20只50L啤酒桶）\n- 16头酒柱+酒管系统（不锈钢管路）\n- CO₂气瓶（食品级，至少备2瓶）\n- 玻璃杯洗杯器\n- 制冰机\n💡 酒管长度越短越好，冷库到酒头的距离控制在5米以内。
+LOCATION:店内
+CATEGORIES:设备
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260410
+DTEND;VALUE=DATE:20260411
+SUMMARY:🍳 吧台设备+厨房安装
+DESCRIPTION:吧台辅助设备和简餐厨房。\n📋 设备清单：\n- 商用消毒洗碗机\n- 冷藏工作台\n- 简易厨房设备（炸炉/烤箱/电磁炉）\n- 咖啡机（白天可做咖啡增加营收）\n💡 精酿吧的简餐菜单：炸鸡翅、薯条、德式香肠拼盘、芝士拼盘。
+LOCATION:店内
+CATEGORIES:设备
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260415
+DTEND;VALUE=DATE:20260416
+SUMMARY:🧪 与本地家酿协会联合酿造本店限定款
+DESCRIPTION:酿造本店独一无二的限定款啤酒。\n🍺 配方方向：法华镇路IPA\n📋 酿造流程：\n- 麦芽粉碎 → 糖化（65-68°C，60min）\n- 煮沸 + 酒花投放（60min/15min/0min）\n- 冷却至20°C → 接种酵母\n- 主发酵7天 → 干投酒花 → 冷沉\n- 预计酿造后3周可出酒\n💡 限定款是精酿吧的灵魂，是你和连锁酒吧最大的区别。
+LOCATION:合作酒厂 / 家酿空间
+CATEGORIES:酿造
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260425
+DTEND;VALUE=DATE:20260426
+SUMMARY:👥 员工招聘+培训
+DESCRIPTION:招聘吧台员工和兼职服务员。\n📋 人员配置：\n- 全职吧台长1名（需熟悉精酿知识）\n- 兼职服务员2-3名\n- 如有简餐，厨师1名\n📖 培训内容：\n- 精酿啤酒风格分类和品鉴\n- 16款酒的风味描述（每个员工都必须能讲出来）\n- 倒酒技巧（45°角、洗杯、换桶）\n- 食品安全和酒类法规
+LOCATION:店内
+CATEGORIES:人员
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260501
+DTEND;VALUE=DATE:20260502
+SUMMARY:🍻 软开业（Soft Opening）
+DESCRIPTION:仅限邀请的好友和街坊邻居，约50人。\n📋 软开业目标：\n- 测试所有设备在实际运营中的表现\n- 收集真实的客户反馈\n- 让员工熟悉高峰期的节奏\n📝 每人填写反馈表（音乐/灯光/酒单/服务/环境）。\n💰 所有酒水半价。\n💡 软开业的反馈是正式开业前最宝贵的礼物。
+LOCATION:店内
+CATEGORIES:开业
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🍻 软开业（Soft Opening）
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260503
+DTEND;VALUE=DATE:20260518
+SUMMARY:🔧 软开业后整改优化
+DESCRIPTION:根据47份反馈表逐项优化。\n📋 常见整改项：\n- 调整音乐音量和风格\n- 优化灯光亮度和色温\n- 更换品脱杯为郁金香杯（IPA类）\n- 酒单增加风味描述和苦度IBU标注\n- 厕所增加品牌和防滑垫\n- 增加无酒精饮品选项\n💡 认真对待每一条反馈，早期客人会成为你最忠实的传播者。
+LOCATION:店内
+CATEGORIES:优化
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🔧 软开业后整改优化
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260518
+DTEND;VALUE=DATE:20260519
+SUMMARY:🎉 正式开业！（GRAND OPENING）
+DESCRIPTION:🍻 终于开业了！\n📋 开业日准备：\n- 小黑板手写今日酒单\n- 所有啤酒九折\n- 备足物料（酒杯、纸巾、杯垫）\n- 员工统一着装\n- 社交平台发布开业消息\n💡 不需要花哨的仪式。好啤酒自己会说话。\n🏷️ 今日起，你是一个精酿酒吧老板了。
+LOCATION:店内
+CATEGORIES:里程碑
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🎉 正式开业！（GRAND OPENING）
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：🎉 正式开业！（GRAND OPENING）
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260601
+DTEND;VALUE=DATE:20260602
+SUMMARY:📊 开业后两周复盘
+DESCRIPTION:正式运营两周后做第一次经营复盘。\n📋 复盘维度：\n- 日均营业额和客流量\n- 最畅销和最滞销的酒款\n- 客人平均停留时间和消费金额\n- 社交媒体反馈\n- 员工工作状态\n💡 根据数据调整酒单，淘汰末位2-3款，引入新酒款。
+LOCATION:店内
+CATEGORIES:运营
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260801
+DTEND;VALUE=DATE:20260802
+SUMMARY:🍺 首批自酿"法华IPA"出酒品鉴日
+DESCRIPTION:本店限定款"法华IPA"首次出酒！\n📋 品鉴活动：\n- 邀请软开业时的50位种子客人优先品鉴\n- 收集风味反馈，微调下次酿造配方\n- 拍摄宣传照片用于社交媒体\n💡 自酿酒款是精酿吧的护城河，用心经营这款招牌。
+LOCATION:店内
+CATEGORIES:酿造
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261201
+DTEND;VALUE=DATE:20261202
+SUMMARY:📊 半年经营复盘+冬季酒单调整
+DESCRIPTION:运营满半年，做深度经营分析。\n📋 复盘内容：\n- 半年收入/成本/利润分析\n- 季节对客流和酒款偏好的影响\n- 冬季增加世涛/波特/热红酒比例\n- 是否增加餐食品类\n- 会员体系和活动策划\n💡 酒吧也有季节性，冬天是深色啤酒和热饮的天下。
+LOCATION:店内
+CATEGORIES:运营
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270518
+DTEND;VALUE=DATE:20270519
+SUMMARY:🎂 一周年庆  法华IPA复活酿造+老客回馈
+DESCRIPTION:🍻 一周年了！\n📋 周年庆活动：\n- 重新酿造限量"法华IPA"\n- 邀请开业至今的老客人免费品鉴\n- 老客专属折扣（一周内有效）\n- 一周年限定杯垫或贴纸\n- 回顾这一年的高光时刻\n💡 一周年不只是庆祝，是感谢那些从第一天就支持你的人。\n\n翻回一年前的日历，看看你走了多远 🍺
+LOCATION:店内
+CATEGORIES:里程碑
+END:VEVENT
+
+END:VCALENDAR

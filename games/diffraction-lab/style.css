@@ -1,0 +1,79 @@
+/* Diffraction Lab  Styles (shared theme is in ../shared/theme.css) */
+
+/* -- Control panel -- */
+#panel {
+  position: fixed;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  z-index: 10;
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  max-width: 95vw;
+}
+.control-group {
+  display: flex; flex-direction: column; gap: 2px;
+  min-width: 80px;
+}
+.control-group label {
+  font-size: 10px; color: var(--label);
+  text-transform: uppercase; letter-spacing: 1px;
+  text-align: center;
+}
+.control-group input[type=range] {
+  -webkit-appearance: none; width: 100%; height: 4px;
+  background: var(--slider-track, rgba(255,255,255,0.15)); border-radius: 2px; outline: none;
+}
+.control-group input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px;
+  background: var(--text); border-radius: 50%; cursor: pointer;
+}
+.control-val {
+  font-size: 11px; color: var(--val, #ccc); text-align: center; font-weight: 600;
+}
+.mode-btn {
+  padding: 6px 14px; border-radius: 20px; font-size: 12px;
+  border: 1px solid var(--btn-border, rgba(255,255,255,0.2)); cursor: pointer;
+  background: transparent; color: var(--btn-text, #999); letter-spacing: 1px;
+  transition: all 0.3s; font-family: inherit;
+}
+.mode-btn.active {
+  background: rgba(100,150,255,0.15); color: #6af;
+  border-color: rgba(100,150,255,0.5);
+}
+
+/* -- Title -- */
+#title {
+  position: fixed; top: 20px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 10; pointer-events: none;
+  text-align: center;
+}
+#title h1 {
+  font-size: 18px; color: var(--text);
+  letter-spacing: 3px; font-weight: 600; margin-bottom: 2px;
+}
+#title .sub {
+  font-size: 11px; color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+/* -- Hint -- */
+#hint {
+  position: fixed; bottom: 120px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px; color: var(--text-dim);
+  z-index: 10; pointer-events: none;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 640px) {
+  #panel { gap: 8px; padding: 10px 12px; }
+  .control-group { min-width: 60px; }
+  .control-group label { font-size: 9px; }
+  #hint { bottom: 110px; font-size: 10px; }
+}

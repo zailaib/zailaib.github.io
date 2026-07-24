@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>抓光点 ✨ Catch the Dot</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<div id="hud">
+  <span class="hud-item">⏱ <span id="timer">30</span>s</span>
+  <span class="hud-item" id="combo"></span>
+  <span class="hud-item">⭐ <span id="score">0</span></span>
+</div>
+
+<div id="overlay">
+  <div id="message"></div>
+  <div id="sub-message"></div>
+  <button id="restart-btn">再 来 一 次</button>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

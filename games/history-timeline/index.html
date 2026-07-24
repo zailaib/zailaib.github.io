@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<script>if(localStorage.getItem("theme")==="light")document.documentElement.classList.add("light");</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>历史大道 · History Run</title>
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<button id="theme-btn" title="切换主题">☀️</button>
+
+<div id="loading"><div class="loader"></div><span>加载中...</span></div>
+<div id="error-msg"></div>
+<div id="container"></div>
+
+<!-- HUD -->
+<div id="hud-top">
+  <div id="era-label">🚶 上古时代</div>
+  <div id="era-year">公元前 3000 年</div>
+  <div id="era-range"></div>
+</div>
+
+<div id="collect-count">📦 0/42</div>
+
+<!-- Event feed -->
+<div id="event-feed"></div>
+
+<!-- Vehicle indicator -->
+<div id="vehicle-ind">🚶</div>
+
+<!-- Region filter -->
+<div id="region-filter">
+  <button class="region-btn active" data-region="all">🌍 全部</button>
+  <button class="region-btn" data-region="中国">🇨🇳 中国</button>
+  <button class="region-btn" data-region="欧洲">🏰 欧洲</button>
+  <button class="region-btn" data-region="中东">🕌 中东</button>
+  <button class="region-btn" data-region="印度">🛕 印度</button>
+  <button class="region-btn" data-region="美洲">🗽 美洲</button>
+</div>
+
+<!-- Jump -->
+<div id="jump-btns">
+  <button class="jump-btn" data-x="-30">🏛 古埃及</button>
+  <button class="jump-btn" data-x="-10">🏺 古希腊</button>
+  <button class="jump-btn" data-x="-2">🏯 秦汉</button>
+  <button class="jump-btn" data-x="6">🏰 大唐</button>
+  <button class="jump-btn" data-x="15">⛵ 大航海</button>
+  <button class="jump-btn" data-x="19">⚔️ 世界大战</button>
+</div>
+
+<!-- Controls -->
+<div id="controls">
+  <button class="ctrl-btn" id="btn-slower">⏪</button>
+  <button class="ctrl-btn" id="btn-pause">⏸</button>
+  <span id="speed-display">0.6x</span>
+  <button class="ctrl-btn" id="btn-faster">⏩</button>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "/games/shared/": "/games/shared/" } }
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+/* Cosmic Velocity  Styles (shared theme is in ../shared/theme.css) */
+
+/* -- Top bar -- */
+#top-bar {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+  z-index: 10; pointer-events: none; text-align: center;
+}
+#top-bar h1 { font-size: 17px; color: var(--text); letter-spacing: 2px; font-weight: 600; margin-bottom: 2px; }
+#top-bar .sub { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; }
+
+/* -- Control panel -- */
+#panel {
+  position: fixed; left: 16px; bottom: 80px;
+  z-index: 10;
+  background: var(--panel-bg); backdrop-filter: blur(12px);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px; padding: 16px 18px;
+  min-width: 220px; max-width: 260px;
+}
+#panel label {
+  display: block; font-size: 10px; color: var(--label);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+}
+#speed-slider {
+  -webkit-appearance: none; width: 100%; height: 4px;
+  background: linear-gradient(to right, #4488ff, #44ccff, #44ff88, #ffcc44, #ff4444);
+  border-radius: 2px; outline: none; margin-bottom: 4px;
+}
+#speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 20px; height: 20px;
+  background: #fff; border-radius: 50%; cursor: pointer;
+}
+#speed-val {
+  text-align: center; font-size: 28px; font-weight: 800; color: var(--text);
+  display: block; margin-bottom: 2px;
+}
+#speed-label {
+  text-align: center; font-size: 11px; color: var(--label);
+  display: block; margin-bottom: 10px;
+}
+.preset-btns {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px;
+}
+.preset-btn {
+  padding: 5px 10px; font-size: 10px; border-radius: 12px;
+  border: 1px solid var(--panel-border);
+  background: transparent; color: var(--text-secondary); cursor: pointer;
+  font-family: inherit; letter-spacing: 0.5px; transition: all 0.3s;
+  white-space: nowrap;
+}
+.preset-btn:hover { border-color: rgba(255,255,255,0.4); color: var(--text); }
+.preset-btn.active {
+  background: rgba(255,255,255,0.1); border-color: var(--text); color: var(--text);
+}
+
+#launch-btn {
+  display: block; width: 100%; padding: 10px;
+  font-size: 14px; font-weight: 700; letter-spacing: 2px;
+  border: none; border-radius: 8px;
+  background: linear-gradient(135deg, #ff6644, #ff8844);
+  color: #fff; cursor: pointer; font-family: inherit;
+  transition: all 0.3s;
+}
+#launch-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(255,100,50,0.4); }
+#launch-btn.reset-mode { background: linear-gradient(135deg, #4466aa, #6688cc); }
+
+/* -- Info HUD -- */
+#hud {
+  position: fixed; right: 16px; bottom: 80px;
+  z-index: 10; pointer-events: none;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.hud-item {
+  background: var(--panel-bg); backdrop-filter: blur(8px);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px; padding: 8px 14px; text-align: right;
+}
+.hud-label { font-size: 9px; color: var(--label); letter-spacing: 1px; text-transform: uppercase; }
+.hud-value { font-size: 18px; font-weight: 700; color: var(--text); }
+
+/* -- Velocity markers -- */
+#markers {
+  position: fixed; right: 16px; top: 120px;
+  z-index: 10; pointer-events: none;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.marker {
+  font-size: 10px; color: var(--text-dim); letter-spacing: 0.5px;
+  display: flex; align-items: center; gap: 6px;
+}
+.marker-dot { width: 6px; height: 6px; border-radius: 50%; }
+.marker.active { color: var(--text); }
+
+/* -- View toggle -- */
+#view-toggle {
+  position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+  z-index: 10; display: flex; gap: 4px;
+  background: var(--panel-bg); backdrop-filter: blur(8px);
+  border: 1px solid var(--panel-border);
+  border-radius: 20px; padding: 3px;
+}
+.view-btn {
+  padding: 5px 14px; font-size: 11px; border-radius: 17px;
+  border: none; background: transparent; color: var(--text-secondary);
+  cursor: pointer; font-family: inherit; letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+.view-btn.active { background: rgba(255,255,255,0.12); color: var(--text); }
+
+#hint {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; color: var(--text-dim);
+  z-index: 10; pointer-events: none; letter-spacing: 1px;
+}
+
+@media (max-width: 640px) {
+  #panel { left: 4px; bottom: 60px; padding: 10px 12px; min-width: 180px; max-width: 200px; }
+  #speed-val { font-size: 22px; }
+  #hud { right: 4px; bottom: 60px; gap: 3px; }
+  .hud-item { padding: 5px 10px; }
+  .hud-value { font-size: 14px; }
+  #markers { right: 4px; top: 90px; }
+  .preset-btn { font-size: 9px; padding: 3px 8px; }
+}

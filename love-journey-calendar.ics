@@ -1,0 +1,152 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//Love Journey Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:恋爱日历
+X-WR-CALDESC:从初识到求婚的恋爱旅程示例。每对恋人的时间线不同，导入后请按实际日期调整。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260315
+DTEND;VALUE=DATE:20260316
+SUMMARY:📖 第一次相遇  读书会
+DESCRIPTION:在卡尔维诺《看不见的城市》读书会上第一次见面。她坐在我对面，我打翻了咖啡，她递来一张纸巾。这是我们故事的第一页。
+LOCATION:城市书房
+CATEGORIES:里程碑
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260322
+DTEND;VALUE=DATE:20260323
+SUMMARY:☕ 第一次单独喝咖啡
+DESCRIPTION:在读书会附近的那家独立咖啡馆。她点了冰美式，我点了拿铁。聊了四个小时，从卡尔维诺聊到各自的工作再到小时候的梦想。离开的时候，外面下起了雨。她没有带伞。
+LOCATION:转角咖啡馆
+CATEGORIES:约会
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260401
+DTEND;VALUE=DATE:20260402
+SUMMARY:💑 在一起的第一天
+DESCRIPTION:她建了一个共享日历，名字叫"我们"。她说："我不是要控制你的时间，我是想让你知道，从现在开始，你的人生里多了一个人的时间，值得被认真标记。"这一天是我们日历的起点。
+CATEGORIES:里程碑
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260405
+DTEND;VALUE=DATE:20260406
+SUMMARY:🍣 第一次正式约会  那家她说过的居酒屋
+DESCRIPTION:她推荐的那家居酒屋。啤酒点朝日，烧鸟点鸡皮和大葱，招牌玉子烧必点。第一次作为情侣正式吃饭，紧张到多点了一份毛豆。
+LOCATION:居酒屋
+CATEGORIES:约会
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260405
+DTEND;VALUE=DATE:20290614
+RRULE:FREQ=WEEKLY;BYDAY=FR;UNTIL=20290612
+SUMMARY:🍜 每周五晚上  试试一家没去过的小馆子
+DESCRIPTION:每周五晚上的固定约会。轮流选餐馆，不能重复。每次记录：菜好不好吃、服务怎么样、下次还会不会来。一起吃了一年之后，手机备忘录里已经有了一份"我们的城市美食地图"。
+LOCATION:轮流选择
+CATEGORIES:约会
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260410
+DTEND;VALUE=DATE:20290614
+RRULE:FREQ=WEEKLY;BYDAY=WE;UNTIL=20290612
+SUMMARY:☕ 每周三早上  送咖啡到你公司楼下
+DESCRIPTION:冰美式，不加糖。周三早上8:30，风雨无阻。她同事说："你男朋友是闹钟做的吧？"她回答："比闹钟准。闹钟可能没电，他不会。"
+LOCATION:她公司楼下
+CATEGORIES:关怀
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260415
+DTEND;VALUE=DATE:20290614
+RRULE:FREQ=MONTHLY;BYDAY=SA;BYSETPOS=1;UNTIL=20290612
+SUMMARY:🎬 电影之夜  每月第一个周六
+DESCRIPTION:每月第一个周六晚上为电影之夜。轮流选片，看完后必须认真讨论（不能只说"还行"）。零食轮换制：奇数月她准备、偶数月我准备。记录了两年，她的选片平均分8.2，我的7.1。
+LOCATION:家中 / 电影院
+CATEGORIES:约会
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260701
+DTEND;VALUE=DATE:20260706
+SUMMARY:✈️ 第一次旅行  大理五天四夜
+DESCRIPTION:行程计划：D1抵达大理古城、人民路吃喜洲粑粑。D2洱海西岸骑行。D3喜洲古镇+双廊发呆。D4苍山索道（可能跳过）。D5返回。规则：至少留一个半天不安排任何事。那条规则的名字叫"留给意外"。结果：苍山真的跳过了，在民宿露台听了一下午雨，那是整个旅行最好的一段。
+LOCATION:大理
+CATEGORIES:旅行
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20261101
+DTEND;VALUE=DATE:20261108
+SUMMARY:🤒 她生病了  照顾日历启动
+DESCRIPTION:重感冒，居家休养一周。每日照顾：9:00煮白粥+酱瓜、12:00量体温+吃药、15:00削苹果切成兔子形状、18:00鸡汤面（妈妈的方子，第一次做）、21:00睡前热水泡脚。她说，对你的确定性的确认，就是在这一周里完成的。"你的好是被写进日历里的，风雨不改。"
+LOCATION:她家
+CATEGORIES:关怀
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20270401
+DTEND;VALUE=DATE:20270402
+SUMMARY:💝 一周年纪念日
+DESCRIPTION:在一起整整一年。她送了我一本装订好的小册子，封面写着"过去一年的日历事件"。她把我们标记过的200多条事件全部打印了出来，每一条旁边手写了一个注释。那个册子现在放在床头柜里，是我最重要的东西。晚上回那家居酒屋吃饭，坐在第一张桌子。
+LOCATION:居酒屋
+CATEGORIES:里程碑
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：💝 一周年纪念日
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20280301
+DTEND;VALUE=DATE:20280315
+SUMMARY:🌸 京都赏樱  提前一年种下的期待
+DESCRIPTION:一年前在日历里设下的事件终于到了。京都赏樱经典路线：哲学之道→南禅寺→蹴上倾斜铁道、岚山→天龙寺→竹林。樱花花期只有一周，出发前密切关注开花预报。她说要在樱花树下拍一张比第一次旅行更"在一起"的照片。
+LOCATION:京都
+CATEGORIES:旅行
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20281001
+DTEND;VALUE=DATE:20281002
+SUMMARY:🏠 考虑同居  提前认真讨论
+DESCRIPTION:在一起两年半，开始认真讨论同居。讨论话题：选哪个区？离地铁多远？几室几厅？书房归谁（大概率她）？家务分工（烹饪轮值、谁洗碗谁扫地）。个人空间的需求。同居不是"试婚"，是"决定把每一天都放进同一个日历里"。
+LOCATION:家中
+CATEGORIES:未来
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20300401
+DTEND;VALUE=DATE:20300402
+SUMMARY:💍 如果还在一起，且都想要的话——考虑结婚
+DESCRIPTION:日历里的"未来"分类，颜色是淡金色。这不是一个承诺，但它是通往承诺的路标。把未来写进日历，不是要控制它，而是表明：我愿意和你一起走向那个可能性。"我们的日历分类永远不用改名字。就叫'我们'。这个分类本来就没有截止日期。"
+CATEGORIES:未来
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20290614
+DTEND;VALUE=DATE:20290615
+SUMMARY:💍 求婚日  戒指在内袋里
+DESCRIPTION:回到第一次约会的居酒屋，坐在同一张桌子。没有单膝跪地，没有玫瑰花，没有无人机拉横幅。只是把戒指放在桌上，说："这三年，'我们'的日历里一共有四百多个事件。我想把它们变成一辈子的。你愿意吗？"她看了很久，笑了很久——笑到隔壁桌大叔都开始起哄——然后伸手把戒指拿过去自己戴上了。她说："从今天起，我们的日历分类名字还是不改。就叫'我们'。这个分类本来就没有截止日期。" 💛
+LOCATION:居酒屋（第一张桌子）
+CATEGORIES:里程碑
+BEGIN:VALARM
+TRIGGER:-PT10080M
+ACTION:DISPLAY
+DESCRIPTION:提醒：💍 求婚日  戒指在内袋里
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:提醒：💍 求婚日  戒指在内袋里
+END:VALARM
+END:VEVENT
+
+END:VCALENDAR

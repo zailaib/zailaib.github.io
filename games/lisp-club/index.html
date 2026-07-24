@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>λ Lisp Club · BiwaScheme REPL</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+  <!-- Left: REPL -->
+  <div id="repl-panel">
+    <div id="repl-header">
+      <span class="logo">λ</span>
+      <h1>Lisp Club</h1>
+      <span class="ver">BiwaScheme</span>
+    </div>
+    <div id="repl-output"></div>
+    <div id="repl-input-area">
+      <span class="prompt">λ&gt;</span>
+      <input type="text" id="repl-input" placeholder="输入 Scheme 表达式..." autofocus autocomplete="off" spellcheck="false">
+    </div>
+  </div>
+
+  <!-- Right: Snippets -->
+  <div id="snippet-panel">
+    <div id="snippet-header">📋 代码片段</div>
+    <div id="snippet-list"></div>
+    <div id="status-bar">
+      <span id="eval-count">0 evals</span>
+      <span>BiwaScheme</span>
+    </div>
+  </div>
+</div>
+
+<script src="biwascheme-min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

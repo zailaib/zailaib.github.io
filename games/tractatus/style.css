@@ -1,0 +1,80 @@
+/* Tractatus  Style */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: #0d0d0d;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: 'Courier New', 'JetBrains Mono', monospace;
+  cursor: crosshair;
+}
+
+canvas { display: block; }
+
+/* -- Top bar -- */
+#top-bar {
+  position: fixed; top: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px; pointer-events: none; z-index: 10;
+}
+.top-text {
+  color: rgba(255,255,255,0.6);
+  font-size: 13px; letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Courier New', monospace;
+}
+
+/* -- Proposition display -- */
+#prop-overlay {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 20; pointer-events: none;
+}
+#prop-text {
+  font-size: 16px; color: rgba(255,255,255,0.9);
+  text-align: center; max-width: 560px;
+  padding: 20px 28px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1.2s, transform 1.2s;
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+#prop-text.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -- Instructions -- */
+#instructions {
+  position: fixed; bottom: 28px; left: 0; right: 0;
+  text-align: center; pointer-events: none; z-index: 10;
+  color: rgba(255,255,255,0.35);
+  font-size: 13px; font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  transition: opacity 0.8s;
+}
+
+/* -- Reset button -- */
+#reset-btn {
+  position: fixed; top: 14px; right: 20px;
+  z-index: 30; background: none;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.5);
+  padding: 6px 18px; font-size: 12px;
+  cursor: pointer; font-family: 'Courier New', monospace;
+  letter-spacing: 2px; border-radius: 2px;
+  transition: all 0.3s;
+}
+#reset-btn:hover {
+  border-color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.8);
+}

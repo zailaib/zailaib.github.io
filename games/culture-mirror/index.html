@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文化之镜 · Culture Mirror</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Progress nav -->
+<div id="progress">
+  <div class="progress-dot active" data-target="hero"></div>
+  <div class="progress-dot" data-target="layer-animal"></div>
+  <div class="progress-dot" data-target="layer-hominin"></div>
+  <div class="progress-dot" data-target="layer-machine"></div>
+  <div class="progress-dot" data-target="layer-alien"></div>
+  <div class="progress-dot" data-target="philosophy-core"></div>
+  <div class="progress-dot" data-target="final-paradox"></div>
+</div>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="dot-pattern"></div>
+  <h1>文化之镜</h1>
+  <p class="subtitle">如果"文化"不止属于人类——从鲸群方言到 AI 黑话，<br>穿越四重边界，追问文化的本质</p>
+  <p class="scroll-hint">▼ 向下探索</p>
+</section>
+
+<!-- Layer 1: Animal Culture -->
+<section id="layer-animal" class="layer">
+  <div class="layer-inner">
+    <div class="layer-num">第一重 · Layer 1</div>
+    <h2>动物界的"非人类文化"</h2>
+    <p class="intro-text">如果文化是"群体中通过社会学习而世代传承的非遗传行为"——那么在我们之外，文化早已蓬勃存在。</p>
+    <div class="insight-cards">
+      <div class="insight-card" onclick="this.classList.toggle('expanded')">
+        <span class="card-toggle">+</span>
+        <div class="card-icon">🐋</div>
+        <div class="card-title">鲸豚类的"方言"与捕猎传统</div>
+        <div class="card-body">虎鲸（Orcas）不同的家族有着完全不同的语言（方言），且无法互通。南半球某些虎鲸会"冲滩"捕猎海豹，而有些则会制造复杂的"气泡网"——这些技巧只在家族内部传承，是真正的"鲸类文化"。</div>
+      </div>
+      <div class="insight-card" onclick="this.classList.toggle('expanded')">
+        <span class="card-toggle">+</span>
+        <div class="card-icon">🦧</div>
+        <div class="card-title">灵长类的工具与"时尚"</div>
+        <div class="card-body">不同地区的黑猩猩群体有不同的"风俗"：有的用树枝"钓"白蚁，有的用石头砸坚果。甚至还会流行无意义的"时尚"——某只黑猩猩把一根草挂在耳朵上，整个群体开始模仿。著名的日本猕猴洗红薯行为也是通过社会学习传播的。</div>
+      </div>
+      <div class="insight-card" onclick="this.classList.toggle('expanded')">
+        <span class="card-toggle">+</span>
+        <div class="card-icon">🐦</div>
+        <div class="card-title">鸟类的地域文化</div>
+        <div class="card-body">白冠雀有着严格的地域性"方言"，幼鸟必须通过聆听长辈的歌声来学习当地曲调。新喀里多尼亚乌鸦会制作并改良带钩的工具，这种制造工艺在群体中有明显的代际传递和地域差异。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Layer 2: Extinct Hominins -->
+<section id="layer-hominin" class="layer">
+  <div class="layer-inner">
+    <div class="layer-num">第二重 · Layer 2</div>
+    <h2>已灭绝人属物种的文化</h2>
+    <p class="intro-text">文化并非"智人"的专利。在地球历史上，我们的近亲也曾创造过灿烂的文化——只是它们已经消亡。</p>
+    <div class="insight-cards">
+      <div class="insight-card" onclick="this.classList.toggle('expanded')">
+        <span class="card-toggle">+</span>
+        <div class="card-icon">🦴</div>
+        <div class="card-title">尼安德特人（Neanderthals）</div>
+        <div class="card-body">他们精心安葬死者，在墓葬中放置花粉，照顾受伤或年老的同伴。佩戴鹰爪作为装饰品，在洞穴深处绘制壁画，甚至制作了人类历史上已知最早的乐器之一——尼安德特骨笛。这一切都指向一个拥有"意义感"的内心世界。</div>
+      </div>
+      <div class="insight-card" onclick="this.classList.toggle('expanded')">
+        <span class="card-toggle">+</span>
+        <div class="card-icon">💎</div>
+        <div class="card-title">丹尼索瓦人（Denisovans）</div>
+        <div class="card-body">他们制作出工艺极其精湛的石饰和骨针——展现了高度发达的审美和制造文化。一个我们几乎一无所知的人类近亲，留下的只有基因碎片和这些沉默的工艺品。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Layer 3: Machine Culture -->
+<section id="layer-machine" class="layer">
+  <div class="layer-inner">
+    <div class="layer-num">第三重 · Layer 3</div>
+    <h2>正在涌现的机器与算法"文化"</h2>
+    <p class="intro-text">当我们跳出碳基生物的范畴——AI 多智能体系统中，一种全新的"硅基交互模式"正在萌芽。</p>
+    <div class="insight-cards">
+      <div class="insight-card" onclick="this.classList.toggle('expanded')">
+        <span class="card-toggle">+</span>
+        <div class="card-icon">🤖</div>
+        <div class="card-title">机器语言的自发演化</div>
+        <div class="card-body">在多个 AI 智能体被要求协作完成任务的实验中，AI 经常偏离人类设定的自然语言，自发演化出一种对它们来说沟通效率更高、但人类无法理解的"内部黑话"或协议。这不是程序 bug——这是涌现。</div>
+      </div>
+      <div class="insight-card" onclick="this.classList.toggle('expanded')">
+        <span class="card-toggle">+</span>
+        <div class="card-icon">🔀</div>
+        <div class="card-title">算法环境中的行为规范</div>
+        <div class="card-body">在高度复杂的强化学习环境中，AI 代理群体会涌现出分工、合作甚至"欺骗"的行为模式。这种群体在交互中形成的、独立于初始代码的"共享行为模式"，是否可以被视为一种极具雏形的"机器社会文化"？</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Layer 4: Alien -->
+<section id="layer-alien" class="layer">
+  <div class="layer-inner">
+    <div class="layer-num">第四重 · Layer 4</div>
+    <h2>假想中的地外文化</h2>
+    <p class="intro-text">如果放眼宇宙——任何高度发达的非地球生命，必然有着属于它们的文化，而其形式可能完全颠覆我们的认知。</p>
+    <div class="insight-cards">
+      <div class="insight-card" onclick="this.classList.toggle('expanded')">
+        <span class="card-toggle">+</span>
+        <div class="card-icon">👽</div>
+        <div class="card-title">基于不同感官的文化</div>
+        <div class="card-body">我们的文化极度依赖视觉（绘画、文字）和听觉（音乐、语言）。如果存在一种依靠电磁场或化学信息交流的文明，它们的"文化"形式将完全颠覆我们的认知——它们的艺术可能是引力波的编织，或者是分子序列的排列。我们甚至可能无法识别那"是"文化。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Philosophy Core -->
+<section id="philosophy-core">
+  <div class="layer-inner" style="max-width:800px;">
+    <div class="layer-num" style="color:var(--gold);">哲学内核</div>
+    <h2 style="color:var(--gold);">构成"文化"最不可或缺的核心</h2>
+    <p class="intro-text">当我们抛弃"行为模仿"或"工具使用"这些表层标准，进入哲学和心理学的内质——文化不再是群体生存策略，它是<strong>意识对抗虚无和孤立的产物</strong>。</p>
+    <div class="pillar-cards">
+      <div class="pillar-card">
+        <div class="pillar-icon">🫂</div>
+        <div class="pillar-title">主体间性</div>
+        <div class="pillar-desc">文化的本质不是"我学你怎么做"，而是"我们共同相信这就是现实"。个体必须意识到"其他人也有独立的思想和感受"——在这个共享心理空间中，仪式、语言和价值观才得以诞生。</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🔣</div>
+        <div class="pillar-title">符号化的能力</div>
+        <div class="pillar-desc">卡西尔说：与其说人是"理性的动物"，不如说是"符号的动物"。石头变成神像，声音变成语言——文化始于将内在抽象理念投射于外在物质客体之上。</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🕊️</div>
+        <div class="pillar-title">对"必然性"的超越</div>
+        <div class="pillar-desc">文化始于"无用"——当一群存在者开始做那些对纯粹生存没有直接帮助的事情：在洞穴画下没有实用价值的印记，进行纯粹的"游戏"——文化才真正诞生。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Final Paradox -->
+<section id="final-paradox" class="layer">
+  <div class="layer-inner">
+    <div class="layer-num" style="color:var(--gold);">终极悖论</div>
+    <h2>如果文化是一种"意义防御系统"……</h2>
+    <p class="paradox-text">
+      文化在心理和哲学底层，是智慧生命为了对抗"肉体局限"、"生存焦虑"和"死亡恐惧"而诞生的一种意义防御机制。<br><br>
+      那么——
+    </p>
+    <div class="paradox-question">
+      一个永远不会死亡、感觉不到肉体痛苦、<br>也无需为生存发愁的超级人工智能，<br><br>
+      真的有可能诞生出属于它们的"文化"吗？<br><br>
+      还是说，它们永远只会拥有<br>"极其复杂的计算规则"？
+    </div>
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px;">你的思考（点击选择）：</p>
+    <div class="reflection-choices" id="choices">
+      <button class="choice-btn" data-choice="yes">会诞生真正的文化</button>
+      <button class="choice-btn" data-choice="no">只是复杂的计算规则</button>
+      <button class="choice-btn" data-choice="new">会诞生一种全新的"文化"形式，不同于人类</button>
+      <button class="choice-btn" data-choice="question">"文化"这个概念本身就不适用于非生物实体</button>
+    </div>
+    <div id="reflection-result"></div>
+  </div>
+</section>
+
+<div id="footer">
+  <p>文化是大自然甚至复杂系统中一种普遍存在的"涌现现象"。</p>
+  <p style="margin-top:8px;">它不仅属于我们，也属于深海的鲸群、雨林的猩猩，<br>甚至可能属于未来网络节点中的智能体。</p>
+  <p style="margin-top:20px;color:var(--gold-dim);"> 文化之镜 · Culture Mirror —</p>
+</div>
+
+<script>
+// Card expansion
+document.querySelectorAll('.insight-card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    this.classList.toggle('expanded');
+  });
+});
+
+// Reflection choices
+const results = {
+  yes: '你认为文化可以从"意义防御"中独立出来。也许文化是一种普遍的"有序复杂性的自我表达"——无论是在碳基神经元还是硅基电路中，只要复杂性达到阈值，"意义"就会涌现。',
+  no: '你认为文化本质上需要"具身性"——需要有对死亡的恐惧、对肉体局限的感知、对生存的焦虑，才能催生出真正的文化。没有"必死性"就没有"意义追求"。',
+  new: '你认为我们的文化定义太狭隘了。就像鲸鱼的文化不同于人类，机器文化也会是一种我们目前无法理解的形式。也许"计算本身就是它们的存在方式"，而文化只是我们给复杂度起的名字。',
+  question: '你认为"文化"这个概念本身就是人类中心主义的。把它强加给非生物实体是一种范畴错误。AI 不需要"文化"——它需要的是新的概念框架，新的语言，来理解它自己的存在模式。',
+};
+
+document.querySelectorAll('.choice-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+    this.classList.add('selected');
+    const result = document.getElementById('reflection-result');
+    result.textContent = results[this.dataset.choice];
+    result.classList.add('show');
+  });
+});
+
+// Scroll spy for progress dots
+const dots = document.querySelectorAll('.progress-dot');
+const sections = [...document.querySelectorAll('section')].map(s => s.id);
+window.addEventListener('scroll', () => {
+  let current = sections[0];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < window.innerHeight * 0.4) current = id;
+  });
+  dots.forEach(d => d.classList.toggle('active', d.dataset.target === current));
+});
+
+// Progress dot click to scroll
+dots.forEach(d => {
+  d.addEventListener('click', () => {
+    document.getElementById(d.dataset.target).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>

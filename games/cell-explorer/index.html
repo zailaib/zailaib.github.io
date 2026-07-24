@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>细胞探索者 · Cell Explorer 3D</title>
+<script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<button id="theme-btn" title="切换主题">☀️</button>
+
+<div id="loading"><div class="loader"></div><span>加载中...</span></div>
+<div id="error-msg"></div>
+<div id="container"></div>
+
+<!-- Cell type tabs -->
+<div id="tabs">
+  <button class="tab-btn active" data-type="plant">🌱 植物细胞</button>
+  <button class="tab-btn" data-type="animal">🐾 动物细胞</button>
+  <button class="tab-btn" data-type="virus">🦠 噬菌体</button>
+  <button class="tab-btn" data-type="chlorella">🟢 小球藻</button>
+</div>
+
+<!-- Organelle legend -->
+<div id="legend"></div>
+
+<!-- Info panel -->
+<div id="info-panel">
+  <div class="cell-type">植物细胞 · Plant Cell</div>
+  <div class="org-name">细胞壁</div>
+  <div class="org-desc">移动鼠标到细胞器上查看详情</div>
+</div>
+
+<div id="hint">🖱 拖拽旋转 · 滚轮缩放 · 悬停查看细胞器</div>
+
+<button id="tour-btn" title="自动导览">🎬 导览</button>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+    "/games/shared/": "/games/shared/"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

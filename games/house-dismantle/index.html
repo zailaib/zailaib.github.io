@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<script>if(localStorage.getItem('theme')==='light')document.documentElement.classList.add('light');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>拆解老屋 · House Dismantle 3D</title>
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<button id="theme-btn" title="切换主题">☀️</button>
+
+<div id="loading"><div class="loader"></div><span>加载中...</span></div>
+<div id="error-msg"></div>
+<div id="validate-output" style="display:none;position:fixed;left:16px;bottom:100px;z-index:30;background:var(--panel-bg);backdrop-filter:blur(12px);border:1px solid var(--panel-border);border-radius:8px;padding:10px 14px;max-width:300px;max-height:200px;overflow-y:auto;font-family:monospace"></div>
+<div id="container"></div>
+
+<!-- Selection box overlay -->
+<div id="sel-box"></div>
+
+<!-- Parts legend -->
+<div id="legend">
+  <div class="legend-title">🏠 部件列表</div>
+  <div class="legend-items" id="legend-items"></div>
+</div>
+
+<!-- Info panel -->
+<div id="info-panel">
+  <div class="part-name" id="part-name">点击选择部件</div>
+  <div class="part-hint" id="part-hint">拖拽框选 · 按 <kbd>1</kbd> 拆解</div>
+</div>
+
+<!-- Action buttons -->
+<div id="action-bar">
+  <button id="btn-dismantle" class="action-btn primary">🔧 拆解 (1)</button>
+  <button id="btn-reset" class="action-btn">↺ 重置视角</button>
+</div>
+
+<div id="hint">🖱 拖拽旋转 · 滚轮缩放 · 右键平移 · 拖拽框选部件 · 按 <kbd>1</kbd> 拆解/组装</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+    "/games/shared/": "/games/shared/"
+  }
+}
+</script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

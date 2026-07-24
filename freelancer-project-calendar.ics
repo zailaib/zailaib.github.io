@@ -1,0 +1,153 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zailab//Freelancer Project Calendar//ZH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:自由职业项目管理日历
+X-WR-CALDESC:深度工作、客户沟通、项目节点、财务日、休息日——自由职业者可持续工作节奏的时间管理系统（Q3 2026示例）。
+X-WR-TIMEZONE:Asia/Shanghai
+
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Shanghai:20260701T080000
+DTEND;TZID=Asia/Shanghai:20260701T110000
+RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;UNTIL=20260930T110000
+SUMMARY:🧠 深度工作时间块
+DESCRIPTION:不可打扰的专注时段。手机静音、关闭微信通知、不查看邮件。周一/三：项目A品牌设计 周二/四：项目B网站对接 周五：项目C创意提案。使用番茄工作法：55分钟专注 + 5分钟休息。
+LOCATION:家庭办公室
+CATEGORIES:深度工作
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Shanghai:20260701T140000
+DTEND;TZID=Asia/Shanghai:20260701T160000
+RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR;UNTIL=20260930T160000
+SUMMARY:📧 客户沟通窗口
+DESCRIPTION:集中处理对外沟通。回复微信和邮件、项目进度同步、安排下周会议、处理客户反馈和修改意见。单条消息控制在5分钟内回复完。需要长时间讨论的复杂事项安排到会议日。
+LOCATION:家庭办公室
+CATEGORIES:沟通
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Shanghai:20260701T140000
+DTEND;TZID=Asia/Shanghai:20260701T170000
+RRULE:FREQ=WEEKLY;BYDAY=TU,TH;UNTIL=20260930T170000
+SUMMARY:🤝 会议日  客户会议集中时段
+DESCRIPTION:周二和周四下午为会议日。所有线上提案、进度同步、需求变更讨论集中安排。每个会议控制在30-45分钟。会前10分钟发Agenda，会后即时整理Action Items。其他工作日不接受会议请求（紧急情况除外）。
+LOCATION:线上会议 / 客户办公室
+CATEGORIES:沟通
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260715
+DTEND;VALUE=DATE:20260716
+SUMMARY:🎨 项目A：品牌视觉设计初稿交付
+DESCRIPTION:客户：品牌方。交付物：Logo方案3个 + 配色方案 + 品牌字体建议。交付后预留一周客户反馈时间。交付前24小时做最终自查：所有方案在不同尺寸下可辨识、配色方案已做色盲友好测试。
+LOCATION:家庭办公室
+CATEGORIES:项目
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:截稿提醒：🎨 项目A：品牌视觉设计初稿交付
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260731
+DTEND;VALUE=DATE:20260801
+SUMMARY:🌐 项目B：电商网站开发对接上线
+DESCRIPTION:客户：电商客户。与开发团队确认最终上线checklist：移动端适配、支付流程测试、SEO meta标签、404页面和sitemap、上线后48小时密切监控。
+LOCATION:线上
+CATEGORIES:项目
+BEGIN:VALARM
+TRIGGER:-PT4320M
+ACTION:DISPLAY
+DESCRIPTION:上线提醒：🌐 项目B：电商网站开发对接上线
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260815
+DTEND;VALUE=DATE:20260816
+SUMMARY:📄 项目C：商业计划书排版提交
+DESCRIPTION:客户：创业公司。排版完成，提交PDF和源文件。最终检查清单：图表编号和图注对应、页码和目录一致、所有外部链接可点击、字体嵌入PDF。
+LOCATION:家庭办公室
+CATEGORIES:项目
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:截稿提醒：📄 项目C：商业计划书排版提交
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20260902
+SUMMARY:💰 月度财务日  整理收支+开具发票+核对社保
+DESCRIPTION:每月1号财务例行。任务清单：1.整理上月所有收入和支出记录 2.给已完成项目的客户开具电子发票 3.核算个税和社保缴纳金额 4.更新月度收支报表 5.检查是否有未收回的应收账款。使用记账App扫描发票，即时归档。
+LOCATION:家庭办公室
+CATEGORIES:财务
+BEGIN:VALARM
+TRIGGER:-PT1440M
+ACTION:DISPLAY
+DESCRIPTION:财务日提醒：💰 月度财务日  整理收支+开具发票+核对社保
+END:VALARM
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Shanghai:20260705T160000
+DTEND;TZID=Asia/Shanghai:20260705T170000
+RRULE:FREQ=WEEKLY;BYDAY=FR;UNTIL=20260927T170000
+SUMMARY:📊 每周回顾 + 下周计划
+DESCRIPTION:每周五下午收尾仪式。回顾清单：1.本周完成了什么？2.哪些任务延期了？原因是什么？3.更新项目看板 4.安排下周每日任务优先级 5.清理桌面。未完成的任务不要自责，分析原因后重新排期即可。
+LOCATION:家庭办公室
+CATEGORIES:复盘
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260707
+DTEND;VALUE=DATE:20260708
+RRULE:FREQ=WEEKLY;BYDAY=SU;UNTIL=20260929
+SUMMARY:🌿 休息日  不回工作消息
+DESCRIPTION:周日全天不处理任何工作事务。关闭工作微信通知。建议活动：读一本和工作无关的书、出门散步或骑行、和亲友吃一顿不赶时间的饭。这一天的边界保护好，其他六天才能高效运转。
+LOCATION:任何不是办公室的地方
+CATEGORIES:休息
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260706
+DTEND;VALUE=DATE:20260707
+RRULE:FREQ=WEEKLY;BYDAY=SA;UNTIL=20260928
+SUMMARY:📚 技能学习日  周六上午自我提升
+DESCRIPTION:周六上午9-12点为固定学习时间。技能路线（按月轮换）：7月学习Blender 3D基础、8月TypeScript进阶、9月用户研究方法论。自由职业者的技能就是护城河，持续学习是最好的客户开发策略。
+LOCATION:家庭办公室 / 咖啡馆
+CATEGORIES:学习
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260925
+DTEND;VALUE=DATE:20260926
+SUMMARY:🗺️ 季度规划日  回顾Q3 + 规划Q4
+DESCRIPTION:每季度最后一周的周三为规划日。回顾清单：1.Q3总收入与项目类型分析 2.哪些项目利润最高？哪些客户最契合？3.Q4目标设定（收入、项目类型、技能提升）4.是否需要调整费率？5.更新作品集和个人网站。把自己当成一个产品来迭代。
+LOCATION:家庭办公室
+CATEGORIES:规划
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260820
+DTEND;VALUE=DATE:20260821
+SUMMARY:🎤 项目A/B/C：客户演示与季度汇报
+DESCRIPTION:向主要客户进行季度成果演示。准备清单：项目进度可视化PPT、关键数据和KPI汇报、下一阶段计划预览、收集客户反馈和期望调整。线上进行，控制30分钟内完成。
+LOCATION:线上会议
+CATEGORIES:项目
+END:VEVENT
+
+BEGIN:VEVENT
+DTSTART;VALUE=DATE:20260930
+DTEND;VALUE=DATE:20261001
+SUMMARY:🔍 季度项目回顾  所有项目复盘
+DESCRIPTION:Q3结束，对所有完成项目进行复盘。复盘维度：预估工时 vs 实际工时、项目利润率和ROI、客户满意度、可复用的经验和踩过的坑、是否值得和该客户长期合作。每年淘汰20%低价值项目，把时间留给更好的机会。
+LOCATION:家庭办公室
+CATEGORIES:复盘
+END:VEVENT
+
+END:VCALENDAR
