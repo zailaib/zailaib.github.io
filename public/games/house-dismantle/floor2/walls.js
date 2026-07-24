@@ -35,10 +35,12 @@ export function buildUpperWalls(houseGroup, parts, MATS) {
   const fz = HD2 - WALL_T, bz = -HD2 + WALL_T;
   const g0 = -2.5, g1 = -1.5; // corridor doorway gap
 
-  for (const ix of [-BAY_W, 0, BAY_W]) {
-    const bl = g0 - bz; if (bl > 0.1) { const w = box(INT_WALL_T, WALL_H2, bl, MATS.interior); w.position.set(ix, WY2, (bz+g0)/2); addTo('upperInteriorWalls', w); iwGrp.add(w); }
-    const fl = fz - g1; if (fl > 0.1) { const w = box(INT_WALL_T, WALL_H2, fl, MATS.interior); w.position.set(ix, WY2, (g1+fz)/2); addTo('upperInteriorWalls', w); iwGrp.add(w); }
+  // x=-4, 4: full split. x=0: front only (back is stairwell opening)
+  for (const ix of [-BAY_W, BAY_W]) {
+    const bl = g0 - bz; if (bl > 0.1) { const w = box(INT_WALL_T,WALL_H2,bl,MATS.interior); w.position.set(ix,WY2,(bz+g0)/2); addTo('upperInteriorWalls',w); iwGrp.add(w); }
+    const fl = fz - g1; if (fl > 0.1) { const w = box(INT_WALL_T,WALL_H2,fl,MATS.interior); w.position.set(ix,WY2,(g1+fz)/2); addTo('upperInteriorWalls',w); iwGrp.add(w); }
   }
+  { const fl = fz - (-2.0); if (fl > 0.1) { const w = box(INT_WALL_T,WALL_H2,fl,MATS.interior); w.position.set(0,WY2,(-2.0+fz)/2); addTo('upperInteriorWalls',w); iwGrp.add(w); } }
 
   // Cross wall at z=0 with doorways
   const dw = 0.9;

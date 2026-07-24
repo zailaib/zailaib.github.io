@@ -80,8 +80,17 @@ export function buildFloor1Rooms(houseGroup, parts, MATS) {
   for (const [sx, sz] of [[-6.6,-2.5],[-5.4,-2.5],[-6,-3.1],[-6,-1.9]]) dr.add(makeChair(sx, sz, F));
   const sb = box(1.6, 1.0, 0.4, MATS.woodDark); sb.position.set(-6, 0.5+F, -4.0); addTo('diningRoom', sb); dr.add(sb);
 
+  // ── Bathroom 1F (Bay3 back: x=0..4, z=-4.5..-2 corridor) ──
+  const br1 = parts.get('bathroom1F').group;
+  // Squat toilet against back wall
+  const toiletBase = box(0.5, 0.15, 0.7, MATS.base); toiletBase.position.set(3, F+0.08, -4.0); addTo('bathroom1F', toiletBase); br1.add(toiletBase);
+  const toiletBowl = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.1, 16), MATS.pipe); toiletBowl.position.set(3, F+0.2, -4.0); addTo('bathroom1F', toiletBowl); br1.add(toiletBowl);
+  const tank = box(0.4, 0.5, 0.2, MATS.baseDark); tank.position.set(3, F+0.5, -4.3); addTo('bathroom1F', tank); br1.add(tank);
+  // Sink against side wall
+  const sink = box(0.6, 0.1, 0.4, MATS.base); sink.position.set(3.5, F+0.8, -2.5); addTo('bathroom1F', sink); br1.add(sink);
+
   // Register meshes
-  for (const name of ['elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom']) {
+  for (const name of ['elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','bathroom1F']) {
     const p = parts.get(name);
     if (!p) continue;
     p.group.traverse(c => { if (c.isMesh && !p.meshArr.includes(c)) { p.meshArr.push(c); c.userData.partName = name; c.castShadow = true; c.receiveShadow = true; } });

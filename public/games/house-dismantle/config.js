@@ -113,6 +113,10 @@ export const PART_DEFS = [
   { name: 'childRoom1',  label: '儿童房1',    color: '#7a4a20', deps: ['upperWallRight','interiorWalls'], cat: 'interior' },
   { name: 'childRoom2',  label: '儿童房2',    color: '#7a4a20', deps: ['upperWallLeft','interiorWalls'], cat: 'interior' },
 
+  // ── Bathrooms ──
+  { name: 'bathroom1F',  label: '一层卫生间', color: '#c8d8e8', deps: ['interiorWalls','wallBack'], cat: 'interior' },
+  { name: 'bathroom2F',  label: '二层卫生间', color: '#c8d8e8', deps: ['upperInteriorWalls','upperWallBack'], cat: 'interior' },
+
   // ── Plumbing ──
   { name: 'pipelines',   label: '排水系统',   color: '#8b6b4a', deps: ['base'], cat: 'plumbing' },
 ];
@@ -120,8 +124,8 @@ export const PART_DEFS = [
 // ── Categories — 3 layers, click to translate ─────────────────────
 export const CATEGORIES = {
   roof:   { label: '屋顶 ↗', parts: ['roofTiles','roofFrame'], color: '#4a4a5a' },
-  floor2: { label: '二层 ↗', parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','upperInteriorWalls','floor2','doors2F','windows2F','masterBed','secondBed','study','childRoom1','childRoom2'], color: '#5a8a5a' },
-  floor1: { label: '一层 ↗', parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls','floor','doors1F','windows1F','elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','stairs','columns','base','ventDucts','pipelines'], color: '#d4c8b0' },
+  floor2: { label: '二层 ↗', parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','upperInteriorWalls','floor2','doors2F','windows2F','masterBed','secondBed','study','childRoom1','childRoom2','bathroom2F'], color: '#5a8a5a' },
+  floor1: { label: '一层 ↗', parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls','floor','doors1F','windows1F','elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','bathroom1F','stairs','columns','base','ventDucts','pipelines'], color: '#d4c8b0' },
 };
 
 // ── Translate offsets — roof →, 2F ←, 1F stays ─────────────────
@@ -159,6 +163,8 @@ export function getDisassembleOffset(name) {
     livingRoom:     [0, 0, 0],
     kitchen:        [0, 0, 0],
     diningRoom:     [0, 0, 0],
+    bathroom1F:     [0, 0, 0],
+    bathroom2F:     [LL, 0, 0],
     stairs:         [0, 0, 0],
     columns:        [0, 0, 0],
     base:           [0, 0, 0],

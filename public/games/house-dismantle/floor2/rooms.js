@@ -74,8 +74,15 @@ export function buildFloor2Rooms(houseGroup, parts, MATS) {
   cr2.add(makeBed(-7, -1.5, B, 'left', 1.8));
   cr2.add(makeDesk(-5, -2.5, B));
 
+  // ── Bathroom 2F (Bay3 back: x=0..4, z=-4.5..-2) ──
+  const br2 = parts.get('bathroom2F').group;
+  br2.add(box(0.5,0.15,0.7,MATS.base)); br2.children[br2.children.length-1].position.set(3,B+0.08,-4.0);
+  const tb = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.2,0.1,16), MATS.pipe); tb.position.set(3,B+0.2,-4.0); addTo('bathroom2F',tb); br2.add(tb);
+  br2.add(box(0.4,0.5,0.2,MATS.baseDark)); br2.children[br2.children.length-1].position.set(3,B+0.5,-4.3);
+  br2.add(box(0.6,0.1,0.4,MATS.base)); br2.children[br2.children.length-1].position.set(3.5,B+0.8,-2.5);
+
   // Register meshes
-  for (const name of ['masterBed','secondBed','study','childRoom1','childRoom2']) {
+  for (const name of ['masterBed','secondBed','study','childRoom1','childRoom2','bathroom2F']) {
     const p = parts.get(name);
     if (!p) continue;
     p.group.traverse(c => { if (c.isMesh && !p.meshArr.includes(c)) { p.meshArr.push(c); c.userData.partName = name; c.castShadow = true; c.receiveShadow = true; } });

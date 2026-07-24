@@ -30,23 +30,13 @@ export function buildFloor1Walls(houseGroup, parts, MATS) {
   const gap = 1.0; // doorway width
   const g0 = corridorZ - gap/2, g1 = corridorZ + gap/2;
 
-  // 3 longitudinal walls at x = -4, 0, 4 — each split into front+back with corridor gap
-  for (const ix of [-BAY_W, 0, BAY_W]) {
-    // Back piece: bz to g0
-    const backLen = g0 - bz;
-    if (backLen > 0.1) {
-      const bw = box(INT_WALL_T, WALL_H1, backLen, MATS.interior);
-      bw.position.set(ix, WY1, (bz + g0) / 2);
-      addTo('interiorWalls', bw); iwGrp.add(bw);
-    }
-    // Front piece: g1 to fz
-    const frontLen = fz - g1;
-    if (frontLen > 0.1) {
-      const fw = box(INT_WALL_T, WALL_H1, frontLen, MATS.interior);
-      fw.position.set(ix, WY1, (g1 + fz) / 2);
-      addTo('interiorWalls', fw); iwGrp.add(fw);
-    }
+  // 2 longitudinal walls at x=-4, 4 (x=0 is open — stairwell)
+  for (const ix of [-BAY_W, BAY_W]) {
+    const bl = g0 - bz; if (bl > 0.1) { const w = box(INT_WALL_T, WALL_H1, bl, MATS.interior); w.position.set(ix, WY1, (bz+g0)/2); addTo('interiorWalls', w); iwGrp.add(w); }
+    const fl = fz - g1; if (fl > 0.1) { const w = box(INT_WALL_T, WALL_H1, fl, MATS.interior); w.position.set(ix, WY1, (g1+fz)/2); addTo('interiorWalls', w); iwGrp.add(w); }
   }
+  // x=0: only front piece (back is open stairwell)
+  const x0fl = fz - (-2.0); if (x0fl > 0.1) { const w = box(INT_WALL_T, WALL_H1, x0fl, MATS.interior); w.position.set(0, WY1, (-2.0+fz)/2); addTo('interiorWalls', w); iwGrp.add(w); }
 
   // Cross wall at z=0 — 4 segments with doorways (front-back passage)
   const doorWidth = 0.9;
