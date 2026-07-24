@@ -20,7 +20,7 @@ export function buildFloor2Openings(houseGroup, parts, MATS) {
     const bx = -HW2 + b * BAY_W + BAY_W / 2;
     const wy = 1.6 + B;
     win2.add(makeWindow(bx, wy, zf, MATS));
-    win2.add(makeWindow(bx, wy, zb, Math.PI, MATS));
+    win2.add(makeWindow(bx, wy, zb, MATS, Math.PI));
   }
 
   // Interior doors
@@ -33,7 +33,7 @@ export function buildFloor2Openings(houseGroup, parts, MATS) {
   for (const bx of [-6, -2, 2, 6]) addUpperDoor(bx, 0.01);
 }
 
-function makeWindow(x, y, z, ry, MATS) {
+function makeWindow(x, y, z, MATS, ry = 0) {
   const wg = new THREE.Group();
   const fw = 1.1, fh = 1.4, ft = 0.06;
   const GLASS = new THREE.MeshStandardMaterial({ color: 0xaaccff, roughness: 0.1, metalness: 0.1, transparent: true, opacity: 0.35 });

@@ -88,6 +88,17 @@ const grid = new THREE.PolarGridHelper(18, 32, 36, 128, 0x222233, 0x161622);
 grid.position.y = -0.04;
 scene.add(grid);
 
+// ── Register all parts first (so build functions can find them) ────
+import { PART_DEFS } from './config.js';
+for (const def of PART_DEFS) {
+  const g = new THREE.Group(); g.name = def.name;
+  parts.set(def.name, {
+    group: g, label: def.label, color: def.color,
+    deps: def.deps, assembled: true, meshArr: [],
+  });
+  houseGroup.add(g);
+}
+
 // ── Build house ───────────────────────────────────────────────────
 scene.add(houseGroup);
 
@@ -101,20 +112,6 @@ buildFloor1(houseGroup, parts, MATS);
 buildFloor1Rooms(houseGroup, parts, MATS);
 buildFloor1Openings(houseGroup, parts, MATS);
 buildBase(houseGroup, parts, MATS);
-
-// Verify all PART_DEFS were created (imported from config)
-import { PART_DEFS } from './config.js';
-for (const def of PART_DEFS) {
-  if (!parts.has(def.name)) {
-    // Create a placeholder group if not built by any module
-    const g = new THREE.Group(); g.name = def.name;
-    parts.set(def.name, {
-      group: g, label: def.label, color: def.color,
-      deps: def.deps, assembled: true, meshArr: [],
-    });
-    houseGroup.add(g);
-  }
-}
 
 // ── Spatial validation ───────────────────────────────────────────
 validateHouse(parts);
