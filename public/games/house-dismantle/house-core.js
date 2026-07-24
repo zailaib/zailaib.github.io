@@ -173,10 +173,9 @@ export function buildStructure(houseGroup, parts, MATS) {
   }
   makeUpperWall('upperWallFront', '前墙(二层)', '#f2ece0', HOUSE_W, WALL_H2, WALL_T, 0, WY2, HD2, ['roofFrame']);
   makeUpperWall('upperWallBack', '后墙(二层)', '#f2ece0', HOUSE_W, WALL_H2, WALL_T, 0, WY2, -HD2, ['roofFrame']);
-  // Gable walls extend up into roof triangle
-  const gableH = EAVE_H - BAND_Y + ROOF_RISE * 0.4;
-  makeUpperWall('upperWallLeft', '山墙(左)', '#f2ece0', WALL_T, gableH, HOUSE_D, -HW2, BAND_Y + gableH / 2, 0, ['roofFrame']);
-  makeUpperWall('upperWallRight', '山墙(右)', '#f2ece0', WALL_T, gableH, HOUSE_D, HW2, BAND_Y + gableH / 2, 0, ['roofFrame']);
+  // Gable walls — same height as front/back upper walls, roof fills the triangle above
+  makeUpperWall('upperWallLeft', '山墙(左)', '#f2ece0', WALL_T, WALL_H2, HOUSE_D, -HW2, WY2, 0, ['roofFrame']);
+  makeUpperWall('upperWallRight', '山墙(右)', '#f2ece0', WALL_T, WALL_H2, HOUSE_D, HW2, WY2, 0, ['roofFrame']);
 
   // Upper ventilation windows (small, in front/back upper walls)
   for (const [side, z] of [['upperWallFront', HD2 + 0.03], ['upperWallBack', -HD2 - 0.03]]) {
