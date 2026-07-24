@@ -6,10 +6,16 @@ import {
   hideLoading, showError, setupThemeToggle, setupResizeHandler, createStarfield,
 } from '/games/shared/three-utils.js';
 import { MATS, CATEGORIES, getDisassembleOffset } from './config.js';
-import { buildStructure } from './house-core.js';
-import { buildOpenings } from './house-openings.js';
-import { buildInterior } from './house-interior.js';
-import { buildPlumbing }  from './house-plumbing.js';
+import { buildRoof }          from './roof/index.js';
+import { buildUpperWalls }    from './floor2/walls.js';
+import { buildFloor2 }        from './floor2/floor.js';
+import { buildFloor2Rooms }   from './floor2/rooms.js';
+import { buildFloor2Openings } from './floor2/openings.js';
+import { buildFloor1Walls }   from './floor1/walls.js';
+import { buildFloor1 }        from './floor1/floor.js';
+import { buildFloor1Rooms }   from './floor1/rooms.js';
+import { buildFloor1Openings } from './floor1/openings.js';
+import { buildBase }          from './base/index.js';
 import { validateHouse }  from './validate/index.js';
 
 // ── State ─────────────────────────────────────────────────────────
@@ -85,10 +91,16 @@ scene.add(grid);
 // ── Build house ───────────────────────────────────────────────────
 scene.add(houseGroup);
 
-buildStructure(houseGroup, parts, MATS);
-buildOpenings(houseGroup, parts, MATS);
-buildInterior(houseGroup, parts, MATS);
-buildPlumbing(houseGroup, parts, MATS);
+buildRoof(houseGroup, parts, MATS);
+buildUpperWalls(houseGroup, parts, MATS);
+buildFloor2(houseGroup, parts, MATS);
+buildFloor2Rooms(houseGroup, parts, MATS);
+buildFloor2Openings(houseGroup, parts, MATS);
+buildFloor1Walls(houseGroup, parts, MATS);
+buildFloor1(houseGroup, parts, MATS);
+buildFloor1Rooms(houseGroup, parts, MATS);
+buildFloor1Openings(houseGroup, parts, MATS);
+buildBase(houseGroup, parts, MATS);
 
 // Verify all PART_DEFS were created (imported from config)
 import { PART_DEFS } from './config.js';
@@ -142,26 +154,7 @@ for (const [catKey, cat] of Object.entries(CATEGORIES)) {
       document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeCat = catKey;
-      const toMove = getRequiredParts(new Set(catParts));
-      const offsets = new Map();
-      for (const name of toMove) offsets.set(name, [...getDisassembleOffset(name)]);
-      for (const name of toMove) {
-        const p = parts.get(name);
-        if (!p) continue;
-        for (const dep of p.deps) {
-          if (toMove.has(dep) && offsets.has(dep)) {
-            const po = offsets.get(dep), mo = offsets.get(name);
-            mo[0] += po[0]; mo[1] += po[1]; mo[2] += po[2];
-            break; // only inherit from first matching parent
-          }
-        }
-      }
-      for (const name of toMove) {
-        const off = offsets.get(name);
-        targetOff.get(name).set(off[0], off[1], off[2]);
-        const p = parts.get(name);
-        if (p) p.assembled = false;
-      }
+      for (const n of catParts) { const off = getDisassembleOffset(n); targetOff.get(n).set(off[0], off[1], off[2]); }
     }
     isDisassembled = catParts.some(n => { const t = targetOff.get(n); return t && (t.x !== 0 || t.y !== 0 || t.z !== 0); });
     tweenActive = true;
