@@ -45,22 +45,16 @@ export function buildBase(houseGroup, parts, MATS) {
     }
   }
 
-  // ── Columns (concrete) ──
+  // ── Columns (concrete) — new bay boundaries: -5, -0.5, +4.5 ──
   const colGrp = parts.get('columns').group;
-  const colXs = [-HW2 + 0.3, -HW2 + 4 - 0.3, 0, HW2 - 4 + 0.3, HW2 - 0.3];
-  const frontZ = HD2 - 0.3, backZ = -HD2 + 0.3, midZ = 0;
+  const colXs = [-7.5, -5, -0.5, 4.5, 7.5]; // near bay boundaries
+  const frontZ = HD2 - 0.3, backZ = -HD2 + 0.3;
   for (const cx of colXs) {
     for (const cz of [frontZ, backZ]) {
       const col = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.17, WALL_H1 + WALL_H2 + 0.3, 12), MATS.column);
       col.position.set(cx, FLOOR_H + (WALL_H1 + WALL_H2) / 2, cz);
       addTo('columns', col); colGrp.add(col);
     }
-  }
-  const midColXs = [-HW2 + 0.3, -HW2 + 4 - 0.3, HW2 - 4 + 0.3, HW2 - 0.3];
-  for (const cx of midColXs) {
-    const col = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.17, 2.6 + 2.5 + 0.3, 12), MATS.column);
-    col.position.set(cx, 0.55 + (2.6 + 2.5) / 2, midZ);
-    addTo('columns', col); colGrp.add(col);
   }
 
   // ── Plumbing — perimeter stone ditch ──

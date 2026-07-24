@@ -1,98 +1,85 @@
-/* 1F — rooms: beds against walls, furniture not blocking doorways */
+/* 1F rooms — V2 layout with corridor */
 import * as THREE from 'three';
-import { FLOOR_H } from '../config.js';
+import { BAY_CX, BAY_X, FLOOR_H, HD2, HW2, DEPTH_FRONT, DEPTH_BACK, CROSS_Z_FRONT, CROSS_Z_BACK } from '../config.js';
 
 function box(w, h, d, m) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); }
 function cyl(r, h, m, s = 12) { return new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, s), m); }
 
 export function buildFloor1Rooms(houseGroup, parts, MATS) {
   function addTo(name, mesh) {
-    const p = parts.get(name);
-    if (p) { p.meshArr.push(mesh); mesh.userData.partName = name; mesh.castShadow = true; mesh.receiveShadow = true; }
+    const p = parts.get(name); if (p) { p.meshArr.push(mesh); mesh.userData.partName = name; mesh.castShadow = true; mesh.receiveShadow = true; }
   }
-  const F = FLOOR_H;
+  const F = FLOOR_H, fMid = (HD2 + CROSS_Z_FRONT) / 2, bMid = (CROSS_Z_BACK - HD2) / 2;
 
   function makeBed(gx, gz, fy, headDir) {
-    // headDir: 'left'=head west, 'right'=head east, 'front'=head north, 'back'=head south
-    const w = 1.6, d = 2.0;
-    const bg = new THREE.Group();
-    const frame = box(w, 0.15, d, MATS.bedFrame); frame.position.y = 0.08 + fy; bg.add(frame);
-    const head = box(w, 0.8, 0.06, MATS.bedFrame); head.position.set(0, 0.5 + fy, -d / 2 + 0.05); bg.add(head);
-    const foot = box(w, 0.3, 0.05, MATS.bedFrame); foot.position.set(0, 0.2 + fy, d / 2 - 0.03); bg.add(foot);
-    const mat = box(w - 0.15, 0.12, d - 0.15, MATS.mattress); mat.position.y = 0.22 + fy; bg.add(mat);
-    const quilt = box(w - 0.4, 0.1, d * 0.45, MATS.bedMat); quilt.position.set(0, 0.3 + fy, -d * 0.2); bg.add(quilt);
-    const pillow = box(0.5, 0.06, 0.35, MATS.mattress); pillow.position.set(w * 0.15, 0.25 + fy, -d * 0.3); bg.add(pillow);
+    const w = 1.6, d = 2.0, bg = new THREE.Group();
+    bg.add(box(w,0.15,d,MATS.bedFrame)); bg.children[0].position.y = 0.08+fy;
+    bg.add(box(w,0.8,0.06,MATS.bedFrame)); bg.children[1].position.set(0,0.5+fy,-d/2+0.05);
+    bg.add(box(w,0.3,0.05,MATS.bedFrame)); bg.children[2].position.set(0,0.2+fy,d/2-0.03);
+    bg.add(box(w-0.15,0.12,d-0.15,MATS.mattress)); bg.children[3].position.y = 0.22+fy;
+    bg.add(box(w-0.4,0.1,d*0.45,MATS.bedMat)); bg.children[4].position.set(0,0.3+fy,-d*0.2);
+    bg.add(box(0.5,0.06,0.35,MATS.mattress)); bg.children[5].position.set(w*0.15,0.25+fy,-d*0.3);
     const rot = { left: Math.PI/2, right: -Math.PI/2, front: 0, back: Math.PI };
-    bg.rotation.y = rot[headDir] || 0;
-    bg.position.set(gx, 0, gz); return bg;
+    bg.rotation.y = rot[headDir] || 0; bg.position.set(gx,0,gz); return bg;
   }
 
   function makeChair(gx, gz, fy) {
     const cg = new THREE.Group();
-    cg.add(box(0.4, 0.05, 0.4, MATS.woodLight)); cg.children[0].position.y = 0.5 + fy;
-    cg.add(box(0.4, 0.4, 0.04, MATS.woodDark)); cg.children[1].position.set(0, 0.7 + fy, -0.18);
-    for (const [lx, lz] of [[-0.15, -0.15],[0.15, -0.15],[-0.15, 0.15],[0.15, 0.15]]) {
-      cg.add(box(0.04, 0.5, 0.04, MATS.woodDark)); cg.children[cg.children.length-1].position.set(lx, 0.25 + fy, lz);
+    cg.add(box(0.4,0.05,0.4,MATS.woodLight)); cg.children[0].position.y = 0.5+fy;
+    cg.add(box(0.4,0.4,0.04,MATS.woodDark)); cg.children[1].position.set(0,0.7+fy,-0.18);
+    for (const [lx,lz] of [[-0.15,-0.15],[0.15,-0.15],[-0.15,0.15],[0.15,0.15]]) {
+      cg.add(box(0.04,0.5,0.04,MATS.woodDark)); cg.children[cg.children.length-1].position.set(lx,0.25+fy,lz);
     }
-    cg.position.set(gx, 0, gz); return cg;
+    cg.position.set(gx,0,gz); return cg;
   }
 
-  // ── Elder room 1 (Bay1 front: x=-8..-4, z=0..4.5) ──
-  // Door at z=0, x≈-6. Bed head against left wall. Wardrobe at inner corner.
-  const er1 = parts.get('elderRoom1').group;
-  er1.add(makeBed(-7, 2.5, F, 'left'));         // head west, bed near front window
-  const w1 = box(1.2, 2.0, 0.6, MATS.woodDark); w1.position.set(-5, 1.0 + F, 0.8); addTo('elderRoom1', w1); er1.add(w1);
+  // ── 老人房 (Bay1 front: x=-8..-5, z=CROSS_Z_FRONT..HD2) ──
+  const er = parts.get('elderRoom').group;
+  er.add(makeBed(BAY_X[0]+1.5, fMid, F, 'left'));                            // bed head west
+  const w1 = box(1.2,2.0,0.6,MATS.woodDark); w1.position.set(BAY_X[1]-0.6,1.0+F, CROSS_Z_FRONT+0.8); addTo('elderRoom',w1); er.add(w1);
 
-  // ── Elder room 2 (Bay2 front: x=-4..0, z=0..4.5) ──
-  // Door at z=0, x≈-2. Bed head against right wall. Wardrobe near door.
-  const er2 = parts.get('elderRoom2').group;
-  er2.add(makeBed(-1, 2.5, F, 'right'));        // head east, bed near front window
-  const w2 = box(1.2, 2.0, 0.6, MATS.woodDark); w2.position.set(-3, 1.0 + F, 0.8); addTo('elderRoom2', w2); er2.add(w2);
+  // ── 次卧1F (Bay2 front: x=-5..-0.5) ──
+  const sb1 = parts.get('secondBed1F').group;
+  sb1.add(makeBed(BAY_X[2]-1.5, fMid, F, 'right'));                         // bed head east
+  const w2 = box(1.2,2.0,0.6,MATS.woodDark); w2.position.set(BAY_X[1]+0.6,1.0+F, CROSS_Z_FRONT+0.8); addTo('secondBed1F',w2); sb1.add(w2);
 
-  // ── Living room (Bay3 front: x=0..4, z=0..4.5) ──
-  // Front door at z=4.5. Cross-wall door at z=0. Central table.
-  const lr = parts.get('livingRoom').group;
-  const lt = box(2.2, 0.06, 1.6, MATS.woodLight); lt.position.set(2, 0.85 + F, 2.5); addTo('livingRoom', lt); lr.add(lt);
-  for (const [lx, lz] of [[-0.95,-0.65],[0.95,-0.65],[-0.95,0.65],[0.95,0.65]]) {
-    const leg = box(0.08, 0.8, 0.08, MATS.woodDark); leg.position.set(2+lx, 0.4+F, lz+2.5); addTo('livingRoom', leg); lr.add(leg);
-  }
-  for (const [sx, sz] of [[2,1.2],[2,3.8],[0.7,2.5],[3.3,2.5]]) lr.add(makeChair(sx, sz, F));
-  // Tea cabinet against front wall, off to the side
-  const tc = box(1.4, 1.5, 0.4, MATS.woodDark); tc.position.set(3.2, 0.75+F, 4.0); addTo('livingRoom', tc); lr.add(tc);
+  // ── 堂屋 (Bay3 front: x=-0.5..4.5, 5m wide) ──
+  const mh = parts.get('mainHall').group;
+  const lt = box(2.2,0.06,1.6,MATS.woodLight); lt.position.set(BAY_CX[2],0.85+F, fMid+0.5); addTo('mainHall',lt); mh.add(lt);
+  for (const [lx,lz] of [[-0.95,-0.65],[0.95,-0.65],[-0.95,0.65],[0.95,0.65]]) { const leg = box(0.08,0.8,0.08,MATS.woodDark); leg.position.set(BAY_CX[2]+lx,0.4+F,lz+fMid+0.5); addTo('mainHall',leg); mh.add(leg); }
+  for (const [sx,sz] of [[BAY_CX[2],fMid-0.3],[BAY_CX[2],fMid+1.5],[BAY_CX[2]-1.2,fMid+0.5],[BAY_CX[2]+1.2,fMid+0.5]]) mh.add(makeChair(sx,sz,F));
 
-  // ── Kitchen (Bay4 front: x=4..8, z=0..4.5) ──
-  // Door at z=0, x≈6. Stove against right wall.
-  const kt = parts.get('kitchen').group;
-  const stove = box(1.8, 0.7, 1.0, MATS.stoveBrick); stove.position.set(7.2, F+0.35, 3.0); addTo('kitchen', stove); kt.add(stove);
-  const stoveTop = box(1.8, 0.04, 1.0, MATS.stoveDark); stoveTop.position.set(7.2, F+0.72, 3.0); addTo('kitchen', stoveTop); kt.add(stoveTop);
-  const wok = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 8, 0, Math.PI*2, 0, Math.PI/2), MATS.wokMetal);
-  wok.position.set(7.2, F+0.74, 2.85); addTo('kitchen', wok); kt.add(wok);
-  for (let i = 0; i < 6; i++) {
-    const log = cyl(0.05, 0.7, MATS.woodDark, 8); log.rotation.z = Math.PI/2; log.position.set(6, F+0.08+i*0.1, 3.8); addTo('kitchen', log); kt.add(log);
-  }
-  for (const [gx, gz] of [[5.2,1.5],[5.5,1.2]]) { const s = cyl(0.2,0.5,MATS.grainSack,8); s.position.set(gx,F+0.25,gz); addTo('kitchen',s); kt.add(s); }
+  // ── 储藏 (Bay4 front: x=4.5..8) ──
+  const st1 = parts.get('storage1F').group;
+  for (let r = 0; r < 3; r++) { const shelf = box(2.5,0.04,0.5,MATS.woodLight); shelf.position.set(BAY_CX[3],0.6+F+r*0.7,(HD2+CROSS_Z_FRONT)/2); addTo('storage1F',shelf); st1.add(shelf); }
 
-  // ── Dining room (Bay1 back: x=-8..-4, z=-4.5..0) ──
-  // Door at z=0, x≈-6. Corridor door at z=-2. Round table center.
-  const dr = parts.get('diningRoom').group;
-  const dt = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.06, 16), MATS.woodLight); dt.position.set(-6, 0.85+F, -2.5); addTo('diningRoom', dt); dr.add(dt);
-  const dtLeg = cyl(0.08, 0.8, MATS.woodDark); dtLeg.position.set(-6, 0.4+F, -2.5); addTo('diningRoom', dtLeg); dr.add(dtLeg);
-  for (const [sx, sz] of [[-6.6,-2.5],[-5.4,-2.5],[-6,-3.1],[-6,-1.9]]) dr.add(makeChair(sx, sz, F));
-  const sb = box(1.6, 1.0, 0.4, MATS.woodDark); sb.position.set(-6, 0.5+F, -4.0); addTo('diningRoom', sb); dr.add(sb);
+  // ── 书房 (Bay1 back: x=-8..-5, z=-HD2..CROSS_Z_BACK) ──
+  const sy = parts.get('study1F').group;
+  sy.add(box(1.6,0.05,0.7,MATS.woodLight)); sy.children[0].position.set(BAY_X[0]+1,0.9+F,bMid+0.5); // desk
+  for (const [lx,lz] of [[-0.7,-0.3],[0.7,-0.3],[-0.7,0.3],[0.7,0.3]]) { const leg = box(0.06,0.85,0.06,MATS.woodDark); leg.position.set(BAY_X[0]+1+lx,0.42+F,lz+bMid+0.5); addTo('study1F',leg); sy.add(leg); }
+  sy.add(makeChair(BAY_X[0]+1, bMid-0.3, F));
 
-  // ── Bathroom 1F (Bay3 back: x=0..4, z=-4.5..-2 corridor) ──
+  // ── 卫生间 (Bay2 back: x=-5..-0.5) ──
   const br1 = parts.get('bathroom1F').group;
-  // Squat toilet against back wall
-  const toiletBase = box(0.5, 0.15, 0.7, MATS.base); toiletBase.position.set(3, F+0.08, -4.0); addTo('bathroom1F', toiletBase); br1.add(toiletBase);
-  const toiletBowl = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.1, 16), MATS.pipe); toiletBowl.position.set(3, F+0.2, -4.0); addTo('bathroom1F', toiletBowl); br1.add(toiletBowl);
-  const tank = box(0.4, 0.5, 0.2, MATS.baseDark); tank.position.set(3, F+0.5, -4.3); addTo('bathroom1F', tank); br1.add(tank);
-  // Sink against side wall
-  const sink = box(0.6, 0.1, 0.4, MATS.base); sink.position.set(3.5, F+0.8, -2.5); addTo('bathroom1F', sink); br1.add(sink);
+  br1.add(box(0.5,0.15,0.7,MATS.base)); br1.children[0].position.set(BAY_CX[1],F+0.08,-HD2+0.5);
+  const tb = new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.2,0.1,16),MATS.pipe); tb.position.set(BAY_CX[1],F+0.2,-HD2+0.5); addTo('bathroom1F',tb); br1.add(tb);
+  br1.add(box(0.4,0.5,0.2,MATS.baseDark)); br1.children[2].position.set(BAY_CX[1],F+0.5,-HD2+0.2);
+  br1.add(box(0.6,0.1,0.4,MATS.base)); br1.children[3].position.set(BAY_CX[1],F+0.8,CROSS_Z_BACK+0.5); // sink facing corridor
+
+  // ── 厨房 (Bay3 back: x=-0.5..4.5) ──
+  const kt = parts.get('kitchen').group;
+  const stove = box(1.8,0.7,1.0,MATS.stoveBrick); stove.position.set(BAY_X[2]+1.0,F+0.35,-HD2+1.2); addTo('kitchen',stove); kt.add(stove);
+  const stp = box(1.8,0.04,1.0,MATS.stoveDark); stp.position.set(BAY_X[2]+1.0,F+0.72,-HD2+1.2); addTo('kitchen',stp); kt.add(stp);
+
+  // ── 餐厅 (Bay4 back: x=4.5..8) ──
+  const dr = parts.get('diningRoom').group;
+  const dt = new THREE.Mesh(new THREE.CylinderGeometry(0.8,0.8,0.06,16),MATS.woodLight); dt.position.set(BAY_CX[3],0.85+F,bMid); addTo('diningRoom',dt); dr.add(dt);
+  const dtl = cyl(0.08,0.8,MATS.woodDark); dtl.position.set(BAY_CX[3],0.4+F,bMid); addTo('diningRoom',dtl); dr.add(dtl);
+  for (const [sx,sz] of [[BAY_CX[3]-0.5,bMid],[BAY_CX[3]+0.5,bMid],[BAY_CX[3],bMid-0.6],[BAY_CX[3],bMid+0.6]]) dr.add(makeChair(sx,sz,F));
 
   // Register meshes
-  for (const name of ['elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','bathroom1F']) {
-    const p = parts.get(name);
-    if (!p) continue;
+  for (const name of ['elderRoom','secondBed1F','mainHall','storage1F','study1F','bathroom1F','kitchen','diningRoom']) {
+    const p = parts.get(name); if (!p) continue;
     p.group.traverse(c => { if (c.isMesh && !p.meshArr.includes(c)) { p.meshArr.push(c); c.userData.partName = name; c.castShadow = true; c.receiveShadow = true; } });
   }
 }

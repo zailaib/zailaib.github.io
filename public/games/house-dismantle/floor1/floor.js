@@ -1,6 +1,6 @@
 /* 1F — floor platform + front step */
 import * as THREE from 'three';
-import { HOUSE_W, HOUSE_D, BAY_W, FLOOR_H, HW2, HD2 } from '../config.js';
+import { HOUSE_W, HOUSE_D, BAY_CX, FLOOR_H, HW2, HD2 } from '../config.js';
 
 function box(w, h, d, m) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); }
 
@@ -16,7 +16,7 @@ export function buildFloor1(houseGroup, parts, MATS) {
   addTo('floor', slab); grp.add(slab);
 
   // Front step at main entrance (bay3, x=2)
-  const step = box(BAY_W * 0.5, 0.12, 1.5, MATS.floor);
-  step.position.set(2, FLOOR_H + 0.10, HD2 + 0.5);
+  const step = box(2.5, 0.12, 1.5, MATS.floor);
+  step.position.set(BAY_CX[2], FLOOR_H + 0.10, HD2 + 0.5);
   addTo('floor', step); grp.add(step);
 }
