@@ -132,47 +132,25 @@ export const CATEGORIES = {
   floor1: { label: '一层 ↗', parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls','floor','doors1F','windows1F','elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','shrine','stairs','columns','base','ventDucts','pipelines'], color: '#d4c8b0' },
 };
 
-// ── Translate offsets — 3 layers, all horizontal right ────────────
+// ── Translate offsets — roof →, 2F ←, 1F stays ─────────────────
 export function getDisassembleOffset(name) {
+  const RR = 20; // roof right
+  const LL = -20; // 2F left
   const map = {
-    // Roof → right 12m
-    roofTiles:      [12, 0, 0],
-    roofFrame:      [12, 0, 0],
-
-    // 2F → right 8m
-    upperWallFront: [8, 0, 0],
-    upperWallBack:  [8, 0, 0],
-    upperWallLeft:  [8, 0, 0],
-    upperWallRight: [8, 0, 0],
-    floor2:         [8, 0, 0],
-    doors2F:        [8, 0, 0],
-    windows2F:      [8, 0, 0],
-    masterBed:      [8, 0, 0],
-    secondBed:      [8, 0, 0],
-    study:          [8, 0, 0],
-    childRoom1:     [8, 0, 0],
-    childRoom2:     [8, 0, 0],
-
-    // 1F → right 4m
-    wallFront:      [4, 0, 0],
-    wallBack:       [4, 0, 0],
-    wallLeft:       [4, 0, 0],
-    wallRight:      [4, 0, 0],
-    interiorWalls:  [4, 0, 0],
-    floor:          [4, 0, 0],
-    doors1F:        [4, 0, 0],
-    windows1F:      [4, 0, 0],
-    elderRoom1:     [4, 0, 0],
-    elderRoom2:     [4, 0, 0],
-    livingRoom:     [4, 0, 0],
-    kitchen:        [4, 0, 0],
-    diningRoom:     [4, 0, 0],
-    shrine:         [4, 0, 0],
-    stairs:         [4, 0, 0],
-    columns:        [0, 0, 0],
-    base:           [0, 0, 0],
-    ventDucts:      [0, 0, 0],
-    pipelines:      [0, 0, 0],
+    roofTiles:      [RR, 0, 0],
+    roofFrame:      [RR, 0, 0],
+    upperWallFront: [LL, 0, 0],
+    upperWallBack:  [LL, 0, 0],
+    upperWallLeft:  [LL, 0, 0],
+    upperWallRight: [LL, 0, 0],
+    floor2:         [LL, 0, 0],
+    doors2F:        [LL, 0, 0],
+    windows2F:      [LL, 0, 0],
+    masterBed:      [LL, 0, 0],
+    secondBed:      [LL, 0, 0],
+    study:          [LL, 0, 0],
+    childRoom1:     [LL, 0, 0],
+    childRoom2:     [LL, 0, 0],
   };
   return map[name] || [0, 0, 0];
 }
