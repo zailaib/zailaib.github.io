@@ -28,21 +28,22 @@ export function validateHouse(parts) {
   const errors = allViolations.filter(v => v.severity === 'error');
   const warnings = allViolations.filter(v => v.severity === 'warning');
 
-  if (allViolations.length > 0) {
-    console.group(
-      `%c🏠 House Spatial Validation %c— ${errors.length} errors, ${warnings.length} warnings`,
-      '', 'color:#f90;',
-    );
-    console.table(allViolations.map(v => ({
-      rule: v.rule,
-      sev: v.severity,
-      parts: v.parts.join(', '),
-      detail: v.detail,
-    })));
-    console.groupEnd();
-  } else {
-    console.log('%c🏠 House Spatial Validation — ✅ all clear', 'color:#0a0;');
+  // Show violations on page
+  const el = document.getElementById('validate-output');
+  if (el) {
+    if (allViolations.length === 0) {
+      el.innerHTML = '<div style="color:#4a4">✅ 空间检测通过</div>';
+      el.style.display = 'block';
+    } else {
+      const items = allViolations.map(v =>
+        `<div style="color:${v.severity==='error'?'#f66':'#f90'};font-size:11px;margin:1px 0">
+          [${v.severity==='error'?'❌':'⚠️'}] ${v.rule}: ${v.detail}
+        </div>`
+      ).join('');
+      el.innerHTML = `<div style="color:#f66;font-weight:700;margin-bottom:4px">🏠 ${errors.length} errors, ${warnings.length} warnings</div>${items}`;
+      el.style.display = 'block';
+    }
   }
-
+  console.log(`🏠 Validation: ${errors.length} errors, ${warnings.length} warnings`, allViolations);
   return allViolations;
 }
