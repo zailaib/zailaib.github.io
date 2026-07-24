@@ -141,44 +141,64 @@ export const CATEGORIES = {
 };
 
 // ── Disassemble offsets ───────────────────────────────────────────
+// Layers: roof (top) → 2F (mid) → 1F (low) → base (ground)
+// Each floor dismantles to its own vertical plane so rooms are clearly visible.
 export function getDisassembleOffset(name) {
-  const d = 3.5;
+  const d = 4.0;   // horizontal spread
+  const L1 = 0;    // 1F layer Y
+  const L2 = 5.5;  // 2F layer Y (floats above 1F)
+  const LR = 9.0;  // roof layer Y
   const map = {
-    roofTiles:        [0, d, 0],
-    roofFrame:        [0, d * 0.7, 0],
-    upperWallFront:   [0, 0.3, d * 0.6],
-    upperWallBack:    [0, 0.3, -d * 0.6],
-    upperWallLeft:    [-d * 0.5, 0.3, 0],
-    upperWallRight:   [d * 0.5, 0.3, 0],
-    wallFront:        [0, 0, d],
-    wallBack:         [0, 0, -d],
-    wallLeft:         [-d, 0, 0],
-    wallRight:        [d, 0, 0],
-    interiorWalls:    [0, 0.5, 0],
-    floor:            [0, -d * 0.3, 0],
-    floor2:           [0, d * 0.5, 0],
-    base:             [0, -d * 0.7, 0],
-    ventDucts:        [0, -d * 0.5, d * 0.5],
-    columns:          [0, d * 0.5, d * 0.4],
-    doors1F:          [0, 0.5, d * 1.2],
-    doors2F:          [0, 0.5, d * 1.1],
-    windows1F:        [0, 0.3, d * 1.1],
-    windows2F:        [0, 0.3, d * 1.0],
-    stairs:           [0, 1.5, -2.5],
-    elderRoom1:       [-d * 0.7, 0, 0],
-    elderRoom2:       [-d * 0.3, 0, 0],
-    livingRoom:       [0, 1.0, 1.5],
-    kitchen:          [d * 0.7, 0, 0],
-    diningRoom:       [-d * 0.5, 0.5, -1.0],
-    shrine:           [0, 0.5, -2],
-    masterBed:        [-d * 0.7, 0, 0],
-    secondBed:        [-d * 0.3, 0, 0],
-    study:            [0, 1.0, 1.0],
-    childRoom1:       [d * 0.7, 0, 0],
-    childRoom2:       [-d * 0.5, 0.5, -1.0],
-    chickens:         [0, -0.3, 3],
-    well:             [0, -0.5, -2.5],
-    pipelines:        [0, -1.0, 0],
+    // ── Roof (top layer) ──
+    roofTiles:        [0, LR, 0],
+    roofFrame:        [0, LR - 1.5, 0],
+
+    // ── 2F structure (middle layer) ──
+    upperWallFront:   [0, L2, d * 0.5],
+    upperWallBack:    [0, L2, -d * 0.5],
+    upperWallLeft:    [-d * 0.4, L2, 0],
+    upperWallRight:   [d * 0.4, L2, 0],
+    floor2:           [0, L2 - 0.5, 0],
+    doors2F:          [0, L2 + 0.3, d],
+    windows2F:        [0, L2 + 0.3, d * 0.9],
+
+    // ── 1F structure (bottom layer) ──
+    wallFront:        [0, L1, d],
+    wallBack:         [0, L1, -d],
+    wallLeft:         [-d, L1, 0],
+    wallRight:        [d, L1, 0],
+    interiorWalls:    [0, L1 + 0.5, 0],
+    floor:            [0, L1 - d * 0.25, 0],
+    doors1F:          [0, L1 + 0.5, d * 1.3],
+    windows1F:        [0, L1 + 0.3, d * 1.2],
+
+    // ── Stairs (between 1F and 2F) ──
+    stairs:           [0, L1 + 2.5, -d * 1.2],
+
+    // ── Foundation ──
+    base:             [0, L1 - d * 0.5, 0],
+    ventDucts:        [0, L1 - d * 0.3, d * 0.4],
+    columns:          [0, L2 - 1, d * 0.3],
+
+    // ── 1F furniture (spread around ground level) ──
+    elderRoom1:       [-d * 0.9, L1, -d * 0.4],
+    elderRoom2:       [-d * 0.4, L1, -d * 0.4],
+    livingRoom:       [0, L1 + 0.8, d * 0.6],
+    kitchen:          [d * 0.9, L1, -d * 0.4],
+    diningRoom:       [-d * 0.7, L1, -d],
+    shrine:           [0, L1 + 0.3, -d * 0.8],
+
+    // ── 2F furniture (spread at 2F layer) ──
+    masterBed:        [-d * 0.9, L2 + 0.2, -d * 0.3],
+    secondBed:        [-d * 0.4, L2 + 0.2, -d * 0.3],
+    study:            [0, L2 + 0.8, d * 0.5],
+    childRoom1:       [d * 0.9, L2 + 0.2, -d * 0.3],
+    childRoom2:       [-d * 0.7, L2 + 0.4, -d * 0.8],
+
+    // ── Yard (stay at ground) ──
+    chickens:         [0, L1 - 0.3, d * 1.2],
+    well:             [0, L1 - 0.5, -d * 1.2],
+    pipelines:        [0, L1 - d * 0.6, 0],
   };
   return map[name] || [0, d * 0.5, 0];
 }

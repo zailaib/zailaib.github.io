@@ -426,20 +426,6 @@ const ROOM_VIEWS = [
 ];
 
 let tourPanelVisible = false;
-let roomCamActive = false;
-let roomCamIdx = -1;
-let roomCam = null;       // THREE.PerspectiveCamera
-let roomRenderer = null;  // THREE.WebGLRenderer
-
-function initRoomCam() {
-  const canvas = document.getElementById('room-cam-canvas');
-  roomCam = new THREE.PerspectiveCamera(60, 320 / 200, 0.3, 20);
-  roomRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  roomRenderer.setSize(320, 200);
-  roomRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  roomRenderer.shadowMap.enabled = true;
-  roomRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-}
 
 function buildTourPanel() {
   const floors = { '1f': 'tour-1f', '2f': 'tour-2f' };
@@ -452,7 +438,12 @@ function buildTourPanel() {
       btn.textContent = rv.label;
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        showRoomCam(i);
+        // Dismantle everything to reveal room layout
+        if (!isDisassembled) doDisassemble();
+        // Fly camera to view the room's layer
+        const targetY = rv.floor === '2f' ? BAND_Y + 5 : FLOOR_H + 3;
+        flyCameraTo(rv.pos[0], targetY, rv.tgt[2]);
+        hideTourPanel();
       });
       container.appendChild(btn);
     });
@@ -474,22 +465,28 @@ function hideTourPanel() {
   document.getElementById('btn-tour').classList.remove('active');
 }
 
-function showRoomCam(idx) {
-  if (!roomCam) initRoomCam();
-  const rv = ROOM_VIEWS[idx];
-  roomCam.position.set(rv.pos[0], rv.pos[1], rv.pos[2]);
-  roomCam.lookAt(rv.tgt[0], rv.tgt[1], rv.tgt[2]);
-  roomCamIdx = idx;
-  roomCamActive = true;
-  document.getElementById('room-cam').classList.remove('hidden');
-  document.getElementById('room-cam-label').textContent = '📷 ' + rv.label;
-  hideTourPanel();
-}
+// Simple camera fly helper
+function flyCameraTo(tx, ty, tz) {
+  const start = { x: camera.position.x, y: camera.position.y, z: camera.position.z };
+  const end = { x: tx, y: ty, z: tz };
+  const startTgt = controls.target.clone();
+  const endTgt = new THREE.Vector3(tx, ty - 1, tz);
+  const dur = 1.2;
+  let elapsed = 0;
 
-function hideRoomCam() {
-  roomCamActive = false;
-  roomCamIdx = -1;
-  document.getElementById('room-cam').classList.add('hidden');
+  function step(dt) {
+    elapsed += dt;
+    const t = Math.min(elapsed / dur, 1.0);
+    const ease = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2;
+    camera.position.set(
+      start.x + (end.x - start.x) * ease,
+      start.y + (end.y - start.y) * ease,
+      start.z + (end.z - start.z) * ease
+    );
+    controls.target.lerpVectors(startTgt, endTgt, ease);
+    if (t < 1.0) requestAnimationFrame(() => step(0.016));
+  }
+  requestAnimationFrame(() => step(0.016));
 }
 
 // ── Buttons ───────────────────────────────────────────────────────
@@ -500,10 +497,8 @@ document.getElementById('btn-tour').addEventListener('click', () => {
   else { showTourPanel(); }
 });
 document.getElementById('btn-tour-close').addEventListener('click', hideTourPanel);
-document.getElementById('btn-room-cam-close').addEventListener('click', hideRoomCam);
 document.getElementById('btn-reset').addEventListener('click', () => {
   hideTourPanel();
-  hideRoomCam();
   clearSelection(); doReassembleAll();
   camera.position.set(10, 7, 16);
   controls.target.set(0, 2.2, 0); controls.update();
@@ -521,11 +516,6 @@ function animate() {
   const dt = Math.min(clock.getDelta(), 0.1);
 
   controls.update();
-
-  // Render room camera PiP
-  if (roomCamActive && roomCam && roomRenderer) {
-    roomRenderer.render(scene, roomCam);
-  }
 
   if (tweenActive) {
     let allDone = true;
