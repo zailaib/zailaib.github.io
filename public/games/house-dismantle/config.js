@@ -136,43 +136,59 @@ export const CATEGORIES = {
   plumbing:  { label: '管道',   parts: ['pipelines'], color: '#8b6b4a' },
 };
 
-// ── Disassemble offsets ───────────────────────────────────────────
+// ── Translate offsets (simple, predictable) ───────────────────────
+// Roof → up · 2F → up · 1F walls → out · furniture follows via cascade
 export function getDisassembleOffset(name) {
-  const d = 3.5;
+  const UP_R = 7;   // roof goes up
+  const UP_2 = 3.5; // 2F goes up (reveals 1F below)
+  const OUT = 5;    // walls go outward
   const map = {
-    roofTiles:        [0, d, 0],
-    roofFrame:        [0, d * 0.7, 0],
-    upperWallFront:   [0, 0.3, d * 0.6],
-    upperWallBack:    [0, 0.3, -d * 0.6],
-    upperWallLeft:    [-d * 0.5, 0.3, 0],
-    upperWallRight:   [d * 0.5, 0.3, 0],
-    wallFront:        [0, 0, d],
-    wallBack:         [0, 0, -d],
-    wallLeft:         [-d, 0, 0],
-    wallRight:        [d, 0, 0],
-    interiorWalls:    [0, 0.5, 0],
-    floor:            [0, -d * 0.3, 0],
-    floor2:           [0, d * 0.5, 0],
-    base:             [0, -d * 0.7, 0],
-    ventDucts:        [0, -d * 0.5, d * 0.5],
-    columns:          [0, d * 0.5, d * 0.4],
-    doors1F:          [0, 0.5, d * 1.2],
-    doors2F:          [0, 0.5, d * 1.1],
-    windows1F:        [0, 0.3, d * 1.1],
-    windows2F:        [0, 0.3, d * 1.0],
-    stairs:           [0, 1.5, -2.5],
-    elderRoom1:       [-d * 0.7, 0, 0],
-    elderRoom2:       [-d * 0.3, 0, 0],
-    livingRoom:       [0, 1.0, 1.5],
-    kitchen:          [d * 0.7, 0, 0],
-    diningRoom:       [-d * 0.5, 0.5, -1.0],
-    shrine:           [0, 0.5, -2],
-    masterBed:        [-d * 0.7, 0, 0],
-    secondBed:        [-d * 0.3, 0, 0],
-    study:            [0, 1.0, 1.0],
-    childRoom1:       [d * 0.7, 0, 0],
-    childRoom2:       [-d * 0.5, 0.5, -1.0],
-    pipelines:        [0, -1.0, 0],
+    // ── Roof (straight up) ──
+    roofTiles:      [0, UP_R, 0],
+    roofFrame:      [0, UP_R - 1.5, 0],
+
+    // ── 2F structure (up) ──
+    upperWallFront: [0, UP_2, 0],
+    upperWallBack:  [0, UP_2, 0],
+    upperWallLeft:  [0, UP_2, 0],
+    upperWallRight: [0, UP_2, 0],
+    floor2:         [0, UP_2 + 0.3, 0],
+    doors2F:        [0, UP_2, 0],
+    windows2F:      [0, UP_2, 0],
+
+    // ── 2F furniture (up + slight spread, cascade adds wall offset) ──
+    masterBed:      [0, 0, 0],
+    secondBed:      [0, 0, OUT * 0.6],
+    study:          [0, 0, OUT * 0.4],
+    childRoom1:     [0, 0, OUT * 0.6],
+    childRoom2:     [0, 0, 0],
+
+    // ── 1F walls (outward) ──
+    wallFront:      [0, 0, OUT],
+    wallBack:       [0, 0, -OUT],
+    wallLeft:       [-OUT, 0, 0],
+    wallRight:      [OUT, 0, 0],
+    interiorWalls:  [0, 0.3, 0],
+    doors1F:        [0, 0, 0],     // cascade: follows wallFront/Back
+    windows1F:      [0, 0, 0],     // cascade: follows walls
+
+    // ── 1F furniture (spread, cascade adds wall offset) ──
+    floor:          [0, -1.5, 0],
+    elderRoom1:     [0, 0, 0],
+    elderRoom2:     [0, 0, OUT * 0.5],
+    livingRoom:     [0, 0, OUT * 0.4],
+    kitchen:        [0, 0, OUT * 0.5],
+    diningRoom:     [0, 0, 0],
+    shrine:         [0, 0, -OUT * 0.4],
+
+    // ── Foundation (stay) ──
+    base:           [0, -1.2, 0],
+    ventDucts:      [0, -1.0, 0],
+    columns:        [0, UP_2 - 0.5, 0],
+
+    // ── Other ──
+    stairs:         [0, 0, -OUT],
+    pipelines:      [0, -1.5, 0],
   };
-  return map[name] || [0, d * 0.5, 0];
+  return map[name] || [0, 0, 0];
 }
