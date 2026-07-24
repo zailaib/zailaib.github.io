@@ -148,11 +148,45 @@ export function buildOpenings(houseGroup, parts, MATS) {
     addTo('stairs', step); stairGrp.add(step);
   }
 
-  // Handrails
-  const rail1 = box(0.04, 0.04, s1Steps * stepD + 0.3, MATS.woodDark);
-  rail1.position.set(s1X + s1Steps * stepD / 2, sBase + s1Steps * stepH / 2 + 0.75, s1Z - stepW / 2 + 0.04);
+  // Handrails with balusters — proper thickness, no more "sticks"
+  const railH = 0.9; // handrail height above steps
+  const railThick = 0.06;
+
+  // Rail 1: along back wall segment (going +X), 8 steps
+  const r1Len = s1Steps * stepD + 0.2;
+  const r1CX = s1X + s1Steps * stepD / 2;
+  const r1CY = sBase + s1Steps * stepH / 2 + railH;
+  const r1CZ = s1Z - stepW / 2 + 0.04;
+
+  const rail1 = box(r1Len, railThick, railThick, MATS.woodDark);
+  rail1.position.set(r1CX, r1CY, r1CZ);
   addTo('stairs', rail1); stairGrp.add(rail1);
-  const rail2 = box(0.04, 0.04, 8 * stepD + 0.3, MATS.woodDark);
-  rail2.position.set(s2X + stepW - 0.04, sBase + 12 * stepH + 0.75, s2Z + stepW + 8 * stepD / 2);
+
+  // Balusters for rail 1
+  for (let i = 0; i <= s1Steps; i++) {
+    const bx = s1X + i * stepD;
+    const by = sBase + i * stepH + railH / 2;
+    const post = box(0.05, railH, 0.05, MATS.woodDark);
+    post.position.set(bx, by, r1CZ);
+    addTo('stairs', post); stairGrp.add(post);
+  }
+
+  // Rail 2: going +Z from landing, 8 steps
+  const r2Len = 8 * stepD + 0.2;
+  const r2CX = s2X + stepW - 0.04;
+  const r2CY = sBase + 12 * stepH + railH;
+  const r2CZ = s2Z + stepW + 8 * stepD / 2;
+
+  const rail2 = box(railThick, railThick, r2Len, MATS.woodDark);
+  rail2.position.set(r2CX, r2CY, r2CZ);
   addTo('stairs', rail2); stairGrp.add(rail2);
+
+  // Balusters for rail 2
+  for (let i = 0; i <= 8; i++) {
+    const bz = s2Z + stepW + i * stepD;
+    const by = sBase + (s1Steps + i) * stepH + railH / 2;
+    const post = box(0.05, railH, 0.05, MATS.woodDark);
+    post.position.set(r2CX, by, bz);
+    addTo('stairs', post); stairGrp.add(post);
+  }
 }
