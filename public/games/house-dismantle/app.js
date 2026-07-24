@@ -404,44 +404,45 @@ window.addEventListener('keydown', (event) => {
   }
 });
 
-// ── Room Tour System ───────────────────────────────────────────────
+// ── Room Camera (PiP) System ────────────────────────────────────────
 const F = FLOOR_H, B = BAND_Y;
 const eyeH1 = F + 1.6;  // 1F eye height
 const eyeH2 = B + 1.6;  // 2F eye height
 
-// { pos, tgt, label, floor }
 const ROOM_VIEWS = [
-  // 1F
-  { pos: [0, 2.8, 8.5],     tgt: [0, 2.2, 0],       label: '🏡 屋前全景',   floor: 'outside' },
-  { pos: [-6, eyeH1, 3.8],   tgt: [-6, 1.5, 2.0],    label: '🛏 老人房1',    floor: '1f' },
-  { pos: [-2, eyeH1, 2.6],   tgt: [-2, 1.5, 0.5],    label: '🛏 老人房2',    floor: '1f' },
-  { pos: [2, eyeH1, 3.2],    tgt: [2, 1.5, 0.8],     label: '🛋 客厅',       floor: '1f' },
-  { pos: [6, eyeH1, 3.8],    tgt: [6, 1.5, 2.0],     label: '🍳 厨房',       floor: '1f' },
-  { pos: [-6, eyeH1, -0.8],  tgt: [-6, 1.5, -2.5],   label: '🍽 餐厅',       floor: '1f' },
+  // 1F — camera INSIDE the room
+  { pos: [-6, eyeH1, 3.2],   tgt: [-6, 1.5, 1.5],  label: '🛏 老人房1',    floor: '1f' },
+  { pos: [-2, eyeH1, 3.0],   tgt: [-2, 1.5, 1.0],  label: '🛏 老人房2',    floor: '1f' },
+  { pos: [2, eyeH1, 3.0],    tgt: [2, 1.5, 0.8],   label: '🛋 客厅',       floor: '1f' },
+  { pos: [6, eyeH1, 3.2],    tgt: [6, 1.5, 1.5],   label: '🍳 厨房',       floor: '1f' },
+  { pos: [-6, eyeH1, -1.0],  tgt: [-6, 1.5, -2.5], label: '🍽 餐厅',       floor: '1f' },
+  { pos: [-0.5, 2.5, -0.5],  tgt: [-0.5, 2.5, -3.5], label: '🪜 楼梯间',   floor: '1f' },
   // 2F
-  { pos: [-6, eyeH2, 3.5],   tgt: [-6, eyeH2-0.5, 1.5], label: '🛏 主卧',     floor: '2f' },
-  { pos: [-2, eyeH2, 3.0],   tgt: [-2, eyeH2-0.5, 1.0], label: '🛏 次卧',     floor: '2f' },
-  { pos: [2, eyeH2, 3.5],    tgt: [2, eyeH2-0.5, 1.5],  label: '📚 书房',     floor: '2f' },
-  { pos: [6, eyeH2, 3.5],    tgt: [6, eyeH2-0.5, 1.5],  label: '🧸 儿童房1',  floor: '2f' },
-  { pos: [-6, eyeH2, -0.8],  tgt: [-6, eyeH2-0.5, -2.2], label: '🧸 儿童房2', floor: '2f' },
-  { pos: [-0.5, eyeH1+0.5, 0], tgt: [-0.5, eyeH1, -4],  label: '🪜 楼梯间',   floor: '1f' },
-  // Outside
-  { pos: [0, 4, -9],         tgt: [0, 3, -4.3],       label: '🌳 后院',       floor: 'outside' },
-  { pos: [12, 5, 0],         tgt: [0, 3, 0],          label: '🔭 全景俯瞰',  floor: 'outside' },
+  { pos: [-6, eyeH2, 3.0],   tgt: [-6, eyeH2-0.3, 1.5], label: '🛏 主卧',     floor: '2f' },
+  { pos: [-2, eyeH2, 2.8],   tgt: [-2, eyeH2-0.3, 1.0], label: '🛏 次卧',     floor: '2f' },
+  { pos: [2, eyeH2, 3.0],    tgt: [2, eyeH2-0.3, 1.5],  label: '📚 书房',     floor: '2f' },
+  { pos: [6, eyeH2, 3.0],    tgt: [6, eyeH2-0.3, 1.5],  label: '🧸 儿童房1',  floor: '2f' },
+  { pos: [-6, eyeH2, -1.0],  tgt: [-6, eyeH2-0.3, -2.2], label: '🧸 儿童房2', floor: '2f' },
 ];
 
-let tourTarget = null; // { pos: Vector3, tgt: Vector3 }
-let tourStartPos = new THREE.Vector3();
-let tourStartTgt = new THREE.Vector3();
-let tourEndPos = new THREE.Vector3();
-let tourEndTgt = new THREE.Vector3();
-let tourT = 0;
-const TOUR_DUR = 2.0; // seconds per transition
-
 let tourPanelVisible = false;
+let roomCamActive = false;
+let roomCamIdx = -1;
+let roomCam = null;       // THREE.PerspectiveCamera
+let roomRenderer = null;  // THREE.WebGLRenderer
+
+function initRoomCam() {
+  const canvas = document.getElementById('room-cam-canvas');
+  roomCam = new THREE.PerspectiveCamera(60, 320 / 200, 0.3, 20);
+  roomRenderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  roomRenderer.setSize(320, 200);
+  roomRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  roomRenderer.shadowMap.enabled = true;
+  roomRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+}
 
 function buildTourPanel() {
-  const floors = { '1f': 'tour-1f', '2f': 'tour-2f', 'outside': 'tour-outside' };
+  const floors = { '1f': 'tour-1f', '2f': 'tour-2f' };
   for (const [floor, containerId] of Object.entries(floors)) {
     const container = document.getElementById(containerId);
     ROOM_VIEWS.forEach((rv, i) => {
@@ -451,8 +452,7 @@ function buildTourPanel() {
       btn.textContent = rv.label;
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        flyToRoom(i);
-        hideTourPanel();
+        showRoomCam(i);
       });
       container.appendChild(btn);
     });
@@ -472,40 +472,38 @@ function hideTourPanel() {
   tourPanelVisible = false;
   document.getElementById('btn-tour').textContent = '🎥 参观';
   document.getElementById('btn-tour').classList.remove('active');
-  if (tourTarget) { tourTarget = null; controls.enabled = true; }
 }
 
-function flyToRoom(idx) {
+function showRoomCam(idx) {
+  if (!roomCam) initRoomCam();
   const rv = ROOM_VIEWS[idx];
-  tourStartPos.copy(camera.position);
-  tourStartTgt.copy(controls.target);
-  tourEndPos.set(rv.pos[0], rv.pos[1], rv.pos[2]);
-  tourEndTgt.set(rv.tgt[0], rv.tgt[1], rv.tgt[2]);
-  tourT = 0;
-  tourTarget = { pos: tourEndPos.clone(), tgt: tourEndTgt.clone(), label: rv.label };
-  controls.enabled = false;
-  if (isDisassembled) doReassembleAll();
-  clearSelection();
-  // Show destination in info panel
-  document.getElementById('part-name').textContent = '📍 ' + rv.label;
-  document.getElementById('part-hint').textContent = '正在前往...';
+  roomCam.position.set(rv.pos[0], rv.pos[1], rv.pos[2]);
+  roomCam.lookAt(rv.tgt[0], rv.tgt[1], rv.tgt[2]);
+  roomCamIdx = idx;
+  roomCamActive = true;
+  document.getElementById('room-cam').classList.remove('hidden');
+  document.getElementById('room-cam-label').textContent = '📷 ' + rv.label;
+  hideTourPanel();
+}
+
+function hideRoomCam() {
+  roomCamActive = false;
+  roomCamIdx = -1;
+  document.getElementById('room-cam').classList.add('hidden');
 }
 
 // ── Buttons ───────────────────────────────────────────────────────
 document.getElementById('btn-dismantle').addEventListener('click',
   () => isDisassembled ? doReassembleAll() : doDisassemble());
 document.getElementById('btn-tour').addEventListener('click', () => {
-  if (tourTarget) { tourTarget = null; controls.enabled = true; hideTourPanel(); }
-  else if (tourPanelVisible) { hideTourPanel(); }
+  if (tourPanelVisible) { hideTourPanel(); }
   else { showTourPanel(); }
 });
 document.getElementById('btn-tour-close').addEventListener('click', hideTourPanel);
-document.getElementById('tour-panel').addEventListener('click', (e) => {
-  if (e.target === e.currentTarget) hideTourPanel();
-});
+document.getElementById('btn-room-cam-close').addEventListener('click', hideRoomCam);
 document.getElementById('btn-reset').addEventListener('click', () => {
-  tourTarget = null; controls.enabled = true;
   hideTourPanel();
+  hideRoomCam();
   clearSelection(); doReassembleAll();
   camera.position.set(10, 7, 16);
   controls.target.set(0, 2.2, 0); controls.update();
@@ -522,24 +520,12 @@ function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.1);
 
-  // Room tour — smooth fly-to animation
-  if (tourTarget) {
-    tourT += dt / TOUR_DUR;
-    if (tourT >= 1.0) {
-      tourT = 1.0;
-      camera.position.copy(tourEndPos);
-      controls.target.copy(tourEndTgt);
-      document.getElementById('part-name').textContent = tourTarget.label || '参观完成';
-      document.getElementById('part-hint').textContent = '拖拽旋转查看房间';
-      tourTarget = null;
-      controls.enabled = true;
-    } else {
-      const t = tourT < 0.5 ? 2*tourT*tourT : 1 - Math.pow(-2*tourT + 2, 2)/2;
-      camera.position.lerpVectors(tourStartPos, tourEndPos, t);
-      controls.target.lerpVectors(tourStartTgt, tourEndTgt, t);
-    }
-  }
   controls.update();
+
+  // Render room camera PiP
+  if (roomCamActive && roomCam && roomRenderer) {
+    roomRenderer.render(scene, roomCam);
+  }
 
   if (tweenActive) {
     let allDone = true;

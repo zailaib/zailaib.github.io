@@ -173,6 +173,33 @@ body.light #hint { color: rgba(0,0,0,0.2); }
   font-size: 16px; gap: 8px; text-align: center; padding: 20px;
 }
 
+/* ---- Room Camera PiP ---- */
+#room-cam {
+  position: fixed; right: 16px; bottom: 140px;
+  width: 320px; z-index: 30;
+  background: var(--panel-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px; overflow: hidden;
+  transition: opacity 0.3s, transform 0.3s;
+}
+#room-cam.hidden {
+  opacity: 0; pointer-events: none;
+  transform: scale(0.9);
+}
+.room-cam-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; background: rgba(0,0,0,0.3);
+  font-size: 12px; font-weight: 700; color: var(--text);
+}
+#room-cam-canvas {
+  display: block; width: 320px; height: 200px;
+}
+@media (max-width: 640px) {
+  #room-cam { right: 4px; bottom: 100px; width: 200px; }
+  #room-cam-canvas { width: 200px; height: 130px; }
+}
+
 /* ---- Room Tour Panel ---- */
 #tour-panel {
   position: fixed; left: 16px; bottom: 120px;

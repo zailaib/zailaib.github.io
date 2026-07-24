@@ -41,7 +41,7 @@
 <!-- Room tour panel -->
 <div id="tour-panel" class="hidden">
   <div class="tour-title">
-    <span>🚪 选择房间参观</span>
+    <span>🚪 房间参观</span>
     <button id="btn-tour-close" class="tour-close-btn">✕</button>
   </div>
   <div class="tour-section">
@@ -52,10 +52,15 @@
     <div class="tour-floor-label">🏠 二层</div>
     <div class="tour-grid" id="tour-2f"></div>
   </div>
-  <div class="tour-section">
-    <div class="tour-floor-label">🌳 室外</div>
-    <div class="tour-grid" id="tour-outside"></div>
+</div>
+
+<!-- Room camera mini-viewport (PiP) -->
+<div id="room-cam" class="hidden">
+  <div class="room-cam-header">
+    <span id="room-cam-label">📷 室内</span>
+    <button id="btn-room-cam-close" class="tour-close-btn">✕</button>
   </div>
+  <canvas id="room-cam-canvas"></canvas>
 </div>
 
 <div id="hint">🖱 拖拽旋转 · 滚轮缩放 · 右键平移 · 拖拽框选部件 · 按 <kbd>1</kbd> 拆解/组装</div>
