@@ -125,65 +125,53 @@ export const PART_DEFS = [
   { name: 'pipelines',   label: '排水系统',   color: '#8b6b4a', deps: ['base'], cat: 'plumbing' },
 ];
 
-// ── Categories ────────────────────────────────────────────────────
+// ── Categories — 3 layers, click to translate ─────────────────────
 export const CATEGORIES = {
-  roof:      { label: '屋顶 →',    parts: ['roofTiles','roofFrame'], color: '#4a4a5a' },
-  floor2:    { label: '二层 →',    parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','floor2','doors2F','windows2F','masterBed','secondBed','study','childRoom1','childRoom2','columns'], color: '#5a8a5a' },
-  wallFront: { label: '前墙 ↑',    parts: ['wallFront'], color: '#d4c8b0' },
-  wallBack:  { label: '后墙 ↓',    parts: ['wallBack'], color: '#d4c8b0' },
-  wallLeft:  { label: '左墙 ←',    parts: ['wallLeft'], color: '#d4c8b0' },
-  wallRight: { label: '右墙 →',    parts: ['wallRight'], color: '#d4c8b0' },
-  openings:  { label: '门窗',      parts: ['doors1F','windows1F'], color: '#8b6914' },
-  interior1F:{ label: '一层家具',  parts: ['elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','shrine','stairs'], color: '#7a4a20' },
-  base:      { label: '地基',      parts: ['base','ventDucts','floor','interiorWalls','pipelines'], color: '#6e6e6e' },
+  roof:   { label: '屋顶 ↗', parts: ['roofTiles','roofFrame'], color: '#4a4a5a' },
+  floor2: { label: '二层 ↗', parts: ['upperWallFront','upperWallBack','upperWallLeft','upperWallRight','floor2','doors2F','windows2F','masterBed','secondBed','study','childRoom1','childRoom2'], color: '#5a8a5a' },
+  floor1: { label: '一层 ↗', parts: ['wallFront','wallBack','wallLeft','wallRight','interiorWalls','floor','doors1F','windows1F','elderRoom1','elderRoom2','livingRoom','kitchen','diningRoom','shrine','stairs','columns','base','ventDucts','pipelines'], color: '#d4c8b0' },
 };
 
-// ── Translate offsets — each category moves AS A GROUP ────────────
+// ── Translate offsets — 3 layers, all horizontal right ────────────
 export function getDisassembleOffset(name) {
-  const R = 8;  // right (roof, 2F)
-  const W = 5;  // outward (walls)
   const map = {
-    // Roof group → right
-    roofTiles:      [R, 0, 0],
-    roofFrame:      [R, 0, 0],
+    // Roof → right 12m
+    roofTiles:      [12, 0, 0],
+    roofFrame:      [12, 0, 0],
 
-    // 2F group → right
-    upperWallFront: [R, 0, 0],
-    upperWallBack:  [R, 0, 0],
-    upperWallLeft:  [R, 0, 0],
-    upperWallRight: [R, 0, 0],
-    floor2:         [R, 0, 0],
-    doors2F:        [R, 0, 0],
-    windows2F:      [R, 0, 0],
-    masterBed:      [R, 0, 0],
-    secondBed:      [R, 0, 0],
-    study:          [R, 0, 0],
-    childRoom1:     [R, 0, 0],
-    childRoom2:     [R, 0, 0],
+    // 2F → right 8m
+    upperWallFront: [8, 0, 0],
+    upperWallBack:  [8, 0, 0],
+    upperWallLeft:  [8, 0, 0],
+    upperWallRight: [8, 0, 0],
+    floor2:         [8, 0, 0],
+    doors2F:        [8, 0, 0],
+    windows2F:      [8, 0, 0],
+    masterBed:      [8, 0, 0],
+    secondBed:      [8, 0, 0],
+    study:          [8, 0, 0],
+    childRoom1:     [8, 0, 0],
+    childRoom2:     [8, 0, 0],
 
-    // 1F walls → each direction
-    wallFront:      [0, 0, W],
-    wallBack:       [0, 0, -W],
-    wallLeft:       [-W, 0, 0],
-    wallRight:      [W, 0, 0],
-    interiorWalls:  [0, 0, 0],
-    doors1F:        [0, 0, 0],
-    windows1F:      [0, 0, 0],
-    floor:          [0, 0, 0],
-
-    // 1F furniture → follows walls via cascade
-    elderRoom1:     [0, 0, 0],
-    elderRoom2:     [0, 0, 0],
-    livingRoom:     [0, 0, 0],
-    kitchen:        [0, 0, 0],
-    diningRoom:     [0, 0, 0],
-    shrine:         [0, 0, 0],
-
-    // Other (stay)
+    // 1F → right 4m
+    wallFront:      [4, 0, 0],
+    wallBack:       [4, 0, 0],
+    wallLeft:       [4, 0, 0],
+    wallRight:      [4, 0, 0],
+    interiorWalls:  [4, 0, 0],
+    floor:          [4, 0, 0],
+    doors1F:        [4, 0, 0],
+    windows1F:      [4, 0, 0],
+    elderRoom1:     [4, 0, 0],
+    elderRoom2:     [4, 0, 0],
+    livingRoom:     [4, 0, 0],
+    kitchen:        [4, 0, 0],
+    diningRoom:     [4, 0, 0],
+    shrine:         [4, 0, 0],
+    stairs:         [4, 0, 0],
+    columns:        [0, 0, 0],
     base:           [0, 0, 0],
     ventDucts:      [0, 0, 0],
-    columns:        [R, 0, 0],
-    stairs:         [0, 0, 0],
     pipelines:      [0, 0, 0],
   };
   return map[name] || [0, 0, 0];
