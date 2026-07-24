@@ -17,13 +17,15 @@ export function buildUpperWalls(houseGroup, parts, MATS) {
   makeWall('upperWallLeft',  WALL_T, WALL_H2, HOUSE_D, -HW2, WY2, 0);
   makeWall('upperWallRight', WALL_T, WALL_H2, HOUSE_D,  HW2, WY2, 0);
 
-  // Upper vent windows
-  for (const [side, z] of [['upperWallFront', HD2+0.03], ['upperWallBack', -HD2-0.03]]) {
+  // Upper vent windows — offset outside wall face (WALL_T/2 + 0.03) to avoid z-fighting
+  const ventOff = WALL_T / 2 + 0.04;
+  for (const [side, sign] of [['upperWallFront', 1], ['upperWallBack', -1]]) {
+    const zBase = sign * (HD2 + ventOff);
     const up = parts.get(side); if (!up) continue;
-    for (const bx of [-6, -2, 2, 6]) {
-      const f = box(0.5, 0.5, 0.08, MATS.window); f.position.set(bx, WY2+0.01, z); addTo(side, f); up.group.add(f);
-      const mh = box(0.4, 0.04, 0.09, MATS.window); mh.position.set(bx, WY2, z+0.02); addTo(side, mh); up.group.add(mh);
-      const mv = box(0.04, 0.4, 0.09, MATS.window); mv.position.set(bx, WY2-0.01, z-0.02); addTo(side, mv); up.group.add(mv);
+    for (const bx of [-6.5, -2.5, 3, 6.5]) {
+      const f = box(0.5, 0.5, 0.08, MATS.window); f.position.set(bx, WY2 + 0.01, zBase); addTo(side, f); up.group.add(f);
+      const mh = box(0.4, 0.04, 0.09, MATS.window); mh.position.set(bx, WY2, zBase + sign * 0.04); addTo(side, mh); up.group.add(mh);
+      const mv = box(0.04, 0.4, 0.09, MATS.window); mv.position.set(bx, WY2 - 0.01, zBase - sign * 0.04); addTo(side, mv); up.group.add(mv);
     }
   }
 

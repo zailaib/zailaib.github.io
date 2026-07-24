@@ -1,6 +1,0 @@
-[     241ms] [LOG] Initializing minimap... @ http://localhost:4321/scripts/minimap.js:8
-[     244ms] [LOG] Astro page loaded, reinitializing minimap... @ http://localhost:4321/scripts/minimap.js:148
-[     246ms] [LOG] Initializing minimap... @ http://localhost:4321/scripts/minimap.js:8
-[     350ms] [LOG] Found 10 headings with selector: article h1, article h2, article h3, article h4, article h5, article h6 @ http://localhost:4321/scripts/minimap.js:33
-[     361ms] [LOG] Found 10 headings with selector: article h1, article h2, article h3, article h4, article h5, article h6 @ http://localhost:4321/scripts/minimap.js:33
-[  117826ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:4321/en/posts/solution_a/plan_a/:0

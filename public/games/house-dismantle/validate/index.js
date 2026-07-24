@@ -9,6 +9,8 @@ import { checkClearance } from './rules/clearance.js';
 import { checkOverlap } from './rules/overlap.js';
 import { checkZFighting } from './rules/z-fighting.js';
 import { checkReachability } from './rules/reachability.js';
+import { checkGroupOrigin } from './rules/group-origin.js';
+import { checkStairwellOpening } from './rules/stairwell-opening.js';
 import { analyzeSite } from './site-analyzer.js';
 
 export function validateHouse(parts) {
@@ -23,6 +25,8 @@ export function validateHouse(parts) {
     ...checkOverlap(parts),
     ...checkZFighting(parts),
     ...checkReachability(parts),
+    ...checkGroupOrigin(parts),
+    ...checkStairwellOpening(parts),
   ];
 
   const errors = allViolations.filter(v => v.severity === 'error');

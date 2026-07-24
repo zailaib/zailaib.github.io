@@ -1,21 +1,22 @@
-/* Rule: Column Placement — columns should be at wall intersections (4-bay) */
+/* Rule: Column Placement — columns should be at wall intersections (V2 unequal bays) */
 import * as THREE from 'three';
-import { HW2, HD2, BAY_W, BAY_COUNT } from '../../config.js';
+import { HW2, HD2, BAY_X, CROSS_Z_FRONT, CROSS_Z_BACK } from '../../config.js';
 
 const CORNER_THRESHOLD = 0.3;
-const WANDER_THRESHOLD = 0.8;
+const WANDER_THRESHOLD = 1.2; // V2: wider bays, allow more tolerance for unequal spacing
 
 export function checkColumnPlacement(parts) {
   const violations = [];
   const colsPart = parts.get('columns');
   if (!colsPart) return violations;
 
-  // Wall planes for 4-bay layout
-  const xWallPlanes = [];
-  for (let i = 1; i < BAY_COUNT; i++) {
-    xWallPlanes.push(-HW2 + i * BAY_W); // -4, 0, 4
-  }
-  const zWallPlanes = [HD2, -HD2, 0]; // front, back, crossWall
+  // Wall planes for V2 unequal-bay layout
+  // X: all structural wall planes — exterior side walls + interior longitudinal walls
+  // BAY_X = [-8, -5, -0.5, 4.5, 8] → all 5 lines
+  const xWallPlanes = [...BAY_X];
+
+  // Z: front/back exterior walls + both corridor cross walls
+  const zWallPlanes = [HD2, CROSS_Z_FRONT, CROSS_Z_BACK, -HD2];
 
   for (const mesh of colsPart.meshArr) {
     if (mesh.geometry?.type !== 'CylinderGeometry') continue;
@@ -38,18 +39,18 @@ export function checkColumnPlacement(parts) {
         rule: 'column-placement',
         severity: 'error',
         parts: ['columns'],
-        detail: `柱子 (${pos.x.toFixed(1)}, ${pos.z.toFixed(1)}) 距最近X墙面 ${minXDist.toFixed(1)}m、Z墙面 ${minZDist.toFixed(1)}m — 悬浮`,
+        detail: `柱子 (${pos.x.toFixed(1)}, ${pos.z.toFixed(1)}) 距最近X梁 ${minXDist.toFixed(1)}m、Z梁 ${minZDist.toFixed(1)}m — 悬浮`,
         metrics: { distToXWall: +minXDist.toFixed(2), distToZWall: +minZDist.toFixed(2) },
-        fix: { file: 'house-core.js', line: 66, suggestion: '将柱子移到最近的墙面交叉点' },
+        fix: { file: 'base/index.js', suggestion: '将柱子移到梁的交叉点' },
       });
     } else if (farX || farZ) {
       violations.push({
         rule: 'column-placement',
         severity: 'warning',
         parts: ['columns'],
-        detail: `柱子 (${pos.x.toFixed(1)}, ${pos.z.toFixed(1)}) 贴近一面墙但距垂直墙面 ${Math.max(minXDist, minZDist).toFixed(1)}m`,
+        detail: `柱子 (${pos.x.toFixed(1)}, ${pos.z.toFixed(1)}) 贴近一面梁但距垂直梁 ${Math.max(minXDist, minZDist).toFixed(1)}m`,
         metrics: { distToXWall: +minXDist.toFixed(2), distToZWall: +minZDist.toFixed(2) },
-        fix: { file: 'house-core.js', line: 66, suggestion: '将柱子移到最近的墙面交叉点' },
+        fix: { file: 'base/index.js', suggestion: '将柱子移到梁的交叉点' },
       });
     }
   }

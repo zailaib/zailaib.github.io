@@ -270,6 +270,52 @@ Step 3:  3D 模型   ← 写 house-*.js + 注册
 
 约束文档 → 规则 → 3D 模型 → `validateHouse()` → 0 新增 violation → 交付。
 
+### 交付前检查清单
+
+每次修改模型文件后，按顺序执行：
+
+```bash
+# 1. 静态检查（反模式扫描）
+./public/games/house-dismantle/scripts/check.sh
+
+# 2. 生产构建
+bun run build
+
+# 3. 浏览器验证
+# 打开 http://localhost:4321/games/house-dismantle/index.html
+# 确认左下角显示 "✅ 空间检测通过"（0 errors, 0 warnings）
+```
+
+#### 验证规则清单（9 条）
+
+| # | 规则 | 文件 | 检测内容 |
+|---|------|------|---------|
+| 1 | dep-topology | `validate/rules/dep-topology.js` | 零件依赖层级（下层不依赖上层） |
+| 2 | room-height | `validate/rules/room-height.js` | 层高 ≥ 2.4m |
+| 3 | column-placement | `validate/rules/column-placement.js` | 柱子在梁交叉点 ±0.3m |
+| 4 | poly-consistency | `validate/rules/poly-consistency.js` | 曲面分段比 ≤ 3x |
+| 5 | clearance | `validate/rules/clearance.js` | 门洞宽 ≥ 0.7m |
+| 6 | overlap | `validate/rules/overlap.js` | 零件间重叠检测（含允许列表） |
+| 7 | z-fighting | `validate/rules/z-fighting.js` | 同零件内共面重叠（含深度分离阈值） |
+| 8 | reachability | `validate/rules/reachability.js` | BFS 可达性（从入口到所有房间） |
+| 9 | **group-origin** | `validate/rules/group-origin.js` | **Part group 必须在世界原点** |
+
+#### 已知反模式
+
+| 反模式 | 检测方式 | 后果 |
+|--------|---------|------|
+| `group.add(mesh).position.set(...)` | `check.sh` 规则 1 + `group-origin` 规则 9 | 移动了整个 group，所有子 mesh 偏移 |
+| `group.position.set(...)` | `check.sh` 规则 2 + `group-origin` 规则 9 | 同上 |
+| mesh 未调 `addTo()` | `check.sh` 规则 3 | mesh 不被验证/射线检测覆盖 |
+
+**正确模式：**
+```js
+const m = box(w, h, d, mat);
+m.position.set(x, y, z);
+addTo('partName', m);   // 注册到验证系统
+group.add(m);            // 添加到场景
+```
+
 ## 关键约定
 
 - **静态资源**: 放 `public/`，构建后映射到根路径 `/`

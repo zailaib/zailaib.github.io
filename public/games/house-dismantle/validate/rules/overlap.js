@@ -1,44 +1,54 @@
-/* Rule: Overlap — 4-bay house */
+/* Rule: Overlap — V2 4-bay unequal-width house */
 import { getWorldAABB, volumeRatio } from '../helpers.js';
 
 const UNIVERSAL_HOSTS = new Set(['floor', 'floor2', 'base']);
 
 const ALLOWED_OVERLAPS = [
-  // Wall stacking
+  // Wall stacking (1F → 2F)
   ['wallFront', 'upperWallFront'], ['wallBack', 'upperWallBack'],
   ['wallLeft', 'upperWallLeft'], ['wallRight', 'upperWallRight'],
   // Roof frame inside tiles
   ['roofFrame', 'roofTiles'],
   // Doors/windows embedded in walls
   ['doors1F', 'wallFront'], ['doors1F', 'wallBack'],
-  ['windows1F', 'wallFront'], ['windows1F', 'wallBack'],
+  ['doors1F', 'wallRight'],                ['doors1F', 'upperWallRight'],  ['windows1F', 'wallFront'], ['windows1F', 'wallBack'],
   ['windows2F', 'upperWallFront'], ['windows2F', 'upperWallBack'],
-  // Interior walls meet exterior walls
+  // Interior walls meet exterior walls (1F)
   ['interiorWalls', 'wallFront'], ['interiorWalls', 'wallBack'],
   ['interiorWalls', 'wallLeft'], ['interiorWalls', 'wallRight'],
-  // Upper walls on floor2
+  // Interior walls meet exterior walls (2F)
+  ['upperInteriorWalls', 'upperWallFront'], ['upperInteriorWalls', 'upperWallBack'],
+  ['upperInteriorWalls', 'upperWallLeft'], ['upperInteriorWalls', 'upperWallRight'],
+  // Upper walls sit on floor2
   ['upperWallFront', 'floor2'], ['upperWallBack', 'floor2'],
   ['upperWallLeft', 'floor2'], ['upperWallRight', 'floor2'],
   // Columns pass through floors
   ['columns', 'floor'], ['columns', 'floor2'],
   // Stairs through floor2 opening
   ['stairs', 'floor2'], ['stairs', 'wallBack'],
+  ['stairs', 'interiorWalls'], ['stairs', 'upperInteriorWalls'],
   // Gable walls penetrate roof
   ['upperWallLeft', 'roofTiles'], ['upperWallRight', 'roofTiles'],
-  // Pipelines around base
-  ['pipelines', 'base'],
-  // Furniture against walls
-  ['elderRoom1', 'wallLeft'], ['elderRoom1', 'interiorWalls'],
-  ['elderRoom2', 'interiorWalls'],
-  ['livingRoom', 'interiorWalls'],
+  // Pipelines along walls and base
+  ['pipelines', 'base'], ['pipelines', 'wallBack'],
+  // ── 1F furniture against walls ──
+  ['elderRoom', 'wallLeft'], ['elderRoom', 'interiorWalls'],
+  ['secondBed1F', 'interiorWalls'],
+  ['mainHall', 'interiorWalls'], ['mainHall', 'wallFront'],
+  ['screen', 'interiorWalls'],
   ['kitchen', 'wallRight'], ['kitchen', 'interiorWalls'],
   ['diningRoom', 'wallLeft'], ['diningRoom', 'interiorWalls'],
-  ['shrine', 'wallBack'],
-  ['masterBed', 'upperWallLeft'], ['masterBed', 'interiorWalls'],
-  ['secondBed', 'interiorWalls'],
-  ['study', 'interiorWalls'],
-  ['childRoom1', 'upperWallRight'], ['childRoom1', 'interiorWalls'],
-  ['childRoom2', 'upperWallLeft'], ['childRoom2', 'interiorWalls'],
+  ['study1F', 'interiorWalls'], ['study1F', 'wallBack'],
+  ['storage1F', 'interiorWalls'],
+  ['bathroom1F', 'wallBack'], ['bathroom1F', 'interiorWalls'],
+  // ── 2F furniture against walls ──
+  ['masterBed', 'upperWallLeft'], ['masterBed', 'upperInteriorWalls'],
+  ['secondBed2F', 'upperInteriorWalls'],
+  ['childRoom1', 'upperWallRight'], ['childRoom1', 'upperInteriorWalls'],
+  ['childRoom2', 'upperWallLeft'], ['childRoom2', 'upperInteriorWalls'],
+  ['storage2F', 'upperInteriorWalls'],
+  ['living2F', 'upperInteriorWalls'], ['living2F', 'upperWallBack'],
+  ['bathroom2F', 'upperWallBack'], ['bathroom2F', 'upperInteriorWalls'],
 ];
 
 function isAllowed(partA, partB) {
